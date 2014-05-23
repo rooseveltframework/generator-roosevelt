@@ -1,6 +1,3 @@
-.grunt
-build/Release
-coverage
 lib-cov
 *.seed
 *.log
@@ -12,7 +9,6 @@ lib-cov
 
 pids
 logs
-*.log
 results
 
 Thumbs.db
@@ -21,4 +17,5 @@ Thumbs.db
 npm-debug.log
 node_modules
 
-.jscodehints
+public
+.build

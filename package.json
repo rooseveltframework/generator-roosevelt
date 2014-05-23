@@ -1,0 +1,50 @@
+{
+  "name": "mkroosevelt",
+  "description": "Command line application for creating Roosevelt apps",
+  "author": "Eric Newport <kethinov@gmail.com>",
+  "version": "0.5.13",
+  "homepage": "https://github.com/kethinov/mkroosevelt",
+  "license": "Creative Commons Attribution 4.0 International License",
+  "main": "mkroosevelt.js",
+  "readmeFilename": "README.md",
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "engineStrict": true,
+  "dependencies": {
+    "wrench": "~1.5.8",
+    "update-notifier": "~0.1.7"
+  },
+  "jshintConfig": {
+    "camelcase": true,
+    "curly": true,
+    "devel": true,
+    "evil": true,
+    "indent": 2,
+    "node": true
+  },
+  "devDependencies ": {
+    "jshint": "*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/kethinov/mkroosevelt.git"
+  },
+  "keywords": [
+    "roosevelt.js",
+    "teddy.js",
+    "node.js",
+    "roosevelt",
+    "teddy",
+    "mvc"
+  ],
+  "bin": {
+    "mkroosevelt": "./mkroosevelt.js"
+  },
+  "preferGlobal": true,
+  "_from": "mkroosevelt@*",
+  "gitHead": "",
+  "scripts": {
+    "test": "jshint mkroosevelt.js sampleApp/app.js sampleApp/mvc/controllers/404.js sampleApp/mvc/controllers/homepage.js sampleApp/mvc/controllers/robots.txt.js sampleApp/mvc/models/global.js"
+  }
+}
