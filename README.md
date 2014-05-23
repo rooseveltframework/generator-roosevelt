@@ -1,4 +1,4 @@
-mkroosevelt.js [![NPM version](https://badge.fury.io/js/mkroosevelt.png)](http://badge.fury.io/js/roosevelt) [![Dependency Status](https://gemnasium.com/kethinov/mkroosevelt.png)](https://gemnasium.com/kethinov/roosevelt) [![Gittip](http://img.shields.io/gittip/kethinov.png)](https://www.gittip.com/kethinov/)
+mkroosevelt [![NPM version](https://badge.fury.io/js/mkroosevelt.png)](http://badge.fury.io/js/roosevelt) [![Dependency Status](https://gemnasium.com/kethinov/mkroosevelt.png)](https://gemnasium.com/kethinov/roosevelt) [![Gittip](http://img.shields.io/gittip/kethinov.png)](https://www.gittip.com/kethinov/)
 ===
 
 Command line application for creating [Roosevelt](https://github.com/kethinov/roosevelt) apps.
