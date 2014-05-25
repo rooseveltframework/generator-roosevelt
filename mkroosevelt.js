@@ -12,10 +12,10 @@ var fs = require('fs'),
       console.log("USAGE:");
       console.log("");
       console.log("create an app in this directory:");
-      console.log("mkroosevelt create appName");
+      console.log("mkroosevelt appName");
       console.log("");
       console.log("create an app somewhere else:");
-      console.log("mkroosevelt create /path/to/appName");
+      console.log("mkroosevelt /path/to/appName");
     };
 
 if (notifier.update) {
@@ -24,6 +24,9 @@ if (notifier.update) {
 
 if (cmd && arg) {
   if (cmd === 'create') {
+    showHelp();
+  }
+  else if (cmd) {
     try {
       wrench.copyDirSyncRecursive(path.normalize(__dirname + '/sampleApp/'), path.normalize(arg), {
         forceDelete: false, // Whether to overwrite existing directory or not
