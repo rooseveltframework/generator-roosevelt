@@ -34,7 +34,7 @@
     "private-repo": "git+ssh://somewhere:port/folder/on/server"
   },
   "scripts": {
-    "start": "nodemon -e js,json,less,html app.js",
+    "start": "nodemon -e js,json,less,html app.js --ignore node_modules/",
     "test": "jshint app.js"
   }
 }
