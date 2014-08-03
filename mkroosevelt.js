@@ -21,12 +21,14 @@ var fs = require('fs'),
 if (notifier.update) {
   notifier.notify();
 }
-
-if (cmd && arg) {
+if (cmd) {
   if (cmd === 'create') {
     showHelp();
   }
   else if (cmd) {
+    if (!arg) {
+      arg = cmd;
+    }
     try {
       wrench.copyDirSyncRecursive(path.normalize(__dirname + '/sampleApp/'), path.normalize(arg), {
         forceDelete: false, // Whether to overwrite existing directory or not
