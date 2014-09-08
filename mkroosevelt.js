@@ -36,21 +36,20 @@ if (notifier.update) {
   notifier.notify();
 }
 
-if (cmd && (cmd === '-v' || cmd === '--v' || cmd === '-version' || cmd === '--version')) {
+if (cmd === 'create') {
+  showHelp();
+}
+
+else if (cmd && (cmd === '-v' || cmd === '--v' || cmd === '-version' || cmd === '--version')) {
   console.log(package.version);
 }
 
-if (cmd) {
-  if (cmd === 'create') {
-    showHelp();
+else if (cmd) {
+  try {
+    createSampleApp();
   }
-  else if (cmd) {
-    try {
-      createSampleApp();
-    }
-    catch (e) {
-      console.error(e);
-    }
+  catch (e) {
+    console.error(e);
   }
 }
 else {
