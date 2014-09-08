@@ -3,8 +3,7 @@ var package = require('./package.json'),
     updateNotifier = require('update-notifier'),
     notifier = updateNotifier({packageName: package.name, packageVersion: package.version}),
     cmd = process.argv[2],
-    arg = process.argv[3];
-    
+    arg = process.argv[3];  
 
 function showHelp() {
   console.log("");
@@ -37,6 +36,7 @@ function createSampleApp() {
 if (notifier.update) {
   notifier.notify();
 }
+
 if (cmd) {
   if (cmd === 'create') {
     showHelp();
