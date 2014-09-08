@@ -2,7 +2,8 @@
 var package = require('./package.json'),
     updateNotifier = require('update-notifier'),
     notifier = updateNotifier({packageName: package.name, packageVersion: package.version}),
-    cmd = process.argv[2];
+    cmd = process.argv[2],
+    arg = process.argv[3];
     
 
 function showHelp() {
@@ -15,12 +16,12 @@ function showHelp() {
   console.log("create an app somewhere else:");
   console.log("mkroosevelt /path/to/appName");
 }
+
 function createSampleApp() {
   var fs = require('fs'),
       path = require('path'),
-      wrench = require('wrench'),
-      arg = process.argv[3];
-  
+      wrench = require('wrench');
+      
   wrench.copyDirSyncRecursive(path.normalize(__dirname + '/sampleApp/'), path.normalize(arg), {
     forceDelete: false, // Whether to overwrite existing directory or not
     excludeHiddenUnix: false, // Whether to copy hidden Unix files or not (preceding .)
