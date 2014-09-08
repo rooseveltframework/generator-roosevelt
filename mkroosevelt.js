@@ -6,17 +6,18 @@ var fs = require('fs'),
     updateNotifier = require('update-notifier'),
     notifier = updateNotifier({packageName: package.name, packageVersion: package.version}),
     cmd = process.argv[2],
-    arg = process.argv[3],
-    showHelp = function() {
-      console.log("");
-      console.log("USAGE:");
-      console.log("");
-      console.log("create an app in this directory:");
-      console.log("mkroosevelt appName");
-      console.log("");
-      console.log("create an app somewhere else:");
-      console.log("mkroosevelt /path/to/appName");
-    };
+    arg = process.argv[3];
+
+function showHelp() {
+  console.log("");
+  console.log("USAGE:");
+  console.log("");
+  console.log("create an app in this directory:");
+  console.log("mkroosevelt appName");
+  console.log("");
+  console.log("create an app somewhere else:");
+  console.log("mkroosevelt /path/to/appName");
+}
 
 if (notifier.update) {
   notifier.notify();
