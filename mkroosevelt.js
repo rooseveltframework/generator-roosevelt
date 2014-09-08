@@ -1,4 +1,3 @@
-#! /usr/bin/env node
 var package = require('./package.json'),
     updateNotifier = require('update-notifier'),
     notifier = updateNotifier({packageName: package.name, packageVersion: package.version}),
