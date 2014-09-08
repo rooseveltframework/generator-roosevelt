@@ -36,6 +36,10 @@ if (notifier.update) {
   notifier.notify();
 }
 
+if (cmd && (cmd === '-v' || cmd === '--v' || cmd === '-version' || cmd === '--version')) {
+  console.log(package.version);
+}
+
 if (cmd) {
   if (cmd === 'create') {
     showHelp();
@@ -48,9 +52,6 @@ if (cmd) {
       console.error(e);
     }
   }
-}
-else if (cmd && (cmd === '-v' || cmd === '--v' || cmd === '-version' || cmd === '--version')) {
-  console.log(package.version);
 }
 else {
   showHelp();
