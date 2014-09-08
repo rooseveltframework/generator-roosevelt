@@ -39,11 +39,9 @@ if (notifier.update) {
 if (cmd === 'create') {
   showHelp();
 }
-
 else if (cmd && (cmd === '-v' || cmd === '--v' || cmd === '-version' || cmd === '--version')) {
   console.log(package.version);
 }
-
 else if (cmd) {
   try {
     createSampleApp();
