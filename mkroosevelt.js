@@ -28,6 +28,7 @@ function createSampleApp() {
     preserveTimestamps: false, // Preserve the mtime and atime when copying files
     inflateSymlinks: false // Whether to follow symlinks or not when copying files
   });
+  
   if (fs.existsSync(path.normalize(arg + '/.npmignore'))) {
     fs.renameSync(path.normalize(arg + '/.npmignore'), path.normalize(arg + '/.gitignore')); // fix to compensate for this "feature" https://github.com/npm/npm/issues/1862
   }
