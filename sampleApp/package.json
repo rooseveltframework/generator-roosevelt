@@ -21,7 +21,14 @@
     "jshint": "*",
     "nodemon": "*"
   },
-  "rooseveltConfig": {},
+  "rooseveltConfig": {
+    {
+      "nodeModule": "roosevelt-closure",
+      "params": {
+        "compilation_level": "ADVANCED_OPTIMIZATIONS"
+      }
+    }
+  },
   "jshintConfig": {
     "camelcase": true,
     "curly": true,
