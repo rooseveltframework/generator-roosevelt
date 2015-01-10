@@ -22,7 +22,7 @@
     "nodemon": "*"
   },
   "rooseveltConfig": {
-    {
+    "jsCompiler": {
       "nodeModule": "roosevelt-closure",
       "params": {
         "compilation_level": "ADVANCED_OPTIMIZATIONS"
