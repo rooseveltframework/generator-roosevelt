@@ -24,6 +24,12 @@
   "rooseveltConfig": {
     "staticsRoot": "statics",
     "cssPath": "css",
+    "cssCompiler": {
+      "nodeModule": "roosevelt-less",
+      "params": {
+        "compress": true
+      }
+    },
     "jsCompiler": {
       "nodeModule": "roosevelt-closure",
       "params": {
