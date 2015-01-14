@@ -30,6 +30,7 @@
         "compress": true
       }
     },
+    "cssCompilerWhitelist": null,
     "jsCompiler": {
       "nodeModule": "roosevelt-closure",
       "params": {
