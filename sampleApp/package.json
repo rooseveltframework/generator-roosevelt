@@ -31,6 +31,7 @@
       }
     },
     "cssCompilerWhitelist": null,
+    "cssCompiledOutput": ".build/css",
     "jsCompiler": {
       "nodeModule": "roosevelt-closure",
       "params": {
