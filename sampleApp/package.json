@@ -32,6 +32,7 @@
     },
     "cssCompilerWhitelist": null,
     "cssCompiledOutput": ".build/css",
+    "jsPath": "js",
     "jsCompiler": {
       "nodeModule": "roosevelt-closure",
       "params": {
