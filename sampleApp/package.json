@@ -38,7 +38,8 @@
       "params": {
         "compilation_level": "ADVANCED_OPTIMIZATIONS"
       }
-    }
+    },
+    "jsCompilerWhitelist": null
   },
   "jshintConfig": {
     "camelcase": true,
