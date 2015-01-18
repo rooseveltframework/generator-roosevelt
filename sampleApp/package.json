@@ -39,7 +39,8 @@
         "compilation_level": "ADVANCED_OPTIMIZATIONS"
       }
     },
-    "jsCompilerWhitelist": null
+    "jsCompilerWhitelist": null,
+    "jsCompiledOutput": ".build/js"
   },
   "jshintConfig": {
     "camelcase": true,
