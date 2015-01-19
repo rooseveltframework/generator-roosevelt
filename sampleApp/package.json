@@ -40,7 +40,8 @@
       }
     },
     "jsCompilerWhitelist": null,
-    "jsCompiledOutput": ".build/js"
+    "jsCompiledOutput": ".build/js",
+    "publicFolder": "public"
   },
   "jshintConfig": {
     "camelcase": true,
