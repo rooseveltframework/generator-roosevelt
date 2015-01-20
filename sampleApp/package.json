@@ -41,7 +41,12 @@
     },
     "jsCompilerWhitelist": null,
     "jsCompiledOutput": ".build/js",
-    "publicFolder": "public"
+    "publicFolder": "public",
+    "symlinksToStatics": [
+      "css: .build/css",
+      "images",
+      "js: .build/js"
+    ]
   },
   "jshintConfig": {
     "camelcase": true,
