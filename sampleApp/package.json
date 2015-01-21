@@ -46,7 +46,8 @@
       "css: .build/css",
       "images",
       "js: .build/js"
-    ]
+    ],
+    "versionedStatics": false
   },
   "jshintConfig": {
     "camelcase": true,
