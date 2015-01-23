@@ -48,7 +48,8 @@
       "js: .build/js"
     ],
     "versionedStatics": false,
-    "versionedCssFile": null
+    "versionedCssFile": null,
+    "alwaysHostPublic": false
   },
   "jshintConfig": {
     "camelcase": true,
