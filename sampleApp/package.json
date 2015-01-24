@@ -22,6 +22,7 @@
     "nodemon": "*"
   },
   "rooseveltConfig": {
+    "port": 43711,
     "staticsRoot": "statics",
     "cssPath": "css",
     "cssCompiler": {
