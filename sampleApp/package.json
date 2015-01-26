@@ -24,6 +24,7 @@
   "rooseveltConfig": {
     "port": 43711,
     "localhostOnly": true,
+    "disableLogger": false,
     "staticsRoot": "statics",
     "cssPath": "css",
     "cssCompiler": {
