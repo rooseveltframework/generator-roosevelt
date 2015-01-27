@@ -25,6 +25,9 @@
     "port": 43711,
     "localhostOnly": true,
     "disableLogger": false,
+    "multipart": {
+      "multiples": true
+    },
     "staticsRoot": "statics",
     "cssPath": "css",
     "cssCompiler": {
