@@ -28,6 +28,7 @@
     "multipart": {
       "multiples": true
     },
+    "maxLagPerRequest": 2000,
     "staticsRoot": "statics",
     "cssPath": "css",
     "cssCompiler": {
