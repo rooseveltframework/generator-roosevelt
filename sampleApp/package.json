@@ -29,6 +29,15 @@
       "multiples": true
     },
     "maxLagPerRequest": 2000,
+    "shutdownTimeout": 30000,
+    "modelsPath": "mvc/models",
+    "modelsNodeModulesSymlink": "models",
+    "viewsPath": "mvc/views",
+    "viewEngine": "html: teddy",
+    "controllersPath": "mvc/controllers",
+    "error404": "404.js",
+    "error5xx": "5xx.js",
+    "error503": "503.js",
     "staticsRoot": "statics",
     "cssPath": "css",
     "cssCompiler": {
