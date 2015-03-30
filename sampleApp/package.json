@@ -79,7 +79,9 @@
     "private-repo": "git+ssh://somewhere:port/folder/on/server"
   },
   "scripts": {
-    "start": "nodemon -e js,json,less,html app.js --ignore node_modules/",
+    "start": "nodemon -e js,json,less,html --ignore node_modules/ app.js",
+    "prod": "nodemon -e js,json,less,html --ignore node_modules/ app.js",
+    "dev": "nodemon -e js,json,less,html --ignore node_modules/ app.js -no-minify",
     "test": "jshint app.js"
   }
 }
