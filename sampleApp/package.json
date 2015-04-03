@@ -25,6 +25,7 @@
     "port": 43711,
     "localhostOnly": true,
     "disableLogger": false,
+    "noMinify": false,
     "multipart": {
       "multiples": true
     },
