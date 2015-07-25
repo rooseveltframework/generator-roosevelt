@@ -80,9 +80,9 @@
     "private-repo": "git+ssh://somewhere:port/folder/on/server"
   },
   "scripts": {
-    "start": "nodemon -e js,json,less,html --ignore node_modules/ app.js",
-    "prod": "nodemon -e js,json,less,html --ignore node_modules/ app.js",
-    "dev": "nodemon -e js,json,less,html --ignore node_modules/ app.js -no-minify",
+    "start": "npm run prod",
+    "prod": "nodemon -e js,json,less,html --ignore statics/.build/ app.js -prod",
+    "dev": "nodemon -e js,json,less,html --ignore statics/.build/ app.js -dev",
     "test": "jshint app.js"
   }
 }
