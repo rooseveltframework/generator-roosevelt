@@ -40,7 +40,7 @@
     "mvc"
   ],
   "bin": {
-    "mkroosevelt": "./mkroosevelt.js"
+    "mkroosevelt": "mkroosevelt.js"
   },
   "preferGlobal": true,
   "_from": "mkroosevelt@*",
