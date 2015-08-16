@@ -81,8 +81,8 @@
   },
   "scripts": {
     "start": "npm run prod",
-    "prod": "nodemon -e js,json,less,html --ignore statics/.build/ app.js -prod",
-    "dev": "nodemon -e js,json,less,html --ignore statics/.build/ app.js -dev",
+    "prod": "nodemon -e js,json,less,html --ignore statics/.build/ --ignore public/ app.js -prod",
+    "dev": "nodemon -e js,json,less,html --ignore statics/.build/ --ignore public/ app.js -dev",
     "test": "jshint app.js"
   }
 }
