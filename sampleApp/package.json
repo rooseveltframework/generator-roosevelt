@@ -59,6 +59,7 @@
     "jsCompilerWhitelist": null,
     "jsCompiledOutput": ".build/js",
     "publicFolder": "public",
+    "favicon": "images/favicon.ico",
     "symlinksToStatics": [
       "css: .build/css",
       "images",
