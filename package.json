@@ -12,7 +12,7 @@
   },
   "engineStrict": true,
   "dependencies": {
-    "update-notifier": "^0.3.0",
+    "update-notifier": "^0.5.0",
     "wrench": "^1.0.0"
   },
   "jshintConfig": {
