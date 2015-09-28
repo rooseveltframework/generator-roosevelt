@@ -81,8 +81,8 @@
   },
   "scripts": {
     "start": "npm run prod",
-    "prod": "supervisor -e js,json,less,html --ignore statics/.build/ --ignore public/ -- app.js -prod",
-    "dev": "supervisor -e js,json,less,html --ignore statics/.build/ --ignore public/ -- app.js -dev",
+    "prod": "supervisor -e js,json,less,html --ignore statics/.build/, public/ --instant-kill -- app.js -prod",
+    "dev": "supervisor -e js,json,less,html --ignore statics/.build/, public/ --instant-kill -- app.js -dev",
     "test": "jshint app.js"
   }
 }
