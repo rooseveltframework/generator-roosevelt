@@ -8,20 +8,26 @@ function showHelp() {
   console.log("");
   console.log("USAGE:");
   console.log("");
-  console.log("create an app in this directory:");
+  console.log("create an app in the current directory:");
+  console.log("mkroosevelt .");
+  console.log("");
+  console.log("create an app in this directory in a new folder:");
   console.log("mkroosevelt appName");
   console.log("");
   console.log("create an app somewhere else:");
   console.log("mkroosevelt /path/to/appName");
 }
 
-function createSampleApp() {
+function createSampleApp(currentDirectory) {
   var fs = require('fs'),
       path = require('path'),
       wrench = require('wrench');
-      
+
+  if (currentDirectory === true) {
+    cmd = path.normalize(process.cwd());
+  }
   wrench.copyDirSyncRecursive(path.normalize(__dirname + '/sampleApp/'), path.normalize(cmd), {
-    forceDelete: false, // Whether to overwrite existing directory or not
+    forceDelete: currentDirectory, // Whether to overwrite existing directory or not. Use currentDirectory as variable because this needs to be set to true if the user wants to create an app in the current directory.
     excludeHiddenUnix: false, // Whether to copy hidden Unix files or not (preceding .)
     preserveFiles: true, // If we're overwriting something and the file already exists, keep the existing
     preserveTimestamps: false, // Preserve the mtime and atime when copying files
@@ -45,7 +51,13 @@ else if (cmd === '-v' || cmd === '--v' || cmd === '-version' || cmd === '--versi
 }
 else if (cmd) {
   try {
-    createSampleApp();
+    if (cmd === '.') {
+      currentDirectory = true;
+    }
+    else {
+      currentDirectory = false;
+    }
+    createSampleApp(currentDirectory);
   }
   catch (e) {
     console.error(e);
