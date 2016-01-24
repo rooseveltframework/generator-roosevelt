@@ -1,6 +1,7 @@
 #! /usr/bin/env node
 var package = require('./package.json'),
     updateNotifier = require('update-notifier'),
+    stdio = require('stdio'),
     notifier = updateNotifier({packageName: package.name, packageVersion: package.version}),
     cmd = process.argv[2];
 
@@ -53,11 +54,17 @@ else if (cmd) {
   try {
     if (cmd === '.') {
       currentDirectory = true;
+      stdio.question('Installing in the current directory will DELETE EVERYTHING in the current directory. Are you sure you want to continue (y/n)', function (err, decision) {
+        if (decision.toString() === 'y') {
+          console.log("All set");
+          createSampleApp(currentDirectory);
+        }
+      });
     }
     else {
       currentDirectory = false;
+      createSampleApp(currentDirectory);
     }
-    createSampleApp(currentDirectory);
   }
   catch (e) {
     console.error(e);
