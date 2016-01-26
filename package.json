@@ -14,7 +14,8 @@
   "dependencies": {
     "update-notifier": "^0.5.0",
     "wrench": "^1.0.0",
-    "stdio": "^0.2.7"
+    "stdio": "^0.2.7",
+    "fs-extra": "^0.26.4"
   },
   "jshintConfig": {
     "camelcase": true,
