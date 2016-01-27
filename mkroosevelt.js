@@ -21,8 +21,7 @@ function showHelp() {
 function createSampleApp(currentDirectory) {
   var fs = require('fs'),
       fse = require('fs-extra'),
-      path = require('path'),
-      wrench = require('wrench');
+      path = require('path');
 
   if (currentDirectory === true) {
     cmd = path.normalize(process.cwd());
@@ -30,10 +29,11 @@ function createSampleApp(currentDirectory) {
 
   try {
     fse.copySync(path.normalize(__dirname + '/sampleApp/'), path.normalize(cmd));
-  } catch (err) {
+  }
+  catch (err) {
     console.error('There was an error in copying the sample app: ' + err.message);
   }
-  
+
   if (fs.existsSync(path.normalize(cmd + '/.npmignore'))) {
     fs.renameSync(path.normalize(cmd + '/.npmignore'), path.normalize(cmd + '/.gitignore')); // fix to compensate for this "feature" https://github.com/npm/npm/issues/1862
   }
@@ -53,6 +53,7 @@ else if (cmd) {
   try {
     if (cmd === '.') {
       currentDirectory = true;
+      createSampleApp(currentDirectory);
     }
     else {
       currentDirectory = false;
