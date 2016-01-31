@@ -2,7 +2,14 @@
 var package = require('./package.json'),
     updateNotifier = require('update-notifier'),
     notifier = updateNotifier({packageName: package.name, packageVersion: package.version}),
-    cmd = process.argv[2];
+    cmd = process.argv[2],
+    fse = require('fs-extra'),
+    path = require('path'),
+    fs = require('fs'),
+    stdio = require('stdio'),
+    sampleAppFiles = [],
+    directoryFiles = [],
+    conflictedFiles = [];
 
 function showHelp() {
   console.log("");
@@ -18,15 +25,68 @@ function showHelp() {
   console.log("mkroosevelt /path/to/appName");
 }
 
-function createSampleApp(currentDirectory) {
-  var fs = require('fs'),
-      fse = require('fs-extra'),
-      path = require('path');
+// Function to check the sampleApps files and then compare them against the current directories files to see if there is a match. If there is a match we handle it and ask the user if they want to continue and overwrite their files.
+function checkCurrentDirectoryForExistingFiles() {
+  // Set cmd to the current directory, so that we can create the app in the current directory
+  cmd = path.normalize(process.cwd());
 
-  if (currentDirectory === true) {
-    cmd = path.normalize(process.cwd());
-  }
+  // Walk the sampleApp files, so that we can match later against the walk of the current directory
+  fse.walk(path.normalize(__dirname + '/sampleApp/'))
+    .on('data', function (item) {
 
+      // Split on sampleApp so that we only get the file names and folders in the sampleApp not the absoulte path
+      item = item.path.toString().split('sampleApp');
+      sampleAppFiles.push(item[1])
+    })
+    // On end of the sampleApp's walk we start walking the current directory
+    .on('end', function () {
+
+      // Walk the current directories files, so that we can match against the walk we did of the sampleApp's directory and see if there is a match
+      fse.walk(path.normalize(cmd)) 
+        .on('data', function (item) {
+
+          // Split on the current directory so that we only get the file names and folders in the current directory not the absoulte path
+          item = item.path.toString().split(path.normalize(cmd));
+          directoryFiles.push(item[1]);
+        })
+        .on('end', function () {
+
+          // Delete the first element from each array as it is blank and will give a false positive on a conflict
+          directoryFiles.shift();
+          sampleAppFiles.shift();
+
+          // Loop through both the directory files and the sampleApp Files to see if there is a conflict
+          directoryFiles.forEach(function(element) {
+            sampleAppFiles.forEach(function(element1) {
+              if (element === element1) {
+                  conflictedFiles.push(element);
+              }
+            });
+          });
+
+          // If there any conflicting file(s) we log the file, so the user can see the file causing the conflict and ask them if they want to overwrite the file
+          if (conflictedFiles.length > 0) {
+            console.log('Your current directory contains files from the sample app')
+            conflictedFiles.forEach(function(file) {
+              console.log(file);
+            })
+            console.log("");
+            stdio.question('Continuing will overwrite these files. Would you like to continue? (y/n)', function (err, decision) {
+              if (decision.toString() === 'y') {
+                // If they answer yes we continue on to create the sample app in the current directory
+                createSampleApp();
+              }
+            });
+          }
+          // Else there are no conflicts and we create the app
+          else {
+            createSampleApp();
+          }
+        })
+    })
+}
+
+function createSampleApp() {
   try {
     fse.copySync(path.normalize(__dirname + '/sampleApp/'), path.normalize(cmd));
   }
@@ -52,12 +112,7 @@ else if (cmd === '-v' || cmd === '--v' || cmd === '-version' || cmd === '--versi
 else if (cmd) {
   try {
     if (cmd === '.') {
-      currentDirectory = true;
-      createSampleApp(currentDirectory);
-    }
-    else {
-      currentDirectory = false;
-      createSampleApp(currentDirectory);
+      checkCurrentDirectoryForExistingFiles();
     }
   }
   catch (e) {
