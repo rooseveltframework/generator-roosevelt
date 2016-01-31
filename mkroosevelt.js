@@ -66,12 +66,12 @@ function checkCurrentDirectoryForExistingFiles() {
 
           // If there any conflicting file(s) we log the file, so the user can see the file causing the conflict and ask them if they want to overwrite the file
           if (conflictedFiles.length > 0) {
-            console.log('Your current directory contains files from the sample app')
+            console.log('This would overwrite the following existing files:')
             conflictedFiles.forEach(function(file) {
               console.log(file);
             })
             console.log("");
-            stdio.question('Continuing will overwrite these files. Would you like to continue? (y/n)', function (err, decision) {
+            stdio.question('Proceed with overwriting the above files? (y/N)', function (err, decision) {
               if (decision.toString() === 'y') {
                 // If they answer yes we continue on to create the sample app in the current directory
                 createSampleApp();
@@ -113,6 +113,9 @@ else if (cmd) {
   try {
     if (cmd === '.') {
       checkCurrentDirectoryForExistingFiles();
+    }
+    else {
+      createSampleApp();
     }
   }
   catch (e) {

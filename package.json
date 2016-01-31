@@ -13,7 +13,8 @@
   "engineStrict": true,
   "dependencies": {
     "update-notifier": "^0.5.0",
-    "fs-extra": "^0.26.4"
+    "fs-extra": "^0.26.4",
+	"stdio": "^0.2.7"
   },
   "jshintConfig": {
     "camelcase": true,
