@@ -18,6 +18,7 @@
     "roosevelt-closure": "^0.2.0"
   },
   "devDependencies": {
+    "jshint": "*",
     "supervisor": "*"
   },
   "rooseveltConfig": {
@@ -67,6 +68,13 @@
     "versionedStatics": false,
     "versionedCssFile": null,
     "alwaysHostPublic": false
+  },
+  "jshintConfig": {	
+    "camelcase": true,		
+    "curly": true,		
+    "devel": true,		
+    "indent": 2,		
+    "node": true		
   },
   "private": true,
   "repository": {
