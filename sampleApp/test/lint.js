@@ -19,6 +19,7 @@ exec(htmlLinterActualPath, function(error, stdout, stderr) {
   if (error !== null) {
     console.error(error);
   }
+
   console.log('Linting LESS...\n');
 });
 
@@ -28,6 +29,7 @@ exec(lessLinterActualPath, function(error, stdout, stderr) {
   if (error !== null) {
     console.error(error);
   }
+
   console.log('Linting JS...\n');
 });
 

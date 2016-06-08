@@ -18,7 +18,9 @@
     "roosevelt-closure": "^0.2.0"
   },
   "devDependencies": {
-    "jshint": "*",
+    "eslint": "*",
+    "lesshint": "*",
+    "htmlhint": "*",
     "supervisor": "*"
   },
   "rooseveltConfig": {
@@ -69,12 +71,30 @@
     "versionedCssFile": null,
     "alwaysHostPublic": false
   },
-  "jshintConfig": {
-    "camelcase": true,
-    "curly": true,
-    "devel": true,
-    "indent": 2,
-    "node": true
+  "eslintConfig": {
+    "env": {
+      "node": true
+    },
+    "rules": {
+      "eqeqeq": 2,
+      "curly": 2,
+      "semi": 2,
+      "strict": [2, "never"],
+      "quotes": [2, "single"],
+      "no-trailing-spaces": ["error", {"skipBlankLines": false}],
+      "camelcase": [2, {"properties": "always"}],
+      "comma-spacing": [2, {"before": false, "after": true}],
+      "indent": [2, 2, {"VariableDeclarator": 2}],
+      "eol-last": 0,
+      "handle-callback-err": 0,
+      "no-use-before-define": [2, "nofunc"],
+      "no-unused-vars": [2, {"vars": "all", "args": "none"}],
+      "no-console": 0,
+      "no-mixed-requires": 0,
+      "one-var": [2, "always"],
+      "dot-notation": 0,
+      "no-path-concat": 0
+    }
   },
   "private": true,
   "repository": {
@@ -84,6 +104,6 @@
     "start": "npm run prod",
     "prod": "supervisor -k -e js,json,less,html -i statics/.build/,.git/,public/,node_modules/ -- app.js -prod",
     "dev": "supervisor -k -e js,json,less,html -i statics/.build/,.git/,public/,node_modules/ -- app.js -dev",
-    "test": "jshint app.js"
+    "lint": "node test/lint.js"
   }
 }
