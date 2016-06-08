@@ -69,12 +69,12 @@
     "versionedCssFile": null,
     "alwaysHostPublic": false
   },
-  "jshintConfig": {	
-    "camelcase": true,		
-    "curly": true,		
-    "devel": true,		
-    "indent": 2,		
-    "node": true		
+  "jshintConfig": {
+    "camelcase": true,
+    "curly": true,
+    "devel": true,
+    "indent": 2,
+    "node": true
   },
   "private": true,
   "repository": {
