@@ -101,8 +101,6 @@ function createSampleApp() {
   catch (err) {
     
   }
-    
-  
 }
 
 if (notifier.update) {
