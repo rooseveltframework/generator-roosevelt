@@ -94,7 +94,6 @@ function createSampleApp() {
     console.error('There was an error in copying the sample app: ' + err.message);
   }
 
-  if (fs.existsSync(path.normalize(cmd + '/.npmignore'))) {
     fs.renameSync(path.normalize(cmd + '/.npmignore'), path.normalize(cmd + '/.gitignore')); // fix to compensate for this "feature" https://github.com/npm/npm/issues/1862
   }
 }
