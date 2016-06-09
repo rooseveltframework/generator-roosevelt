@@ -16,7 +16,7 @@
     "fs-extra": "^0.26.4",
     "stdio": "^0.2.7"
   },
-  "devDependencies ": {
+  "devDependencies": {
     "eslint": "^2.11.1"
   },
   "eslintConfig": {
