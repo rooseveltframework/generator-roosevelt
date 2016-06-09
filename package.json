@@ -17,7 +17,7 @@
     "stdio": "^0.2.7"
   },
   "devDependencies ": {
-    "eslint": "*"
+    "eslint": "^2.11.1"
   },
   "eslintConfig": {
     "env": {
