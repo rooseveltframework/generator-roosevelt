@@ -9,7 +9,7 @@ var exec = require('child_process').exec,
     lessLinterPath = path.normalize('./node_modules/.bin/lesshint -c ./test/.lesshintrc statics/css'),
     lessLinterActualPath = path.join(__dirname, '..', lessLinterPath),
 
-    jsLinterPath = path.normalize('./node_modules/.bin/eslint .'),
+    jsLinterPath = path.normalize('./node_modules/.bin/eslint --ignore-path ./test/.eslintignore .'),
     jsLinterActualPath = path.join(__dirname, '..', jsLinterPath);
 
 console.log('Linting HTML...\n');
