@@ -88,18 +88,11 @@ function checkCurrentDirectoryForExistingFiles() {
 
 function createSampleApp() {
   try {
-    fse.copySync(path.normalize(__dirname + '/sampleApp/'), path.normalize(cmd));
-  }
-  catch (err) {
-    console.error('There was an error in copying the sample app: ' + err.message);
-  }
-
-  try {
     fs.accessSync(fs.existsSync(path.normalize(cmd + '/.npmignore')));
     fs.renameSync(path.normalize(cmd + '/.npmignore'), path.normalize(cmd + '/.gitignore')); // fix to compensate for this "feature" https://github.com/npm/npm/issues/1862
   }
   catch (err) {
-    
+    // If we do error in the try is doesn't matter because we are only correcting for that "feature". The sample app will still copy correctly, if this errors.
   }
 }
 
