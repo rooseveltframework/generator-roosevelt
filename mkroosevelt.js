@@ -99,7 +99,6 @@ function createSampleApp() {
     fs.renameSync(path.normalize(cmd + '/.npmignore'), path.normalize(cmd + '/.gitignore')); // fix to compensate for this "feature" https://github.com/npm/npm/issues/1862
   }
   catch (err) {
-    console.error("WE ERRORED");
     // If we do error in the try is doesn't matter because we are only correcting for that "feature". The sample app will still copy correctly, if this errors.
   }
 }
