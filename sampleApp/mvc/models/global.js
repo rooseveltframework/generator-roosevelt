@@ -12,7 +12,7 @@ module.exports = function(req, res) {
 
     // always static
     content: model.content,
-    
+
     // recalculated each require
     currentYear: new Date().getFullYear(),
     mainDomain: req.headers['x-forwarded-host'] || req.headers.host,
