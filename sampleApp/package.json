@@ -24,6 +24,17 @@
   "rooseveltConfig": {
     "port": 43711,
     "localhostOnly": true,
+    "httpsPort": 43733,
+    "https": true,
+    "httpsOnly": false,
+    "pfx": false,
+    "keyPath": {
+        "pfx": null,
+        "key": "https/server.key",
+        "cert": "https/server.crt"
+    },
+    "passphrase": null,
+    "ca": null,
     "disableLogger": false,
     "noMinify": false,
     "multipart": {
