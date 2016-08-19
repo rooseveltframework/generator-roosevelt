@@ -35,6 +35,8 @@
     },
     "passphrase": null,
     "ca": null,
+    "requestCert": false,
+    "rejectUnauthorized": false,
     "disableLogger": false,
     "noMinify": false,
     "multipart": {
