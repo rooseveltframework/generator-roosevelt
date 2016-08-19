@@ -25,14 +25,10 @@
     "port": 43711,
     "localhostOnly": true,
     "httpsPort": 43733,
-    "https": true,
+    "https": false,
     "httpsOnly": false,
     "pfx": false,
-    "keyPath": {
-        "pfx": null,
-        "key": null,
-        "cert": null
-    },
+    "keyPath": null,
     "passphrase": null,
     "ca": null,
     "requestCert": false,
