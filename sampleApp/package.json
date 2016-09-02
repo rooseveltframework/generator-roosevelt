@@ -30,8 +30,8 @@
     "pfx": false,
     "keyPath": {
         "pfx": null,
-        "key": "https/server.key",
-        "cert": "https/server.crt"
+        "key": null,
+        "cert": null
     },
     "passphrase": null,
     "ca": null,
