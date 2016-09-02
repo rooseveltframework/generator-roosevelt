@@ -23,6 +23,13 @@ function showHelp() {
   console.log('');
   console.log('create an app somewhere else:');
   console.log('mkroosevelt /path/to/appName');
+  console.log('');
+  console.log('output current version:');
+  console.log('mkroosevelt -v,-version,--v,--version');
+  console.log('');
+  console.log('generate ssl certificate and key for https server');
+  console.log('mkroosevelt -genssl,--genssl');
+  console.log('');
 }
 
 // Function to check the sampleApps files and then compare them against the current directories files to see if there is a match. If there is a match we handle it and ask the user if they want to continue and overwrite their files.
@@ -103,6 +110,95 @@ function createSampleApp() {
   }
 }
 
+function createSsl() {
+  var forge = require('node-forge'),
+      pki   = forge.pki,
+      keys  = pki.rsa.generateKeyPair(2048),
+      cert  = pki.createCertificate(),
+      attrs = [{
+                name: 'commonName',
+                value: "Test"
+              }, {
+                name: 'countryName',
+                value: "US"
+              }, {
+                shortName: 'ST',
+                value: "Nullbraska"
+              }, {
+                name: 'localityName',
+                value: "Test"
+              }, {
+                name: 'organizationName',
+                value: "Test"
+              }, {
+                shortName: 'OU',
+                value: "Test"
+              }];
+  
+  cert.publicKey = keys.publicKey;
+  cert.serialNumber = '01';
+  cert.validity.notBefore = new Date();
+  cert.validity.notAfter = new Date();
+  cert.validity.notAfter.setFullYear(cert.validity.notBefore.getFullYear() + 1);
+
+  cert.setSubject(attrs);
+  cert.setIssuer(attrs);
+
+  cert.setExtensions([{
+    name: 'basicConstraints',
+    cA: true
+  }, {
+    name: 'keyUsage',
+    keyCertSign: true,
+    digitalSignature: true,
+    nonRepudiation: true,
+    keyEncipherment: true,
+    dataEncipherment: true
+  }, {
+    name: 'extKeyUsage',
+    serverAuth: true,
+    clientAuth: true,
+    codeSigning: true,
+    emailProtection: true,
+    timeStamping: true
+  }, {
+    name: 'nsCertType',
+    client: true,
+    server: true,
+    email: true,
+    objsign: true,
+    sslCA: true,
+    emailCA: true,
+    objCA: true
+  }, {
+    name: 'subjectAltName',
+    altNames: [{
+      type: 6,
+      value: 'http://localhost/'
+    }, {
+      type: 7,
+      ip: '127.0.0.1'
+    }]
+  }, {
+    name: 'subjectKeyIdentifier'
+  }]);
+
+  cert.sign(keys.privateKey);
+
+  var publicPem  = pki.publicKeyToPem(keys.publicKey),
+      certPem    = pki.certificateToPem(cert),
+      privatePem = pki.privateKeyToPem(keys.privateKey),
+      fsCallback = function(err) { if (err) throw err; };
+
+  fs.writeFileSync('server.pem', privatePem, 'utf8', fsCallback);
+  fs.writeFileSync('cert.pem', certPem, 'utf8', fsCallback);
+  fs.writeFileSync('public.pem', publicPem, 'utf8', fsCallback);
+
+  console.log('');
+  console.log('Complete!');
+  console.log('');  
+}
+
 if (notifier.update) {
   notifier.notify();
 }
@@ -112,6 +208,9 @@ if (cmd === 'create') {
 }
 else if (cmd === '-v' || cmd === '--v' || cmd === '-version' || cmd === '--version') {
   console.log(package.version);
+}
+else if (cmd === '-genssl' || cmd === '--genssl') {
+  createSsl();
 }
 else if (cmd) {
   try {
