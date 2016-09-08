@@ -15,7 +15,8 @@
     "update-notifier": "^1.0.2",
     "fs-extra": "^0.30.0",
     "stdio": "^0.2.7",
-    "node-forge": "^0.6.42"
+    "node-forge": "^0.6.42",
+    "prompt": "^1.0.0"
   },
   "devDependencies": {
     "eslint": "^2.11.1"
@@ -59,7 +60,8 @@
     "mvc"
   ],
   "bin": {
-    "mkroosevelt": "mkroosevelt.js"
+    "mkroosevelt": "mkroosevelt.js",
+    "genssl": "lib/genssl.js"
   },
   "preferGlobal": true,
   "_from": "mkroosevelt@*",
