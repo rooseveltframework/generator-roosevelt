@@ -60,8 +60,7 @@
     "mvc"
   ],
   "bin": {
-    "mkroosevelt": "mkroosevelt.js",
-    "genssl": "lib/genssl.js"
+    "mkroosevelt": "mkroosevelt.js"
   },
   "preferGlobal": true,
   "_from": "mkroosevelt@*",
