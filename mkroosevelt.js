@@ -32,58 +32,58 @@ function checkCurrentDirectoryForExistingFiles() {
 
   // Walk the sampleApp files, so that we can match later against the walk of the current directory
   fse.walk(path.normalize(__dirname + '/sampleApp/'))
+  .on('data', function (item) {
+
+    // Split on sampleApp so that we only get the file names and folders in the sampleApp not the absoulte path
+    item = item.path.toString().split('sampleApp');
+    sampleAppFiles.push(item[1])
+  })
+  // On end of the sampleApp's walk we start walking the current directory
+  .on('end', function () {
+
+    // Walk the current directories files, so that we can match against the walk we did of the sampleApp's directory and see if there is a match
+    fse.walk(path.normalize(cmd)) 
     .on('data', function (item) {
 
-      // Split on sampleApp so that we only get the file names and folders in the sampleApp not the absoulte path
-      item = item.path.toString().split('sampleApp');
-      sampleAppFiles.push(item[1])
+      // Split on the current directory so that we only get the file names and folders in the current directory not the absoulte path
+      item = item.path.toString().split(path.normalize(cmd));
+      directoryFiles.push(item[1]);
     })
-    // On end of the sampleApp's walk we start walking the current directory
     .on('end', function () {
 
-      // Walk the current directories files, so that we can match against the walk we did of the sampleApp's directory and see if there is a match
-      fse.walk(path.normalize(cmd)) 
-        .on('data', function (item) {
+      // Delete the first element from each array as it is blank and will give a false positive on a conflict
+      directoryFiles.shift();
+      sampleAppFiles.shift();
 
-          // Split on the current directory so that we only get the file names and folders in the current directory not the absoulte path
-          item = item.path.toString().split(path.normalize(cmd));
-          directoryFiles.push(item[1]);
-        })
-        .on('end', function () {
-
-          // Delete the first element from each array as it is blank and will give a false positive on a conflict
-          directoryFiles.shift();
-          sampleAppFiles.shift();
-
-          // Loop through both the directory files and the sampleApp Files to see if there is a conflict
-          directoryFiles.forEach(function(element) {
-            sampleAppFiles.forEach(function(element1) {
-              if (element === element1) {
-                  conflictedFiles.push(element);
-              }
-            });
-          });
-
-          // If there any conflicting file(s) we log the file, so the user can see the file causing the conflict and ask them if they want to overwrite the file
-          if (conflictedFiles.length > 0) {
-            console.log('This would overwrite the following existing files:')
-            conflictedFiles.forEach(function(file) {
-              console.log(file);
-            })
-            console.log("");
-            stdio.question('Proceed with overwriting the above files? (y/N)', function (err, decision) {
-              if (decision.toString() === 'y') {
-                // If they answer yes we continue on to create the sample app in the current directory
-                createSampleApp();
-              }
-            });
+      // Loop through both the directory files and the sampleApp Files to see if there is a conflict
+      directoryFiles.forEach(function(element) {
+        sampleAppFiles.forEach(function(element1) {
+          if (element === element1) {
+              conflictedFiles.push(element);
           }
-          // Else there are no conflicts and we create the app
-          else {
+        });
+      });
+
+      // If there any conflicting file(s) we log the file, so the user can see the file causing the conflict and ask them if they want to overwrite the file
+      if (conflictedFiles.length > 0) {
+        console.log('This would overwrite the following existing files:')
+        conflictedFiles.forEach(function(file) {
+          console.log(file);
+        })
+        console.log('');
+        stdio.question('Proceed with overwriting the above files? (y/N)', function (err, decision) {
+          if (decision.toString() === 'y') {
+            // If they answer yes we continue on to create the sample app in the current directory
             createSampleApp();
           }
-        })
-    })
+        });
+      }
+      // Else there are no conflicts and we create the app
+      else {
+        createSampleApp();
+      }
+    });
+  });
 }
 
 function createSampleApp() {
