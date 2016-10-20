@@ -2,7 +2,7 @@
   "name": "mkroosevelt",
   "description": "Command line application for creating Roosevelt apps",
   "author": "Eric Newport <kethinov@gmail.com>",
-  "version": "0.1.45",
+  "version": "0.1.46",
   "homepage": "https://github.com/kethinov/mkroosevelt",
   "license": "Creative Commons Attribution 4.0 International License",
   "main": "mkroosevelt.js",
@@ -14,7 +14,7 @@
   "dependencies": {
     "update-notifier": "^0.5.0",
     "fs-extra": "^0.26.4",
-	"stdio": "^0.2.7"
+    "stdio": "^0.2.7"
   },
   "jshintConfig": {
     "camelcase": true,
