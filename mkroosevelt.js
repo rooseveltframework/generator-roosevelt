@@ -25,10 +25,10 @@ function showHelp() {
   console.log('mkroosevelt /path/to/appName');
   console.log('');
   console.log('output current version:');
-  console.log('mkroosevelt -v,-version,--v,--version');
+  console.log('mkroosevelt -v, -version, --v, --version');
   console.log('');
   console.log('generate ssl certificate and key for https server');
-  console.log('mkroosevelt -genssl,--genssl');
+  console.log('mkroosevelt -genssl, --genssl');
   console.log('');
 }
 
