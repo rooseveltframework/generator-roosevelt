@@ -1,0 +1,15 @@
+{
+  "name": "generator-mkroosevelt",
+  "version": "0.1.0",
+  "description": "Generator for mkroosevelt apps. (https://github.com/kethinov/mkroosevelt and https://www.npmjs.com/package/mkroosevelt)",
+  "files": [
+    "generators/app",
+    "generators/router"
+  ],
+  "keywords": [
+    "yeoman-generator"
+  ],
+  "dependencies": {
+    "yeoman-generator": "^0.24.1"
+  }
+}
