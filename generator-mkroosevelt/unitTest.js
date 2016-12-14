@@ -14,7 +14,51 @@ describe('mkroosevelt:mainGenerator', function () {
       });
   });
 
-  describe('Normal Install', function () {
+  it('Template folder should contain all sample app files', function () {
+      assert.file(path.join(__dirname + '/generators/app/templates' + '/.gitignore'))
+      assert.file(path.join(__dirname + '/generators/app/templates' + '/bin/mac.command'))
+      assert.file(path.join(__dirname + '/generators/app/templates' + '/bin/unix.sh'))
+      assert.file(path.join(__dirname + '/generators/app/templates' + '/mvc/controllers/404.js'))
+      assert.file(path.join(__dirname + '/generators/app/templates' + '/mvc/controllers/homepage.js'))
+      assert.file(path.join(__dirname + '/generators/app/templates' + '/mvc/controllers/robots.txt.js'))
+      assert.file(path.join(__dirname + '/generators/app/templates' + '/mvc/models/global.js'))
+      assert.file(path.join(__dirname + '/generators/app/templates' + '/mvc/views/layouts/main.html'))
+      assert.file(path.join(__dirname + '/generators/app/templates' + '/mvc/views/404.html'))
+      assert.file(path.join(__dirname + '/generators/app/templates' + '/mvc/views/homepage.html'))
+      assert.file(path.join(__dirname + '/generators/app/templates' + '/mvc/views/robots.txt'))
+      assert.file(path.join(__dirname + '/generators/app/templates' + '/statics/css/more.less'))
+      assert.file(path.join(__dirname + '/generators/app/templates' + '/statics/css/styles.less'))
+      assert.file(path.join(__dirname + '/generators/app/templates' + '/statics/images/teddy.jpg'))
+      assert.file(path.join(__dirname + '/generators/app/templates' + '/statics/images/favicon.ico'))
+      assert.file(path.join(__dirname + '/generators/app/templates' + '/statics/js/main.js'))
+      assert.file(path.join(__dirname + '/generators/app/templates' + '/package.json'))
+  });
+
+  it('Should copy all files on the install', function () {
+    return helpers.run(path.join(__dirname + '/generators/app'))
+      .withPrompts({ standardInstall: true })
+      .then(function (dir) {
+        assert.file(path.join(dir + '/.gitignore'))
+        assert.file(path.join(dir + '/bin/mac.command'))
+        assert.file(path.join(dir + '/bin/unix.sh'))
+        assert.file(path.join(dir + '/mvc/controllers/404.js'))
+        assert.file(path.join(dir + '/mvc/controllers/homepage.js'))
+        assert.file(path.join(dir + '/mvc/controllers/robots.txt.js'))
+        assert.file(path.join(dir + '/mvc/models/global.js'))
+        assert.file(path.join(dir + '/mvc/views/layouts/main.html'))
+        assert.file(path.join(dir + '/mvc/views/404.html'))
+        assert.file(path.join(dir + '/mvc/views/homepage.html'))
+        assert.file(path.join(dir + '/mvc/views/robots.txt'))
+        assert.file(path.join(dir + '/statics/css/more.less'))
+        assert.file(path.join(dir + '/statics/css/styles.less'))
+        assert.file(path.join(dir + '/statics/images/teddy.jpg'))
+        assert.file(path.join(dir + '/statics/images/favicon.ico'))
+        assert.file(path.join(dir + '/statics/js/main.js'))
+        assert.file(path.join(dir + '/package.json'))
+      });
+  });
+
+  describe('Normal Install package.json Configuring', function () {
     it('Should configure package.json with default values', function () {
       return helpers.run(path.join(__dirname + '/generators/app'))
         .withPrompts({ standardInstall: true }) // Mock the prompt answers
@@ -66,7 +110,7 @@ describe('mkroosevelt:mainGenerator', function () {
     });
   });
 
-  describe('Advanced Install', function () {
+  describe('Advanced Install package.json Configuring', function () {
     // App behavior parameters
     describe('App behavior parameters', function () {
       it('configures the port by prompt', function () {
