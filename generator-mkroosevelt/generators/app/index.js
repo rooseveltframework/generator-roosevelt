@@ -618,10 +618,10 @@ module.exports = generators.Base.extend({
       this.destinationPath('mvc/controllers/homepage.js')
     );
 
-    // this.fs.copy(
-    //   this.templatePath('mvc/controllers/robots.txt'),
-    //   this.destinationPath('mvc/controllers/robots.txt')
-    // );
+    this.fs.copy(
+      this.templatePath('mvc/controllers/robots.txt.js'),
+      this.destinationPath('mvc/controllers/robots.txt.js')
+    );
 
     this.fs.copy(
       this.templatePath('mvc/models/global.js'),
