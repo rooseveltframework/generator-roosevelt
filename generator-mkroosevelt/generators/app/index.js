@@ -52,7 +52,7 @@ module.exports = generators.Base.extend({
     var thing = this;
     return this.prompt([{
       type    : 'input',
-      name    : 'name',
+      name    : 'appName',
       message : 'Your project name',
       default : this.appname // Default to current folder name
     }, {
@@ -502,6 +502,7 @@ module.exports = generators.Base.extend({
           this.ca = 'null';
         }
       }
+      this.appName = answers.appName;
       this.requestCert = answers.requestCert ?  answers.requestCert :  this.options.requestCert || 'false';
       this.rejectUnauthorized = answers.rejectUnauthorized ? answers.rejectUnauthorized :  this.options.rejectUnauthorized || 'false';
       this.bodyParserOptions = answers.bodyParserOptions ? answers.bodyParserOptions :  this.options.bodyParserOptions || '{"extended": true}';
@@ -543,6 +544,7 @@ module.exports = generators.Base.extend({
       this.templatePath('package.json'),
       this.destinationPath('package.json'),
       {
+        appName: this.appName,
         port: this.port,
         localhostOnly: this.localhostOnly,
         disableLogger: this.disableLogger,

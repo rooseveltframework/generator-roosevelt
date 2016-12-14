@@ -5,6 +5,15 @@ var assert = require('yeoman-assert'),
 
 describe('mkroosevelt:mainGenerator', function () {
 
+  it('Should name the project from the prompt', function () {
+    return helpers.run(path.join(__dirname + '/generators/app'))
+      .withPrompts({ appName: 'New Project',
+        standardInstall: true })
+      .then(function (dir) {
+        assert.jsonFileContent(path.join(dir + '/package.json'), {name: 'New Project'} )
+      });
+  });
+
   describe('Normal Install', function () {
     it('Should configure package.json with default values', function () {
       return helpers.run(path.join(__dirname + '/generators/app'))
@@ -54,8 +63,8 @@ describe('mkroosevelt:mainGenerator', function () {
           assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { libPath: "lib"} });
           assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { libPathNodeModulesSymlink: "lib"} });
         });
-    })
-  })
+    });
+  });
 
   describe('Advanced Install', function () {
     // App behavior parameters
