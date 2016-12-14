@@ -4,16 +4,52 @@ module.exports = generators.Base.extend({
   constructor: function () {
     generators.Base.apply(this, arguments);
 
-    // This makes `appname` a required argument.
-    this.argument('appname', { type: String, required: true });
-  },
-
-  initializing: function() {
-    console.log("Setting up that app for you")
-    console.log(this.appname)
+    this.option('port')
+    this.option('localhostOnly')
+    this.option('disableLogger')
+    this.option('noMinify')
+    this.option('multipart')
+    this.option('shutdownTimeout')
+    this.option('https')
+    this.option('httpsOnly')
+    this.option('httpsPort')
+    this.option('pfx')
+    this.option('keyPath')
+    this.option('passphrase')
+    this.option('ca')
+    this.option('requestCert')
+    this.option('rejectUnauthorized')
+    this.option('bodyParserOptions')
+    this.option('bodyParserJsonOptions')
+    this.option('modelsPath')
+    this.option('modelsNodeModulesSymlink')
+    this.option('viewsPath')
+    this.option('viewEngine')
+    this.option('controllersPath')
+    this.option('libPath')
+    this.option('libPathNodeModulesSymlink')
+    this.option('error404')
+    this.option('error5xx')
+    this.option('error503')
+    this.option('staticsRoot')
+    this.option('cssPath')
+    this.option('cssCompiler')
+    this.option('cssCompilerWhitelist')
+    this.option('cssCompiledOutput')
+    this.option('jsPath')
+    this.option('jsCompiler')
+    this.option('jsCompilerWhitelist')
+    this.option('jsCompiledOutput')
+    this.option('publicFolder')
+    this.option('favicon')
+    this.option('symlinksToStatics')
+    this.option('versionedStatics')
+    this.option('versionedCssFile')
+    this.option('alwaysHostPublic')
   },
 
   prompting: function () {
+    var thing = this;
     return this.prompt([{
       type    : 'input',
       name    : 'name',
@@ -35,7 +71,8 @@ module.exports = generators.Base.extend({
     },
     { // App behvaior parameters
       when: function (response) {
-        return response.standardInstall === false && response.sectionsToInstall.indexOf('App behavior parameters') > -1; // Run since they wanted the advanced install in this area
+
+        return !thing.options.port && response.standardInstall === false && response.sectionsToInstall.indexOf('App behavior parameters') > -1; // Run since they wanted the advanced install in this area
       },
       type    : 'input',
       name    : 'port',
@@ -44,7 +81,7 @@ module.exports = generators.Base.extend({
     },
     {
       when: function (response) {
-        return response.standardInstall === false && response.sectionsToInstall.indexOf('App behavior parameters') > -1; // Run since they wanted the advanced install in this area
+        return !thing.options.localhostOnly && response.standardInstall === false && response.sectionsToInstall.indexOf('App behavior parameters') > -1; // Run since they wanted the advanced install in this area
       },
       type    : 'input',
       name    : 'localhostOnly',
@@ -53,7 +90,7 @@ module.exports = generators.Base.extend({
     },
     {
       when: function (response) {
-        return response.standardInstall === false && response.sectionsToInstall.indexOf('App behavior parameters') > -1; // Run since they wanted the advanced install in this area
+        return !thing.options.disableLogger && response.standardInstall === false && response.sectionsToInstall.indexOf('App behavior parameters') > -1; // Run since they wanted the advanced install in this area
       },
       type    : 'input',
       name    : 'disableLogger',
@@ -62,7 +99,7 @@ module.exports = generators.Base.extend({
     },
     {
       when: function (response) {
-        return response.standardInstall === false && response.sectionsToInstall.indexOf('App behavior parameters') > -1; // Run since they wanted the advanced install in this area
+        return !thing.options.noMinify && response.standardInstall === false && response.sectionsToInstall.indexOf('App behavior parameters') > -1; // Run since they wanted the advanced install in this area
       },
       type    : 'input',
       name    : 'noMinify',
@@ -71,7 +108,7 @@ module.exports = generators.Base.extend({
     },
     {
       when: function (response) {
-        return response.standardInstall === false && response.sectionsToInstall.indexOf('App behavior parameters') > -1; // Run since they wanted the advanced install in this area
+        return !thing.options.multipart && response.standardInstall === false && response.sectionsToInstall.indexOf('App behavior parameters') > -1; // Run since they wanted the advanced install in this area
       },
       type    : 'input',
       name    : 'multipart',
@@ -80,7 +117,7 @@ module.exports = generators.Base.extend({
     },
     {
       when: function (response) {
-        return response.standardInstall === false && response.sectionsToInstall.indexOf('App behavior parameters') > -1; // Run since they wanted the advanced install in this area
+        return !thing.options.shutdownTimeout && response.standardInstall === false && response.sectionsToInstall.indexOf('App behavior parameters') > -1; // Run since they wanted the advanced install in this area
       },
       type    : 'input',
       name    : 'shutdownTimeout',
@@ -89,7 +126,7 @@ module.exports = generators.Base.extend({
     },
     { // HTTPS
       when: function (response) {
-        return response.standardInstall === false && response.sectionsToInstall.indexOf('HTTPS parameters') > -1; // Run since they wanted the advanced install in this area
+        return !thing.options.https && response.standardInstall === false && response.sectionsToInstall.indexOf('HTTPS parameters') > -1; // Run since they wanted the advanced install in this area
       },
       type    : 'input',
       name    : 'https',
@@ -98,7 +135,7 @@ module.exports = generators.Base.extend({
     },
     {
       when: function (response) {
-        return response.standardInstall === false && response.sectionsToInstall.indexOf('HTTPS parameters') > -1; // Run since they wanted the advanced install in this area
+        return !thing.options.httpsOnly && response.standardInstall === false && response.sectionsToInstall.indexOf('HTTPS parameters') > -1; // Run since they wanted the advanced install in this area
       },
       type    : 'input',
       name    : 'httpsOnly',
@@ -107,7 +144,7 @@ module.exports = generators.Base.extend({
     },
     {
       when: function (response) {
-        return response.standardInstall === false && response.sectionsToInstall.indexOf('HTTPS parameters') > -1; // Run since they wanted the advanced install in this area
+        return !thing.options.httpsPort && response.standardInstall === false && response.sectionsToInstall.indexOf('HTTPS parameters') > -1; // Run since they wanted the advanced install in this area
       },
       type    : 'input',
       name    : 'httpsPort',
@@ -116,7 +153,7 @@ module.exports = generators.Base.extend({
     },
     {
       when: function (response) {
-        return response.standardInstall === false && response.sectionsToInstall.indexOf('HTTPS parameters') > -1; // Run since they wanted the advanced install in this area
+        return !thing.options.pfx && response.standardInstall === false && response.sectionsToInstall.indexOf('HTTPS parameters') > -1; // Run since they wanted the advanced install in this area
       },
       type    : 'input',
       name    : 'pfx',
@@ -125,7 +162,7 @@ module.exports = generators.Base.extend({
     },
     {
       when: function (response) {
-        return response.standardInstall === false && response.sectionsToInstall.indexOf('HTTPS parameters') > -1; // Run since they wanted the advanced install in this area
+        return !thing.options.keyPath && response.standardInstall === false && response.sectionsToInstall.indexOf('HTTPS parameters') > -1; // Run since they wanted the advanced install in this area
       },
       type    : 'input',
       name    : 'keyPath',
@@ -134,7 +171,7 @@ module.exports = generators.Base.extend({
     },
     {
       when: function (response) {
-        return response.standardInstall === false && response.sectionsToInstall.indexOf('HTTPS parameters') > -1; // Run since they wanted the advanced install in this area
+        return !thing.options.passphrase && response.standardInstall === false && response.sectionsToInstall.indexOf('HTTPS parameters') > -1; // Run since they wanted the advanced install in this area
       },
       type    : 'input',
       name    : 'passphrase',
@@ -143,7 +180,7 @@ module.exports = generators.Base.extend({
     },
     {
       when: function (response) {
-        return response.standardInstall === false && response.sectionsToInstall.indexOf('HTTPS parameters') > -1; // Run since they wanted the advanced install in this area
+        return !thing.options.ca && response.standardInstall === false && response.sectionsToInstall.indexOf('HTTPS parameters') > -1; // Run since they wanted the advanced install in this area
       },
       type    : 'input',
       name    : 'ca',
@@ -152,7 +189,7 @@ module.exports = generators.Base.extend({
     },
     {
       when: function (response) {
-        return response.standardInstall === false && response.sectionsToInstall.indexOf('HTTPS parameters') > -1; // Run since they wanted the advanced install in this area
+        return !thing.options.requestCert && response.standardInstall === false && response.sectionsToInstall.indexOf('HTTPS parameters') > -1; // Run since they wanted the advanced install in this area
       },
       type    : 'input',
       name    : 'requestCert',
@@ -161,7 +198,7 @@ module.exports = generators.Base.extend({
     },
     {
       when: function (response) {
-        return response.standardInstall === false && response.sectionsToInstall.indexOf('HTTPS parameters') > -1; // Run since they wanted the advanced install in this area
+        return !thing.options.rejectUnauthorized && response.standardInstall === false && response.sectionsToInstall.indexOf('HTTPS parameters') > -1; // Run since they wanted the advanced install in this area
       },
       type    : 'input',
       name    : 'rejectUnauthorized',
@@ -170,7 +207,7 @@ module.exports = generators.Base.extend({
     },
     {
       when: function (response) {
-        return response.standardInstall === false && response.sectionsToInstall.indexOf('HTTPS parameters') > -1; // Run since they wanted the advanced install in this area
+        return !thing.options.bodyParserOptions && response.standardInstall === false && response.sectionsToInstall.indexOf('HTTPS parameters') > -1; // Run since they wanted the advanced install in this area
       },
       type    : 'input',
       name    : 'bodyParserOptions',
@@ -179,7 +216,7 @@ module.exports = generators.Base.extend({
     },
     {
       when: function (response) {
-        return response.standardInstall === false && response.sectionsToInstall.indexOf('HTTPS parameters') > -1; // Run since they wanted the advanced install in this area
+        return !thing.options.bodyParserJsonOptions && response.standardInstall === false && response.sectionsToInstall.indexOf('HTTPS parameters') > -1; // Run since they wanted the advanced install in this area
       },
       type    : 'input',
       name    : 'bodyParserJsonOptions',
@@ -188,7 +225,7 @@ module.exports = generators.Base.extend({
     },
     {
       when: function (response) { // MVC Parameters
-        return response.standardInstall === false && response.sectionsToInstall.indexOf('MVC parameters') > -1; // Run since they wanted the advanced install in this area
+        return !thing.options.modelsPath && response.standardInstall === false && response.sectionsToInstall.indexOf('MVC parameters') > -1; // Run since they wanted the advanced install in this area
       },
       type    : 'input',
       name    : 'modelsPath',
@@ -197,7 +234,7 @@ module.exports = generators.Base.extend({
     },
     {
       when: function (response) {
-        return response.standardInstall === false && response.sectionsToInstall.indexOf('MVC parameters') > -1; // Run since they wanted the advanced install in this area
+        return !thing.options.modelsNodeModulesSymlink && response.standardInstall === false && response.sectionsToInstall.indexOf('MVC parameters') > -1; // Run since they wanted the advanced install in this area
       },
       type    : 'input',
       name    : 'modelsNodeModulesSymlink',
@@ -206,7 +243,7 @@ module.exports = generators.Base.extend({
     },
     {
       when: function (response) {
-        return response.standardInstall === false && response.sectionsToInstall.indexOf('MVC parameters') > -1; // Run since they wanted the advanced install in this area
+        return !thing.options.viewsPath && response.standardInstall === false && response.sectionsToInstall.indexOf('MVC parameters') > -1; // Run since they wanted the advanced install in this area
       },
       type    : 'input',
       name    : 'viewsPath',
@@ -215,7 +252,7 @@ module.exports = generators.Base.extend({
     },
     {
       when: function (response) {
-        return response.standardInstall === false && response.sectionsToInstall.indexOf('MVC parameters') > -1; // Run since they wanted the advanced install in this area
+        return !thing.options.viewEngine && response.standardInstall === false && response.sectionsToInstall.indexOf('MVC parameters') > -1; // Run since they wanted the advanced install in this area
       },
       type    : 'input',
       name    : 'viewEngine',
@@ -224,7 +261,7 @@ module.exports = generators.Base.extend({
     },
     {
       when: function (response) {
-        return response.standardInstall === false && response.sectionsToInstall.indexOf('MVC parameters') > -1; // Run since they wanted the advanced install in this area
+        return !thing.options.controllersPath && response.standardInstall === false && response.sectionsToInstall.indexOf('MVC parameters') > -1; // Run since they wanted the advanced install in this area
       },
       type    : 'input',
       name    : 'controllersPath',
@@ -233,7 +270,7 @@ module.exports = generators.Base.extend({
     },
     {
       when: function (response) {
-        return response.standardInstall === false && response.sectionsToInstall.indexOf('MVC parameters') > -1; // Run since they wanted the advanced install in this area
+        return !thing.options.bodyParserJsonOptions && response.standardInstall === false && response.sectionsToInstall.indexOf('MVC parameters') > -1; // Run since they wanted the advanced install in this area
       },
       type    : 'input',
       name    : 'bodyParserJsonOptions',
@@ -242,7 +279,7 @@ module.exports = generators.Base.extend({
     },
     {
       when: function (response) { // Utility Library Parameters
-        return response.standardInstall === false && response.sectionsToInstall.indexOf('Utility library parameters') > -1; // Run since they wanted the advanced install in this area
+        return !thing.options.libPath && response.standardInstall === false && response.sectionsToInstall.indexOf('Utility library parameters') > -1; // Run since they wanted the advanced install in this area
       },
       type    : 'input',
       name    : 'libPath',
@@ -251,7 +288,7 @@ module.exports = generators.Base.extend({
     },
     {
       when: function (response) {
-        return response.standardInstall === false && response.sectionsToInstall.indexOf('Utility library parameters') > -1; // Run since they wanted the advanced install in this area
+        return !thing.options.libPathNodeModulesSymlink && response.standardInstall === false && response.sectionsToInstall.indexOf('Utility library parameters') > -1; // Run since they wanted the advanced install in this area
       },
       type    : 'input',
       name    : 'libPathNodeModulesSymlink',
@@ -260,7 +297,7 @@ module.exports = generators.Base.extend({
     },
     {
       when: function (response) { // Error Page Parameters
-        return response.standardInstall === false && response.sectionsToInstall.indexOf('Error page parameters') > -1; // Run since they wanted the advanced install in this area
+        return !thing.options.error404 && response.standardInstall === false && response.sectionsToInstall.indexOf('Error page parameters') > -1; // Run since they wanted the advanced install in this area
       },
       type    : 'input',
       name    : 'error404',
@@ -269,7 +306,7 @@ module.exports = generators.Base.extend({
     },
     {
       when: function (response) {
-        return response.standardInstall === false && response.sectionsToInstall.indexOf('Error page parameters') > -1; // Run since they wanted the advanced install in this area
+        return !thing.options.error5xx && response.standardInstall === false && response.sectionsToInstall.indexOf('Error page parameters') > -1; // Run since they wanted the advanced install in this area
       },
       type    : 'input',
       name    : 'error5xx',
@@ -278,7 +315,7 @@ module.exports = generators.Base.extend({
     },
     {
       when: function (response) {
-        return response.standardInstall === false && response.sectionsToInstall.indexOf('Error page parameters') > -1; // Run since they wanted the advanced install in this area
+        return !thing.options.error503 && response.standardInstall === false && response.sectionsToInstall.indexOf('Error page parameters') > -1; // Run since they wanted the advanced install in this area
       },
       type    : 'input',
       name    : 'error503',
@@ -287,7 +324,7 @@ module.exports = generators.Base.extend({
     },
     {
       when: function (response) { // Statics
-        return response.standardInstall === false && response.sectionsToInstall.indexOf('Statics parameters') > -1; // Run since they wanted the advanced install in this area
+        return !thing.options.staticsRoot && response.standardInstall === false && response.sectionsToInstall.indexOf('Statics parameters') > -1; // Run since they wanted the advanced install in this area
       },
       type    : 'input',
       name    : 'staticsRoot',
@@ -296,7 +333,7 @@ module.exports = generators.Base.extend({
     },
     {
       when: function (response) {
-        return response.standardInstall === false && response.sectionsToInstall.indexOf('Statics parameters') > -1; // Run since they wanted the advanced install in this area
+        return !thing.options.cssPath && response.standardInstall === false && response.sectionsToInstall.indexOf('Statics parameters') > -1; // Run since they wanted the advanced install in this area
       },
       type    : 'input',
       name    : 'cssPath',
@@ -305,7 +342,7 @@ module.exports = generators.Base.extend({
     },
     {
       when: function (response) {
-        return response.standardInstall === false && response.sectionsToInstall.indexOf('Statics parameters') > -1; // Run since they wanted the advanced install in this area
+        return !thing.options.cssCompiler && response.standardInstall === false && response.sectionsToInstall.indexOf('Statics parameters') > -1; // Run since they wanted the advanced install in this area
       },
       type    : 'input',
       name    : 'cssCompiler',
@@ -314,7 +351,7 @@ module.exports = generators.Base.extend({
     },
     {
       when: function (response) {
-        return response.standardInstall === false && response.sectionsToInstall.indexOf('Statics parameters') > -1; // Run since they wanted the advanced install in this area
+        return !thing.options.cssCompilerWhitelist && response.standardInstall === false && response.sectionsToInstall.indexOf('Statics parameters') > -1; // Run since they wanted the advanced install in this area
       },
       type    : 'input',
       name    : 'cssCompilerWhitelist',
@@ -323,7 +360,7 @@ module.exports = generators.Base.extend({
     },
     {
       when: function (response) {
-        return response.standardInstall === false && response.sectionsToInstall.indexOf('Statics parameters') > -1; // Run since they wanted the advanced install in this area
+        return !thing.options.cssCompiledOutput && response.standardInstall === false && response.sectionsToInstall.indexOf('Statics parameters') > -1; // Run since they wanted the advanced install in this area
       },
       type    : 'input',
       name    : 'cssCompiledOutput',
@@ -332,7 +369,7 @@ module.exports = generators.Base.extend({
     },
     {
       when: function (response) {
-        return response.standardInstall === false && response.sectionsToInstall.indexOf('Statics parameters') > -1; // Run since they wanted the advanced install in this area
+        return !thing.options.jsPath && response.standardInstall === false && response.sectionsToInstall.indexOf('Statics parameters') > -1; // Run since they wanted the advanced install in this area
       },
       type    : 'input',
       name    : 'jsPath',
@@ -341,7 +378,7 @@ module.exports = generators.Base.extend({
     },
     {
       when: function (response) {
-        return response.standardInstall === false && response.sectionsToInstall.indexOf('Statics parameters') > -1; // Run since they wanted the advanced install in this area
+        return !thing.options.jsCompiler && response.standardInstall === false && response.sectionsToInstall.indexOf('Statics parameters') > -1; // Run since they wanted the advanced install in this area
       },
       type    : 'input',
       name    : 'jsCompiler',
@@ -350,7 +387,7 @@ module.exports = generators.Base.extend({
     },
     {
       when: function (response) {
-        return response.standardInstall === false && response.sectionsToInstall.indexOf('Statics parameters') > -1; // Run since they wanted the advanced install in this area
+        return !thing.options.jsCompilerWhitelist && response.standardInstall === false && response.sectionsToInstall.indexOf('Statics parameters') > -1; // Run since they wanted the advanced install in this area
       },
       type    : 'input',
       name    : 'jsCompilerWhitelist',
@@ -359,7 +396,7 @@ module.exports = generators.Base.extend({
     },
     {
       when: function (response) {
-        return response.standardInstall === false && response.sectionsToInstall.indexOf('Statics parameters') > -1; // Run since they wanted the advanced install in this area
+        return !thing.options.jsCompiledOutput && response.standardInstall === false && response.sectionsToInstall.indexOf('Statics parameters') > -1; // Run since they wanted the advanced install in this area
       },
       type    : 'input',
       name    : 'jsCompiledOutput',
@@ -368,7 +405,7 @@ module.exports = generators.Base.extend({
     },
     {
       when: function (response) { // Public Folder
-        return response.standardInstall === false && response.sectionsToInstall.indexOf('Public folder parameters') > -1; // Run since they wanted the advanced install in this area
+        return !thing.options.publicFolder && response.standardInstall === false && response.sectionsToInstall.indexOf('Public folder parameters') > -1; // Run since they wanted the advanced install in this area
       },
       type    : 'input',
       name    : 'publicFolder',
@@ -377,7 +414,7 @@ module.exports = generators.Base.extend({
     },
     {
       when: function (response) {
-        return response.standardInstall === false && response.sectionsToInstall.indexOf('Public folder parameters') > -1; // Run since they wanted the advanced install in this area
+        return !thing.options.favicon && response.standardInstall === false && response.sectionsToInstall.indexOf('Public folder parameters') > -1; // Run since they wanted the advanced install in this area
       },
       type    : 'input',
       name    : 'favicon',
@@ -386,7 +423,7 @@ module.exports = generators.Base.extend({
     },
     {
       when: function (response) {
-        return response.standardInstall === false && response.sectionsToInstall.indexOf('Public folder parameters') > -1; // Run since they wanted the advanced install in this area
+        return !thing.options.symlinksToStatics && response.standardInstall === false && response.sectionsToInstall.indexOf('Public folder parameters') > -1; // Run since they wanted the advanced install in this area
       },
       type    : 'input',
       name    : 'symlinksToStatics',
@@ -395,7 +432,7 @@ module.exports = generators.Base.extend({
     },
     {
       when: function (response) {
-        return response.standardInstall === false && response.sectionsToInstall.indexOf('Public folder parameters') > -1; // Run since they wanted the advanced install in this area
+        return !thing.options.versionedStatics && response.standardInstall === false && response.sectionsToInstall.indexOf('Public folder parameters') > -1; // Run since they wanted the advanced install in this area
       },
       type    : 'input',
       name    : 'versionedStatics',
@@ -404,7 +441,7 @@ module.exports = generators.Base.extend({
     },
     {
       when: function (response) {
-        return response.standardInstall === false && response.sectionsToInstall.indexOf('Public folder parameters') > -1; // Run since they wanted the advanced install in this area
+        return !thing.options.versionedCssFile && response.standardInstall === false && response.sectionsToInstall.indexOf('Public folder parameters') > -1; // Run since they wanted the advanced install in this area
       },
       type    : 'input',
       name    : 'versionedCssFile',
@@ -413,55 +450,55 @@ module.exports = generators.Base.extend({
     },
     {
       when: function (response) {
-        return response.standardInstall === false && response.sectionsToInstall.indexOf('Public folder parameters') > -1; // Run since they wanted the advanced install in this area
+        return !thing.options.alwaysHostPublic && response.standardInstall === false && response.sectionsToInstall.indexOf('Public folder parameters') > -1; // Run since they wanted the advanced install in this area
       },
       type    : 'input',
       name    : 'alwaysHostPublic',
       message : 'Always Host Public: By default in production mode Roosevelt will not expose the public folder. It\'s recommended instead that you host the public folder yourself directly through another web server, such as Apache or nginx. However, if you wish to override this behavior and have Roosevelt host your public folder even in production mode, then set this setting to true.',
       default : 'false'
     }]).then(function (answers) {
-      this.port = answers.port ? answers.port : '43711';
-      this.localhostOnly = answers.localhostOnly ? answers.localhostOnly : 'true';
-      this.disableLogger = answers.disableLogger ? answers.disableLogger : 'false';
-      this.noMinify = answers.noMinify ? answers.noMinify : 'false';
-      this.multipart = answers.multipart ? answers.multipart : '{"multiples": true}';
-      this.shutdownTimeout = answers.shutdownTimeout ? answers.shutdownTimeout : '30000';
-      this.https = answers.https ? answers.https : 'false';
-      this.httpsOnly = answers.httpsOnly ? answers.httpsOnly : 'false';
-      this.httpsPort = answers.httpsPort ? answers.httpsPort : '43733';
-      this.pfx = answers.pfx ? answers.pfx : 'false';
-      this.keyPath = answers.keyPath ? '"' + answers.keyPath + '"' : 'null';
-      this.passphrase = answers.passphrase ? '"' + answers.passphrase + '"' : 'null';
-      this.ca = answers.ca ? answers.ca : 'null';
-      this.requestCert = answers.requestCert ?  answers.requestCert : 'false';
-      this.rejectUnauthorized = answers.rejectUnauthorized ? answers.rejectUnauthorized : 'false';
-      this.bodyParserOptions = answers.bodyParserOptions ? answers.bodyParserOptions : '{extended: true}';
-      this.bodyParserJsonOptions = answers.bodyParserJsonOptions ? answers.bodyParserJsonOptions : '{}';
-      this.modelsPath = answers.modelsPath ? answers.modelsPath : 'mvc/models';
-      this.modelsNodeModulesSymlink = answers.modelsNodeModulesSymlink ? answers.modelsNodeModulesSymlink : 'models';
-      this.viewsPath = answers.viewsPath ? answers.viewsPath : 'mvc/views';
-      this.viewEngine = answers.viewEngine ? answers.viewEngine : 'html: teddy';
-      this.controllersPath = answers.controllersPath ? answers.controllersPath : 'mvc/controllers';
-      this.libPath = answers.libPath ? answers.libPath : 'lib';
-      this.libPathNodeModulesSymlink = answers.libPathNodeModulesSymlink ? answers.libPathNodeModulesSymlink : 'lib';
-      this.error404 = answers.error404 ? answers.error404 : '404.js';
-      this.error5xx = answers.error5xx ? answers.error5xx : '5xx.js';
-      this.error503 = answers.error503 ? answers.error503 : '503.js';
-      this.staticsRoot = answers.staticsRoot ? answers.staticsRoot : 'statics';
-      this.cssPath = answers.cssPath ? answers.cssPath : 'css';
-      this.cssCompiler = answers.cssCompiler ? answers.cssCompiler : '{"nodeModule": "roosevelt-less", "params": {"compress": true}}';
-      this.cssCompilerWhitelist = answers.cssCompilerWhitelist ? answers.cssCompilerWhitelist : "null";
-      this.cssCompiledOutput = answers.cssCompiledOutput ? answers.cssCompiledOutput : '.build/css';
-      this.jsPath = answers.jsPath ? answers.jsPath : 'js';
-      this.jsCompiler = answers.jsCompiler ? answers.jsCompiler : '{"nodeModule": "roosevelt-closure", "params": {"compilation_level": "ADVANCED_OPTIMIZATIONS"}}';
-      this.jsCompilerWhitelist = answers.jsCompilerWhitelist ? answers.jsCompilerWhitelist : "null";
-      this.jsCompiledOutput = answers.jsCompiledOutput ? answers.jsCompiledOutput : '.build/js';
-      this.publicFolder = answers.publicFolder ? answers.publicFolder : 'public';
-      this.favicon = answers.favicon ? answers.favicon : 'images/favicon.ico';
-      this.symlinksToStatics = answers.symlinksToStatics ? answers.symlinksToStatics : '["css: .build/css", "images", "js: .build/js"]';
-      this.versionedStatics = answers.versionedStatics ? answers.versionedStatics : 'false';
-      this.versionedCssFile = answers.versionedCssFile ? answers.versionedCssFile : "null";
-      this.alwaysHostPublic = answers.alwaysHostPublic ? answers.alwaysHostPublic : 'false';
+      this.port = answers.port ? answers.port : this.options.port || '43711';
+      this.localhostOnly = answers.localhostOnly ? answers.localhostOnly :  this.options.localhostOnly || 'true';
+      this.disableLogger = answers.disableLogger ? answers.disableLogger :  this.options.disableLogger || 'false';
+      this.noMinify = answers.noMinify ? answers.noMinify :  this.options.noMinify || 'false';
+      this.multipart = answers.multipart ? answers.multipart :  this.options.multipart || '{"multiples": true}';
+      this.shutdownTimeout = answers.shutdownTimeout ? answers.shutdownTimeout :  this.options.shutdownTimeout || '30000';
+      this.https = answers.https ? answers.https :  this.options.https || 'false';
+      this.httpsOnly = answers.httpsOnly ? answers.httpsOnly :  this.options.httpsOnly || 'false';
+      this.httpsPort = answers.httpsPort ? answers.httpsPort :  this.options.httpsPort || '43733';
+      this.pfx = answers.pfx ? answers.pfx :  this.options.pfx || 'false';
+      this.keyPath = answers.keyPath ? '"' + answers.keyPath + '"' :  this.options.keyPath || 'null';
+      this.passphrase = answers.passphrase ? '"' + answers.passphrase + '"' :  this.options.passphrase || 'null';
+      this.ca = answers.ca ? answers.ca :  this.options.ca || 'null';
+      this.requestCert = answers.requestCert ?  answers.requestCert :  this.options.requestCert || 'false';
+      this.rejectUnauthorized = answers.rejectUnauthorized ? answers.rejectUnauthorized :  this.options.rejectUnauthorized || 'false';
+      this.bodyParserOptions = answers.bodyParserOptions ? answers.bodyParserOptions :  this.options.bodyParserOptions || '{extended: true}';
+      this.bodyParserJsonOptions = answers.bodyParserJsonOptions ? answers.bodyParserJsonOptions :  this.options.bodyParserJsonOptions || '{}';
+      this.modelsPath = answers.modelsPath ? answers.modelsPath :  this.options.modelsPathport || 'mvc/models';
+      this.modelsNodeModulesSymlink = answers.modelsNodeModulesSymlink ? answers.modelsNodeModulesSymlink :  this.options.modelsNodeModulesSymlink || 'models';
+      this.viewsPath = answers.viewsPath ? answers.viewsPath :  this.options.viewsPath || 'mvc/views';
+      this.viewEngine = answers.viewEngine ? answers.viewEngine :  this.options.viewEngine || 'html: teddy';
+      this.controllersPath = answers.controllersPath ? answers.controllersPath :  this.options.controllersPath || 'mvc/controllers';
+      this.libPath = answers.libPath ? answers.libPath :  this.options.libPath || 'lib';
+      this.libPathNodeModulesSymlink = answers.libPathNodeModulesSymlink ? answers.libPathNodeModulesSymlink :  this.options.libPathNodeModulesSymlink || 'lib';
+      this.error404 = answers.error404 ? answers.error404 :  this.options.error404 || '404.js';
+      this.error5xx = answers.error5xx ? answers.error5xx :  this.options.error5xx || '5xx.js';
+      this.error503 = answers.error503 ? answers.error503 :  this.options.error503 || '503.js';
+      this.staticsRoot = answers.staticsRoot ? answers.staticsRoot :  this.options.staticsRoot || 'statics';
+      this.cssPath = answers.cssPath ? answers.cssPath :  this.options.cssPath || 'css';
+      this.cssCompiler = answers.cssCompiler ? answers.cssCompiler :  this.options.cssCompiler || '{"nodeModule": "roosevelt-less", "params": {"compress": true}}';
+      this.cssCompilerWhitelist = answers.cssCompilerWhitelist ? answers.cssCompilerWhitelist :  this.options.cssCompilerWhitelist || "null";
+      this.cssCompiledOutput = answers.cssCompiledOutput ? answers.cssCompiledOutput :  this.options.cssCompiledOutput || '.build/css';
+      this.jsPath = answers.jsPath ? answers.jsPath :  this.options.jsPath || 'js';
+      this.jsCompiler = answers.jsCompiler ? answers.jsCompiler :  this.options.jsCompiler || '{"nodeModule": "roosevelt-closure", "params": {"compilation_level": "ADVANCED_OPTIMIZATIONS"}}';
+      this.jsCompilerWhitelist = answers.jsCompilerWhitelist ? answers.jsCompilerWhitelist :  this.options.jsCompilerWhitelist || "null";
+      this.jsCompiledOutput = answers.jsCompiledOutput ? answers.jsCompiledOutput :  this.options.jsCompiledOutput || '.build/js';
+      this.publicFolder = answers.publicFolder ? answers.publicFolder :  this.options.publicFolder || 'public';
+      this.favicon = answers.favicon ? answers.favicon :  this.options.favicon || 'images/favicon.ico';
+      this.symlinksToStatics = answers.symlinksToStatics ? answers.symlinksToStatics :  this.options.symlinksToStatics || '["css: .build/css", "images", "js: .build/js"]';
+      this.versionedStatics = answers.versionedStatics ? answers.versionedStatics :  this.options.versionedStatics || 'false';
+      this.versionedCssFile = answers.versionedCssFile ? answers.versionedCssFile :  this.options.versionedCssFile || "null";
+      this.alwaysHostPublic = answers.alwaysHostPublic ? answers.alwaysHostPublic :  this.options.alwaysHostPublic || 'false';
     }.bind(this));
   },
 
