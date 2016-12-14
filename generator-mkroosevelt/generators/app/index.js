@@ -71,7 +71,6 @@ module.exports = generators.Base.extend({
     },
     { // App behvaior parameters
       when: function (response) {
-
         return !thing.options.port && response.standardInstall === false && response.sectionsToInstall.indexOf('App behavior parameters') > -1; // Run since they wanted the advanced install in this area
       },
       type    : 'input',
@@ -467,14 +466,47 @@ module.exports = generators.Base.extend({
       this.httpsOnly = answers.httpsOnly ? answers.httpsOnly :  this.options.httpsOnly || 'false';
       this.httpsPort = answers.httpsPort ? answers.httpsPort :  this.options.httpsPort || '43733';
       this.pfx = answers.pfx ? answers.pfx :  this.options.pfx || 'false';
-      this.keyPath = answers.keyPath ? '"' + answers.keyPath + '"' :  this.options.keyPath || 'null';
-      this.passphrase = answers.passphrase ? '"' + answers.passphrase + '"' :  this.options.passphrase || 'null';
-      this.ca = answers.ca ? answers.ca :  this.options.ca || 'null';
+      // this.keyPath = answers.keyPath ? '"' + answers.keyPath + '"' : this.options.keyPath !== undefined ? '"' + this.options.keyPath + '"' : null;
+      if (answers.keyPath) {
+        this.keyPath = '"' + answers.keyPath + '"';
+      }
+      else {
+        if (this.options.keyPath !== undefined) {
+          this.keyPath = '"' + this.options.keyPath + '"'
+        }
+        else {
+          this.keyPath = 'null';
+        }
+      }
+      // this.passphrase = answers.passphrase ? '"' + answers.passphrase + '"' : '"' + this.options.passphrase + '"' || 'null';
+      if (answers.passphrase) {
+        this.passphrase = '"' + answers.passphrase + '"';
+      }
+      else {
+        if (this.options.passphrase !== undefined) {
+          this.passphrase = '"' + this.options.passphrase + '"'
+        }
+        else {
+          this.passphrase = 'null';
+        }
+      }
+      // this.ca = answers.ca ? '"' + answers.ca + '"' : '"' + this.options.ca + '"' || 'null';
+      if (answers.ca) {
+        this.ca = '"' + answers.ca + '"';
+      }
+      else {
+        if (this.options.ca !== undefined) {
+          this.ca = '"' + this.options.ca + '"'
+        }
+        else {
+          this.ca = 'null';
+        }
+      }
       this.requestCert = answers.requestCert ?  answers.requestCert :  this.options.requestCert || 'false';
       this.rejectUnauthorized = answers.rejectUnauthorized ? answers.rejectUnauthorized :  this.options.rejectUnauthorized || 'false';
-      this.bodyParserOptions = answers.bodyParserOptions ? answers.bodyParserOptions :  this.options.bodyParserOptions || '{extended: true}';
+      this.bodyParserOptions = answers.bodyParserOptions ? answers.bodyParserOptions :  this.options.bodyParserOptions || '{"extended": true}';
       this.bodyParserJsonOptions = answers.bodyParserJsonOptions ? answers.bodyParserJsonOptions :  this.options.bodyParserJsonOptions || '{}';
-      this.modelsPath = answers.modelsPath ? answers.modelsPath :  this.options.modelsPathport || 'mvc/models';
+      this.modelsPath = answers.modelsPath ? answers.modelsPath :  this.options.modelsPath || 'mvc/models';
       this.modelsNodeModulesSymlink = answers.modelsNodeModulesSymlink ? answers.modelsNodeModulesSymlink :  this.options.modelsNodeModulesSymlink || 'models';
       this.viewsPath = answers.viewsPath ? answers.viewsPath :  this.options.viewsPath || 'mvc/views';
       this.viewEngine = answers.viewEngine ? answers.viewEngine :  this.options.viewEngine || 'html: teddy';
@@ -527,7 +559,7 @@ module.exports = generators.Base.extend({
         requestCert: this.requestCert,
         rejectUnauthorized: this.rejectUnauthorized,
         bodyParserOptions: this.bodyParserOptions,
-        bodyParserJsonOptions: this.bodyParserOptions,
+        bodyParserJsonOptions: this.bodyParserJsonOptions,
         modelsPath: this.modelsPath,
         modelsNodeModulesSymlink: this.modelsNodeModulesSymlink,
         viewsPath: this.viewsPath,
