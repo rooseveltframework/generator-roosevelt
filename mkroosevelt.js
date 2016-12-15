@@ -1,9 +1,10 @@
 #! /usr/bin/env node
 var package = require('./package.json'),
     updateNotifier = require('update-notifier'),
+    genssl = require('./lib/genssl')(),
     notifier = updateNotifier({packageName: package.name, packageVersion: package.version}),
     cmd = process.argv[2],
-    appName = process.argv[2]
+    appName = process.argv[2],
     argumentsToPassToYeoman = process.argv.slice(3), // Grab the arguments (exclusing the first two and third (appName)) so we they can be forwarded to the yeoman generator
     childProcess = require('child_process'),
     spawn = childProcess.spawn;
@@ -52,8 +53,6 @@ else if (cmd === '-v' || cmd === '--v' || cmd === '-version' || cmd === '--versi
   console.log(package.version);
 }
 else if (cmd === '-genssl' || cmd === '--genssl') {
-  var genssl = require('./lib/genssl')();
-
   genssl();
 }
 else if (cmd) {

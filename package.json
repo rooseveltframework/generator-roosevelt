@@ -69,7 +69,7 @@
   "_from": "mkroosevelt@*",
   "gitHead": "",
   "scripts": {
-    "lint": "eslint .",
+    "lint": "eslint *",
     "test": "./node_modules/.bin/mocha unitTest.js"
   },
   "files": [
