@@ -629,9 +629,12 @@ module.exports = generators.Base.extend({
       this.destinationPath('mvc/controllers/robots.txt.js')
     );
 
-    this.fs.copy(
+    this.fs.copyTpl(
       this.templatePath('mvc/models/global.js'),
-      this.destinationPath('mvc/models/global.js')
+      this.destinationPath('mvc/models/global.js'),
+      {
+        appName: this.appName
+      }
     );
 
     this.fs.copy(
