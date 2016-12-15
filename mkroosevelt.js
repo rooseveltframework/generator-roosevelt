@@ -11,7 +11,7 @@ function showHelp() {
   console.log('USAGE:');
   console.log('');
   console.log('create an app in the current directory:');
-  console.log('mkroosevelt');
+  console.log('mkroosevelt .');
   console.log('');
   console.log('output current version:');
   console.log('mkroosevelt -v, -version, --v, --version');
