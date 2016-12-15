@@ -47,6 +47,7 @@ module.exports = generators.Base.extend({
     this.option('versionedStatics')
     this.option('versionedCssFile')
     this.option('alwaysHostPublic')
+    this.option('supressClosingMessage')
   },
 
   prompting: function () {
@@ -688,20 +689,22 @@ module.exports = generators.Base.extend({
   },
 
   end: function() {
-    var whichHttpToShow;
+    if (this.supressClosingMessage === false && process.env.NODE_ENV !== 'test') {
+      var whichHttpToShow;
 
-    if (this.https == 'true' && this.httpsOnly === 'false') {
-      whichHttpToShow = 'http(s)'
-    }
-    else if (this.https == 'true' && this.httpsOnly === 'true') {
-      whichHttpToShow = 'https'
-    }
-    else {
-      whichHttpToShow = 'http';
-    }
+      if (this.https == 'true' && this.httpsOnly === 'false') {
+        whichHttpToShow = 'http(s)'
+      }
+      else if (this.https == 'true' && this.httpsOnly === 'true') {
+        whichHttpToShow = 'https'
+      }
+      else {
+        whichHttpToShow = 'http';
+      }
 
-    console.log();
-    console.log('Thank you for installing Roosevelt!')
-    console.log('To begin using your new Roosevelt app run `npm run dev` and navigate to ' + whichHttpToShow + '://localhost:' + this.port + '/')
+      console.log();
+      console.log('Thank you for installing Roosevelt!')
+      console.log('To begin using your new Roosevelt app run `npm run dev` and navigate to ' + whichHttpToShow + '://localhost:' + this.port + '/')
+    }
   }
 });
