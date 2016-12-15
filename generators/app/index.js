@@ -4,6 +4,7 @@ module.exports = generators.Base.extend({
   constructor: function () {
     generators.Base.apply(this, arguments);
 
+    this.option('appName')
     this.option('port')
     this.option('localhostOnly')
     this.option('disableLogger')
@@ -51,6 +52,9 @@ module.exports = generators.Base.extend({
   prompting: function () {
     var thing = this;
     return this.prompt([{
+      when    : function(response) {
+        return !thing.options.appName
+      },
       type    : 'input',
       name    : 'appName',
       message : 'Your project name',
@@ -502,7 +506,7 @@ module.exports = generators.Base.extend({
           this.ca = 'null';
         }
       }
-      this.appName = answers.appName;
+      this.appName = answers.appName ? answers.appName :  this.options.appName;
       this.requestCert = answers.requestCert ?  answers.requestCert :  this.options.requestCert || 'false';
       this.rejectUnauthorized = answers.rejectUnauthorized ? answers.rejectUnauthorized :  this.options.rejectUnauthorized || 'false';
       this.bodyParserOptions = answers.bodyParserOptions ? answers.bodyParserOptions :  this.options.bodyParserOptions || '{"extended": true}';

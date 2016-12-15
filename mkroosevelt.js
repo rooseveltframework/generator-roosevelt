@@ -3,8 +3,12 @@ var package = require('./package.json'),
     updateNotifier = require('update-notifier'),
     notifier = updateNotifier({packageName: package.name, packageVersion: package.version}),
     cmd = process.argv[2],
+    appName = process.argv[2]
+    argumentsToPassToYeoman = process.argv.slice(3), // Grab the arguments (exclusing the first two and third (appName)) so we they can be forwarded to the yeoman generator
     childProcess = require('child_process'),
     spawn = childProcess.spawn;
+
+argumentsToPassToYeoman.push('--appName=' + appName); // Take the app name and format it for Yeoman. Then push it onto the array of arguments for Yeoman so it can be passed later when called.
 
 function showHelp() {
   console.log('');
@@ -23,7 +27,7 @@ function showHelp() {
 
 function createSampleApp() {
   try {
-    yo = spawn('yo mkroosevelt', [], {
+    yo = spawn('yo mkroosevelt', argumentsToPassToYeoman, {
       shell: true,
       stdio: [
         'inherit',
