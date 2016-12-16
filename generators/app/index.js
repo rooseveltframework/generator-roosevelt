@@ -198,7 +198,7 @@ module.exports = generators.Base.extend({
       type    : 'input',
       name    : 'requestCert',
       message : 'Request Cert: Request a certificate from a client and attempt to verify it',
-      default : 'null'
+      default : 'false'
     },
     {
       when: function (response) {
