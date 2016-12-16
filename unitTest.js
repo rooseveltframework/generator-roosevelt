@@ -13,7 +13,7 @@ describe('mkroosevelt:mainGenerator', function () {
       .withPrompts({ appName: 'New Project',
         standardInstall: true })
       .then(function (dir) {
-        tempDir = dir
+        tempDir = dir;
         assert.jsonFileContent(path.join(dir + '/package.json'), {name: 'New Project'} );;
       });
   });
@@ -22,372 +22,372 @@ describe('mkroosevelt:mainGenerator', function () {
     packageJson = JSON.parse(fs.readFileSync(tempDir + '/package.json', 'utf8'));
     // runs after each test in this block
     var validatePackageJson = JsonValidator({
-        required: true,
-        type: 'object',
-        properties: {
-          name: {
-            required: true,
-            type:'string'
-          },
-          description: {
-            required: true,
-            type:'string'
-          },
-          author: {
-            required: true,
-            type:'string'
-          },
-          version: {
-            required: true,
-            type:'string'
-          },
-          homepage: {
-            required: true,
-            type:'string'
-          },
-          license: {
-            required: true,
-            type:'string'
-          },
-          main: {
-            required: true,
-            type:'string'
-          },
-          readmeFilename: {
-            required: true,
-            type:'string'
-          },
-          engines: {
-            required: true,
-            type:'object',
-            properties: {
-              node: {
-                required: true,
-                type: 'string'
-              }
-            }
-          },
-          engineStrict: {
-            required: true,
-            type:'boolean'
-          },
-          dependencies: {
-            required: true,
-            type:'object',
-            properties: {
-              roosevelt: {
-                required: true,
-                type: 'string'
-              },
-              teddy: {
-                required: true,
-                type: 'string'
-              },
-              "roosevelt-less": {
-                required: true,
-                type: 'string'
-              },
-              roosevelt: {
-                required: true,
-                type: 'string'
-              },
-              "roosevelt-closure": {
-                required: true,
-                type: 'string'
-              }
-            }
-          },
-          devDependencies: {
-            required: true,
-            type:'object',
-            properties: {
-              jshint: {
-                required: true,
-                type: 'string'
-              },
-              supervisor: {
-                required: true,
-                type: 'string'
-              }
-            }
-          },
-          rooseveltConfig: {
-            required: true,
-            type:'object',
-            properties: {
-              port: {
-                required: true,
-                type: 'number'
-              },
-              localhostOnly: {
-                required: true,
-                type: 'boolean'
-              },
-              httpsPort: {
-                required: true,
-                type: 'number'
-              },
-              https: {
-                required: true,
-                type: 'boolean'
-              },
-              httpsOnly: {
-                required: true,
-                type: 'boolean'
-              },
-              pfx: {
-                required: true,
-                type: 'boolean'
-              },
-              keyPath: {
-                required: true,
-                type: ['null', 'string']
-              },
-              passphrase: {
-                required: true,
-                type: ['null', 'string']
-              },
-              ca: {
-                required: true,
-                type: ['null', 'string']
-              },
-              requestCert: {
-                required: true,
-                type: 'boolean'
-              },
-              rejectUnauthorized: {
-                required: true,
-                type: 'boolean'
-              },
-              disableLogger: {
-                required: true,
-                type: 'boolean'
-              },
-              noMinify: {
-                required: true,
-                type: 'boolean'
-              },
-              multipart: {
-                required: true,
-                type: 'object',
-                properties: {
-                  multiples: {
-                    required: true,
-                    type: 'boolean'
-                  },
-                }
-              },
-              maxLagPerRequest: {
-                required: true,
-                type: 'number'
-              },
-              shutdownTimeout: {
-                required: true,
-                type: 'number'
-              },
-              modelsPath: {
-                required: true,
-                type: 'string'
-              },
-              modelsNodeModulesSymlink: {
-                required: true,
-                type: 'string'
-              },
-              viewsPath: {
-                required: true,
-                type: 'string'
-              },
-              viewEngine: {
-                required: true,
-                type: 'string'
-              },
-              controllersPath: {
-                required: true,
-                type: 'string'
-              },
-              error404: {
-                required: true,
-                type: 'string'
-              },
-              error5xx: {
-                required: true,
-                type: 'string'
-              },
-              error503: {
-                required: true,
-                type: 'string'
-              },
-              staticsRoot: {
-                required: true,
-                type: 'string'
-              },
-              cssPath: {
-                required: true,
-                type: 'string'
-              },
-              cssCompiler: {
-                required: true,
-                type: 'object',
-                properties: {
-                  nodeModule: {
-                    required: true,
-                    type: 'string'
-                  },
-                  params: {
-                    required: true,
-                    type: 'object',
-                    properties: {
-                      compress: {
-                        required: true,
-                        type: 'boolean'
-                      },
-                    }
-                  },
-                }
-              },
-              cssCompilerWhitelist: {
-                required: true,
-                type: ['null', 'array']
-              },
-              cssCompiledOutput: {
-                required: true,
-                type: 'string'
-              },
-              jsPath: {
-                required: true,
-                type: 'string'
-              },
-              jsCompiler: {
-                required: true,
-                type: 'object',
-                properties: {
-                  nodeModule: {
-                    required: true,
-                    type: 'string'
-                  },
-                  params: {
-                    required: true,
-                    type: 'object',
-                    properties: {
-                      compilation_level: {
-                        required: true,
-                        type: 'string'
-                      },
-                    }
-                  },
-                }
-              },
-              jsCompilerWhitelist: {
-                required: true,
-                type: ['null', 'array']
-              },
-              jsCompiledOutput: {
-                required: true,
-                type: 'string'
-              },
-              publicFolder: {
-                required: true,
-                type: 'string'
-              },
-              favicon: {
-                required: true,
-                type: 'string'
-              },
-              symlinksToStatics: {
-                required: true,
-                type: 'array'
-              },
-              versionedStatics: {
-                required: true,
-                type: 'boolean'
-              },
-              versionedCssFile: {
-                required: true,
-                type: ['null', 'object'],
-                properties: {
-                  fileName: {
-                    required: true,
-                    type: 'string'
-                  },
-                  varName: {
-                    required: true,
-                    type: 'string'
-                  }
-                }
-              },
-              alwaysHostPublic: {
-                required: true,
-                type: 'boolean'
-              }
-            }
-          },
-          jshintConfig: {
-            required: true,
-            type:'object',
-            properties: {
-              camelcase: {
-                required: true,
-                type: "boolean"
-              },
-              curly: {
-                required: true,
-                type: "boolean"
-              },
-              devel: {
-                required: true,
-                type: "boolean"
-              },
-              indent: {
-                required: true,
-                type: "number"
-              },
-              node: {
-                required: true,
-                type: "boolean"
-              }
-            }
-          },
-          private: {
-            required: true,
-            type:'boolean'
-          },
-          repository: {
-            required: true,
-            type:'object',
-            properties: {
-              "private-repo": {
-                required: true,
-                type: "string"
-              }
-            }
-          },
-          scripts: {
-            required: true,
-            type:'object',
-            properties: {
-              start: {
-                required: true,
-                type: 'string'
-              },
-              prod: {
-                required: true,
-                type: 'string'
-              },
-              dev: {
-                required: true,
-                type: 'string'
-              },
-              test: {
-                required: true,
-                type: 'string'
-              }
+      required: true,
+      type: 'object',
+      properties: {
+        name: {
+          required: true,
+          type:'string'
+        },
+        description: {
+          required: true,
+          type:'string'
+        },
+        author: {
+          required: true,
+          type:'string'
+        },
+        version: {
+          required: true,
+          type:'string'
+        },
+        homepage: {
+          required: true,
+          type:'string'
+        },
+        license: {
+          required: true,
+          type:'string'
+        },
+        main: {
+          required: true,
+          type:'string'
+        },
+        readmeFilename: {
+          required: true,
+          type:'string'
+        },
+        engines: {
+          required: true,
+          type:'object',
+          properties: {
+            node: {
+              required: true,
+              type: 'string'
             }
           }
         },
-        verbose: true
-      })
+        engineStrict: {
+          required: true,
+          type:'boolean'
+        },
+        dependencies: {
+          required: true,
+          type:'object',
+          properties: {
+            roosevelt: {
+              required: true,
+              type: 'string'
+            },
+            teddy: {
+              required: true,
+              type: 'string'
+            },
+            'roosevelt-less': {
+              required: true,
+              type: 'string'
+            },
+            roosevelt: {
+              required: true,
+              type: 'string'
+            },
+            'roosevelt-closure': {
+              required: true,
+              type: 'string'
+            }
+          }
+        },
+        devDependencies: {
+          required: true,
+          type:'object',
+          properties: {
+            jshint: {
+              required: true,
+              type: 'string'
+            },
+            supervisor: {
+              required: true,
+              type: 'string'
+            }
+          }
+        },
+        rooseveltConfig: {
+          required: true,
+          type:'object',
+          properties: {
+            port: {
+              required: true,
+              type: 'number'
+            },
+            localhostOnly: {
+              required: true,
+              type: 'boolean'
+            },
+            httpsPort: {
+              required: true,
+              type: 'number'
+            },
+            https: {
+              required: true,
+              type: 'boolean'
+            },
+            httpsOnly: {
+              required: true,
+              type: 'boolean'
+            },
+            pfx: {
+              required: true,
+              type: 'boolean'
+            },
+            keyPath: {
+              required: true,
+              type: ['null', 'string']
+            },
+            passphrase: {
+              required: true,
+              type: ['null', 'string']
+            },
+            ca: {
+              required: true,
+              type: ['null', 'string']
+            },
+            requestCert: {
+              required: true,
+              type: 'boolean'
+            },
+            rejectUnauthorized: {
+              required: true,
+              type: 'boolean'
+            },
+            disableLogger: {
+              required: true,
+              type: 'boolean'
+            },
+            noMinify: {
+              required: true,
+              type: 'boolean'
+            },
+            multipart: {
+              required: true,
+              type: 'object',
+              properties: {
+                multiples: {
+                  required: true,
+                  type: 'boolean'
+                },
+              }
+            },
+            maxLagPerRequest: {
+              required: true,
+              type: 'number'
+            },
+            shutdownTimeout: {
+              required: true,
+              type: 'number'
+            },
+            modelsPath: {
+              required: true,
+              type: 'string'
+            },
+            modelsNodeModulesSymlink: {
+              required: true,
+              type: 'string'
+            },
+            viewsPath: {
+              required: true,
+              type: 'string'
+            },
+            viewEngine: {
+              required: true,
+              type: 'string'
+            },
+            controllersPath: {
+              required: true,
+              type: 'string'
+            },
+            error404: {
+              required: true,
+              type: 'string'
+            },
+            error5xx: {
+              required: true,
+              type: 'string'
+            },
+            error503: {
+              required: true,
+              type: 'string'
+            },
+            staticsRoot: {
+              required: true,
+              type: 'string'
+            },
+            cssPath: {
+              required: true,
+              type: 'string'
+            },
+            cssCompiler: {
+              required: true,
+              type: 'object',
+              properties: {
+                nodeModule: {
+                  required: true,
+                  type: 'string'
+                },
+                params: {
+                  required: true,
+                  type: 'object',
+                  properties: {
+                    compress: {
+                      required: true,
+                      type: 'boolean'
+                    },
+                  }
+                },
+              }
+            },
+            cssCompilerWhitelist: {
+              required: true,
+              type: ['null', 'array']
+            },
+            cssCompiledOutput: {
+              required: true,
+              type: 'string'
+            },
+            jsPath: {
+              required: true,
+              type: 'string'
+            },
+            jsCompiler: {
+              required: true,
+              type: 'object',
+              properties: {
+                nodeModule: {
+                  required: true,
+                  type: 'string'
+                },
+                params: {
+                  required: true,
+                  type: 'object',
+                  properties: {
+                    'compilation_level': {
+                      required: true,
+                      type: 'string'
+                    },
+                  }
+                },
+              }
+            },
+            jsCompilerWhitelist: {
+              required: true,
+              type: ['null', 'array']
+            },
+            jsCompiledOutput: {
+              required: true,
+              type: 'string'
+            },
+            publicFolder: {
+              required: true,
+              type: 'string'
+            },
+            favicon: {
+              required: true,
+              type: 'string'
+            },
+            symlinksToStatics: {
+              required: true,
+              type: 'array'
+            },
+            versionedStatics: {
+              required: true,
+              type: 'boolean'
+            },
+            versionedCssFile: {
+              required: true,
+              type: ['null', 'object'],
+              properties: {
+                fileName: {
+                  required: true,
+                  type: 'string'
+                },
+                varName: {
+                  required: true,
+                  type: 'string'
+                }
+              }
+            },
+            alwaysHostPublic: {
+              required: true,
+              type: 'boolean'
+            }
+          }
+        },
+        jshintConfig: {
+          required: true,
+          type:'object',
+          properties: {
+            camelcase: {
+              required: true,
+              type: 'boolean'
+            },
+            curly: {
+              required: true,
+              type: 'boolean'
+            },
+            devel: {
+              required: true,
+              type: 'boolean'
+            },
+            indent: {
+              required: true,
+              type: 'number'
+            },
+            node: {
+              required: true,
+              type: 'boolean'
+            }
+          }
+        },
+        private: {
+          required: true,
+          type:'boolean'
+        },
+        repository: {
+          required: true,
+          type:'object',
+          properties: {
+            'private-repo': {
+              required: true,
+              type: 'string'
+            }
+          }
+        },
+        scripts: {
+          required: true,
+          type:'object',
+          properties: {
+            start: {
+              required: true,
+              type: 'string'
+            },
+            prod: {
+              required: true,
+              type: 'string'
+            },
+            dev: {
+              required: true,
+              type: 'string'
+            },
+            test: {
+              required: true,
+              type: 'string'
+            }
+          }
+        }
+      },
+      verbose: true
+    });
 
-      chaiAssert.equal(validatePackageJson(packageJson), true, JSON.stringify(validatePackageJson.errors))
+    chaiAssert.equal(validatePackageJson(packageJson), true, JSON.stringify(validatePackageJson.errors));
   });
 
   it('Template folder should contain all sample app files', function () {
@@ -414,7 +414,7 @@ describe('mkroosevelt:mainGenerator', function () {
     return helpers.run(path.join(__dirname + '/generators/app'))
       .withPrompts({ standardInstall: true })
       .then(function (dir) {
-        tempDir = dir
+        tempDir = dir;
         assert.file(path.join(dir + '/.gitignore'));
         assert.file(path.join(dir + '/bin/mac.command'));
         assert.file(path.join(dir + '/bin/unix.sh'));
@@ -440,7 +440,7 @@ describe('mkroosevelt:mainGenerator', function () {
       return helpers.run(path.join(__dirname + '/generators/app'))
         .withPrompts({ standardInstall: true }) // Mock the prompt answers
         .then(function (dir) {
-        tempDir = dir
+          tempDir = dir;
           assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { port: 43711} });;
           assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { localhostOnly: true} });;
           assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { httpsPort: 43733} });;
@@ -497,7 +497,7 @@ describe('mkroosevelt:mainGenerator', function () {
             standardInstall: false,
             sectionsToInstall : [ 'App behavior parameters', 'HTTPS parameters', 'MVC parameters', 'Utility library parameters', 'Error page parameters', 'Statics parameters', 'Public folder parameters'] }) // Mock the prompt answers
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { port: 4321} });
           });
       });
@@ -506,7 +506,7 @@ describe('mkroosevelt:mainGenerator', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withOptions({ port: '4321' })
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { port: 4321} });
           });
       });
@@ -517,7 +517,7 @@ describe('mkroosevelt:mainGenerator', function () {
             standardInstall: false,
             sectionsToInstall : [ 'App behavior parameters', 'HTTPS parameters', 'MVC parameters', 'Utility library parameters', 'Error page parameters', 'Statics parameters', 'Public folder parameters'] }) // Mock the prompt answers
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { localhostOnly: false} });
           });
       });
@@ -526,7 +526,7 @@ describe('mkroosevelt:mainGenerator', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withOptions({ localhostOnly: 'false' })
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { localhostOnly: false} });
           });
       });
@@ -537,7 +537,7 @@ describe('mkroosevelt:mainGenerator', function () {
             standardInstall: false,
             sectionsToInstall : [ 'App behavior parameters', 'HTTPS parameters', 'MVC parameters', 'Utility library parameters', 'Error page parameters', 'Statics parameters', 'Public folder parameters'] }) // Mock the prompt answers
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { disableLogger: true} });
           });
       });
@@ -546,7 +546,7 @@ describe('mkroosevelt:mainGenerator', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withOptions({ disableLogger: 'true' })
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { disableLogger: true} });
           });
       });
@@ -557,7 +557,7 @@ describe('mkroosevelt:mainGenerator', function () {
             standardInstall: false,
             sectionsToInstall : [ 'App behavior parameters', 'HTTPS parameters', 'MVC parameters', 'Utility library parameters', 'Error page parameters', 'Statics parameters', 'Public folder parameters'] }) // Mock the prompt answers
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { noMinify: true} });
           });
       });
@@ -566,7 +566,7 @@ describe('mkroosevelt:mainGenerator', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withOptions({ noMinify: 'true' })
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { noMinify: true} });
           });
       });
@@ -577,16 +577,16 @@ describe('mkroosevelt:mainGenerator', function () {
             standardInstall: false,
             sectionsToInstall : [ 'App behavior parameters', 'HTTPS parameters', 'MVC parameters', 'Utility library parameters', 'Error page parameters', 'Statics parameters', 'Public folder parameters'] }) // Mock the prompt answers
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { multipart: {'multiples': false}} });
           });
-        });
+      });
 
       it('configures multipart by option flag', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withOptions({ multipart: '{"multiples": false}' })
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { multipart: {'multiples': false}} });
           });
       });
@@ -597,7 +597,7 @@ describe('mkroosevelt:mainGenerator', function () {
             standardInstall: false,
             sectionsToInstall : [ 'App behavior parameters', 'HTTPS parameters', 'MVC parameters', 'Utility library parameters', 'Error page parameters', 'Statics parameters', 'Public folder parameters'] }) // Mock the prompt answers
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { shutdownTimeout: 10} });
           });
       });
@@ -606,7 +606,7 @@ describe('mkroosevelt:mainGenerator', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withOptions({ shutdownTimeout: '10' })
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { shutdownTimeout: 10} });
           });
       });
@@ -620,7 +620,7 @@ describe('mkroosevelt:mainGenerator', function () {
             standardInstall: false,
             sectionsToInstall : [ 'App behavior parameters', 'HTTPS parameters', 'MVC parameters', 'Utility library parameters', 'Error page parameters', 'Statics parameters', 'Public folder parameters'] }) // Mock the prompt answers
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { https: false} });
           });
       });
@@ -629,7 +629,7 @@ describe('mkroosevelt:mainGenerator', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withOptions({ https: 'false' })
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { https: false} });
           });
       });
@@ -640,7 +640,7 @@ describe('mkroosevelt:mainGenerator', function () {
             standardInstall: false,
             sectionsToInstall : [ 'App behavior parameters', 'HTTPS parameters', 'MVC parameters', 'Utility library parameters', 'Error page parameters', 'Statics parameters', 'Public folder parameters'] }) // Mock the prompt answers
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { httpsOnly: false} });
           });
       });
@@ -649,7 +649,7 @@ describe('mkroosevelt:mainGenerator', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withOptions({ httpsOnly: 'false' })
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { httpsOnly: false} });
           });
       });
@@ -660,7 +660,7 @@ describe('mkroosevelt:mainGenerator', function () {
             standardInstall: false,
             sectionsToInstall : [ 'App behavior parameters', 'HTTPS parameters', 'MVC parameters', 'Utility library parameters', 'Error page parameters', 'Statics parameters', 'Public folder parameters'] }) // Mock the prompt answers
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { httpsPort: 1234} });
           });
       });
@@ -669,7 +669,7 @@ describe('mkroosevelt:mainGenerator', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withOptions({ httpsPort: '1234' })
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { httpsPort: 1234} });
           });
       });
@@ -681,7 +681,7 @@ describe('mkroosevelt:mainGenerator', function () {
             standardInstall: false,
             sectionsToInstall : [ 'App behavior parameters', 'HTTPS parameters', 'MVC parameters', 'Utility library parameters', 'Error page parameters', 'Statics parameters', 'Public folder parameters'] }) // Mock the prompt answers
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { pfx: true} });
           });
       });
@@ -690,7 +690,7 @@ describe('mkroosevelt:mainGenerator', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withOptions({ pfx: 'true' })
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { pfx: true} });
           });
       });
@@ -701,7 +701,7 @@ describe('mkroosevelt:mainGenerator', function () {
             standardInstall: false,
             sectionsToInstall : [ 'App behavior parameters', 'HTTPS parameters', 'MVC parameters', 'Utility library parameters', 'Error page parameters', 'Statics parameters', 'Public folder parameters'] }) // Mock the prompt answers
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { keyPath: 'cert'} });
           });
       });
@@ -710,7 +710,7 @@ describe('mkroosevelt:mainGenerator', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withOptions({ keyPath: 'cert' })
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { keyPath: 'cert'} });
           });
       });
@@ -721,7 +721,7 @@ describe('mkroosevelt:mainGenerator', function () {
             standardInstall: false,
             sectionsToInstall : [ 'App behavior parameters', 'HTTPS parameters', 'MVC parameters', 'Utility library parameters', 'Error page parameters', 'Statics parameters', 'Public folder parameters'] }) // Mock the prompt answers
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { passphrase: '1234Test!'} });
           });
       });
@@ -730,7 +730,7 @@ describe('mkroosevelt:mainGenerator', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withOptions({ passphrase: '1234Test!' })
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { passphrase: '1234Test!'} });
           });
       });
@@ -741,7 +741,7 @@ describe('mkroosevelt:mainGenerator', function () {
             standardInstall: false,
             sectionsToInstall : [ 'App behavior parameters', 'HTTPS parameters', 'MVC parameters', 'Utility library parameters', 'Error page parameters', 'Statics parameters', 'Public folder parameters'] }) // Mock the prompt answers
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { ca: '/test/directory'} });
           });
       });
@@ -750,7 +750,7 @@ describe('mkroosevelt:mainGenerator', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withOptions({ ca: '/test/directory' })
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { ca: '/test/directory'} });
           });
       });
@@ -761,7 +761,7 @@ describe('mkroosevelt:mainGenerator', function () {
             standardInstall: false,
             sectionsToInstall : [ 'App behavior parameters', 'HTTPS parameters', 'MVC parameters', 'Utility library parameters', 'Error page parameters', 'Statics parameters', 'Public folder parameters'] }) // Mock the prompt answers
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { requestCert: true} });
           });
       });
@@ -770,7 +770,7 @@ describe('mkroosevelt:mainGenerator', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withOptions({ requestCert: 'true' })
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { requestCert: true} });
           });
       });
@@ -781,7 +781,7 @@ describe('mkroosevelt:mainGenerator', function () {
             standardInstall: false,
             sectionsToInstall : [ 'App behavior parameters', 'HTTPS parameters', 'MVC parameters', 'Utility library parameters', 'Error page parameters', 'Statics parameters', 'Public folder parameters'] }) // Mock the prompt answers
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { rejectUnauthorized: true} });
           });
       });
@@ -790,7 +790,7 @@ describe('mkroosevelt:mainGenerator', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withOptions({ rejectUnauthorized: 'true' })
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { rejectUnauthorized: true} });
           });
       });
@@ -801,7 +801,7 @@ describe('mkroosevelt:mainGenerator', function () {
             standardInstall: false,
             sectionsToInstall : [ 'App behavior parameters', 'HTTPS parameters', 'MVC parameters', 'Utility library parameters', 'Error page parameters', 'Statics parameters', 'Public folder parameters'] }) // Mock the prompt answers
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { bodyParserOptions: { 'extended': false } } });
           });
       });
@@ -810,7 +810,7 @@ describe('mkroosevelt:mainGenerator', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withOptions({ bodyParserOptions: '{"extended": false}' })
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { bodyParserOptions: { 'extended': false } } });
           });
       });
@@ -821,7 +821,7 @@ describe('mkroosevelt:mainGenerator', function () {
             standardInstall: false,
             sectionsToInstall : [ 'App behavior parameters', 'HTTPS parameters', 'MVC parameters', 'Utility library parameters', 'Error page parameters', 'Statics parameters', 'Public folder parameters'] }) // Mock the prompt answers
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { bodyParserJsonOptions: { 'inflate': true } } });
           });
       });
@@ -830,7 +830,7 @@ describe('mkroosevelt:mainGenerator', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withOptions({ bodyParserJsonOptions: '{"inflate": true}' })
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { bodyParserJsonOptions: { 'inflate': true } } });
           });
       });
@@ -844,7 +844,7 @@ describe('mkroosevelt:mainGenerator', function () {
             standardInstall: false,
             sectionsToInstall : [ 'App behavior parameters', 'HTTPS parameters', 'MVC parameters', 'Utility library parameters', 'Error page parameters', 'Statics parameters', 'Public folder parameters'] }) // Mock the prompt answers
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { modelsPath: '/test/path' } });
           });
       });
@@ -853,7 +853,7 @@ describe('mkroosevelt:mainGenerator', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withOptions({ modelsPath: '/test/path' })
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { modelsPath: '/test/path' } });
           });
       });
@@ -864,7 +864,7 @@ describe('mkroosevelt:mainGenerator', function () {
             standardInstall: false,
             sectionsToInstall : [ 'App behavior parameters', 'HTTPS parameters', 'MVC parameters', 'Utility library parameters', 'Error page parameters', 'Statics parameters', 'Public folder parameters'] }) // Mock the prompt answers
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { modelsNodeModulesSymlink: 'testFolder' } });
           });
       });
@@ -873,7 +873,7 @@ describe('mkroosevelt:mainGenerator', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withOptions({ modelsNodeModulesSymlink: 'testFolder' })
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { modelsNodeModulesSymlink: 'testFolder' } });
           });
       });
@@ -884,7 +884,7 @@ describe('mkroosevelt:mainGenerator', function () {
             standardInstall: false,
             sectionsToInstall : [ 'App behavior parameters', 'HTTPS parameters', 'MVC parameters', 'Utility library parameters', 'Error page parameters', 'Statics parameters', 'Public folder parameters'] }) // Mock the prompt answers
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { viewsPath: '/test/path' } });
           });
       });
@@ -893,7 +893,7 @@ describe('mkroosevelt:mainGenerator', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withOptions({ viewsPath: '/test/path' })
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { viewsPath: '/test/path' } });
           });
       });
@@ -904,7 +904,7 @@ describe('mkroosevelt:mainGenerator', function () {
             standardInstall: false,
             sectionsToInstall : [ 'App behavior parameters', 'HTTPS parameters', 'MVC parameters', 'Utility library parameters', 'Error page parameters', 'Statics parameters', 'Public folder parameters'] }) // Mock the prompt answers
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { viewEngine: 'css: teddyAlternate' } });
           });
       });
@@ -913,7 +913,7 @@ describe('mkroosevelt:mainGenerator', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withOptions({ viewEngine: 'css: teddyAlternate' })
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { viewEngine: 'css: teddyAlternate' } });
           });
       });
@@ -924,7 +924,7 @@ describe('mkroosevelt:mainGenerator', function () {
             standardInstall: false,
             sectionsToInstall : [ 'App behavior parameters', 'HTTPS parameters', 'MVC parameters', 'Utility library parameters', 'Error page parameters', 'Statics parameters', 'Public folder parameters'] }) // Mock the prompt answers
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { controllersPath: '/test/path' } });
           });
       });
@@ -933,7 +933,7 @@ describe('mkroosevelt:mainGenerator', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withOptions({ controllersPath: '/test/path' })
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { controllersPath: '/test/path' } });
           });
       });
@@ -947,7 +947,7 @@ describe('mkroosevelt:mainGenerator', function () {
             standardInstall: false,
             sectionsToInstall : [ 'App behavior parameters', 'HTTPS parameters', 'MVC parameters', 'Utility library parameters', 'Error page parameters', 'Statics parameters', 'Public folder parameters'] }) // Mock the prompt answers
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { libPath: '/test/path' } });
           });
       });
@@ -956,7 +956,7 @@ describe('mkroosevelt:mainGenerator', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withOptions({ libPath: '/test/path' })
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { libPath: '/test/path' } });
           });
       });
@@ -967,7 +967,7 @@ describe('mkroosevelt:mainGenerator', function () {
             standardInstall: false,
             sectionsToInstall : [ 'App behavior parameters', 'HTTPS parameters', 'MVC parameters', 'Utility library parameters', 'Error page parameters', 'Statics parameters', 'Public folder parameters'] }) // Mock the prompt answers
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { libPathNodeModulesSymlink: 'folderToSymlinkTo' } });
           });
       });
@@ -976,7 +976,7 @@ describe('mkroosevelt:mainGenerator', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withOptions({ libPathNodeModulesSymlink: 'folderToSymlinkTo' })
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { libPathNodeModulesSymlink: 'folderToSymlinkTo' } });
           });
       });
@@ -990,7 +990,7 @@ describe('mkroosevelt:mainGenerator', function () {
             standardInstall: false,
             sectionsToInstall : [ 'App behavior parameters', 'HTTPS parameters', 'MVC parameters', 'Utility library parameters', 'Error page parameters', 'Statics parameters', 'Public folder parameters'] }) // Mock the prompt answers
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { error404: 'newErrorPage.html' } });
           });
       });
@@ -999,7 +999,7 @@ describe('mkroosevelt:mainGenerator', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withOptions({ error404: 'newErrorPage.html' })
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { error404: 'newErrorPage.html' } });
           });
       });
@@ -1010,7 +1010,7 @@ describe('mkroosevelt:mainGenerator', function () {
             standardInstall: false,
             sectionsToInstall : [ 'App behavior parameters', 'HTTPS parameters', 'MVC parameters', 'Utility library parameters', 'Error page parameters', 'Statics parameters', 'Public folder parameters'] }) // Mock the prompt answers
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { error5xx: 'newErrorPage.html' } });
           });
       });
@@ -1019,7 +1019,7 @@ describe('mkroosevelt:mainGenerator', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withOptions({ error5xx: 'newErrorPage.html' })
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { error5xx: 'newErrorPage.html' } });
           });
       });
@@ -1030,7 +1030,7 @@ describe('mkroosevelt:mainGenerator', function () {
             standardInstall: false,
             sectionsToInstall : [ 'App behavior parameters', 'HTTPS parameters', 'MVC parameters', 'Utility library parameters', 'Error page parameters', 'Statics parameters', 'Public folder parameters'] }) // Mock the prompt answers
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { error503: 'newErrorPage.html' } });
           });
       });
@@ -1039,7 +1039,7 @@ describe('mkroosevelt:mainGenerator', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withOptions({ error503: 'newErrorPage.html' })
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { error503: 'newErrorPage.html' } });
           });
       });
@@ -1053,7 +1053,7 @@ describe('mkroosevelt:mainGenerator', function () {
             standardInstall: false,
             sectionsToInstall : [ 'App behavior parameters', 'HTTPS parameters', 'MVC parameters', 'Utility library parameters', 'Error page parameters', 'Statics parameters', 'Public folder parameters'] }) // Mock the prompt answers
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { staticsRoot: '/test/path' } });
           });
       });
@@ -1062,7 +1062,7 @@ describe('mkroosevelt:mainGenerator', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withOptions({ staticsRoot: '/test/path' })
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { staticsRoot: '/test/path' } });
           });
       });
@@ -1073,7 +1073,7 @@ describe('mkroosevelt:mainGenerator', function () {
             standardInstall: false,
             sectionsToInstall : [ 'App behavior parameters', 'HTTPS parameters', 'MVC parameters', 'Utility library parameters', 'Error page parameters', 'Statics parameters', 'Public folder parameters'] }) // Mock the prompt answers
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { cssPath: '/test/path' } });
           });
       });
@@ -1082,7 +1082,7 @@ describe('mkroosevelt:mainGenerator', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withOptions({ cssPath: '/test/path' })
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { cssPath: '/test/path' } });
           });
       });
@@ -1093,7 +1093,7 @@ describe('mkroosevelt:mainGenerator', function () {
             standardInstall: false,
             sectionsToInstall : [ 'App behavior parameters', 'HTTPS parameters', 'MVC parameters', 'Utility library parameters', 'Error page parameters', 'Statics parameters', 'Public folder parameters'] }) // Mock the prompt answers
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { cssCompiler: {'nodeModule': 'roosevelt-more', 'params': { 'compress': false } } } });
           });
       });
@@ -1102,7 +1102,7 @@ describe('mkroosevelt:mainGenerator', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withOptions({ cssCompiler: '{"nodeModule": "roosevelt-more", "params": { "compress": false } }' })
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { cssCompiler: {'nodeModule': 'roosevelt-more', 'params': { 'compress': false } } } });
           });
       });
@@ -1113,7 +1113,7 @@ describe('mkroosevelt:mainGenerator', function () {
             standardInstall: false,
             sectionsToInstall : [ 'App behavior parameters', 'HTTPS parameters', 'MVC parameters', 'Utility library parameters', 'Error page parameters', 'Statics parameters', 'Public folder parameters'] }) // Mock the prompt answers
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { cssCompilerWhitelist: ['file1', 'file2'] } });
           });
       });
@@ -1122,7 +1122,7 @@ describe('mkroosevelt:mainGenerator', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withOptions({ cssCompilerWhitelist: '["file1", "file2"]' })
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { cssCompilerWhitelist: ['file1', 'file2'] } });
           });
       });
@@ -1133,7 +1133,7 @@ describe('mkroosevelt:mainGenerator', function () {
             standardInstall: false,
             sectionsToInstall : [ 'App behavior parameters', 'HTTPS parameters', 'MVC parameters', 'Utility library parameters', 'Error page parameters', 'Statics parameters', 'Public folder parameters'] }) // Mock the prompt answers
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { cssCompiledOutput: '/test/path'} });
           });
       });
@@ -1142,7 +1142,7 @@ describe('mkroosevelt:mainGenerator', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withOptions({ cssCompiledOutput: '/test/path' })
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { cssCompiledOutput:  '/test/path'} });
           });
       });
@@ -1153,7 +1153,7 @@ describe('mkroosevelt:mainGenerator', function () {
             standardInstall: false,
             sectionsToInstall : [ 'App behavior parameters', 'HTTPS parameters', 'MVC parameters', 'Utility library parameters', 'Error page parameters', 'Statics parameters', 'Public folder parameters'] }) // Mock the prompt answers
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { jsPath: '/test/path'} });
           });
       });
@@ -1162,7 +1162,7 @@ describe('mkroosevelt:mainGenerator', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withOptions({ jsPath: '/test/path' })
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { jsPath:  '/test/path'} });
           });
       });
@@ -1173,7 +1173,7 @@ describe('mkroosevelt:mainGenerator', function () {
             standardInstall: false,
             sectionsToInstall : [ 'App behavior parameters', 'HTTPS parameters', 'MVC parameters', 'Utility library parameters', 'Error page parameters', 'Statics parameters', 'Public folder parameters'] }) // Mock the prompt answers
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { jsCompiler: {'nodeModule': 'roosevelt-closure-more', 'params': { 'compilation_level': 'simple_OPTIMIZATIONS' } } } });
           });
       });
@@ -1182,7 +1182,7 @@ describe('mkroosevelt:mainGenerator', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withOptions({ jsCompiler: '{"nodeModule": "roosevelt-closure-more", "params": { "compilation_level": "simple_OPTIMIZATIONS" } }' })
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { jsCompiler: {'nodeModule': 'roosevelt-closure-more', 'params': { 'compilation_level': 'simple_OPTIMIZATIONS' } } } });
           });
       });
@@ -1193,7 +1193,7 @@ describe('mkroosevelt:mainGenerator', function () {
             standardInstall: false,
             sectionsToInstall : [ 'App behavior parameters', 'HTTPS parameters', 'MVC parameters', 'Utility library parameters', 'Error page parameters', 'Statics parameters', 'Public folder parameters'] }) // Mock the prompt answers
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { jsCompilerWhitelist: ['file1Input:file1Output', 'file2Input:file2Output'] } });
           });
       });
@@ -1202,7 +1202,7 @@ describe('mkroosevelt:mainGenerator', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withOptions({ jsCompilerWhitelist: '["file1Input:file1Output", "file2Input:file2Output"]' })
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { jsCompilerWhitelist: ['file1Input:file1Output', 'file2Input:file2Output'] } });
           });
       });
@@ -1213,7 +1213,7 @@ describe('mkroosevelt:mainGenerator', function () {
             standardInstall: false,
             sectionsToInstall : [ 'App behavior parameters', 'HTTPS parameters', 'MVC parameters', 'Utility library parameters', 'Error page parameters', 'Statics parameters', 'Public folder parameters'] }) // Mock the prompt answers
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { jsCompiledOutput: '/test/path' } });
           });
       });
@@ -1222,7 +1222,7 @@ describe('mkroosevelt:mainGenerator', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withOptions({ jsCompiledOutput: '/test/path' })
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { jsCompiledOutput: '/test/path' } });
           });
       });
@@ -1236,7 +1236,7 @@ describe('mkroosevelt:mainGenerator', function () {
             standardInstall: false,
             sectionsToInstall : [ 'App behavior parameters', 'HTTPS parameters', 'MVC parameters', 'Utility library parameters', 'Error page parameters', 'Statics parameters', 'Public folder parameters'] }) // Mock the prompt answers
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { publicFolder: '/test/path' } });
           });
       });
@@ -1245,7 +1245,7 @@ describe('mkroosevelt:mainGenerator', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withOptions({ publicFolder: '/test/path' })
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { publicFolder: '/test/path' } });
           });
       });
@@ -1256,7 +1256,7 @@ describe('mkroosevelt:mainGenerator', function () {
             standardInstall: false,
             sectionsToInstall : [ 'App behavior parameters', 'HTTPS parameters', 'MVC parameters', 'Utility library parameters', 'Error page parameters', 'Statics parameters', 'Public folder parameters'] }) // Mock the prompt answers
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { favicon: '/test/path' } });
           });
       });
@@ -1265,7 +1265,7 @@ describe('mkroosevelt:mainGenerator', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withOptions({ favicon: '/test/path' })
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { favicon: '/test/path' } });
           });
       });
@@ -1276,7 +1276,7 @@ describe('mkroosevelt:mainGenerator', function () {
             standardInstall: false,
             sectionsToInstall : [ 'App behavior parameters', 'HTTPS parameters', 'MVC parameters', 'Utility library parameters', 'Error page parameters', 'Statics parameters', 'Public folder parameters'] }) // Mock the prompt answers
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { symlinksToStatics: ['css: .build1/css', 'images1', 'js: .build1/js'] } });
           });
       });
@@ -1285,7 +1285,7 @@ describe('mkroosevelt:mainGenerator', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withOptions({ symlinksToStatics: '["css: .build1/css", "images1", "js: .build1/js"]' })
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { symlinksToStatics: ['css: .build1/css', 'images1', 'js: .build1/js'] } });
           });
       });
@@ -1296,7 +1296,7 @@ describe('mkroosevelt:mainGenerator', function () {
             standardInstall: false,
             sectionsToInstall : [ 'App behavior parameters', 'HTTPS parameters', 'MVC parameters', 'Utility library parameters', 'Error page parameters', 'Statics parameters', 'Public folder parameters'] }) // Mock the prompt answers
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { versionedStatics: true } });
           });
       });
@@ -1305,7 +1305,7 @@ describe('mkroosevelt:mainGenerator', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withOptions({ versionedStatics: 'true' })
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { versionedStatics: true } });
           });
       });
@@ -1316,7 +1316,7 @@ describe('mkroosevelt:mainGenerator', function () {
             standardInstall: false,
             sectionsToInstall : [ 'App behavior parameters', 'HTTPS parameters', 'MVC parameters', 'Utility library parameters', 'Error page parameters', 'Statics parameters', 'Public folder parameters'] }) // Mock the prompt answers
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { versionedCssFile: {fileName: 'test', varName: '_new'} } });
           });
       });
@@ -1325,7 +1325,7 @@ describe('mkroosevelt:mainGenerator', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withOptions({ versionedCssFile: '{"fileName": "test", "varName": "_new"}' })
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { versionedCssFile: {fileName: 'test', varName: '_new'} } });
           });
       });
@@ -1336,7 +1336,7 @@ describe('mkroosevelt:mainGenerator', function () {
             standardInstall: false,
             sectionsToInstall : [ 'App behavior parameters', 'HTTPS parameters', 'MVC parameters', 'Utility library parameters', 'Error page parameters', 'Statics parameters', 'Public folder parameters'] }) // Mock the prompt answers
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { alwaysHostPublic: true } });;
           });
       });
@@ -1345,7 +1345,7 @@ describe('mkroosevelt:mainGenerator', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withOptions({ alwaysHostPublic: 'true' })
           .then(function (dir) {
-        tempDir = dir
+            tempDir = dir;
             assert.jsonFileContent(path.join(dir + '/package.json'), {rooseveltConfig: { alwaysHostPublic: true } });
           });
       });
