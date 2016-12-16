@@ -4,6 +4,7 @@ var assert = require('yeoman-assert'),
     JsonValidator = require('is-my-json-valid'),
     path = require('path'),
     fs = require('fs'),
+    child = require('child_process'),
     tempDir;
 
 describe('mkroosevelt:mainGenerator', function () {
@@ -15,6 +16,15 @@ describe('mkroosevelt:mainGenerator', function () {
       .then(function (dir) {
         tempDir = dir;
         assert.jsonFileContent(path.join(dir + '/package.json'), {name: 'New Project'} );;
+      });
+  });
+
+  it.skip('Should install node modules', function () {
+    this.timeout(300000) // Timeout in 5 minutes. If the npm install can't install the dpendecies in five minutes it's safe to assume something is wrong
+    return helpers.run(path.join(__dirname + '/generators/app'))
+      .withPrompts({ standardInstall: true })
+      .then(function (dir) {
+        child.execSync('npm i')
       });
   });
 
