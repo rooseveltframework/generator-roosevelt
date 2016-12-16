@@ -17,7 +17,10 @@ function showHelp() {
   console.log('');
   console.log('create an app in the current directory:');
   console.log('mkroosevelt .');
-  console.log('');
+  console.log('')
+  console.log('output usage');
+  console.log('mkroosevelt -u, -usage, --u, --usage');
+  console.log('')
   console.log('output current version:');
   console.log('mkroosevelt -v, -version, --v, --version');
   console.log('');
@@ -42,6 +45,22 @@ function createSampleApp() {
   }
 }
 
+function yeomanUsage() {
+  try {
+    yo = spawn('yo mkroosevelt', ['--help'], {
+      shell: true,
+      stdio: [
+        'inherit',
+        'inherit',
+        'inherit'
+      ]
+    });
+  }
+  catch (e) {
+    console.error(e);
+  }
+}
+
 if (notifier.update) {
   notifier.notify();
 }
@@ -51,6 +70,9 @@ if (cmd === 'create') {
 }
 else if (cmd === '-v' || cmd === '--v' || cmd === '-version' || cmd === '--version') {
   console.log(package.version);
+}
+else if (cmd === '-u' || cmd === '--u' || cmd === '-usage' || cmd === '--usage') {
+  yeomanUsage()
 }
 else if (cmd === '-genssl' || cmd === '--genssl') {
   genssl();
