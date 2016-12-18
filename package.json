@@ -1,6 +1,6 @@
 {
-  "name": "mkroosevelt",
-  "description": "Command line application for creating Roosevelt apps",
+  "name": "generator-mkroosevelt",
+  "description": "Generator for Roosevelt apps.",
   "author": "Eric Newport <kethinov@gmail.com>",
   "version": "0.1.49",
   "homepage": "https://github.com/kethinov/mkroosevelt",
@@ -12,14 +12,19 @@
   },
   "engineStrict": true,
   "dependencies": {
+    "yeoman-generator": "^0.24.1",
+    "yeoman-assert": "^2.2.2",
+    "yeoman-test": "^1.6.0",
+    "fs-extra": "^1.0.0",
     "update-notifier": "^1.0.2",
-    "fs-extra": "^0.30.0",
-    "stdio": "^0.2.7",
     "node-forge": "^0.6.42",
     "prompt": "^1.0.0"
   },
   "devDependencies": {
-    "eslint": "^2.11.1"
+    "eslint": "^2.11.1",
+    "mocha": "^3.2.0",
+    "is-my-json-valid": "^2.15.0",
+    "chai": "^3.5.0"
   },
   "eslintConfig": {
     "env": {
@@ -57,7 +62,8 @@
     "io.js",
     "roosevelt",
     "teddy",
-    "mvc"
+    "mvc",
+    "yeoman-generator"
   ],
   "bin": {
     "mkroosevelt": "mkroosevelt.js"
@@ -66,6 +72,10 @@
   "_from": "mkroosevelt@*",
   "gitHead": "",
   "scripts": {
-    "lint": "eslint ."
-  }
+    "lint": "eslint *",
+    "test": "./node_modules/.bin/mocha unitTest.js"
+  },
+  "files": [
+    "generators/app"
+  ]
 }
