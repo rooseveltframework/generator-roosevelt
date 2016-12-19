@@ -1,0 +1,86 @@
+{
+  "name": "<%= appName %>",
+  "description": "",
+  "author": "",
+  "version": "0.1.0",
+  "homepage": "",
+  "license": "",
+  "main": "app.js",
+  "readmeFilename": "",
+  "engines": {
+    "node": ">=4.0.0"
+  },
+  "engineStrict": true,
+  "dependencies": {
+    "roosevelt": "^0.6.0",
+    "teddy": "^0.3.0",
+    "roosevelt-less": "^0.2.0",
+    "roosevelt-closure": "^0.2.0"
+  },
+  "devDependencies": {
+    "jshint": "*",
+    "supervisor": "*"
+  },
+  "rooseveltConfig": {
+    "port": <%= port %>,
+    "localhostOnly": <%= localhostOnly %>,
+    "httpsPort": <%= httpsPort %>,
+    "https": <%= https %>,
+    "httpsOnly": <%= httpsOnly %>,
+    "pfx": <%= pfx %>,
+    "keyPath": <%- keyPath %>,
+    "passphrase": <%- passphrase %>,
+    "ca": <%- ca %>,
+    "requestCert": <%- requestCert %>,
+    "rejectUnauthorized": <%= rejectUnauthorized %>,
+    "disableLogger": <%= disableLogger %>,
+    "noMinify": <%= noMinify %>,
+    "multipart": <%- multipart %>,
+    "maxLagPerRequest": 2000,
+    "shutdownTimeout": <%= shutdownTimeout %>,
+    "modelsPath": "<%= modelsPath %>",
+    "modelsNodeModulesSymlink": "<%= modelsNodeModulesSymlink %>",
+    "viewsPath": "<%= viewsPath %>",
+    "viewEngine": "<%= viewEngine %>",
+    "controllersPath": "<%= controllersPath %>",
+    "error404": "<%= error404 %>",
+    "error5xx": "<%= error5xx %>",
+    "error503": "<%= error503 %>",
+    "staticsRoot": "<%= staticsRoot %>",
+    "cssPath": "<%= cssPath %>",
+    "cssCompiler": <%- cssCompiler %>,
+    "cssCompilerWhitelist": <%- cssCompilerWhitelist %>,
+    "cssCompiledOutput": "<%= cssCompiledOutput %>",
+    "jsPath": "<%= jsPath %>",
+    "jsCompiler": <%- jsCompiler %>,
+    "jsCompilerWhitelist": <%- jsCompilerWhitelist %>,
+    "jsCompiledOutput": "<%= jsCompiledOutput %>",
+    "publicFolder": "<%= publicFolder %>",
+    "favicon": "<%= favicon %>",
+    "symlinksToStatics": <%- symlinksToStatics %>,
+    "versionedStatics": <%= versionedStatics %>,
+    "versionedCssFile": <%- versionedCssFile %>,
+    "alwaysHostPublic": <%= alwaysHostPublic %>,
+    "bodyParserOptions": <%- bodyParserOptions %>,
+    "bodyParserJsonOptions": <%- bodyParserJsonOptions %>,
+    "libPath": "<%= libPath %>",
+    "libPathNodeModulesSymlink": "<%= libPathNodeModulesSymlink %>"
+  },
+  "jshintConfig": {
+    "camelcase": true,
+    "curly": true,
+    "devel": true,
+    "indent": 2,
+    "node": true
+  },
+  "private": true,
+  "repository": {
+    "private-repo": "git+ssh://somewhere:port/folder/on/server"
+  },
+  "scripts": {
+    "start": "npm run prod",
+    "prod": "supervisor -k -e js,json,less,html -i statics/.build/,.git/,public/,node_modules/ -- app.js -prod",
+    "dev": "supervisor -k -e js,json,less,html -i statics/.build/,.git/,public/,node_modules/ -- app.js -dev",
+    "test": "jshint app.js"
+  }
+}
