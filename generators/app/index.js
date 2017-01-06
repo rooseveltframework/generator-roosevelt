@@ -501,6 +501,7 @@ module.exports = generators.Base.extend({
         }
       }
       this.appName = answers.appName ? answers.appName :  this.options.appName || 'newProject';
+      this.appNameForPackageJson = answers.appName ? answers.appName.replace(/^\.|_/, '').replace(/\s+/g, '-').replace(/(.{1,213})(.*)/, '$1').toLowerCase() : this.options.appName.replace(/^\.|_/, '').replace(/\s+/g, '-').replace(/(.{1,213})(.*)/, '$1').toLowerCase() || 'new-project'; // First remove dot or underscore from beginning, trim whitesapce and replace with dash for readability, chop off any characters past 214 in length, and then put all letters to lowercase. These are all requirements of package name for npm see: https://docs.npmjs.com/files/package.json#name
       this.requestCert = answers.requestCert ?  answers.requestCert :  this.options.requestCert || 'false';
       this.rejectUnauthorized = answers.rejectUnauthorized ? answers.rejectUnauthorized :  this.options.rejectUnauthorized || 'false';
       this.bodyParserOptions = answers.bodyParserOptions ? answers.bodyParserOptions :  this.options.bodyParserOptions || '{"extended": true}';
@@ -542,7 +543,7 @@ module.exports = generators.Base.extend({
       this.templatePath('package.json'),
       this.destinationPath('package.json'),
       {
-        appName: this.appName,
+        appName: this.appNameForPackageJson,
         port: this.port,
         localhostOnly: this.localhostOnly,
         disableLogger: this.disableLogger,

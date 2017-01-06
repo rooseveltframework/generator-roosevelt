@@ -9,13 +9,23 @@ var assert = require('yeoman-assert'),
 
 describe('mkroosevelt:mainGenerator', function () {
 
-  it('Should name the project from the prompt', function () {
+  it('Should name the project from the prompt and use regex to format properly to create proper package.json name', function () {
     return helpers.run(path.join(__dirname + '/generators/app'))
       .withPrompts({ appName: 'New Project',
         standardInstall: true })
       .then(function (dir) {
         tempDir = dir;
-        assert.jsonFileContent(path.join(dir + '/package.json'), {name: 'New Project'} );;
+        assert.jsonFileContent(path.join(dir + '/package.json'), {name: 'New Project'.replace(/^\.|_/, '').replace(/\s+/g, '-').replace(/(.{1,213})(.*)/, '$1').toLowerCase()} );;
+      });
+  });
+
+  it.only('Should name the project from the prompt and display it in the homepage', function () {
+    return helpers.run(path.join(__dirname + '/generators/app'))
+      .withPrompts({ appName: 'New Project',
+        standardInstall: true })
+      .then(function (dir) {
+        tempDir = dir;
+        assert.fileContent(path.join(dir + '/mvc/models/global.js'), /appTitle: 'New Project'/)
       });
   });
 
