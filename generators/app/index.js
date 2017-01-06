@@ -49,7 +49,7 @@ module.exports = generators.Base.extend({
     this.option('versionedStatics', {desc: "If set to true, Roosevelt will prepend your app's version number from package.json to your statics URLs." })
     this.option('versionedCssFile', {desc: "If enabled, Roosevelt will create a CSS file which declares a CSS variable exposing your app's version number from package.json. Enable this option by supplying an object with the member variables fileName and varName." })
     this.option('alwaysHostPublic', {desc: "By default in production mode Roosevelt will not expose the public folder." })
-    this.option('supressClosingMessage', {desc: "Supresses closing message." })
+    this.option('supressClosingMessage', {desc: "Supresses closing message."})
   },
 
   prompting: function () {
@@ -531,6 +531,7 @@ module.exports = generators.Base.extend({
       this.versionedStatics = answers.versionedStatics ? answers.versionedStatics :  this.options.versionedStatics || 'false';
       this.versionedCssFile = answers.versionedCssFile ? answers.versionedCssFile :  this.options.versionedCssFile || "null";
       this.alwaysHostPublic = answers.alwaysHostPublic ? answers.alwaysHostPublic :  this.options.alwaysHostPublic || 'false';
+      this.supressClosingMessage = this.options.supressClosingMessage ? this.options.supressClosingMessage : false;
     }.bind(this));
   },
 
@@ -683,7 +684,7 @@ module.exports = generators.Base.extend({
   },
 
   end: function() {
-    if (this.supressClosingMessage === false && process.env.NODE_ENV !== 'test') {
+    if (this.supressClosingMessage === false && process.env.NODE_ENV.trim() !== 'test') {
       var whichHttpToShow;
 
       if (this.https == 'true' && this.httpsOnly === 'false') {

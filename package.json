@@ -73,7 +73,7 @@
   "gitHead": "",
   "scripts": {
     "lint": "eslint *",
-    "test": "./node_modules/.bin/mocha unitTest.js"
+    "test": "set NODE_ENV=test && \"./node_modules/.bin/mocha\" unitTest.js"
   },
   "files": [
     "generators/app"
