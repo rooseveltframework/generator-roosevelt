@@ -19,7 +19,7 @@ describe('mkroosevelt:mainGenerator', function () {
       });
   });
 
-  it.only('Should name the project from the prompt and display it in the homepage', function () {
+  it('Should name the project from the prompt and display it in the homepage', function () {
     return helpers.run(path.join(__dirname + '/generators/app'))
       .withPrompts({ appName: 'New Project',
         standardInstall: true })
