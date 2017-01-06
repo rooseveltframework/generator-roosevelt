@@ -32,9 +32,12 @@ describe('mkroosevelt:mainGenerator', function () {
   it.skip('Should install node modules', function () {
     this.timeout(300000) // Timeout in 5 minutes. If the npm install can't install the dpendecies in five minutes it's safe to assume something is wrong
     return helpers.run(path.join(__dirname + '/generators/app'))
-      .withPrompts({ standardInstall: true })
+      .withPrompts({
+        standardInstall: true,
+        skipInstall: false
+      })
       .then(function (dir) {
-        child.execSync('npm i')
+
       });
   });
 
