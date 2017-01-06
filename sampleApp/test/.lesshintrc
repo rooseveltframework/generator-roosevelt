@@ -1,0 +1,10 @@
+{
+  "finalNewline": false,
+  "idSelector": false,
+  "qualifyingElement": false,
+  "hexLength": "short",
+  "leadingZero": "exclude_zero",
+  "propertyUnits": {
+    "global": ["px", "%"]
+  }
+}
