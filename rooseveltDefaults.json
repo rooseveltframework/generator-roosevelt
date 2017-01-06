@@ -1,4 +1,4 @@
-var rooseveltDefaults = {
+{
   "appName": {
     "default": "newApp",
     "type": "string",
@@ -180,9 +180,9 @@ var rooseveltDefaults = {
   },
   "jsCompiler": {
     "default": {
-      "nodeModule": 'roosevelt-closure', 
+      "nodeModule": "roosevelt-closure", 
       "params": {
-        "compilation_level": 'ADVANCED_OPTIMIZATIONS'
+        "compilation_level": "ADVANCED_OPTIMIZATIONS"
       }
     },
     "type": "string",
@@ -237,6 +237,4 @@ var rooseveltDefaults = {
     "type": "boolean",
     "allowNull": false
   }
-};
-
-exports.rooseveltDefaults = rooseveltDefaults;
+}

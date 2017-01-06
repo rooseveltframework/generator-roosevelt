@@ -17,10 +17,10 @@ function showHelp() {
   console.log('');
   console.log('create an app in the current directory:');
   console.log('mkroosevelt .');
-  console.log('')
+  console.log('');
   console.log('output usage');
   console.log('mkroosevelt -u, -usage, --u, --usage');
-  console.log('')
+  console.log('');
   console.log('output current version:');
   console.log('mkroosevelt -v, -version, --v, --version');
   console.log('');
@@ -72,7 +72,7 @@ else if (cmd === '-v' || cmd === '--v' || cmd === '-version' || cmd === '--versi
   console.log(package.version);
 }
 else if (cmd === '-u' || cmd === '--u' || cmd === '-usage' || cmd === '--usage') {
-  yeomanUsage()
+  yeomanUsage();
 }
 else if (cmd === '-genssl' || cmd === '--genssl') {
   genssl();
