@@ -2,7 +2,8 @@ var generators = require('yeoman-generator'),
     fse = require('fs-extra'),
     path = require('path'),
     appDefaults = {},
-    rooseveltDefaults = fse.readJsonSync(path.join(__dirname + '/../../rooseveltDefaults.json'));
+    rooseveltDefaults = fse.readJsonSync(path.join(__dirname + '/../../rooseveltDefaults.json')),
+    currentDirectory = path.parse(process.cwd()).name;
 
 module.exports = generators.Base.extend({
   constructor: function () {
@@ -56,15 +57,49 @@ module.exports = generators.Base.extend({
 
   prompting: function () {
     var thing = this;
-    return this.prompt([{
-      when    : function(response) {
-        return !thing.options.appName
+
+    return this.prompt([
+      {
+        type    : 'input',
+        name    : 'installPath',
+        message : 'Install in current directory? If not specify an alternative path (relative to current working directory \'newDirectory/test\' or absoulte \'/Users/jsmith\' (Unix) \'C:\\Users\\jsmith\\Documents\\newDirectory\\\' (Windows))',
+        default : currentDirectory,
+        validate: function(input) {
+          var installDirectoryPath,
+              createdDirectory = false;
+
+          if (input !== currentDirectory) {
+            if (path.isAbsolute(input) === false) {
+              installDirectoryPath = path.join(process.cwd() + '/' + input);
+            }
+            else {
+              installDirectoryPath = path.normalize(input);
+            }
+
+            try {
+              fse.mkdirsSync(installDirectoryPath)
+              createdDirectory = true;
+            }
+            catch (e) {
+              createdDirectory = false;
+            }
+
+            thing.destinationRoot(installDirectoryPath)
+          }
+          else {
+            createdDirectory = true;
+          }
+
+          return createdDirectory === true ? true : 'Directory did not exist and we could not create it';
+        }
       },
+      {
       type    : 'input',
       name    : 'appName',
       message : 'Your project name',
       default : this.appname // Default to current folder name
-    }, {
+    },
+    {
       type    : 'confirm',
       name    : 'standardInstall',
       message : 'Standard Install? Selecting no will walk you through an advanced install.'
