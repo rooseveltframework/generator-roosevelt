@@ -116,7 +116,7 @@ module.exports = generators.Base.extend({
         },
         { // HTTPS
           when: function (response) {
-            return !thing.options.localhostOnly && response.standardInstall === false; // Run since they wanted the advanced install in this area
+            return response.standardInstall === false; // Run since they wanted the advanced install in this area
           },
           type    : 'input',
           name    : 'https',
@@ -125,7 +125,7 @@ module.exports = generators.Base.extend({
         },
         {
           when: function (response) {
-            return !thing.options.localhostOnly && response.standardInstall === false; // Run since they wanted the advanced install in this area
+            return response.standardInstall === false && response.https === true; // Run since they wanted the advanced install in this area
           },
           type    : 'input',
           name    : 'httpsOnly',
@@ -134,7 +134,7 @@ module.exports = generators.Base.extend({
         },
         {
           when: function (response) {
-            return !thing.options.localhostOnly && response.standardInstall === false; // Run since they wanted the advanced install in this area
+            return response.standardInstall === false && response.https === true; // Run since they wanted the advanced install in this area
           },
           type    : 'input',
           name    : 'httpsPort',
@@ -143,7 +143,7 @@ module.exports = generators.Base.extend({
         },
         {
           when: function (response) {
-            return !thing.options.localhostOnly && response.standardInstall === false; // Run since they wanted the advanced install in this area
+            return response.standardInstall === false && response.https === true; // Run since they wanted the advanced install in this area
           },
           type    : 'input',
           name    : 'pfx',
@@ -152,7 +152,7 @@ module.exports = generators.Base.extend({
         },
         {
           when: function (response) {
-            return !thing.options.localhostOnly && response.standardInstall === false; // Run since they wanted the advanced install in this area
+            return response.standardInstall === false && response.https === true; // Run since they wanted the advanced install in this area
           },
           type    : 'input',
           name    : 'keyPath',
@@ -161,7 +161,7 @@ module.exports = generators.Base.extend({
         },
         {
           when: function (response) {
-            return !thing.options.localhostOnly && response.standardInstall === false; // Run since they wanted the advanced install in this area
+            return response.standardInstall === false && response.https === true; // Run since they wanted the advanced install in this area
           },
           type    : 'input',
           name    : 'passphrase',
@@ -170,7 +170,7 @@ module.exports = generators.Base.extend({
         },
         {
           when: function (response) {
-            return !thing.options.localhostOnly && response.standardInstall === false; // Run since they wanted the advanced install in this area
+            return response.standardInstall === false && response.https === true; // Run since they wanted the advanced install in this area
           },
           type    : 'input',
           name    : 'ca',
@@ -179,7 +179,7 @@ module.exports = generators.Base.extend({
         },
         {
           when: function (response) {
-            return !thing.options.localhostOnly && response.standardInstall === false; // Run since they wanted the advanced install in this area
+            return response.standardInstall === false && response.https === true; // Run since they wanted the advanced install in this area
           },
           type    : 'input',
           name    : 'requestCert',
@@ -188,7 +188,7 @@ module.exports = generators.Base.extend({
         },
         {
           when: function (response) {
-            return !thing.options.localhostOnly && response.standardInstall === false; // Run since they wanted the advanced install in this area
+            return response.standardInstall === false && response.https === true; // Run since they wanted the advanced install in this area
           },
           type    : 'input',
           name    : 'rejectUnauthorized',
@@ -197,7 +197,7 @@ module.exports = generators.Base.extend({
         },
         {
           when: function (response) { // MVC Parameters
-            return !thing.options.localhostOnly && response.standardInstall === false; // Run since they wanted the advanced install in this area
+            return response.standardInstall === false; // Run since they wanted the advanced install in this area
           },
           type    : 'input',
           name    : 'modelsPath',
@@ -206,7 +206,7 @@ module.exports = generators.Base.extend({
         },
         {
           when: function (response) {
-            return !thing.options.localhostOnly && response.standardInstall === false; // Run since they wanted the advanced install in this area
+            return response.standardInstall === false; // Run since they wanted the advanced install in this area
           },
           type    : 'input',
           name    : 'viewsPath',
@@ -215,7 +215,7 @@ module.exports = generators.Base.extend({
         },
         {
           when: function (response) {
-            return !thing.options.localhostOnly && response.standardInstall === false; // Run since they wanted the advanced install in this area
+            return response.standardInstall === false; // Run since they wanted the advanced install in this area
           },
           type    : 'input',
           name    : 'viewEngine',
@@ -224,7 +224,7 @@ module.exports = generators.Base.extend({
         },
         {
           when: function (response) {
-            return !thing.options.localhostOnly && response.standardInstall === false; // Run since they wanted the advanced install in this area
+            return response.standardInstall === false; // Run since they wanted the advanced install in this area
           },
           type    : 'input',
           name    : 'controllersPath',
