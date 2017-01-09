@@ -414,8 +414,6 @@ describe('mkroosevelt:mainGenerator', function () {
 
   it('Template folder should contain all sample app files', function () {
     assert.file(path.join(__dirname + '/generators/app/templates' + '/.gitignore'));
-    assert.file(path.join(__dirname + '/generators/app/templates' + '/bin/mac.command'));
-    assert.file(path.join(__dirname + '/generators/app/templates' + '/bin/unix.sh'));
     assert.file(path.join(__dirname + '/generators/app/templates' + '/mvc/controllers/404.js'));
     assert.file(path.join(__dirname + '/generators/app/templates' + '/mvc/controllers/homepage.js'));
     assert.file(path.join(__dirname + '/generators/app/templates' + '/mvc/controllers/robots.txt.js'));
@@ -438,8 +436,6 @@ describe('mkroosevelt:mainGenerator', function () {
       .then(function (dir) {
         tempDir = dir;
         assert.file(path.join(dir + '/.gitignore'));
-        assert.file(path.join(dir + '/bin/mac.command'));
-        assert.file(path.join(dir + '/bin/unix.sh'));
         assert.file(path.join(dir + '/mvc/controllers/404.js'));
         assert.file(path.join(dir + '/mvc/controllers/homepage.js'));
         assert.file(path.join(dir + '/mvc/controllers/robots.txt.js'));
