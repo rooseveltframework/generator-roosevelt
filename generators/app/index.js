@@ -603,16 +603,6 @@ module.exports = generators.Base.extend({
     );
 
     this.fs.copy(
-      this.templatePath('bin/mac.command'),
-      this.destinationPath('bin/mac.command')
-    );
-
-    this.fs.copy(
-      this.templatePath('bin/unix.sh'),
-      this.destinationPath('bin/unix.sh')
-    );
-
-    this.fs.copy(
       this.templatePath('mvc/controllers/404.js'),
       this.destinationPath('mvc/controllers/404.js')
     );
