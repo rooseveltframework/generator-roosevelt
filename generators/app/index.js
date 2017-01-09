@@ -67,74 +67,20 @@ module.exports = generators.Base.extend({
     }, {
       type    : 'confirm',
       name    : 'standardInstall',
-      message : 'Standard Install? Select no will walk you through a very advanced install.'
-    },
-    {
-      when: function (response) {
-        return response.standardInstall === false; // Run since they wanted the advanced install
-      },
-      type    : 'checkbox',
-      name    : 'sectionsToInstall',
-      choices : [ "App behavior parameters", "HTTPS parameters", "MVC parameters", "Utility library parameters", "Error page parameters", "Statics parameters", "Public folder parameters"],
-      message : 'Select which parts of the Roosevelt Applications you would like to advance install'
+      message : 'Standard Install? Selecting no will walk you through an advanced install.'
     },
     { // App behvaior parameters
       when: function (response) {
-        return !thing.options.port && response.standardInstall === false && response.sectionsToInstall.indexOf('App behavior parameters') > -1; // Run since they wanted the advanced install in this area
+        return !thing.options.port && response.standardInstall === false; // Run since they wanted the advanced install in this area
       },
       type    : 'input',
       name    : 'port',
       message : 'Port: The port your app will run on. Can also be defined using NODE_PORT environment variable',
       default :  rooseveltDefaults.port.default
     },
-    {
-      when: function (response) {
-         return !thing.options.localhostOnly && response.standardInstall === false && response.sectionsToInstall.indexOf('App behavior parameters') > -1; // Run since they wanted the advanced install in this area
-      },
-      type    : 'input',
-      name    : 'localhostOnly',
-      message : 'Local Host Only: Listen only to requests coming from localhost in production mode. This is useful in environments where it is expected that HTTP requests to your app will be proxied through a more traditional web server like Apache or nginx. This setting is ignored in development mode.',
-      default :  rooseveltDefaults.localhostOnly.default
-    },
-    {
-      when: function (response) {
-         return !thing.options.localhostOnly && response.standardInstall === false && response.sectionsToInstall.indexOf('App behavior parameters') > -1; // Run since they wanted the advanced install in this area
-      },
-      type    : 'input',
-      name    : 'disableLogger',
-      message : 'Disable Logger: When this option is set to true, Roosevelt will not log HTTP requests to the console',
-      default :  rooseveltDefaults.disableLogger.default
-    },
-    {
-      when: function (response) {
-         return !thing.options.localhostOnly && response.standardInstall === false && response.sectionsToInstall.indexOf('App behavior parameters') > -1; // Run since they wanted the advanced install in this area
-      },
-      type    : 'input',
-      name    : 'noMinify',
-      message : 'No Minify: Disables the minification step in (supporting) CSS and JS compilers. Useful during dev mode. Can also be passed as the command line argument -no-minify',
-      default :  rooseveltDefaults.noMinify.default
-    },
-    {
-      when: function (response) {
-         return !thing.options.localhostOnly && response.standardInstall === false && response.sectionsToInstall.indexOf('App behavior parameters') > -1; // Run since they wanted the advanced install in this area
-      },
-      type    : 'input',
-      name    : 'multipart',
-      message : 'Multipart: Settings to pass along to formidable using formidable\'s API for multipart form processing. Access files uploaded in your controllers by examining the req.files object. Roosevelt will remove any files uploaded to the uploadDir when the request ends automatically. To keep any, be sure to move them before the request ends. To disable multipart forms entirely, set this option to false',
-      default :  JSON.stringify(rooseveltDefaults.multipart.default)
-    },
-    {
-      when: function (response) {
-         return !thing.options.localhostOnly && response.standardInstall === false && response.sectionsToInstall.indexOf('App behavior parameters') > -1; // Run since they wanted the advanced install in this area
-      },
-      type    : 'input',
-      name    : 'shutdownTimeout',
-      message : 'Shutdown Timeout: Maximum amount of time in miliseconds given to Roosevelt to gracefully shut itself down when sent the kill signal.',
-      default :  rooseveltDefaults.shutdownTimeout.default
-    },
     { // HTTPS
       when: function (response) {
-         return !thing.options.localhostOnly && response.standardInstall === false && response.sectionsToInstall.indexOf('HTTPS parameters') > -1; // Run since they wanted the advanced install in this area
+         return !thing.options.localhostOnly && response.standardInstall === false; // Run since they wanted the advanced install in this area
       },
       type    : 'input',
       name    : 'https',
@@ -143,7 +89,7 @@ module.exports = generators.Base.extend({
     },
     {
       when: function (response) {
-         return !thing.options.localhostOnly && response.standardInstall === false && response.sectionsToInstall.indexOf('HTTPS parameters') > -1; // Run since they wanted the advanced install in this area
+         return !thing.options.localhostOnly && response.standardInstall === false; // Run since they wanted the advanced install in this area
       },
       type    : 'input',
       name    : 'httpsOnly',
@@ -152,7 +98,7 @@ module.exports = generators.Base.extend({
     },
     {
       when: function (response) {
-         return !thing.options.localhostOnly && response.standardInstall === false && response.sectionsToInstall.indexOf('HTTPS parameters') > -1; // Run since they wanted the advanced install in this area
+         return !thing.options.localhostOnly && response.standardInstall === false; // Run since they wanted the advanced install in this area
       },
       type    : 'input',
       name    : 'httpsPort',
@@ -161,7 +107,7 @@ module.exports = generators.Base.extend({
     },
     {
       when: function (response) {
-         return !thing.options.localhostOnly && response.standardInstall === false && response.sectionsToInstall.indexOf('HTTPS parameters') > -1; // Run since they wanted the advanced install in this area
+         return !thing.options.localhostOnly && response.standardInstall === false; // Run since they wanted the advanced install in this area
       },
       type    : 'input',
       name    : 'pfx',
@@ -170,7 +116,7 @@ module.exports = generators.Base.extend({
     },
     {
       when: function (response) {
-         return !thing.options.localhostOnly && response.standardInstall === false && response.sectionsToInstall.indexOf('HTTPS parameters') > -1; // Run since they wanted the advanced install in this area
+         return !thing.options.localhostOnly && response.standardInstall === false; // Run since they wanted the advanced install in this area
       },
       type    : 'input',
       name    : 'keyPath',
@@ -179,7 +125,7 @@ module.exports = generators.Base.extend({
     },
     {
       when: function (response) {
-         return !thing.options.localhostOnly && response.standardInstall === false && response.sectionsToInstall.indexOf('HTTPS parameters') > -1; // Run since they wanted the advanced install in this area
+         return !thing.options.localhostOnly && response.standardInstall === false; // Run since they wanted the advanced install in this area
       },
       type    : 'input',
       name    : 'passphrase',
@@ -188,7 +134,7 @@ module.exports = generators.Base.extend({
     },
     {
       when: function (response) {
-         return !thing.options.localhostOnly && response.standardInstall === false && response.sectionsToInstall.indexOf('HTTPS parameters') > -1; // Run since they wanted the advanced install in this area
+         return !thing.options.localhostOnly && response.standardInstall === false; // Run since they wanted the advanced install in this area
       },
       type    : 'input',
       name    : 'ca',
@@ -197,7 +143,7 @@ module.exports = generators.Base.extend({
     },
     {
       when: function (response) {
-         return !thing.options.localhostOnly && response.standardInstall === false && response.sectionsToInstall.indexOf('HTTPS parameters') > -1; // Run since they wanted the advanced install in this area
+         return !thing.options.localhostOnly && response.standardInstall === false; // Run since they wanted the advanced install in this area
       },
       type    : 'input',
       name    : 'requestCert',
@@ -206,7 +152,7 @@ module.exports = generators.Base.extend({
     },
     {
       when: function (response) {
-         return !thing.options.localhostOnly && response.standardInstall === false && response.sectionsToInstall.indexOf('HTTPS parameters') > -1; // Run since they wanted the advanced install in this area
+         return !thing.options.localhostOnly && response.standardInstall === false; // Run since they wanted the advanced install in this area
       },
       type    : 'input',
       name    : 'rejectUnauthorized',
@@ -214,26 +160,8 @@ module.exports = generators.Base.extend({
       default :  rooseveltDefaults.rejectUnauthorized.default
     },
     {
-      when: function (response) {
-         return !thing.options.localhostOnly && response.standardInstall === false && response.sectionsToInstall.indexOf('HTTPS parameters') > -1; // Run since they wanted the advanced install in this area
-      },
-      type    : 'input',
-      name    : 'bodyParserOptions',
-      message : 'Body Parser Options: Controls the options for body-parser using a object.',
-      default :  JSON.stringify(rooseveltDefaults.bodyParserOptions.default)
-    },
-    {
-      when: function (response) {
-         return !thing.options.localhostOnly && response.standardInstall === false && response.sectionsToInstall.indexOf('HTTPS parameters') > -1; // Run since they wanted the advanced install in this area
-      },
-      type    : 'input',
-      name    : 'bodyParserJsonOptions',
-      message : 'Body Parse JSON Options: Controls the options for the json function of the body-parser using a object.',
-      default :  JSON.stringify(rooseveltDefaults.bodyParserJsonOptions.default)
-    },
-    {
       when: function (response) { // MVC Parameters
-         return !thing.options.localhostOnly && response.standardInstall === false && response.sectionsToInstall.indexOf('MVC parameters') > -1; // Run since they wanted the advanced install in this area
+         return !thing.options.localhostOnly && response.standardInstall === false; // Run since they wanted the advanced install in this area
       },
       type    : 'input',
       name    : 'modelsPath',
@@ -242,16 +170,7 @@ module.exports = generators.Base.extend({
     },
     {
       when: function (response) {
-         return !thing.options.localhostOnly && response.standardInstall === false && response.sectionsToInstall.indexOf('MVC parameters') > -1; // Run since they wanted the advanced install in this area
-      },
-      type    : 'input',
-      name    : 'modelsNodeModulesSymlink',
-      message : 'Modles Node Modules Symlink: Name of the symlink to make in node_modules pointing to your models directory. Set to false to disable making this symlink.',
-      default :  rooseveltDefaults.modelsNodeModulesSymlink.default
-    },
-    {
-      when: function (response) {
-         return !thing.options.localhostOnly && response.standardInstall === false && response.sectionsToInstall.indexOf('MVC parameters') > -1; // Run since they wanted the advanced install in this area
+         return !thing.options.localhostOnly && response.standardInstall === false; // Run since they wanted the advanced install in this area
       },
       type    : 'input',
       name    : 'viewsPath',
@@ -260,7 +179,7 @@ module.exports = generators.Base.extend({
     },
     {
       when: function (response) {
-         return !thing.options.localhostOnly && response.standardInstall === false && response.sectionsToInstall.indexOf('MVC parameters') > -1; // Run since they wanted the advanced install in this area
+         return !thing.options.localhostOnly && response.standardInstall === false; // Run since they wanted the advanced install in this area
       },
       type    : 'input',
       name    : 'viewEngine',
@@ -269,192 +188,12 @@ module.exports = generators.Base.extend({
     },
     {
       when: function (response) {
-         return !thing.options.localhostOnly && response.standardInstall === false && response.sectionsToInstall.indexOf('MVC parameters') > -1; // Run since they wanted the advanced install in this area
+         return !thing.options.localhostOnly && response.standardInstall === false; // Run since they wanted the advanced install in this area
       },
       type    : 'input',
       name    : 'controllersPath',
       message : 'Controllers Path: Relative path on filesystem to where your controller files are located.',
       default :  rooseveltDefaults.controllersPath.default
-    },
-    {
-      when: function (response) { // Utility Library Parameters
-         return !thing.options.localhostOnly && response.standardInstall === false && response.sectionsToInstall.indexOf('Utility library parameters') > -1; // Run since they wanted the advanced install in this area
-      },
-      type    : 'input',
-      name    : 'libPath',
-      message : 'Lib Path: Relative path on filesystem to where your optional utility library files are located.',
-      default :  rooseveltDefaults.libPath.default
-    },
-    {
-      when: function (response) {
-         return !thing.options.localhostOnly && response.standardInstall === false && response.sectionsToInstall.indexOf('Utility library parameters') > -1; // Run since they wanted the advanced install in this area
-      },
-      type    : 'input',
-      name    : 'libPathNodeModulesSymlink',
-      message : 'Lib Path Node Modules Symlink: Name of the symlink to make in node_modules pointing to your lib directory. Set to false to disable making this symlink',
-      default :  rooseveltDefaults.libPathNodeModulesSymlink.default
-    },
-    {
-      when: function (response) { // Error Page Parameters
-         return !thing.options.localhostOnly && response.standardInstall === false && response.sectionsToInstall.indexOf('Error page parameters') > -1; // Run since they wanted the advanced install in this area
-      },
-      type    : 'input',
-      name    : 'error404',
-      message : 'Error 404: Relative path on filesystem to where your "404 Not Found" controller is located. If you do not supply one, Roosevelt will use its default 404 controller instead',
-      default :  rooseveltDefaults.error404.default
-    },
-    {
-      when: function (response) {
-         return !thing.options.localhostOnly && response.standardInstall === false && response.sectionsToInstall.indexOf('Error page parameters') > -1; // Run since they wanted the advanced install in this area
-      },
-      type    : 'input',
-      name    : 'error5xx',
-      message : 'Error 5xx: Relative path on filesystem to where your "Internal Server Error" controller is located. If you do not supply one, Roosevelt will use its default controller instead.',
-      default :  rooseveltDefaults.error5xx.default
-    },
-    {
-      when: function (response) {
-         return !thing.options.localhostOnly && response.standardInstall === false && response.sectionsToInstall.indexOf('Error page parameters') > -1; // Run since they wanted the advanced install in this area
-      },
-      type    : 'input',
-      name    : 'error503',
-      message : 'Error 503: Relative path on filesystem to where your "503 Service Unavailable" controller is located. If you do not supply one, Roosevelt will use its default 503 controller instead.',
-      default :  rooseveltDefaults.error503.default
-    },
-    {
-      when: function (response) { // Statics
-         return !thing.options.localhostOnly && response.standardInstall === false && response.sectionsToInstall.indexOf('Statics parameters') > -1; // Run since they wanted the advanced install in this area
-      },
-      type    : 'input',
-      name    : 'staticsRoot',
-      message : 'Statics Root: Relative path on filesystem to where your static assets are located. By default this folder will not be made public, but is instead meant to store unprocessed or uncompressed source assets.',
-      default :  rooseveltDefaults.staticsRoot.default
-    },
-    {
-      when: function (response) {
-         return !thing.options.localhostOnly && response.standardInstall === false && response.sectionsToInstall.indexOf('Statics parameters') > -1; // Run since they wanted the advanced install in this area
-      },
-      type    : 'input',
-      name    : 'cssPath',
-      message : 'CSS Path: Subdirectory within staticsRoot where your CSS files are located. By default this folder will not be made public, but is instead meant to store unminified CSS source files which will be minified and stored elsewhere when the app is started.',
-      default :  rooseveltDefaults.cssPath.default
-    },
-    {
-      when: function (response) {
-         return !thing.options.localhostOnly && response.standardInstall === false && response.sectionsToInstall.indexOf('Statics parameters') > -1; // Run since they wanted the advanced install in this area
-      },
-      type    : 'input',
-      name    : 'cssCompiler',
-      message : 'CSS Compiler: Which CSS preprocessor, if any, to use. Must also be marked as a dependency in your app\'s package.json. Set to none to use no CSS preprocessor. ** Also by default the module roosevelt-less is marked as a dependency in package.json. **',
-      default :  JSON.stringify(rooseveltDefaults.cssCompiler.default)
-    },
-    {
-      when: function (response) {
-         return !thing.options.localhostOnly && response.standardInstall === false && response.sectionsToInstall.indexOf('Statics parameters') > -1; // Run since they wanted the advanced install in this area
-      },
-      type    : 'input',
-      name    : 'cssCompilerWhitelist',
-      message : 'CSS Compiler Whitelist: Whitelist of CSS files to compile as an array. Leave undefined to compile all files',
-      default :  rooseveltDefaults.cssCompilerWhitelist.default || 'null'
-    },
-    {
-      when: function (response) {
-         return !thing.options.localhostOnly && response.standardInstall === false && response.sectionsToInstall.indexOf('Statics parameters') > -1; // Run since they wanted the advanced install in this area
-      },
-      type    : 'input',
-      name    : 'cssCompiledOutput',
-      message : 'CSS Compiled Output: Where to place compiled CSS files. This folder will be made public by default.',
-      default :  rooseveltDefaults.cssCompiledOutput.default
-    },
-    {
-      when: function (response) {
-         return !thing.options.localhostOnly && response.standardInstall === false && response.sectionsToInstall.indexOf('Statics parameters') > -1; // Run since they wanted the advanced install in this area
-      },
-      type    : 'input',
-      name    : 'jsPath',
-      message : 'JS Path: Subdirectory within staticsRoot where your JS files are located. By default this folder will not be made public, but is instead meant to store unminified JS source files which will be minified and stored elsewhere when the app is started.',
-      default :  rooseveltDefaults.jsPath.default
-    },
-    {
-      when: function (response) {
-         return !thing.options.localhostOnly && response.standardInstall === false && response.sectionsToInstall.indexOf('Statics parameters') > -1; // Run since they wanted the advanced install in this area
-      },
-      type    : 'input',
-      name    : 'jsCompiler',
-      message : 'JS Compiler: Which JS minifier, if any, to use. Must also be marked as a dependency in your app\'s package.json. Set to none to use no JS minifier.',
-      default :  JSON.stringify(rooseveltDefaults.jsCompiler.default)
-    },
-    {
-      when: function (response) {
-         return !thing.options.localhostOnly && response.standardInstall === false && response.sectionsToInstall.indexOf('Statics parameters') > -1; // Run since they wanted the advanced install in this area
-      },
-      type    : 'input',
-      name    : 'jsCompilerWhitelist',
-      message : 'JS Compiler Whitelist: Whitelist of JS files to compile as an array. Leave undefined to compile all files. Supply a : character after each file name to delimit an alternate file path and/or file name for the minified file',
-      default :  rooseveltDefaults.jsCompilerWhitelist.default || 'null'
-    },
-    {
-      when: function (response) {
-         return !thing.options.localhostOnly && response.standardInstall === false && response.sectionsToInstall.indexOf('Statics parameters') > -1; // Run since they wanted the advanced install in this area
-      },
-      type    : 'input',
-      name    : 'jsCompiledOutput',
-      message : 'JS Compiled Output: Where to place compiled JS files. This folder will be made public by default.',
-      default :  rooseveltDefaults.jsCompiledOutput.default
-    },
-    {
-      when: function (response) { // Public Folder
-         return !thing.options.localhostOnly && response.standardInstall === false && response.sectionsToInstall.indexOf('Public folder parameters') > -1; // Run since they wanted the advanced install in this area
-      },
-      type    : 'input',
-      name    : 'publicFolder',
-      message : 'Public Folder: All files and folders specified in this path will be exposed as static files.',
-      default :  rooseveltDefaults.publicFolder.default
-    },
-    {
-      when: function (response) {
-         return !thing.options.localhostOnly && response.standardInstall === false && response.sectionsToInstall.indexOf('Public folder parameters') > -1; // Run since they wanted the advanced install in this area
-      },
-      type    : 'input',
-      name    : 'favicon',
-      message : 'Favicon: Location of your favicon file',
-      default :  rooseveltDefaults.favicon.default
-    },
-    {
-      when: function (response) {
-         return !thing.options.localhostOnly && response.standardInstall === false && response.sectionsToInstall.indexOf('Public folder parameters') > -1; // Run since they wanted the advanced install in this area
-      },
-      type    : 'input',
-      name    : 'symlinksToStatics',
-      message : 'Symlink To Statics: Array of folders from staticsRoot to make symlinks to in your public folder, formatted as either \'linkName: linkTarget\' or simply \'linkName\' if the link target has the same name as the desired link name.',
-      default :  JSON.stringify(rooseveltDefaults.symlinksToStatics.default)
-    },
-    {
-      when: function (response) {
-         return !thing.options.localhostOnly && response.standardInstall === false && response.sectionsToInstall.indexOf('Public folder parameters') > -1; // Run since they wanted the advanced install in this area
-      },
-      type    : 'input',
-      name    : 'versionedStatics',
-      message : 'Versioned Statics: If set to true, Roosevelt will prepend your app\'s version number from package.json to your statics URLs. Versioning your statics is useful for resetting your users\' browser cache when you release a new version.',
-      default :  rooseveltDefaults.versionedStatics.default
-    },
-    {
-      when: function (response) {
-         return !thing.options.localhostOnly && response.standardInstall === false && response.sectionsToInstall.indexOf('Public folder parameters') > -1; // Run since they wanted the advanced install in this area
-      },
-      type    : 'input',
-      name    : 'versionedCssFile',
-      message : 'Versioned CSS Files: If enabled, Roosevelt will create a CSS file which declares a CSS variable exposing your app\'s version number from package.json. Enable this option by supplying an object with the member variables fileName and varName.',
-      default :  rooseveltDefaults.versionedCssFile.default || 'null'
-    },
-    {
-      when: function (response) {
-         return !thing.options.localhostOnly && response.standardInstall === false && response.sectionsToInstall.indexOf('Public folder parameters') > -1; // Run since they wanted the advanced install in this area
-      },
-      type    : 'input',
-      name    : 'alwaysHostPublic',
-      message : 'Always Host Public: By default in production mode Roosevelt will not expose the public folder. It\'s recommended instead that you host the public folder yourself directly through another web server, such as Apache or nginx. However, if you wish to override this behavior and have Roosevelt host your public folder even in production mode, then set this setting to true.',
-      default :  rooseveltDefaults.alwaysHostPublic.default
     }]).then(function (answers) {
       this.port = answers.port ? answers.port : this.options.port || '43711';
       this.localhostOnly = answers.localhostOnly ? answers.localhostOnly :  this.options.localhostOnly || 'true';

@@ -509,7 +509,7 @@ describe('mkroosevelt:mainGenerator', function () {
   describe('Advanced Install package.json Configuring', function () {
     // App behavior parameters
     describe('App behavior parameters', function () {
-      it('configures the port by prompt', function () {
+      it.skip('configures the port by prompt', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withPrompts({ port: 4321,
             standardInstall: false,
@@ -529,7 +529,7 @@ describe('mkroosevelt:mainGenerator', function () {
           });
       });
 
-      it('configures localhostOnly by prompt', function () {
+      it.skip('configures localhostOnly by prompt', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withPrompts({ localhostOnly: 'false',
             standardInstall: false,
@@ -549,7 +549,7 @@ describe('mkroosevelt:mainGenerator', function () {
           });
       });
 
-      it('configures disableLogger by prompt', function () {
+      it.skip('configures disableLogger by prompt', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withPrompts({ disableLogger: 'true',
             standardInstall: false,
@@ -569,7 +569,7 @@ describe('mkroosevelt:mainGenerator', function () {
           });
       });
 
-      it('configures noMinify by prompt', function () {
+      it.skip('configures noMinify by prompt', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withPrompts({ noMinify: 'true',
             standardInstall: false,
@@ -589,7 +589,7 @@ describe('mkroosevelt:mainGenerator', function () {
           });
       });
 
-      it('configures multipart by prompt', function () {
+      it.skip('configures multipart by prompt', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withPrompts({ multipart: '{"multiples": false}',
             standardInstall: false,
@@ -609,7 +609,7 @@ describe('mkroosevelt:mainGenerator', function () {
           });
       });
 
-      it('configures shutdownTimeout by prompt', function () {
+      it.skip('configures shutdownTimeout by prompt', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withPrompts({ shutdownTimeout: '10',
             standardInstall: false,
@@ -632,7 +632,7 @@ describe('mkroosevelt:mainGenerator', function () {
 
     // HTTPS
     describe('HTTPS Parameters', function () {
-      it('configures HTTPS by prompt', function () {
+      it.skip('configures HTTPS by prompt', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withPrompts({ https: 'false',
             standardInstall: false,
@@ -652,7 +652,7 @@ describe('mkroosevelt:mainGenerator', function () {
           });
       });
 
-      it('configures HTTPS only by prompt', function () {
+      it.skip('configures HTTPS only by prompt', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withPrompts({ httpsOnly: 'false',
             standardInstall: false,
@@ -672,7 +672,7 @@ describe('mkroosevelt:mainGenerator', function () {
           });
       });
 
-      it('configures HTTPS port by prompt', function () {
+      it.skip('configures HTTPS port by prompt', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withPrompts({ httpsPort: '1234',
             standardInstall: false,
@@ -692,7 +692,7 @@ describe('mkroosevelt:mainGenerator', function () {
           });
       });
 
-      it('configures pfx by prompt', function () {
+      it.skip('configures pfx by prompt', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
 
           .withPrompts({ pfx: 'true',
@@ -713,7 +713,7 @@ describe('mkroosevelt:mainGenerator', function () {
           });
       });
 
-      it('configures keyPath by prompt', function () {
+      it.skip('configures keyPath by prompt', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withPrompts({ keyPath: 'cert',
             standardInstall: false,
@@ -733,7 +733,7 @@ describe('mkroosevelt:mainGenerator', function () {
           });
       });
 
-      it('configures passphrase by prompt', function () {
+      it.skip('configures passphrase by prompt', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withPrompts({ passphrase: '1234Test!',
             standardInstall: false,
@@ -753,7 +753,7 @@ describe('mkroosevelt:mainGenerator', function () {
           });
       });
 
-      it('configures ca by prompt', function () {
+      it.skip('configures ca by prompt', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withPrompts({ ca: '/test/directory',
             standardInstall: false,
@@ -773,7 +773,7 @@ describe('mkroosevelt:mainGenerator', function () {
           });
       });
 
-      it('configures requestCert by prompt', function () {
+      it.skip('configures requestCert by prompt', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withPrompts({ requestCert: 'true',
             standardInstall: false,
@@ -793,7 +793,7 @@ describe('mkroosevelt:mainGenerator', function () {
           });
       });
 
-      it('configures rejectUnauthorized by prompt', function () {
+      it.skip('configures rejectUnauthorized by prompt', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withPrompts({ rejectUnauthorized: 'true',
             standardInstall: false,
@@ -813,7 +813,7 @@ describe('mkroosevelt:mainGenerator', function () {
           });
       });
 
-      it('configures bodyParserOptions by prompt', function () {
+      it.skip('configures bodyParserOptions by prompt', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withPrompts({ bodyParserOptions: '{"extended": false}',
             standardInstall: false,
@@ -833,7 +833,7 @@ describe('mkroosevelt:mainGenerator', function () {
           });
       });
 
-      it('configures bodyParserJsonOptions by prompt', function () {
+      it.skip('configures bodyParserJsonOptions by prompt', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withPrompts({ bodyParserJsonOptions: '{"inflate": true}',
             standardInstall: false,
@@ -856,7 +856,7 @@ describe('mkroosevelt:mainGenerator', function () {
 
     // MVC Parameters
     describe('MVC parameters', function () {
-      it('configures modelsPath by prompt', function () {
+      it.skip('configures modelsPath by prompt', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withPrompts({ modelsPath: '/test/path',
             standardInstall: false,
@@ -876,7 +876,7 @@ describe('mkroosevelt:mainGenerator', function () {
           });
       });
 
-      it('configures modelsNodeModulesSymlink by prompt', function () {
+      it.skip('configures modelsNodeModulesSymlink by prompt', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withPrompts({ modelsNodeModulesSymlink: 'testFolder',
             standardInstall: false,
@@ -896,7 +896,7 @@ describe('mkroosevelt:mainGenerator', function () {
           });
       });
 
-      it('configures viewsPath by prompt', function () {
+      it.skip('configures viewsPath by prompt', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withPrompts({ viewsPath: '/test/path',
             standardInstall: false,
@@ -916,7 +916,7 @@ describe('mkroosevelt:mainGenerator', function () {
           });
       });
 
-      it('configures viewEngine by prompt', function () {
+      it.skip('configures viewEngine by prompt', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withPrompts({ viewEngine: 'css: teddyAlternate',
             standardInstall: false,
@@ -936,7 +936,7 @@ describe('mkroosevelt:mainGenerator', function () {
           });
       });
 
-      it('configures controllersPath by prompt', function () {
+      it.skip('configures controllersPath by prompt', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withPrompts({ controllersPath: '/test/path',
             standardInstall: false,
@@ -959,7 +959,7 @@ describe('mkroosevelt:mainGenerator', function () {
 
     // Utility library parameters
     describe('Utility library parameters', function () {
-      it('configures libPath by prompt', function () {
+      it.skip('configures libPath by prompt', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withPrompts({ libPath: '/test/path',
             standardInstall: false,
@@ -979,7 +979,7 @@ describe('mkroosevelt:mainGenerator', function () {
           });
       });
 
-      it('configures libPathNodeModulesSymlink by prompt', function () {
+      it.skip('configures libPathNodeModulesSymlink by prompt', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withPrompts({ libPathNodeModulesSymlink: 'folderToSymlinkTo',
             standardInstall: false,
@@ -1002,7 +1002,7 @@ describe('mkroosevelt:mainGenerator', function () {
 
     // Error page parameter
     describe('Error page parameter', function () {
-      it('configures error404 by prompt', function () {
+      it.skip('configures error404 by prompt', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withPrompts({ error404: 'newErrorPage.html',
             standardInstall: false,
@@ -1022,7 +1022,7 @@ describe('mkroosevelt:mainGenerator', function () {
           });
       });
 
-      it('configures error5xx by prompt', function () {
+      it.skip('configures error5xx by prompt', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withPrompts({ error5xx: 'newErrorPage.html',
             standardInstall: false,
@@ -1042,7 +1042,7 @@ describe('mkroosevelt:mainGenerator', function () {
           });
       });
 
-      it('configures error503 by prompt', function () {
+      it.skip('configures error503 by prompt', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withPrompts({ error503: 'newErrorPage.html',
             standardInstall: false,
@@ -1065,7 +1065,7 @@ describe('mkroosevelt:mainGenerator', function () {
 
     // Statics parameters
     describe('Statics parameters', function () {
-      it('configures staticsRoot by prompt', function () {
+      it.skip('configures staticsRoot by prompt', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withPrompts({ staticsRoot: '/test/path',
             standardInstall: false,
@@ -1085,7 +1085,7 @@ describe('mkroosevelt:mainGenerator', function () {
           });
       });
 
-      it('configures cssPath by prompt', function () {
+      it.skip('configures cssPath by prompt', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withPrompts({ cssPath: '/test/path',
             standardInstall: false,
@@ -1105,7 +1105,7 @@ describe('mkroosevelt:mainGenerator', function () {
           });
       });
 
-      it('configures cssCompiler by prompt', function () {
+      it.skip('configures cssCompiler by prompt', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withPrompts({ cssCompiler: '{"nodeModule": "roosevelt-more", "params": { "compress": false } }',
             standardInstall: false,
@@ -1125,7 +1125,7 @@ describe('mkroosevelt:mainGenerator', function () {
           });
       });
 
-      it('configures cssCompilerWhitelist by prompt', function () {
+      it.skip('configures cssCompilerWhitelist by prompt', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withPrompts({ cssCompilerWhitelist: '["file1", "file2"]',
             standardInstall: false,
@@ -1145,7 +1145,7 @@ describe('mkroosevelt:mainGenerator', function () {
           });
       });
 
-      it('configures cssCompiledOutput by prompt', function () {
+      it.skip('configures cssCompiledOutput by prompt', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withPrompts({ cssCompiledOutput: '/test/path',
             standardInstall: false,
@@ -1165,7 +1165,7 @@ describe('mkroosevelt:mainGenerator', function () {
           });
       });
 
-      it('configures jsPath by prompt', function () {
+      it.skip('configures jsPath by prompt', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withPrompts({ jsPath: '/test/path',
             standardInstall: false,
@@ -1185,7 +1185,7 @@ describe('mkroosevelt:mainGenerator', function () {
           });
       });
 
-      it('configures jsCompiler by prompt', function () {
+      it.skip('configures jsCompiler by prompt', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withPrompts({ jsCompiler: '{"nodeModule": "roosevelt-closure-more", "params": { "compilation_level": "simple_OPTIMIZATIONS" } }',
             standardInstall: false,
@@ -1205,7 +1205,7 @@ describe('mkroosevelt:mainGenerator', function () {
           });
       });
 
-      it('configures jsCompilerWhitelist by prompt', function () {
+      it.skip('configures jsCompilerWhitelist by prompt', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withPrompts({ jsCompilerWhitelist: '["file1Input:file1Output", "file2Input:file2Output"]',
             standardInstall: false,
@@ -1225,7 +1225,7 @@ describe('mkroosevelt:mainGenerator', function () {
           });
       });
 
-      it('configures jsCompiledOutput by prompt', function () {
+      it.skip('configures jsCompiledOutput by prompt', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withPrompts({ jsCompiledOutput: '/test/path',
             standardInstall: false,
@@ -1248,7 +1248,7 @@ describe('mkroosevelt:mainGenerator', function () {
 
     // Public folder parameters
     describe('Public folder parameters', function () {
-      it('configures publicFolder by prompt', function () {
+      it.skip('configures publicFolder by prompt', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withPrompts({ publicFolder: '/test/path',
             standardInstall: false,
@@ -1268,7 +1268,7 @@ describe('mkroosevelt:mainGenerator', function () {
           });
       });
 
-      it('configures favicon by prompt', function () {
+      it.skip('configures favicon by prompt', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withPrompts({ favicon: '/test/path',
             standardInstall: false,
@@ -1288,7 +1288,7 @@ describe('mkroosevelt:mainGenerator', function () {
           });
       });
 
-      it('configures symlinksToStatics by prompt', function () {
+      it.skip('configures symlinksToStatics by prompt', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withPrompts({ symlinksToStatics: '["css: .build1/css", "images1", "js: .build1/js"]',
             standardInstall: false,
@@ -1308,7 +1308,7 @@ describe('mkroosevelt:mainGenerator', function () {
           });
       });
 
-      it('configures versionedStatics by prompt', function () {
+      it.skip('configures versionedStatics by prompt', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withPrompts({ versionedStatics: 'true',
             standardInstall: false,
@@ -1328,7 +1328,7 @@ describe('mkroosevelt:mainGenerator', function () {
           });
       });
 
-      it('configures versionedCssFile by prompt', function () {
+      it.skip('configures versionedCssFile by prompt', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withPrompts({ versionedCssFile: '{"fileName": "test", "varName": "_new"}',
             standardInstall: false,
@@ -1348,7 +1348,7 @@ describe('mkroosevelt:mainGenerator', function () {
           });
       });
 
-      it('configures alwaysHostPublic by prompt', function () {
+      it.skip('configures alwaysHostPublic by prompt', function () {
         return helpers.run(path.join(__dirname + '/generators/app'))
           .withPrompts({ alwaysHostPublic: 'true',
             standardInstall: false,
