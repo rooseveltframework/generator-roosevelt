@@ -58,257 +58,259 @@ module.exports = generators.Base.extend({
   prompting: function () {
     var thing = this;
 
-    return this.prompt([
-      {
-        type    : 'input',
-        name    : 'installPath',
-        message : 'Install in current directory? If not specify an alternative path (relative to current working directory \'newDirectory/test\' or absoulte \'/Users/jsmith\' (Unix) \'C:\\Users\\jsmith\\Documents\\newDirectory\\\' (Windows))',
-        default : currentDirectory,
-        validate: function(input) {
-          var installDirectoryPath,
-              createdDirectory = false;
+    return this.prompt(
+      [
+        {
+          type    : 'input',
+          name    : 'installPath',
+          message : 'Install in current directory? If not specify an alternative path (relative to current working directory \'newDirectory/test\' or absoulte \'/Users/jsmith\' (Unix) \'C:\\Users\\jsmith\\Documents\\newDirectory\\\' (Windows))',
+          default : currentDirectory,
+          validate: function(input) {
+            var installDirectoryPath,
+                createdDirectory = false;
 
-          if (input !== currentDirectory) {
-            if (path.isAbsolute(input) === false) {
-              installDirectoryPath = path.join(process.cwd() + '/' + input);
+            if (input !== currentDirectory) {
+              if (path.isAbsolute(input) === false) {
+                installDirectoryPath = path.join(process.cwd() + '/' + input);
+              }
+              else {
+                installDirectoryPath = path.normalize(input);
+              }
+
+              try {
+                fse.mkdirsSync(installDirectoryPath)
+                createdDirectory = true;
+              }
+              catch (e) {
+                createdDirectory = false;
+              }
+
+              thing.destinationRoot(installDirectoryPath)
             }
             else {
-              installDirectoryPath = path.normalize(input);
-            }
-
-            try {
-              fse.mkdirsSync(installDirectoryPath)
               createdDirectory = true;
             }
-            catch (e) {
-              createdDirectory = false;
-            }
 
-            thing.destinationRoot(installDirectoryPath)
+            return createdDirectory === true ? true : 'Directory did not exist and we could not create it';
+          }
+        },
+        {
+          type    : 'input',
+          name    : 'appName',
+          message : 'Your project name',
+          default : this.appname // Default to current folder name
+        },
+        {
+          type    : 'confirm',
+          name    : 'standardInstall',
+          message : 'Standard Install? Selecting no will walk you through an advanced install.'
+        },
+        { // App behvaior parameters
+          when: function (response) {
+            return !thing.options.port && response.standardInstall === false; // Run since they wanted the advanced install in this area
+          },
+          type    : 'input',
+          name    : 'port',
+          message : 'Port: The port your app will run on. Can also be defined using NODE_PORT environment variable',
+          default :  rooseveltDefaults.port.default
+        },
+        { // HTTPS
+          when: function (response) {
+            return !thing.options.localhostOnly && response.standardInstall === false; // Run since they wanted the advanced install in this area
+          },
+          type    : 'input',
+          name    : 'https',
+          message : 'HTTPS: Run an HTTPS server using Roosevelt.',
+          default :  rooseveltDefaults.https.default
+        },
+        {
+          when: function (response) {
+            return !thing.options.localhostOnly && response.standardInstall === false; // Run since they wanted the advanced install in this area
+          },
+          type    : 'input',
+          name    : 'httpsOnly',
+          message : 'HTTPS Only: If running an HTTPS server, determines whether or not the default HTTP server will be disabled',
+          default :  rooseveltDefaults.httpsOnly.default
+        },
+        {
+          when: function (response) {
+            return !thing.options.localhostOnly && response.standardInstall === false; // Run since they wanted the advanced install in this area
+          },
+          type    : 'input',
+          name    : 'httpsPort',
+          message : 'HTTPS Port: The port your app will run an HTTPS server on, if enabled.',
+          default :  rooseveltDefaults.httpsPort.default
+        },
+        {
+          when: function (response) {
+            return !thing.options.localhostOnly && response.standardInstall === false; // Run since they wanted the advanced install in this area
+          },
+          type    : 'input',
+          name    : 'pfx',
+          message : 'Pfx: Specify whether or not your app will use pfx or standard certification',
+          default :  rooseveltDefaults.pfx.default
+        },
+        {
+          when: function (response) {
+            return !thing.options.localhostOnly && response.standardInstall === false; // Run since they wanted the advanced install in this area
+          },
+          type    : 'input',
+          name    : 'keyPath',
+          message : 'Key Path: Stores the file paths of specific key/certificate to be used by the server. Object values: pfx, key, cert -- use one of {pfx} or {key, cert}',
+          default :  rooseveltDefaults.keyPath.default || 'null'
+        },
+        {
+          when: function (response) {
+            return !thing.options.localhostOnly && response.standardInstall === false; // Run since they wanted the advanced install in this area
+          },
+          type    : 'input',
+          name    : 'passphrase',
+          message : 'Passphrase: Supply the HTTPS server with the password for the certificate being used, if necessary.',
+          default :  rooseveltDefaults.passphrase.default || 'null'
+        },
+        {
+          when: function (response) {
+            return !thing.options.localhostOnly && response.standardInstall === false; // Run since they wanted the advanced install in this area
+          },
+          type    : 'input',
+          name    : 'ca',
+          message : 'Ca: Certificate authority to match client certificates against, as a file path or array of file paths.',
+          default :  rooseveltDefaults.ca.default || 'null'
+        },
+        {
+          when: function (response) {
+            return !thing.options.localhostOnly && response.standardInstall === false; // Run since they wanted the advanced install in this area
+          },
+          type    : 'input',
+          name    : 'requestCert',
+          message : 'Request Cert: Request a certificate from a client and attempt to verify it',
+          default :  rooseveltDefaults.requestCert.default
+        },
+        {
+          when: function (response) {
+            return !thing.options.localhostOnly && response.standardInstall === false; // Run since they wanted the advanced install in this area
+          },
+          type    : 'input',
+          name    : 'rejectUnauthorized',
+          message : 'Reject Unauthorized: Upon failing to authorize a user with supplied CA(s), reject their connection entirely',
+          default :  rooseveltDefaults.rejectUnauthorized.default
+        },
+        {
+          when: function (response) { // MVC Parameters
+            return !thing.options.localhostOnly && response.standardInstall === false; // Run since they wanted the advanced install in this area
+          },
+          type    : 'input',
+          name    : 'modelsPath',
+          message : 'Models Path: Relative path on filesystem to where your model files are located.',
+          default :  rooseveltDefaults.modelsPath.default
+        },
+        {
+          when: function (response) {
+            return !thing.options.localhostOnly && response.standardInstall === false; // Run since they wanted the advanced install in this area
+          },
+          type    : 'input',
+          name    : 'viewsPath',
+          message : 'Views Path: Relative path on filesystem to where your view files are located.',
+          default :  rooseveltDefaults.viewsPath.default
+        },
+        {
+          when: function (response) {
+            return !thing.options.localhostOnly && response.standardInstall === false; // Run since they wanted the advanced install in this area
+          },
+          type    : 'input',
+          name    : 'viewEngine',
+          message : 'View Engine: What templating engine to use, formatted as \'fileExtension: nodeModule\'. Supply an array of engines to use in that format in order to make use of multiple templating engines. Each engine you use must also be marked as a dependency in your app\'s package.json. Whichever engine you supply first with this parameter will be considered the default. Set to none to use no templating engine. ** Also by default the module teddy is marked as a dependency in package.json **',
+          default :  rooseveltDefaults.viewEngine.default
+        },
+        {
+          when: function (response) {
+            return !thing.options.localhostOnly && response.standardInstall === false; // Run since they wanted the advanced install in this area
+          },
+          type    : 'input',
+          name    : 'controllersPath',
+          message : 'Controllers Path: Relative path on filesystem to where your controller files are located.',
+          default :  rooseveltDefaults.controllersPath.default
+        }
+      ]).then(function (answers) {
+        this.port = answers.port ? answers.port : this.options.port || '43711';
+        this.localhostOnly = answers.localhostOnly ? answers.localhostOnly :  this.options.localhostOnly || 'true';
+        this.disableLogger = answers.disableLogger ? answers.disableLogger :  this.options.disableLogger || 'false';
+        this.noMinify = answers.noMinify ? answers.noMinify :  this.options.noMinify || 'false';
+        this.multipart = answers.multipart ? answers.multipart :  this.options.multipart || '{"multiples": true}';
+        this.shutdownTimeout = answers.shutdownTimeout ? answers.shutdownTimeout :  this.options.shutdownTimeout || '30000';
+        this.https = answers.https ? answers.https :  this.options.https || 'false';
+        this.httpsOnly = answers.httpsOnly ? answers.httpsOnly :  this.options.httpsOnly || 'false';
+        this.httpsPort = answers.httpsPort ? answers.httpsPort :  this.options.httpsPort || '43733';
+        this.pfx = answers.pfx ? answers.pfx :  this.options.pfx || 'false';
+        // this.keyPath = answers.keyPath ? '"' + answers.keyPath + '"' : this.options.keyPath !== undefined ? '"' + this.options.keyPath + '"' : null;
+        if (answers.keyPath) {
+          this.keyPath = '"' + answers.keyPath + '"';
+        }
+        else {
+          if (this.options.keyPath !== undefined) {
+            this.keyPath = '"' + this.options.keyPath + '"'
           }
           else {
-            createdDirectory = true;
+            this.keyPath = 'null';
           }
-
-          return createdDirectory === true ? true : 'Directory did not exist and we could not create it';
         }
-      },
-      {
-      type    : 'input',
-      name    : 'appName',
-      message : 'Your project name',
-      default : this.appname // Default to current folder name
-    },
-    {
-      type    : 'confirm',
-      name    : 'standardInstall',
-      message : 'Standard Install? Selecting no will walk you through an advanced install.'
-    },
-    { // App behvaior parameters
-      when: function (response) {
-        return !thing.options.port && response.standardInstall === false; // Run since they wanted the advanced install in this area
-      },
-      type    : 'input',
-      name    : 'port',
-      message : 'Port: The port your app will run on. Can also be defined using NODE_PORT environment variable',
-      default :  rooseveltDefaults.port.default
-    },
-    { // HTTPS
-      when: function (response) {
-         return !thing.options.localhostOnly && response.standardInstall === false; // Run since they wanted the advanced install in this area
-      },
-      type    : 'input',
-      name    : 'https',
-      message : 'HTTPS: Run an HTTPS server using Roosevelt.',
-      default :  rooseveltDefaults.https.default
-    },
-    {
-      when: function (response) {
-         return !thing.options.localhostOnly && response.standardInstall === false; // Run since they wanted the advanced install in this area
-      },
-      type    : 'input',
-      name    : 'httpsOnly',
-      message : 'HTTPS Only: If running an HTTPS server, determines whether or not the default HTTP server will be disabled',
-      default :  rooseveltDefaults.httpsOnly.default
-    },
-    {
-      when: function (response) {
-         return !thing.options.localhostOnly && response.standardInstall === false; // Run since they wanted the advanced install in this area
-      },
-      type    : 'input',
-      name    : 'httpsPort',
-      message : 'HTTPS Port: The port your app will run an HTTPS server on, if enabled.',
-      default :  rooseveltDefaults.httpsPort.default
-    },
-    {
-      when: function (response) {
-         return !thing.options.localhostOnly && response.standardInstall === false; // Run since they wanted the advanced install in this area
-      },
-      type    : 'input',
-      name    : 'pfx',
-      message : 'Pfx: Specify whether or not your app will use pfx or standard certification',
-      default :  rooseveltDefaults.pfx.default
-    },
-    {
-      when: function (response) {
-         return !thing.options.localhostOnly && response.standardInstall === false; // Run since they wanted the advanced install in this area
-      },
-      type    : 'input',
-      name    : 'keyPath',
-      message : 'Key Path: Stores the file paths of specific key/certificate to be used by the server. Object values: pfx, key, cert -- use one of {pfx} or {key, cert}',
-      default :  rooseveltDefaults.keyPath.default || 'null'
-    },
-    {
-      when: function (response) {
-         return !thing.options.localhostOnly && response.standardInstall === false; // Run since they wanted the advanced install in this area
-      },
-      type    : 'input',
-      name    : 'passphrase',
-      message : 'Passphrase: Supply the HTTPS server with the password for the certificate being used, if necessary.',
-      default :  rooseveltDefaults.passphrase.default || 'null'
-    },
-    {
-      when: function (response) {
-         return !thing.options.localhostOnly && response.standardInstall === false; // Run since they wanted the advanced install in this area
-      },
-      type    : 'input',
-      name    : 'ca',
-      message : 'Ca: Certificate authority to match client certificates against, as a file path or array of file paths.',
-      default :  rooseveltDefaults.ca.default || 'null'
-    },
-    {
-      when: function (response) {
-         return !thing.options.localhostOnly && response.standardInstall === false; // Run since they wanted the advanced install in this area
-      },
-      type    : 'input',
-      name    : 'requestCert',
-      message : 'Request Cert: Request a certificate from a client and attempt to verify it',
-      default :  rooseveltDefaults.requestCert.default
-    },
-    {
-      when: function (response) {
-         return !thing.options.localhostOnly && response.standardInstall === false; // Run since they wanted the advanced install in this area
-      },
-      type    : 'input',
-      name    : 'rejectUnauthorized',
-      message : 'Reject Unauthorized: Upon failing to authorize a user with supplied CA(s), reject their connection entirely',
-      default :  rooseveltDefaults.rejectUnauthorized.default
-    },
-    {
-      when: function (response) { // MVC Parameters
-         return !thing.options.localhostOnly && response.standardInstall === false; // Run since they wanted the advanced install in this area
-      },
-      type    : 'input',
-      name    : 'modelsPath',
-      message : 'Models Path: Relative path on filesystem to where your model files are located.',
-      default :  rooseveltDefaults.modelsPath.default
-    },
-    {
-      when: function (response) {
-         return !thing.options.localhostOnly && response.standardInstall === false; // Run since they wanted the advanced install in this area
-      },
-      type    : 'input',
-      name    : 'viewsPath',
-      message : 'Views Path: Relative path on filesystem to where your view files are located.',
-      default :  rooseveltDefaults.viewsPath.default
-    },
-    {
-      when: function (response) {
-         return !thing.options.localhostOnly && response.standardInstall === false; // Run since they wanted the advanced install in this area
-      },
-      type    : 'input',
-      name    : 'viewEngine',
-      message : 'View Engine: What templating engine to use, formatted as \'fileExtension: nodeModule\'. Supply an array of engines to use in that format in order to make use of multiple templating engines. Each engine you use must also be marked as a dependency in your app\'s package.json. Whichever engine you supply first with this parameter will be considered the default. Set to none to use no templating engine. ** Also by default the module teddy is marked as a dependency in package.json **',
-      default :  rooseveltDefaults.viewEngine.default
-    },
-    {
-      when: function (response) {
-         return !thing.options.localhostOnly && response.standardInstall === false; // Run since they wanted the advanced install in this area
-      },
-      type    : 'input',
-      name    : 'controllersPath',
-      message : 'Controllers Path: Relative path on filesystem to where your controller files are located.',
-      default :  rooseveltDefaults.controllersPath.default
-    }]).then(function (answers) {
-      this.port = answers.port ? answers.port : this.options.port || '43711';
-      this.localhostOnly = answers.localhostOnly ? answers.localhostOnly :  this.options.localhostOnly || 'true';
-      this.disableLogger = answers.disableLogger ? answers.disableLogger :  this.options.disableLogger || 'false';
-      this.noMinify = answers.noMinify ? answers.noMinify :  this.options.noMinify || 'false';
-      this.multipart = answers.multipart ? answers.multipart :  this.options.multipart || '{"multiples": true}';
-      this.shutdownTimeout = answers.shutdownTimeout ? answers.shutdownTimeout :  this.options.shutdownTimeout || '30000';
-      this.https = answers.https ? answers.https :  this.options.https || 'false';
-      this.httpsOnly = answers.httpsOnly ? answers.httpsOnly :  this.options.httpsOnly || 'false';
-      this.httpsPort = answers.httpsPort ? answers.httpsPort :  this.options.httpsPort || '43733';
-      this.pfx = answers.pfx ? answers.pfx :  this.options.pfx || 'false';
-      // this.keyPath = answers.keyPath ? '"' + answers.keyPath + '"' : this.options.keyPath !== undefined ? '"' + this.options.keyPath + '"' : null;
-      if (answers.keyPath) {
-        this.keyPath = '"' + answers.keyPath + '"';
-      }
-      else {
-        if (this.options.keyPath !== undefined) {
-          this.keyPath = '"' + this.options.keyPath + '"'
+        // this.passphrase = answers.passphrase ? '"' + answers.passphrase + '"' : '"' + this.options.passphrase + '"' || 'null';
+        if (answers.passphrase) {
+          this.passphrase = '"' + answers.passphrase + '"';
         }
         else {
-          this.keyPath = 'null';
+          if (this.options.passphrase !== undefined) {
+            this.passphrase = '"' + this.options.passphrase + '"'
+          }
+          else {
+            this.passphrase = 'null';
+          }
         }
-      }
-      // this.passphrase = answers.passphrase ? '"' + answers.passphrase + '"' : '"' + this.options.passphrase + '"' || 'null';
-      if (answers.passphrase) {
-        this.passphrase = '"' + answers.passphrase + '"';
-      }
-      else {
-        if (this.options.passphrase !== undefined) {
-          this.passphrase = '"' + this.options.passphrase + '"'
-        }
-        else {
-          this.passphrase = 'null';
-        }
-      }
-      // this.ca = answers.ca ? '"' + answers.ca + '"' : '"' + this.options.ca + '"' || 'null';
-      if (answers.ca) {
-        this.ca = '"' + answers.ca + '"';
-      }
-      else {
-        if (this.options.ca !== undefined) {
-          this.ca = '"' + this.options.ca + '"'
+        // this.ca = answers.ca ? '"' + answers.ca + '"' : '"' + this.options.ca + '"' || 'null';
+        if (answers.ca) {
+          this.ca = '"' + answers.ca + '"';
         }
         else {
-          this.ca = 'null';
+          if (this.options.ca !== undefined) {
+            this.ca = '"' + this.options.ca + '"'
+          }
+          else {
+            this.ca = 'null';
+          }
         }
-      }
-      this.appName = answers.appName ? answers.appName :  this.options.appName || 'newProject';
-      this.appNameForPackageJson = answers.appName ? answers.appName.replace(/^\.|_/, '').replace(/\s+/g, '-').replace(/(.{1,213})(.*)/, '$1').toLowerCase() : this.options.appName.replace(/^\.|_/, '').replace(/\s+/g, '-').replace(/(.{1,213})(.*)/, '$1').toLowerCase() || 'new-project'; // First remove dot or underscore from beginning, trim whitesapce and replace with dash for readability, chop off any characters past 214 in length, and then put all letters to lowercase. These are all requirements of package name for npm see: https://docs.npmjs.com/files/package.json#name
-      this.requestCert = answers.requestCert ?  answers.requestCert :  this.options.requestCert || 'false';
-      this.rejectUnauthorized = answers.rejectUnauthorized ? answers.rejectUnauthorized :  this.options.rejectUnauthorized || 'false';
-      this.bodyParserOptions = answers.bodyParserOptions ? answers.bodyParserOptions :  this.options.bodyParserOptions || '{"extended": true}';
-      this.bodyParserJsonOptions = answers.bodyParserJsonOptions ? answers.bodyParserJsonOptions :  this.options.bodyParserJsonOptions || '{}';
-      this.modelsPath = answers.modelsPath ? answers.modelsPath :  this.options.modelsPath || 'mvc/models';
-      this.modelsNodeModulesSymlink = answers.modelsNodeModulesSymlink ? answers.modelsNodeModulesSymlink :  this.options.modelsNodeModulesSymlink || 'models';
-      this.viewsPath = answers.viewsPath ? answers.viewsPath :  this.options.viewsPath || 'mvc/views';
-      this.viewEngine = answers.viewEngine ? answers.viewEngine :  this.options.viewEngine || 'html: teddy';
-      this.controllersPath = answers.controllersPath ? answers.controllersPath :  this.options.controllersPath || 'mvc/controllers';
-      this.libPath = answers.libPath ? answers.libPath :  this.options.libPath || 'lib';
-      this.libPathNodeModulesSymlink = answers.libPathNodeModulesSymlink ? answers.libPathNodeModulesSymlink :  this.options.libPathNodeModulesSymlink || 'lib';
-      this.error404 = answers.error404 ? answers.error404 :  this.options.error404 || '404.js';
-      this.error5xx = answers.error5xx ? answers.error5xx :  this.options.error5xx || '5xx.js';
-      this.error503 = answers.error503 ? answers.error503 :  this.options.error503 || '503.js';
-      this.staticsRoot = answers.staticsRoot ? answers.staticsRoot :  this.options.staticsRoot || 'statics';
-      this.cssPath = answers.cssPath ? answers.cssPath :  this.options.cssPath || 'css';
-      this.cssCompiler = answers.cssCompiler ? answers.cssCompiler :  this.options.cssCompiler || '{"nodeModule": "roosevelt-less", "params": {"compress": true}}';
-      this.cssCompilerWhitelist = answers.cssCompilerWhitelist ? answers.cssCompilerWhitelist :  this.options.cssCompilerWhitelist || "null";
-      this.cssCompiledOutput = answers.cssCompiledOutput ? answers.cssCompiledOutput :  this.options.cssCompiledOutput || '.build/css';
-      this.jsPath = answers.jsPath ? answers.jsPath :  this.options.jsPath || 'js';
-      this.jsCompiler = answers.jsCompiler ? answers.jsCompiler :  this.options.jsCompiler || '{"nodeModule": "roosevelt-closure", "params": {"compilation_level": "ADVANCED_OPTIMIZATIONS"}}';
-      this.jsCompilerWhitelist = answers.jsCompilerWhitelist ? answers.jsCompilerWhitelist :  this.options.jsCompilerWhitelist || "null";
-      this.jsCompiledOutput = answers.jsCompiledOutput ? answers.jsCompiledOutput :  this.options.jsCompiledOutput || '.build/js';
-      this.publicFolder = answers.publicFolder ? answers.publicFolder :  this.options.publicFolder || 'public';
-      this.favicon = answers.favicon ? answers.favicon :  this.options.favicon || 'images/favicon.ico';
-      this.symlinksToStatics = answers.symlinksToStatics ? answers.symlinksToStatics :  this.options.symlinksToStatics || '["css: .build/css", "images", "js: .build/js"]';
-      this.versionedStatics = answers.versionedStatics ? answers.versionedStatics :  this.options.versionedStatics || 'false';
-      this.versionedCssFile = answers.versionedCssFile ? answers.versionedCssFile :  this.options.versionedCssFile || "null";
-      this.alwaysHostPublic = answers.alwaysHostPublic ? answers.alwaysHostPublic :  this.options.alwaysHostPublic || 'false';
-      this.supressClosingMessage = this.options.supressClosingMessage ? this.options.supressClosingMessage : false;
-    }.bind(this));
+        this.appName = answers.appName ? answers.appName :  this.options.appName || 'newProject';
+        this.appNameForPackageJson = answers.appName ? answers.appName.replace(/^\.|_/, '').replace(/\s+/g, '-').replace(/(.{1,213})(.*)/, '$1').toLowerCase() : this.options.appName.replace(/^\.|_/, '').replace(/\s+/g, '-').replace(/(.{1,213})(.*)/, '$1').toLowerCase() || 'new-project'; // First remove dot or underscore from beginning, trim whitesapce and replace with dash for readability, chop off any characters past 214 in length, and then put all letters to lowercase. These are all requirements of package name for npm see: https://docs.npmjs.com/files/package.json#name
+        this.requestCert = answers.requestCert ?  answers.requestCert :  this.options.requestCert || 'false';
+        this.rejectUnauthorized = answers.rejectUnauthorized ? answers.rejectUnauthorized :  this.options.rejectUnauthorized || 'false';
+        this.bodyParserOptions = answers.bodyParserOptions ? answers.bodyParserOptions :  this.options.bodyParserOptions || '{"extended": true}';
+        this.bodyParserJsonOptions = answers.bodyParserJsonOptions ? answers.bodyParserJsonOptions :  this.options.bodyParserJsonOptions || '{}';
+        this.modelsPath = answers.modelsPath ? answers.modelsPath :  this.options.modelsPath || 'mvc/models';
+        this.modelsNodeModulesSymlink = answers.modelsNodeModulesSymlink ? answers.modelsNodeModulesSymlink :  this.options.modelsNodeModulesSymlink || 'models';
+        this.viewsPath = answers.viewsPath ? answers.viewsPath :  this.options.viewsPath || 'mvc/views';
+        this.viewEngine = answers.viewEngine ? answers.viewEngine :  this.options.viewEngine || 'html: teddy';
+        this.controllersPath = answers.controllersPath ? answers.controllersPath :  this.options.controllersPath || 'mvc/controllers';
+        this.libPath = answers.libPath ? answers.libPath :  this.options.libPath || 'lib';
+        this.libPathNodeModulesSymlink = answers.libPathNodeModulesSymlink ? answers.libPathNodeModulesSymlink :  this.options.libPathNodeModulesSymlink || 'lib';
+        this.error404 = answers.error404 ? answers.error404 :  this.options.error404 || '404.js';
+        this.error5xx = answers.error5xx ? answers.error5xx :  this.options.error5xx || '5xx.js';
+        this.error503 = answers.error503 ? answers.error503 :  this.options.error503 || '503.js';
+        this.staticsRoot = answers.staticsRoot ? answers.staticsRoot :  this.options.staticsRoot || 'statics';
+        this.cssPath = answers.cssPath ? answers.cssPath :  this.options.cssPath || 'css';
+        this.cssCompiler = answers.cssCompiler ? answers.cssCompiler :  this.options.cssCompiler || '{"nodeModule": "roosevelt-less", "params": {"compress": true}}';
+        this.cssCompilerWhitelist = answers.cssCompilerWhitelist ? answers.cssCompilerWhitelist :  this.options.cssCompilerWhitelist || "null";
+        this.cssCompiledOutput = answers.cssCompiledOutput ? answers.cssCompiledOutput :  this.options.cssCompiledOutput || '.build/css';
+        this.jsPath = answers.jsPath ? answers.jsPath :  this.options.jsPath || 'js';
+        this.jsCompiler = answers.jsCompiler ? answers.jsCompiler :  this.options.jsCompiler || '{"nodeModule": "roosevelt-closure", "params": {"compilation_level": "ADVANCED_OPTIMIZATIONS"}}';
+        this.jsCompilerWhitelist = answers.jsCompilerWhitelist ? answers.jsCompilerWhitelist :  this.options.jsCompilerWhitelist || "null";
+        this.jsCompiledOutput = answers.jsCompiledOutput ? answers.jsCompiledOutput :  this.options.jsCompiledOutput || '.build/js';
+        this.publicFolder = answers.publicFolder ? answers.publicFolder :  this.options.publicFolder || 'public';
+        this.favicon = answers.favicon ? answers.favicon :  this.options.favicon || 'images/favicon.ico';
+        this.symlinksToStatics = answers.symlinksToStatics ? answers.symlinksToStatics :  this.options.symlinksToStatics || '["css: .build/css", "images", "js: .build/js"]';
+        this.versionedStatics = answers.versionedStatics ? answers.versionedStatics :  this.options.versionedStatics || 'false';
+        this.versionedCssFile = answers.versionedCssFile ? answers.versionedCssFile :  this.options.versionedCssFile || "null";
+        this.alwaysHostPublic = answers.alwaysHostPublic ? answers.alwaysHostPublic :  this.options.alwaysHostPublic || 'false';
+        this.supressClosingMessage = this.options.supressClosingMessage ? this.options.supressClosingMessage : false;
+      }.bind(this));
   },
 
   paths: function () {
