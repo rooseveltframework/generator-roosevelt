@@ -125,7 +125,16 @@ module.exports = generators.Base.extend({
         },
         {
           when: function (response) {
-            return response.standardInstall === false && response.https === true; // Run since they wanted the advanced install in this area
+            return response.standardInstall === false && response.https === 'true' || response.https === 'True'; // Run since they wanted the advanced install in this area
+          },
+          type    : 'input',
+          name    : 'shouldGenerateSslCerts',
+          message : 'Would you like to generate ssl certs after prompting?',
+          default :  false
+        },
+        {
+          when: function (response) {
+            return response.standardInstall === false && response.https === 'true' || response.https === 'True'; // Run since they wanted the advanced install in this area
           },
           type    : 'input',
           name    : 'httpsOnly',
@@ -134,7 +143,7 @@ module.exports = generators.Base.extend({
         },
         {
           when: function (response) {
-            return response.standardInstall === false && response.https === true; // Run since they wanted the advanced install in this area
+            return response.standardInstall === false && response.https === 'true' || response.https === 'True'; // Run since they wanted the advanced install in this area
           },
           type    : 'input',
           name    : 'httpsPort',
@@ -143,7 +152,7 @@ module.exports = generators.Base.extend({
         },
         {
           when: function (response) {
-            return response.standardInstall === false && response.https === true; // Run since they wanted the advanced install in this area
+            return response.standardInstall === false && response.https === 'true' || response.https === 'True'; // Run since they wanted the advanced install in this area
           },
           type    : 'input',
           name    : 'pfx',
@@ -152,7 +161,7 @@ module.exports = generators.Base.extend({
         },
         {
           when: function (response) {
-            return response.standardInstall === false && response.https === true; // Run since they wanted the advanced install in this area
+            return response.standardInstall === false && response.https === 'true' || response.https === 'True'; // Run since they wanted the advanced install in this area
           },
           type    : 'input',
           name    : 'keyPath',
@@ -161,7 +170,7 @@ module.exports = generators.Base.extend({
         },
         {
           when: function (response) {
-            return response.standardInstall === false && response.https === true; // Run since they wanted the advanced install in this area
+            return response.standardInstall === false && response.https === 'true' || response.https === 'True'; // Run since they wanted the advanced install in this area
           },
           type    : 'input',
           name    : 'passphrase',
@@ -170,7 +179,7 @@ module.exports = generators.Base.extend({
         },
         {
           when: function (response) {
-            return response.standardInstall === false && response.https === true; // Run since they wanted the advanced install in this area
+            return response.standardInstall === false && response.https === 'true' || response.https === 'True'; // Run since they wanted the advanced install in this area
           },
           type    : 'input',
           name    : 'ca',
@@ -179,7 +188,7 @@ module.exports = generators.Base.extend({
         },
         {
           when: function (response) {
-            return response.standardInstall === false && response.https === true; // Run since they wanted the advanced install in this area
+            return response.standardInstall === false && response.https === 'true' || response.https === 'True'; // Run since they wanted the advanced install in this area
           },
           type    : 'input',
           name    : 'requestCert',
@@ -188,7 +197,7 @@ module.exports = generators.Base.extend({
         },
         {
           when: function (response) {
-            return response.standardInstall === false && response.https === true; // Run since they wanted the advanced install in this area
+            return response.standardInstall === false && response.https === 'true' || response.https === 'True'; // Run since they wanted the advanced install in this area
           },
           type    : 'input',
           name    : 'rejectUnauthorized',
@@ -239,6 +248,7 @@ module.exports = generators.Base.extend({
         this.multipart = answers.multipart ? answers.multipart :  this.options.multipart || '{"multiples": true}';
         this.shutdownTimeout = answers.shutdownTimeout ? answers.shutdownTimeout :  this.options.shutdownTimeout || '30000';
         this.https = answers.https ? answers.https :  this.options.https || 'false';
+        this.shouldGenerateSslCerts = answers.shouldGenerateSslCerts ? (answers.shouldGenerateSslCerts === 'true') || (answers.shouldGenerateSslCerts === 'True') || (answers.shouldGenerateSslCerts === 'TRUE') : false;
         this.httpsOnly = answers.httpsOnly ? answers.httpsOnly :  this.options.httpsOnly || 'false';
         this.httpsPort = answers.httpsPort ? answers.httpsPort :  this.options.httpsPort || '43733';
         this.pfx = answers.pfx ? answers.pfx :  this.options.pfx || 'false';
@@ -311,6 +321,178 @@ module.exports = generators.Base.extend({
         this.alwaysHostPublic = answers.alwaysHostPublic ? answers.alwaysHostPublic :  this.options.alwaysHostPublic || 'false';
         this.supressClosingMessage = this.options.supressClosingMessage ? this.options.supressClosingMessage : false;
       }.bind(this));
+  },
+
+  generateSslCerts: function() {
+    var thing = this;
+
+    if (thing.shouldGenerateSslCerts === true) {
+      console.log()
+      console.log('Generating SSL Certs')
+      console.log()
+      return this.prompt(
+        [
+          {
+            type    : 'input',
+            name    : 'commonName',
+            message : 'Enter the public domain name of your website (e.g. www.google.com)',
+            validate: function(input) {
+              return !input ? 'This is required' : true
+            }
+          },
+          {
+            type    : 'input',
+            name    : 'countryName',
+            message : 'Enter the two-character denomination of your country (e.g. US, CA)',
+            validate: function(input) {
+              if (!input) {
+                return 'This input is required'
+              }
+
+              if (!/^[A-Z]{2}$/.test(input)) {
+                return 'Incorrect input please enter in this format (e.g. US, CA)'
+              }
+              else {
+                return true
+              }
+            }
+          },
+          {
+            type    : 'input',
+            name    : 'stateName',
+            message : 'Enter the name of your state or province, if applicable',
+            default : 'n/a'
+          },
+          {
+            type    : 'input',
+            name    : 'localityName',
+            message : 'Enter the name of your city',
+            default : 'n/a'
+          },
+          {
+            type    : 'input',
+            name    : 'organizationName',
+            message : 'Enter the legal name of your organization, if applicable',
+            default : 'n/a'
+          },
+          {
+            type    : 'input',
+            name    : 'organizationalUnit',
+            message : 'Enter the organizational unit represented by the site, if applicable (e.g. Internet Sales)',
+            default : 'n/a'
+          },
+          {
+            type    : 'input',
+            name    : 'altUri',
+            message : 'Enter any alternative URI the certificate would be active for',
+            default : 'http://localhost/'
+          },
+          {
+            type    : 'input',
+            name    : 'altIp',
+            message : 'Enter the IP address the certificate would be active for',
+            default : '127.0.0.1'
+          }
+        ]).then(function (answers) {
+          var forge  = require('node-forge'),
+
+              commonName = answers.commonName,
+              countryName = answers.countryName,
+              stateName = answers.stateName,
+              localityName = answers.localityName,
+              organizationName = answers.organizationName,
+              organizationalUnit = answers.organizationalUnit,
+              altUri = answers.altUri,
+              altIp = answers.altIp,
+
+              publicPem,
+              certPem,
+              privatePem,
+
+              pki   = forge.pki,
+              keys  = pki.rsa.generateKeyPair(2048),
+              cert  = pki.createCertificate(),
+              attrs = [
+                {
+                  name: 'commonName',
+                  value: commonName
+                }, {
+                  name: 'countryName',
+                  value: countryName
+                }, {
+                  shortName: 'ST',
+                  value: stateName
+                }, {
+                  name: 'localityName',
+                  value: localityName
+                }, {
+                  name: 'organizationName',
+                  value: organizationName
+                }, {
+                  shortName: 'OU',
+                  value: organizationalUnit
+                }
+              ];
+
+          cert.publicKey = keys.publicKey;
+          cert.serialNumber = '01';
+          cert.validity.notBefore = new Date();
+          cert.validity.notAfter = new Date();
+          cert.validity.notAfter.setFullYear(cert.validity.notBefore.getFullYear() + 1);
+
+          cert.setSubject(attrs);
+          cert.setIssuer(attrs);
+
+          cert.setExtensions([{
+            name: 'basicConstraints',
+            cA: true
+          }, {
+            name: 'keyUsage',
+            keyCertSign: true,
+            digitalSignature: true,
+            nonRepudiation: true,
+            keyEncipherment: true,
+            dataEncipherment: true
+          }, {
+            name: 'extKeyUsage',
+            serverAuth: true,
+            clientAuth: true,
+            codeSigning: true,
+            emailProtection: true,
+            timeStamping: true
+          }, {
+            name: 'nsCertType',
+            client: true,
+            server: true,
+            email: true,
+            objsign: true,
+            sslCA: true,
+            emailCA: true,
+            objCA: true
+          }, {
+            name: 'subjectAltName',
+            altNames: [{
+              type: 6,
+              value: altUri
+            }, {
+              type: 7,
+              ip: altIp
+            }]
+          }, {
+            name: 'subjectKeyIdentifier'
+          }]);
+
+          cert.sign(keys.privateKey);
+
+          publicPem  = pki.publicKeyToPem(keys.publicKey);
+          certPem    = pki.certificateToPem(cert);
+          privatePem = pki.privateKeyToPem(keys.privateKey);
+
+          thing.fs.write(thing.destinationPath('public.pem'), publicPem);
+          thing.fs.write(thing.destinationPath('certPem.pem'), certPem);
+          thing.fs.write(thing.destinationPath('privatePem.pem'), privatePem);
+        })
+    }
   },
 
   paths: function () {
