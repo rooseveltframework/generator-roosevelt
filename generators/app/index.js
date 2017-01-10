@@ -5,56 +5,56 @@ var generators = require('yeoman-generator'),
     rooseveltDefaults = fse.readJsonSync(path.join(__dirname + '/../../rooseveltDefaults.json')),
     currentDirectory = path.parse(process.cwd()).name;
 
-var testWithNoSemi = 3
+var testWithNoSemi = 3;
 
 module.exports = generators.Base.extend({
   constructor: function () {
     generators.Base.apply(this, arguments);
 
-    this.option('appName', {desc: "The name of the application." })
-    this.option('port', {desc: "The port your app will run on" })
-    this.option('localhostOnly', {desc: "Listen only to requests coming from localhost in production mode. This is useful in environments where it is expected that HTTP requests to your app will be proxied through a more traditional web server like Apache or nginx. This setting is ignored in development mode." })
-    this.option('disableLogger', {desc: "When this option is set to true, Roosevelt will not log HTTP requests to the console." })
-    this.option('noMinify', {desc: "Disables the minification step in (supporting) CSS and JS compilers. Useful during dev mode." })
-    this.option('multipart', {desc: "Settings to pass along to formidable using formidable's API for multipart form processing." })
-    this.option('shutdownTimeout', {desc: "Maximum amount of time in miliseconds given to Roosevelt to gracefully shut itself down when sent the kill signal." })
-    this.option('https', {desc: "Run an HTTPS server using Roosevelt." })
-    this.option('httpsOnly', {desc: "If running an HTTPS server, determines whether or not the default HTTP server will be disabled" })
-    this.option('httpsPort', {desc: "The port your app will run an HTTPS server on, if enabled." })
-    this.option('pfx', {desc: "Specify whether or not your app will use pfx or standard certification." })
-    this.option('keyPath', {desc: "Stores the file paths of specific key/certificate to be used by the server." })
-    this.option('passphrase', {desc: "Supply the HTTPS server with the password for the certificate being used, if necessary." })
-    this.option('ca', {desc: "Certificate authority to match client certificates against, as a file path or array of file paths." })
-    this.option('requestCert', {desc: "Request a certificate from a client and attempt to verify it." })
-    this.option('rejectUnauthorized', {desc: "Upon failing to authorize a user with supplied CA(s), reject their connection entirely." })
-    this.option('bodyParserOptions', {desc: "Controls the options for body-parser using a object." })
-    this.option('bodyParserJsonOptions', {desc: "Controls the options for the json function of the body-parser using a object." })
-    this.option('modelsPath', {desc: "Relative path on filesystem to where your model files are located." })
-    this.option('modelsNodeModulesSymlink', {desc: "Name of the symlink to make in node_modules pointing to your models directory. Set to false to disable making this symlink." })
-    this.option('viewsPath', {desc: "Relative path on filesystem to where your view files are located." })
-    this.option('viewEngine', {desc: "What templating engine to use, formatted as 'fileExtension: nodeModule'." })
-    this.option('controllersPath', {desc: "Relative path on filesystem to where your controller files are located." })
-    this.option('libPath', {desc: "Relative path on filesystem to where your optional utility library files are located" })
-    this.option('libPathNodeModulesSymlink', {desc: "Name of the symlink to make in node_modules pointing to your lib directory. Set to false to disable making this symlink" })
-    this.option('error404', {desc: "Relative path on filesystem to where your \"404 Not Found\" controller is located" })
-    this.option('error5xx', {desc: "Relative path on filesystem to where your \"Internal Server Error\" controller is located" })
-    this.option('error503', {desc: "Relative path on filesystem to where your \"503 Service Unavailable\" controller is located." })
-    this.option('staticsRoot', {desc: "Relative path on filesystem to where your static assets are located" })
-    this.option('cssPath', {desc: "Subdirectory within staticsRoot where your CSS files are located. By default this folder will not be made public, but is instead meant to store unminified CSS source files which will be minified and stored elsewhere when the app is started." })
-    this.option('cssCompiler', {desc: "Which CSS preprocessor, if any, to use" })
-    this.option('cssCompilerWhitelist', {desc: "Whitelist of CSS files to compile as an array" })
-    this.option('cssCompiledOutput', {desc: "Where to place compiled CSS files" })
-    this.option('jsPath', {desc: "Subdirectory within staticsRoot where your JS files are located." })
-    this.option('jsCompiler', {desc: "Which JS minifier, if any, to use." })
-    this.option('jsCompilerWhitelist', {desc: "Whitelist of JS files to compile as an array." })
-    this.option('jsCompiledOutput', {desc: "Where to place compiled JS files." })
-    this.option('publicFolder', {desc: "All files and folders specified in this path will be exposed as static files." })
-    this.option('favicon', {desc: "Location of your favicon file." })
-    this.option('symlinksToStatics', {desc: "Array of folders from staticsRoot to make symlinks to in your public folder, formatted as either 'linkName: linkTarget' or simply 'linkName' if the link target has the same name as the desired link name." })
-    this.option('versionedStatics', {desc: "If set to true, Roosevelt will prepend your app's version number from package.json to your statics URLs." })
-    this.option('versionedCssFile', {desc: "If enabled, Roosevelt will create a CSS file which declares a CSS variable exposing your app's version number from package.json. Enable this option by supplying an object with the member variables fileName and varName." })
-    this.option('alwaysHostPublic', {desc: "By default in production mode Roosevelt will not expose the public folder." })
-    this.option('supressClosingMessage', {desc: "Supresses closing message."})
+    this.option('appName', {desc: 'The name of the application.' });
+    this.option('port', {desc: 'The port your app will run on' });
+    this.option('localhostOnly', {desc: 'Listen only to requests coming from localhost in production mode. This is useful in environments where it is expected that HTTP requests to your app will be proxied through a more traditional web server like Apache or nginx. This setting is ignored in development mode.' });
+    this.option('disableLogger', {desc: 'When this option is set to true, Roosevelt will not log HTTP requests to the console.' });
+    this.option('noMinify', {desc: 'Disables the minification step in (supporting) CSS and JS compilers. Useful during dev mode.' });
+    this.option('multipart', {desc: 'Settings to pass along to formidable using formidable\'s API for multipart form processing.' });
+    this.option('shutdownTimeout', {desc: 'Maximum amount of time in miliseconds given to Roosevelt to gracefully shut itself down when sent the kill signal.' });
+    this.option('https', {desc: 'Run an HTTPS server using Roosevelt.' });
+    this.option('httpsOnly', {desc: 'If running an HTTPS server, determines whether or not the default HTTP server will be disabled' });
+    this.option('httpsPort', {desc: 'The port your app will run an HTTPS server on, if enabled.' });
+    this.option('pfx', {desc: 'Specify whether or not your app will use pfx or standard certification.' });
+    this.option('keyPath', {desc: 'Stores the file paths of specific key/certificate to be used by the server.' });
+    this.option('passphrase', {desc: 'Supply the HTTPS server with the password for the certificate being used, if necessary.' });
+    this.option('ca', {desc: 'Certificate authority to match client certificates against, as a file path or array of file paths.' });
+    this.option('requestCert', {desc: 'Request a certificate from a client and attempt to verify it.' });
+    this.option('rejectUnauthorized', {desc: 'Upon failing to authorize a user with supplied CA(s), reject their connection entirely.' });
+    this.option('bodyParserOptions', {desc: 'Controls the options for body-parser using a object.' });
+    this.option('bodyParserJsonOptions', {desc: 'Controls the options for the json function of the body-parser using a object.' });
+    this.option('modelsPath', {desc: 'Relative path on filesystem to where your model files are located.' });
+    this.option('modelsNodeModulesSymlink', {desc: 'Name of the symlink to make in node_modules pointing to your models directory. Set to false to disable making this symlink.' });
+    this.option('viewsPath', {desc: 'Relative path on filesystem to where your view files are located.' });
+    this.option('viewEngine', {desc: 'What templating engine to use, formatted as \'fileExtension: nodeModule\'.' });
+    this.option('controllersPath', {desc: 'Relative path on filesystem to where your controller files are located.' });
+    this.option('libPath', {desc: 'Relative path on filesystem to where your optional utility library files are located' });
+    this.option('libPathNodeModulesSymlink', {desc: 'Name of the symlink to make in node_modules pointing to your lib directory. Set to false to disable making this symlink' });
+    this.option('error404', {desc: 'Relative path on filesystem to where your "404 Not Found" controller is located' });
+    this.option('error5xx', {desc: 'Relative path on filesystem to where your "Internal Server Error" controller is located' });
+    this.option('error503', {desc: 'Relative path on filesystem to where your "503 Service Unavailable" controller is located.' });
+    this.option('staticsRoot', {desc: 'Relative path on filesystem to where your static assets are located' });
+    this.option('cssPath', {desc: 'Subdirectory within staticsRoot where your CSS files are located. By default this folder will not be made public, but is instead meant to store unminified CSS source files which will be minified and stored elsewhere when the app is started.' });
+    this.option('cssCompiler', {desc: 'Which CSS preprocessor, if any, to use' });
+    this.option('cssCompilerWhitelist', {desc: 'Whitelist of CSS files to compile as an array' });
+    this.option('cssCompiledOutput', {desc: 'Where to place compiled CSS files' });
+    this.option('jsPath', {desc: 'Subdirectory within staticsRoot where your JS files are located.' });
+    this.option('jsCompiler', {desc: 'Which JS minifier, if any, to use.' });
+    this.option('jsCompilerWhitelist', {desc: 'Whitelist of JS files to compile as an array.' });
+    this.option('jsCompiledOutput', {desc: 'Where to place compiled JS files.' });
+    this.option('publicFolder', {desc: 'All files and folders specified in this path will be exposed as static files.' });
+    this.option('favicon', {desc: 'Location of your favicon file.' });
+    this.option('symlinksToStatics', {desc: 'Array of folders from staticsRoot to make symlinks to in your public folder, formatted as either \'linkName: linkTarget\' or simply \'linkName\' if the link target has the same name as the desired link name.' });
+    this.option('versionedStatics', {desc: 'If set to true, Roosevelt will prepend your app\'s version number from package.json to your statics URLs.' });
+    this.option('versionedCssFile', {desc: 'If enabled, Roosevelt will create a CSS file which declares a CSS variable exposing your app\'s version number from package.json. Enable this option by supplying an object with the member variables fileName and varName.' });
+    this.option('alwaysHostPublic', {desc: 'By default in production mode Roosevelt will not expose the public folder.' });
+    this.option('supressClosingMessage', {desc: 'Supresses closing message.'});
   },
 
   prompting: function () {
@@ -80,14 +80,14 @@ module.exports = generators.Base.extend({
               }
 
               try {
-                fse.mkdirsSync(installDirectoryPath)
+                fse.mkdirsSync(installDirectoryPath);
                 createdDirectory = true;
               }
               catch (e) {
                 createdDirectory = false;
               }
 
-              thing.destinationRoot(installDirectoryPath)
+              thing.destinationRoot(installDirectoryPath);
             }
             else {
               createdDirectory = true;
@@ -260,7 +260,7 @@ module.exports = generators.Base.extend({
         }
         else {
           if (this.options.keyPath !== undefined) {
-            this.keyPath = '"' + this.options.keyPath + '"'
+            this.keyPath = '"' + this.options.keyPath + '"';
           }
           else {
             this.keyPath = 'null';
@@ -272,7 +272,7 @@ module.exports = generators.Base.extend({
         }
         else {
           if (this.options.passphrase !== undefined) {
-            this.passphrase = '"' + this.options.passphrase + '"'
+            this.passphrase = '"' + this.options.passphrase + '"';
           }
           else {
             this.passphrase = 'null';
@@ -284,7 +284,7 @@ module.exports = generators.Base.extend({
         }
         else {
           if (this.options.ca !== undefined) {
-            this.ca = '"' + this.options.ca + '"'
+            this.ca = '"' + this.options.ca + '"';
           }
           else {
             this.ca = 'null';
@@ -309,17 +309,17 @@ module.exports = generators.Base.extend({
         this.staticsRoot = answers.staticsRoot ? answers.staticsRoot :  this.options.staticsRoot || 'statics';
         this.cssPath = answers.cssPath ? answers.cssPath :  this.options.cssPath || 'css';
         this.cssCompiler = answers.cssCompiler ? answers.cssCompiler :  this.options.cssCompiler || '{"nodeModule": "roosevelt-less", "params": {"compress": true}}';
-        this.cssCompilerWhitelist = answers.cssCompilerWhitelist ? answers.cssCompilerWhitelist :  this.options.cssCompilerWhitelist || "null";
+        this.cssCompilerWhitelist = answers.cssCompilerWhitelist ? answers.cssCompilerWhitelist :  this.options.cssCompilerWhitelist || 'null';
         this.cssCompiledOutput = answers.cssCompiledOutput ? answers.cssCompiledOutput :  this.options.cssCompiledOutput || '.build/css';
         this.jsPath = answers.jsPath ? answers.jsPath :  this.options.jsPath || 'js';
         this.jsCompiler = answers.jsCompiler ? answers.jsCompiler :  this.options.jsCompiler || '{"nodeModule": "roosevelt-closure", "params": {"compilation_level": "ADVANCED_OPTIMIZATIONS"}}';
-        this.jsCompilerWhitelist = answers.jsCompilerWhitelist ? answers.jsCompilerWhitelist :  this.options.jsCompilerWhitelist || "null";
+        this.jsCompilerWhitelist = answers.jsCompilerWhitelist ? answers.jsCompilerWhitelist :  this.options.jsCompilerWhitelist || 'null';
         this.jsCompiledOutput = answers.jsCompiledOutput ? answers.jsCompiledOutput :  this.options.jsCompiledOutput || '.build/js';
         this.publicFolder = answers.publicFolder ? answers.publicFolder :  this.options.publicFolder || 'public';
         this.favicon = answers.favicon ? answers.favicon :  this.options.favicon || 'images/favicon.ico';
         this.symlinksToStatics = answers.symlinksToStatics ? answers.symlinksToStatics :  this.options.symlinksToStatics || '["css: .build/css", "images", "js: .build/js"]';
         this.versionedStatics = answers.versionedStatics ? answers.versionedStatics :  this.options.versionedStatics || 'false';
-        this.versionedCssFile = answers.versionedCssFile ? answers.versionedCssFile :  this.options.versionedCssFile || "null";
+        this.versionedCssFile = answers.versionedCssFile ? answers.versionedCssFile :  this.options.versionedCssFile || 'null';
         this.alwaysHostPublic = answers.alwaysHostPublic ? answers.alwaysHostPublic :  this.options.alwaysHostPublic || 'false';
         this.supressClosingMessage = this.options.supressClosingMessage ? this.options.supressClosingMessage : false;
       }.bind(this));
@@ -329,9 +329,9 @@ module.exports = generators.Base.extend({
     var thing = this;
 
     if (thing.shouldGenerateSslCerts === true) {
-      console.log()
-      console.log('Generating SSL Certs')
-      console.log()
+      console.log();
+      console.log('Generating SSL Certs');
+      console.log();
       return this.prompt(
         [
           {
@@ -339,7 +339,7 @@ module.exports = generators.Base.extend({
             name    : 'commonName',
             message : 'Enter the public domain name of your website (e.g. www.google.com)',
             validate: function(input) {
-              return !input ? 'This is required' : true
+              return !input ? 'This is required' : true;
             }
           },
           {
@@ -348,14 +348,14 @@ module.exports = generators.Base.extend({
             message : 'Enter the two-character denomination of your country (e.g. US, CA)',
             validate: function(input) {
               if (!input) {
-                return 'This input is required'
+                return 'This input is required';
               }
 
               if (!/^[A-Z]{2}$/.test(input)) {
-                return 'Incorrect input please enter in this format (e.g. US, CA)'
+                return 'Incorrect input please enter in this format (e.g. US, CA)';
               }
               else {
-                return true
+                return true;
               }
             }
           },
@@ -493,7 +493,7 @@ module.exports = generators.Base.extend({
           thing.fs.write(thing.destinationPath('public.pem'), publicPem);
           thing.fs.write(thing.destinationPath('certPem.pem'), certPem);
           thing.fs.write(thing.destinationPath('privatePem.pem'), privatePem);
-        })
+        });
     }
   },
 
@@ -642,18 +642,18 @@ module.exports = generators.Base.extend({
       var whichHttpToShow;
 
       if (this.https == 'true' && this.httpsOnly === 'false') {
-        whichHttpToShow = 'http(s)'
+        whichHttpToShow = 'http(s)';
       }
       else if (this.https == 'true' && this.httpsOnly === 'true') {
-        whichHttpToShow = 'https'
+        whichHttpToShow = 'https';
       }
       else {
         whichHttpToShow = 'http';
       }
 
       console.log();
-      console.log('Thank you for installing Roosevelt!')
-      console.log('To begin using your new Roosevelt app run `npm run dev` and navigate to ' + whichHttpToShow + '://localhost:' + this.port + '/')
+      console.log('Thank you for installing Roosevelt!');
+      console.log('To begin using your new Roosevelt app run `npm run dev` and navigate to ' + whichHttpToShow + '://localhost:' + this.port + '/');
     }
   }
 });
