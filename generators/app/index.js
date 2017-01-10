@@ -5,6 +5,8 @@ var generators = require('yeoman-generator'),
     rooseveltDefaults = fse.readJsonSync(path.join(__dirname + '/../../rooseveltDefaults.json')),
     currentDirectory = path.parse(process.cwd()).name;
 
+var testWithNoSemi = 3
+
 module.exports = generators.Base.extend({
   constructor: function () {
     generators.Base.apply(this, arguments);
@@ -501,7 +503,7 @@ module.exports = generators.Base.extend({
 
   writing: function () {
     this.fs.copyTpl(
-      this.templatePath('package.json'),
+      this.templatePath('templatedPackage.json'),
       this.destinationPath('package.json'),
       {
         appName: this.appNameForPackageJson,
