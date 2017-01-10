@@ -1,11 +1,11 @@
 {
-  "name": "generator-mkroosevelt",
+  "name": "generator-roosevelt",
   "description": "Generator for Roosevelt apps.",
   "author": "Eric Newport <kethinov@gmail.com>",
   "version": "0.1.49",
   "homepage": "https://github.com/kethinov/mkroosevelt",
   "license": "CC-BY-4.0",
-  "main": "mkroosevelt.js",
+  "main": "generators/app/index.js",
   "readmeFilename": "README.md",
   "engines": {
     "node": ">=4.0.0"
