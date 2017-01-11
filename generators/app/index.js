@@ -654,6 +654,9 @@ module.exports = generators.Base.extend({
       console.log();
       console.log('Thank you for installing Roosevelt!');
       console.log('To begin using your new Roosevelt app run `npm run dev` and navigate to ' + whichHttpToShow + '://localhost:' + this.port + '/');
+
+      console.log()
+      console.log('For more configuration options you can edit your package.json manually. See https://github.com/kethinov/roosevelt#configure-your-app-with-parameters for information on the configuration options.')
     }
   }
 });
