@@ -1,11 +1,8 @@
 var generators = require('yeoman-generator'),
     fse = require('fs-extra'),
     path = require('path'),
-    appDefaults = {},
     rooseveltDefaults = fse.readJsonSync(path.join(__dirname + '/../../rooseveltDefaults.json')),
     currentDirectory = path.parse(process.cwd()).name;
-
-var testWithNoSemi = 3;
 
 module.exports = generators.Base.extend({
   constructor: function () {
@@ -641,10 +638,10 @@ module.exports = generators.Base.extend({
     if (this.supressClosingMessage === false && testEnvironmentCheck !== 'test') {
       var whichHttpToShow;
 
-      if (this.https == 'true' && this.httpsOnly === 'false') {
+      if (this.https === 'true' && this.httpsOnly === 'false') {
         whichHttpToShow = 'http(s)';
       }
-      else if (this.https == 'true' && this.httpsOnly === 'true') {
+      else if (this.https === 'true' && this.httpsOnly === 'true') {
         whichHttpToShow = 'https';
       }
       else {
@@ -655,8 +652,8 @@ module.exports = generators.Base.extend({
       console.log('Thank you for installing Roosevelt!');
       console.log('To begin using your new Roosevelt app run `npm run dev` and navigate to ' + whichHttpToShow + '://localhost:' + this.port + '/');
 
-      console.log()
-      console.log('For more configuration options you can edit your package.json manually. See https://github.com/kethinov/roosevelt#configure-your-app-with-parameters for information on the configuration options.')
+      console.log();
+      console.log('For more configuration options you can edit your package.json manually. See https://github.com/kethinov/roosevelt#configure-your-app-with-parameters for information on the configuration options.');
     }
   }
 });
