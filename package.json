@@ -65,9 +65,6 @@
     "mvc",
     "yeoman-generator"
   ],
-  "bin": {
-    "mkroosevelt": "mkroosevelt.js"
-  },
   "preferGlobal": true,
   "_from": "mkroosevelt@*",
   "gitHead": "",
