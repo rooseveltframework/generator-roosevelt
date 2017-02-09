@@ -2,7 +2,7 @@
   "name": "mkroosevelt",
   "description": "Command line application for creating Roosevelt apps",
   "author": "Eric Newport <kethinov@gmail.com>",
-  "version": "0.1.49",
+  "version": "0.1.50",
   "homepage": "https://github.com/kethinov/mkroosevelt",
   "license": "CC-BY-4.0",
   "main": "mkroosevelt.js",
