@@ -12,10 +12,10 @@
   },
   "engineStrict": true,
   "dependencies": {
-    "roosevelt": "0.7.1",
-    "teddy": "0.4.3",
-    "roosevelt-less": "0.2.6",
-    "roosevelt-closure": "0.3.0"
+    "roosevelt": "~0.7.0",
+    "teddy": "~0.4.0",
+    "roosevelt-less": "~0.2.0",
+    "roosevelt-closure": "~0.3.0"
   },
   "devDependencies": {
     "jshint": "2.9.4",
