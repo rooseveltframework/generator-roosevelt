@@ -49,6 +49,13 @@
     "error5xx": "5xx.js",
     "error503": "503.js",
     "staticsRoot": "statics",
+    "htmlMinify": {
+      "override": true,
+      "exception_url": false,
+      "htmlMinifier": {
+        "html5": true
+      }
+    },
     "cssPath": "css",
     "cssCompiler": {
       "nodeModule": "roosevelt-less",
