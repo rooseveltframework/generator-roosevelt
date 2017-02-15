@@ -35,7 +35,11 @@
     "rejectUnauthorized": false,
     "disableLogger": false,
     "noMinify": false,
-    "validator": false,
+    "enableValidator": false,
+    "htmlValidator": {
+      "validator": "http://html5.validator.nu",
+      "format": "text"
+    },
     "multipart": {
       "multiples": true
     },
@@ -50,10 +54,6 @@
     "error5xx": "5xx.js",
     "error503": "503.js",
     "staticsRoot": "statics",
-    "htmlValidator": {
-      "validator": "http://html5.validator.nu",
-      "format": "text"
-    },
     "htmlMinify": {
       "override": true,
       "exception_url": false,
