@@ -38,7 +38,8 @@
     "enableValidator": false,
     "htmlValidator": {
       "validator": "http://html5.validator.nu",
-      "format": "text"
+      "format": "text",
+      "suppressWarnings": true
     },
     "multipart": {
       "multiples": true
