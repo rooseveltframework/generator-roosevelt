@@ -66,6 +66,8 @@
     "cssCompilerWhitelist": null,
     "cssCompiledOutput": ".build/css",
     "jsPath": "js",
+    "bundledJsPath": "js/.bundled",
+    "browserifyBundles": [],
     "jsCompiler": {
       "nodeModule": "roosevelt-closure",
       "params": {
@@ -98,8 +100,8 @@
   },
   "scripts": {
     "start": "npm run prod",
-    "prod": "supervisor -k -e js,json,less,html -i statics/.build/,.git/,public/,node_modules/ -- app.js -prod",
-    "dev": "supervisor -k -e js,json,less,html -i statics/.build/,.git/,public/,node_modules/ -- app.js -dev",
+    "prod": "supervisor -k -e js,json,less,html -i statics/.build/,statics/js/.bundled/,.git/,public/,node_modules/ -- app.js -prod",
+    "dev": "supervisor -k -e js,json,less,html -i statics/.build/,statics/js/.bundled/,.git/,public/,node_modules/ -- app.js -dev",
     "test": "jshint app.js"
   }
 }
