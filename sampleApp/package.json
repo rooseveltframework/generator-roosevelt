@@ -35,6 +35,11 @@
     "rejectUnauthorized": false,
     "disableLogger": false,
     "noMinify": false,
+    "enableValidator": false,
+    "htmlValidator": {
+      "validator": "http://html5.validator.nu",
+      "format": "text"
+    },
     "multipart": {
       "multiples": true
     },
