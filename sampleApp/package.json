@@ -67,6 +67,7 @@
     "cssCompiledOutput": ".build/css",
     "jsPath": "js",
     "bundledJsPath": ".bundled",
+    "exposeBundles": true,
     "browserifyBundles": [],
     "jsCompiler": {
       "nodeModule": "roosevelt-closure",
