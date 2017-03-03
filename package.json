@@ -2,13 +2,13 @@
   "name": "mkroosevelt",
   "description": "Command line application for creating Roosevelt apps",
   "author": "Eric Newport <kethinov@gmail.com>",
-  "version": "0.1.52",
+  "version": "0.1.53",
   "homepage": "https://github.com/kethinov/mkroosevelt",
   "license": "CC-BY-4.0",
   "main": "mkroosevelt.js",
   "readmeFilename": "README.md",
   "engines": {
-    "node": ">=4.0.0"
+    "node": ">=6.0.0"
   },
   "engineStrict": true,
   "dependencies": {
