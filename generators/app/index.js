@@ -62,67 +62,68 @@ module.exports = generators.Base.extend({
 
   prompting: {
     setupPrompts: function() {
-      whenAdvanced = function(answer) {
-        if (answer.standardInstall === 'customize') {
-          return true;
-        }
-        else {
-          return false;
-        }
-      },
-      whenHTTPS = function(answer) {
-        if (answer.https === true) {
-          return true;
-        }
-        else {
-          return false;
-        }
-      },
-      whenHTTPSOnly = function(answer) {
-        if (answer.httpsOnly === true) {
-          return false;
-        }
-        else if (whenAdvanced(answer)) {
-          return true;
-        }
-        else {
-          return false;
-        }
-      },
-      validateDir = function(answer) {
-        var installDirectoryPath,
-            createdDirectory = false;
+      var thing = this,
+          whenAdvanced = function(answer) {
+            if (answer.standardInstall === 'customize') {
+              return true;
+            }
+            else {
+              return false;
+            }
+          },
+          whenHTTPS = function(answer) {
+            if (answer.https === true) {
+              return true;
+            }
+            else {
+              return false;
+            }
+          },
+          whenHTTPSOnly = function(answer) {
+            if (answer.httpsOnly === true) {
+              return false;
+            }
+            else if (whenAdvanced(answer)) {
+              return true;
+            }
+            else {
+              return false;
+            }
+          },
+          validateDir = function(answer) {
+            var installDirectoryPath,
+                createdDirectory = false;
 
-        if (answer !== currentDirectory) {
-          if (path.isAbsolute(answer) === false) {
-            installDirectoryPath = path.join(process.cwd() + '/' + answer);
-          }
-          else {
-            installDirectoryPath = path.normalize(answer);
-          }
+            if (answer !== currentDirectory) {
+              if (path.isAbsolute(answer) === false) {
+                installDirectoryPath = path.join(process.cwd() + '/' + answer);
+              }
+              else {
+                installDirectoryPath = path.normalize(answer);
+              }
 
-          try {
-            fse.mkdirsSync(installDirectoryPath);
-            createdDirectory = true;
-          }
-          catch (e) {
-            createdDirectory = false;
-          }
+              try {
+                fse.mkdirsSync(installDirectoryPath);
+                createdDirectory = true;
+              }
+              catch (e) {
+                createdDirectory = false;
+              }
 
-          thing.destinationRoot(installDirectoryPath);
-        }
-        else {
-          createdDirectory = true;
-        }
+              thing.destinationRoot(installDirectoryPath);
+            }
+            else {
+              createdDirectory = true;
+            }
 
-        return createdDirectory === true ? true : 'Directory did not exist and we could not create it';
-      },
-      validatePort = function(answer) {
-        if (!/^(?:6553[0-5]|655[0-2][0-9]|65[0-4][0-9]{2}|6[0-4][0-9]{3}|[1-5][0-9]{4}|[1-9][0-9]{1,3}|[0-9])$/.test(answer)) {
-          return 'Invalid port, input a port between 1 and 65535';
-        }
-        return true;
-      };
+            return createdDirectory === true ? true : 'Directory did not exist and we could not create it';
+          },
+          validatePort = function(answer) {
+            if (!/^(?:6553[0-5]|655[0-2][0-9]|65[0-4][0-9]{2}|6[0-4][0-9]{3}|[1-5][0-9]{4}|[1-9][0-9]{1,3}|[0-9])$/.test(answer)) {
+              return 'Invalid port, input a port between 1 and 65535';
+            }
+            return true;
+          };
 
       return this.prompt(
         [
@@ -134,6 +135,9 @@ module.exports = generators.Base.extend({
             validate: validateDir
           },
           {
+            when    : function() {
+              return this.options.appName;
+            },
             type    : 'input',
             name    : 'appName',
             message : 'Your app\'s name:',
