@@ -386,7 +386,6 @@ module.exports = generators.Base.extend({
         else {
           self.engineList.push(answers.templatingEngineName + ': ' + answers.templatingExtension);
           if (answers.additionalTemplatingEngines === true) {
-            console.log('When we want to recursively prompt for more engines... ');
             self.prompting.addTemplatingEngine(self, cb);
           }
           else {
