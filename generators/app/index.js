@@ -135,9 +135,6 @@ module.exports = generators.Base.extend({
             validate: validateDir
           },
           {
-            when    : function() {
-              return this.options.appName;
-            },
             type    : 'input',
             name    : 'appName',
             message : 'Your app\'s name:',
