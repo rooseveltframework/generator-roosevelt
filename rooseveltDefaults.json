@@ -1,6 +1,6 @@
 {
   "appName": {
-    "default": "my-roosevelt-sample-app",
+    "default": "My Roosevelt Sample App",
     "type": "string",
     "allowNull": false
   },

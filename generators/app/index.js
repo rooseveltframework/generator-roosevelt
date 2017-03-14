@@ -64,7 +64,7 @@ module.exports = generators.Base.extend({
     setupPrompts: function() {
       var thing = this,
           whenAdvanced = function(answer) {
-            if (answer.standardInstall === 'customize') {
+            if (answer.standardInstall === 'Customize') {
               return true;
             }
             else {
@@ -72,12 +72,7 @@ module.exports = generators.Base.extend({
             }
           },
           whenHTTPS = function(answer) {
-            if (answer.https === true) {
-              return true;
-            }
-            else {
-              return false;
-            }
+            return answer.https;
           },
           whenHTTPSOnly = function(answer) {
             if (answer.httpsOnly === true) {
@@ -143,7 +138,7 @@ module.exports = generators.Base.extend({
           {
             type    : 'list',
             name    : 'standardInstall',
-            choices : ['standard', 'customize'],
+            choices : ['Standard', 'Customize'],
             message : 'Generate a standard config or customize it now?'
           },
           { // HTTPS
@@ -257,6 +252,9 @@ module.exports = generators.Base.extend({
         ]).then(function(answers) {
 
           this.templatingEngine = answers.templatingEngine;
+          if (!answers.templatingEngine) {
+            this.viewEngine = 'none';
+          }
           this.port = answers.port ? answers.port : this.options.port || '43711';
           this.localhostOnly = answers.localhostOnly ? answers.localhostOnly :  this.options.localhostOnly || 'true';
           this.disableLogger = answers.disableLogger ? answers.disableLogger :  this.options.disableLogger || 'false';
@@ -723,9 +721,9 @@ module.exports = generators.Base.extend({
 
       this.log('\nYour app ' + this.appName + ' has been generated.\n');
       this.log('To run the app:');
-      this.log('- Install dependencies: `npm i`');
-      this.log('- To run in dev mode: `npm run dev`');
-      this.log('- To run in prod mode: `npm run prod`');
+      this.log('- Install dependencies: npm i');
+      this.log('- To run in dev mode:   npm run dev');
+      this.log('- To run in prod mode:  npm run prod');
       this.log('Once running, visit ' + whichHttpToShow + '://localhost:' + this.port + '/\n');
       this.log('To make further changes to the config, edit package.json. See https://github.com/kethinov/roosevelt#configure-your-app-with-parameters for information on the configuration options.');
     }
