@@ -251,10 +251,8 @@ module.exports = generators.Base.extend({
           }
         ]).then(function(answers) {
 
+          this.standardInstall = answers.standardInstall;
           this.templatingEngine = answers.templatingEngine;
-          if (!answers.templatingEngine) {
-            this.viewEngine = 'none';
-          }
           this.port = answers.port ? answers.port : this.options.port || '43711';
           this.localhostOnly = answers.localhostOnly ? answers.localhostOnly :  this.options.localhostOnly || 'true';
           this.disableLogger = answers.disableLogger ? answers.disableLogger :  this.options.disableLogger || 'false';
@@ -378,7 +376,11 @@ module.exports = generators.Base.extend({
           }
         ]
       ).then(function(answers) {
-        if (!self.templatingEngine) {
+        if (self.standardInstall === 'Standard') {
+          self.viewEngine = 'teddy: html';
+          cb();
+        }
+        else if (!self.templatingEngine) {
           self.viewEngine = 'none';
           cb();
         }
