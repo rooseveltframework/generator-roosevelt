@@ -39,7 +39,7 @@
     "htmlValidator": {
       "validator": "http://html5.validator.nu",
       "format": "text",
-      "suppressWarnings": true
+      "suppressWarnings": false
     },
     "validatorExceptions": {
       "requestHeader": "Partial",
