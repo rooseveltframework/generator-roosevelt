@@ -1,6 +1,6 @@
 {
   "appName": {
-    "default": "newApp",
+    "default": "My Roosevelt Sample App",
     "type": "string",
     "allowNull": false
   },
@@ -22,6 +22,20 @@
   "noMinify": {
     "default": false,
     "type": "boolean",
+    "allowNull": false
+  },
+  "enableValidator": {
+    "default": false,
+    "type": "boolean",
+    "allowNull": false
+  },
+  "htmlValidator": {
+    "default": {
+      "validator": "http://html5.validator.nu",
+      "format": "text",
+      "suppressWarnings": true
+    },
+    "type": "object",
     "allowNull": false
   },
   "multipart": {
@@ -108,9 +122,24 @@
     "type": "string",
     "allowNull": false
   },
-  "viewEngine": {
-    "default": "html: teddy",
+  "templatingEngine": {
+    "default": true,
+    "type": "boolean",
+    "allowNull": false
+  },
+  "templatingEngineName": {
+    "default": "teddy",
     "type": "string",
+    "allowNull": false
+  },
+  "templatingExtension": {
+    "default": "html",
+    "type": "string",
+    "allowNull": false
+  },
+  "additionalTemplatingEngines": {
+    "default": false,
+    "type": "boolean",
     "allowNull": false
   },
   "controllersPath": {
@@ -148,6 +177,17 @@
     "type": "string",
     "allowNull": false
   },
+  "htmlMinify": {
+    "default": {
+      "override": true,
+      "exception_url": false,
+      "htmlMinifier": {
+        "html5": true
+      }
+    },
+    "type": "object",
+    "allowNull": false
+  },
   "cssPath": {
     "default": "css",
     "type": "string",
@@ -180,9 +220,9 @@
   },
   "jsCompiler": {
     "default": {
-      "nodeModule": "roosevelt-closure", 
+      "nodeModule": "roosevelt-closure",
       "params": {
-        "compilation_level": "ADVANCED_OPTIMIZATIONS"
+        "compilationLevel": "ADVANCED"
       }
     },
     "type": "string",
