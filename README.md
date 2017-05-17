@@ -1,58 +1,31 @@
-mkroosevelt [![NPM version](https://badge.fury.io/js/mkroosevelt.png)](http://badge.fury.io/js/mkroosevelt) [![Dependency Status](https://gemnasium.com/kethinov/mkroosevelt.png)](https://gemnasium.com/kethinov/mkroosevelt) [![Gittip](http://img.shields.io/gittip/kethinov.png)](https://www.gittip.com/kethinov/)
+Roosevelt Yeoman generator
 ===
+
+[![Build Status](https://travis-ci.org/kethinov/generator-roosevelt.svg?branch=master)](https://travis-ci.org/kethinov/generator-roosevelt) [![npm](https://img.shields.io/npm/v/generator-roosevelt.svg)](https://www.npmjs.com/package/generator-roosevelt)
 
 Command line application for creating [Roosevelt](https://github.com/kethinov/roosevelt) apps.
 
-Getting Started
----
-
-Globally Install `yo` and `mkroosevelt`
-
-```
-npm install -g yo mkroosevelt
-```
-
-Create a new directory you would like the roosevelt application to be created in and navigate to it.
-
-```
-mkdir newRooseveltApp
-cd newRooseveltApp
-```
-
-Create a new roosevelt application using mkroosevelt command which is a [yeoman generator](http://yeoman.io/).
-
-```
-mkroosevelt nameOfNewApp
-```
-
-Then follow on screen prompts.
-
-*Note*:
-
-* For most users the standard install is the recommened option.
-
-* Any of the options configured in the advanced install can be edited later in the `package.json` file.
+![Teddy Roosevelt's facial hair is a curly brace.](https://raw.github.com/kethinov/mkroosevelt/master/sampleApp/statics/images/teddy.jpg "Teddy Roosevelt's facial hair is a curly brace.")
 
 Usage
 ---
 
-Create an app in the current directory:
+Globally install [Yeoman](http://yeoman.io).
 
 ```
-mkroosevelt nameOfNewApp
+npm i -g yo
 ```
 
-Output current version:
+Globally install Roosevelt Yeoman generator.
 
 ```
-mkroosevelt -v, -version, --v, --version
+npm i -g generator-roosevelt
 ```
 
-Generate ssl certificate and key for https server:
+Create a Roosevelt app.
 
 ```
-mkroosevelt -genssl, --genssl
+yo roosevelt
 ```
 
-
-![Teddy Roosevelt's facial hair is a curly brace.](https://raw.github.com/kethinov/mkroosevelt/master/sampleApp/statics/images/teddy.jpg "Teddy Roosevelt's facial hair is a curly brace.")
+Then follow the prompts.
