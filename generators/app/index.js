@@ -632,7 +632,7 @@ module.exports = generators.Base.extend({
     );
 
     this.fs.copy(
-      this.templatePath('.gitignore'),
+      this.templatePath('gitignore_template'),
       this.destinationPath('.gitignore')
     );
 
