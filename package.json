@@ -71,5 +71,10 @@
   "scripts": {
     "lint": "eslint .",
     "test": "set NODE_ENV=test && \"./node_modules/.bin/mocha\" unitTest.js"
-  }
+  },
+  "files": [
+    "generators/app",
+    "sampleApp",
+    "rooseveltDefaults.json"
+  ]
 }
