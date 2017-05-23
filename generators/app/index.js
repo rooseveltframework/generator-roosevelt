@@ -377,7 +377,7 @@ module.exports = generators.Base.extend({
         ]
       ).then(function(answers) {
         if (self.standardInstall === 'Standard') {
-          self.viewEngine = 'teddy: html';
+          self.viewEngine = 'html: teddy';
           cb();
         }
         else if (!self.templatingEngine) {
@@ -385,7 +385,7 @@ module.exports = generators.Base.extend({
           cb();
         }
         else {
-          self.engineList.push(answers.templatingEngineName + ': ' + answers.templatingExtension);
+          self.engineList.push(answers.templatingExtension + ': ' + answers.templatingEngineName);
           if (answers.additionalTemplatingEngines === true) {
             self.prompting.addTemplatingEngine(self, cb);
           }
