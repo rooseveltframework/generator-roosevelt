@@ -3,7 +3,7 @@
   "description": "Yeoman generator for Roosevelt apps",
   "author": "Eric Newport <kethinov@gmail.com>",
   "version": "0.2.4",
-  "homepage": "https://github.com/kethinov/generator-roosevelt",
+  "homepage": "https://github.com/rooseveltframework/generator-roosevelt",
   "license": "CC-BY-4.0",
   "main": "generators/app/index.js",
   "readmeFilename": "README.md",
@@ -53,7 +53,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/kethinov/generator-roosevelt.git"
+    "url": "git://github.com/rooseveltframework/generator-roosevelt.git"
   },
   "keywords": [
     "roosevelt.js",
