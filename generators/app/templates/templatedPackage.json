@@ -80,7 +80,7 @@
   "scripts": {
     "start": "npm run prod",
     "prod": "supervisor -k -e js,json,less,html -i statics/.build/,.git/,public/,node_modules/ -- app.js -prod",
-    "dev": "supervisor -k -e js,json,less,html -i statics/.build/,.git/,public/,node_modules/ -- app.js -dev",
+    "dev": "--scripts-prepend-node-path supervisor -k -e js,json,less,html -i statics/.build/,.git/,public/,node_modules/ -- app.js -dev",
     "test": "jshint app.js"
   }
 }
