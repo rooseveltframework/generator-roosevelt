@@ -12,10 +12,10 @@
   },
   "engineStrict": true,
   "dependencies": {
-    "roosevelt": "^0.6.0",
-    "teddy": "^0.3.0",
+    "roosevelt": "^0.8.0",
+    "teddy": "^0.4.0",
     "roosevelt-less": "^0.2.0",
-    "roosevelt-closure": "^0.2.0"
+    "roosevelt-closure": "^0.3.0"
   },
   "devDependencies": {
     "jshint": "*",
@@ -79,8 +79,8 @@
   },
   "scripts": {
     "start": "npm run prod",
-    "prod": "--scripts-prepend-node-path supervisor -k -e js,json,less,html -i statics/.build/,.git/,public/,node_modules/ -- app.js -prod",
-    "dev": "--scripts-prepend-node-path supervisor -k -e js,json,less,html -i statics/.build/,.git/,public/,node_modules/ -- app.js -dev",
-    "test": "--scripts-prepend-node-path jshint app.js"
+    "prod": "./node_modules/.bin/supervisor -k -e js,json,less,html -i statics/.build/,.git/,public/,node_modules/ -- app.js -prod",
+    "dev": "./node_modules/.bin/supervisor -k -e js,json,less,html -i statics/.build/,.git/,public/,node_modules/ -- app.js -dev",
+    "test": "./node_modules/.bin/jshint app.js"
   }
 }
