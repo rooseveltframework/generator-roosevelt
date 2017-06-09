@@ -63,7 +63,7 @@
     "versionedStatics": <%= versionedStatics %>,
     "versionedCssFile": <%- versionedCssFile %>,
     "alwaysHostPublic": <%= alwaysHostPublic %>,
-    "bodyParserJsonOptions": <%- bodyParserJsonOptions %>,
+    "bodyParserJsonParams": <%- bodyParserJsonParams %>,
     "bodyParserOptions": <%- bodyParserOptions %>,
     "libPath": "<%= libPath %>",
     "libPathNodeModulesSymlink": "<%= libPathNodeModulesSymlink %>",
