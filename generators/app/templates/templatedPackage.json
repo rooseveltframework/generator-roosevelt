@@ -67,7 +67,7 @@
     "bodyParserOptions": <%- bodyParserOptions %>,
     "libPath": "<%= libPath %>",
     "libPathNodeModulesSymlink": "<%= libPathNodeModulesSymlink %>",
-    "modelsNodeModulesSymlink": "<%= modelsNodeModulesSymlink %>",
+    "modelsNodeModulesSymlink": "<%= modelsNodeModulesSymlink %>"
   },
   "jshintConfig": {
     "camelcase": true,
