@@ -45,7 +45,9 @@ module.exports = generators.Base.extend({
     this.option('cssCompilerWhitelist', {desc: 'Whitelist of CSS files to compile as an array' });
     this.option('cssCompiledOutput', {desc: 'Where to place compiled CSS files' });
     this.option('jsPath', {desc: 'Subdirectory within staticsRoot where your JS files are located.' });
-     this.option('bundledJsPath', {desc: 'bundledJsPath' });
+    this.option('bundledJsPath', {desc: 'bundledJsPath' });
+    this.option('exposeBundles', {desc: 'exposeBundles' });
+    this.option('browserifyBundles', {desc: 'browserifyBundles' });
     this.option('jsCompiler', {desc: 'Which JS minifier, if any, to use.' });
     this.option('jsCompilerWhitelist', {desc: 'Whitelist of JS files to compile as an array.' });
     this.option('jsCompiledOutput', {desc: 'Where to place compiled JS files.' });
@@ -332,7 +334,9 @@ module.exports = generators.Base.extend({
           this.cssCompilerWhitelist = answers.cssCompilerWhitelist ? answers.cssCompilerWhitelist :  this.options.cssCompilerWhitelist || 'null';
           this.cssCompiledOutput = answers.cssCompiledOutput ? answers.cssCompiledOutput :  this.options.cssCompiledOutput || '.build/css';
           this.jsPath = answers.jsPath ? answers.jsPath :  this.options.jsPath || 'js';
-          this.jsPath = answers.jsPath ? answers.jsPath :  this.options.jsPath || '.bundled';
+          this.bundledJsPath = answers.bundledJsPath ? answers.bundledJsPath :  this.options.bundledJsPath || '.bundled';
+          this.exposeBundles = answers.exposeBundles ? answers.exposeBundles :  this.options.exposeBundles || 'true';
+          this.browserifyBundles = answers.browserifyBundles ? answers.browserifyBundles :  this.options.browserifyBundles || '[]';
           this.jsCompiler = answers.jsCompiler ? answers.jsCompiler :  this.options.jsCompiler || '{"nodeModule": "roosevelt-closure", "params": {"compilationLevel": "ADVANCED"}}';
           this.jsCompilerWhitelist = answers.jsCompilerWhitelist ? answers.jsCompilerWhitelist :  this.options.jsCompilerWhitelist || 'null';
           this.jsCompiledOutput = answers.jsCompiledOutput ? answers.jsCompiledOutput :  this.options.jsCompiledOutput || '.build/js';
@@ -620,6 +624,8 @@ module.exports = generators.Base.extend({
         cssCompiledOutput: this.cssCompiledOutput,
         jsPath: this.jsPath,
         bundledJsPath: this.bundledJsPath,
+        exposeBundles: this.exposeBundles,
+        browserifyBundles: this.browserifyBundles,
         jsCompiler: this.jsCompiler,
         jsCompilerWhitelist: this.jsCompilerWhitelist,
         jsCompiledOutput: this.jsCompiledOutput,
