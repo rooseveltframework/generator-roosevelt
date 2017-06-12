@@ -254,7 +254,6 @@ module.exports = generators.Base.extend({
           this.standardInstall = answers.standardInstall;
           this.templatingEngine = answers.templatingEngine;
           this.port = answers.port ? answers.port : this.options.port || '43711';
-          this.port = process.env.HTTP_PORT || process.env.NODE_PORT || params.port || pkg.rooseveltConfig.port || 43711;
           this.localhostOnly = answers.localhostOnly ? answers.localhostOnly :  this.options.localhostOnly || 'true';
           this.disableLogger = answers.disableLogger ? answers.disableLogger :  this.options.disableLogger || 'false';
           this.noMinify = answers.noMinify ? answers.noMinify :  this.options.noMinify || 'false';
