@@ -15,6 +15,7 @@ module.exports = generators.Base.extend({
     this.option('noMinify', {desc: 'Disables HTML minification as well as the minification step in (supporting) CSS and JS compilers. Automatically enabled during dev mode.' });
     this.option('enableValidator', {desc: 'Enables or disables the built-in HTML validator in dev mode.' });
     this.option('htmlValidator', {desc: 'Params to send to html-validator.' });
+    this.option('validatorExceptions', {desc: ' Use this to customize the name of the request header or model value that is used to disable the HTML validators' });
     this.option('shutdownTimeout', {desc: 'Maximum amount of time in miliseconds given to Roosevelt to gracefully shut itself down when sent the kill signal.' });
     this.option('https', {desc: 'Run an HTTPS server using Roosevelt.' });
     this.option('httpsOnly', {desc: 'If running an HTTPS server, determines whether or not the default HTTP server will be disabled' });
@@ -25,8 +26,8 @@ module.exports = generators.Base.extend({
     this.option('ca', {desc: 'Certificate authority to match client certificates against, as a file path or array of file paths.' });
     this.option('requestCert', {desc: 'Request a certificate from a client and attempt to verify it.' });
     this.option('rejectUnauthorized', {desc: 'Upon failing to authorize a user with supplied CA(s), reject their connection entirely.' });
-    this.option('bodyParserOptions', {desc: 'Controls the options for body-parser using a object.' });
-    this.option('bodyParserJsonOptions', {desc: 'Controls the options for the json function of the body-parser using a object.' });
+    this.option('bodyParserUrlencodedParams', {desc: 'Controls the options for body-parser using a object.' });
+    this.option('bodyParserJsonParams', {desc: 'Controls the options for the json function of the body-parser using a object.' });
     this.option('modelsPath', {desc: 'Relative path on filesystem to where your model files are located.' });
     this.option('modelsNodeModulesSymlink', {desc: 'Name of the symlink to make in node_modules pointing to your models directory. Set to false to disable making this symlink.' });
     this.option('viewsPath', {desc: 'Relative path on filesystem to where your view files are located.' });
@@ -44,6 +45,9 @@ module.exports = generators.Base.extend({
     this.option('cssCompilerWhitelist', {desc: 'Whitelist of CSS files to compile as an array' });
     this.option('cssCompiledOutput', {desc: 'Where to place compiled CSS files' });
     this.option('jsPath', {desc: 'Subdirectory within staticsRoot where your JS files are located.' });
+    this.option('bundledJsPath', {desc: 'Subdirectory within jsPath where you would like browserify to deposit bundled JS files it produces (if you use browserify)' });
+    this.option('exposeBundles', {desc: 'Whether or not to copy the bundledJsPath directory to your build directory' });
+    this.option('browserifyBundles', {desc: ' Declare browserify bundles: one or more files in your jsPath for browserify to bundle via its bundle method.' });
     this.option('jsCompiler', {desc: 'Which JS minifier, if any, to use.' });
     this.option('jsCompilerWhitelist', {desc: 'Whitelist of JS files to compile as an array.' });
     this.option('jsCompiledOutput', {desc: 'Where to place compiled JS files.' });
@@ -258,7 +262,8 @@ module.exports = generators.Base.extend({
           this.disableLogger = answers.disableLogger ? answers.disableLogger :  this.options.disableLogger || 'false';
           this.noMinify = answers.noMinify ? answers.noMinify :  this.options.noMinify || 'false';
           this.enableValidator = this.options.enableValidator || 'false';
-          this.htmlValidator = this.options.enableValidator || '{validator: "http://html5.validator.nu", format: "text", suppressWarnings: true}';
+          this.htmlValidator = this.options.enableValidator || '{"port": "8888", "format": "text", "suppressWarnings": false}';
+          this.validatorExceptions = this.options.validatorExceptions || '{"requestHeader": "Partial", "modelValue": "_disableValidator"}';
           this.multipart = answers.multipart ? answers.multipart :  this.options.multipart || '{"multiples": true}';
           this.shutdownTimeout = answers.shutdownTimeout ? answers.shutdownTimeout :  this.options.shutdownTimeout || '30000';
           this.https = answers.https ? answers.https :  this.options.https || 'false';
@@ -311,8 +316,8 @@ module.exports = generators.Base.extend({
           this.appNameForPackageJson = answers.appName ? answers.appName.replace(/^\.|_/, '').replace(/\s+/g, '-').replace(/(.{1,213})(.*)/, '$1').toLowerCase() : this.options.appName.replace(/^\.|_/, '').replace(/\s+/g, '-').replace(/(.{1,213})(.*)/, '$1').toLowerCase() || 'new-project'; // First remove dot or underscore from beginning, trim whitespace and replace with dash for readability, chop off any characters past 214 in length, and then put all letters to lowercase. These are all requirements of package name for npm see: https://docs.npmjs.com/files/package.json#name
           this.requestCert = answers.requestCert ?  answers.requestCert :  this.options.requestCert || 'false';
           this.rejectUnauthorized = answers.rejectUnauthorized ? answers.rejectUnauthorized :  this.options.rejectUnauthorized || 'false';
-          this.bodyParserOptions = answers.bodyParserOptions ? answers.bodyParserOptions :  this.options.bodyParserOptions || '{"extended": true}';
-          this.bodyParserJsonOptions = answers.bodyParserJsonOptions ? answers.bodyParserJsonOptions :  this.options.bodyParserJsonOptions || '{}';
+          this.bodyParserUrlencodedParams = answers.bodyParserUrlencodedParams ? answers.bodyParserUrlencodedParams :  this.options.bodyParserUrlencodedParams || '{"extended": true}';
+          this.bodyParserJsonParams = answers.bodyParserJsonParams ? answers.bodyParserJsonParams :  this.options.bodyParserJsonParams || '{}';
           this.modelsPath = answers.modelsPath ? answers.modelsPath :  this.options.modelsPath || 'mvc/models';
           this.modelsNodeModulesSymlink = answers.modelsNodeModulesSymlink ? answers.modelsNodeModulesSymlink :  this.options.modelsNodeModulesSymlink || 'models';
           this.viewsPath = answers.viewsPath ? answers.viewsPath :  this.options.viewsPath || 'mvc/views';
@@ -329,6 +334,9 @@ module.exports = generators.Base.extend({
           this.cssCompilerWhitelist = answers.cssCompilerWhitelist ? answers.cssCompilerWhitelist :  this.options.cssCompilerWhitelist || 'null';
           this.cssCompiledOutput = answers.cssCompiledOutput ? answers.cssCompiledOutput :  this.options.cssCompiledOutput || '.build/css';
           this.jsPath = answers.jsPath ? answers.jsPath :  this.options.jsPath || 'js';
+          this.bundledJsPath = answers.bundledJsPath ? answers.bundledJsPath :  this.options.bundledJsPath || '.bundled';
+          this.exposeBundles = answers.exposeBundles ? answers.exposeBundles :  this.options.exposeBundles || 'true';
+          this.browserifyBundles = answers.browserifyBundles ? answers.browserifyBundles :  this.options.browserifyBundles || [];
           this.jsCompiler = answers.jsCompiler ? answers.jsCompiler :  this.options.jsCompiler || '{"nodeModule": "roosevelt-closure", "params": {"compilationLevel": "ADVANCED"}}';
           this.jsCompilerWhitelist = answers.jsCompilerWhitelist ? answers.jsCompilerWhitelist :  this.options.jsCompilerWhitelist || 'null';
           this.jsCompiledOutput = answers.jsCompiledOutput ? answers.jsCompiledOutput :  this.options.jsCompiledOutput || '.build/js';
@@ -584,6 +592,7 @@ module.exports = generators.Base.extend({
         noMinify: this.noMinify,
         enableValidator: this.enableValidator,
         htmlValidator: this.htmlValidator,
+        validatorExceptions: this.validatorExceptions,
         multipart: this.multipart,
         shutdownTimeout: this.shutdownTimeout,
         https: this.https,
@@ -595,8 +604,8 @@ module.exports = generators.Base.extend({
         ca: this.ca,
         requestCert: this.requestCert,
         rejectUnauthorized: this.rejectUnauthorized,
-        bodyParserOptions: this.bodyParserOptions,
-        bodyParserJsonOptions: this.bodyParserJsonOptions,
+        bodyParserUrlencodedParams: this.bodyParserUrlencodedParams,
+        bodyParserJsonParams: this.bodyParserJsonParams,
         modelsPath: this.modelsPath,
         modelsNodeModulesSymlink: this.modelsNodeModulesSymlink,
         viewsPath: this.viewsPath,
@@ -614,6 +623,9 @@ module.exports = generators.Base.extend({
         cssCompilerWhitelist: this.cssCompilerWhitelist,
         cssCompiledOutput: this.cssCompiledOutput,
         jsPath: this.jsPath,
+        bundledJsPath: this.bundledJsPath,
+        exposeBundles: this.exposeBundles,
+        browserifyBundles: this.browserifyBundles,
         jsCompiler: this.jsCompiler,
         jsCompilerWhitelist: this.jsCompilerWhitelist,
         jsCompiledOutput: this.jsCompiledOutput,
