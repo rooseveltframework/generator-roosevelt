@@ -253,12 +253,12 @@ module.exports = generators.Base.extend({
 
           this.standardInstall = answers.standardInstall;
           this.templatingEngine = answers.templatingEngine;
-          this.port = answers.port ? answers.port : this.options.port || '43711';
+          this.port = process.env.HTTP_PORT || process.env.NODE_PORT || params.port || pkg.rooseveltConfig.port || 43711;
           this.localhostOnly = answers.localhostOnly ? answers.localhostOnly :  this.options.localhostOnly || 'true';
           this.disableLogger = answers.disableLogger ? answers.disableLogger :  this.options.disableLogger || 'false';
           this.noMinify = answers.noMinify ? answers.noMinify :  this.options.noMinify || 'false';
           this.enableValidator = this.options.enableValidator || 'false';
-          this.htmlValidator = this.options.enableValidator || '{"validator": "http://html5.validator.nu", "format": "text", "suppressWarnings": true}';
+          this.htmlValidator = params.htmlValidator || pkg.rooseveltConfig.htmlValidator || {port: '8888', format: 'text', suppressWarnings: false};
           this.multipart = answers.multipart ? answers.multipart :  this.options.multipart || '{"multiples": true}';
           this.shutdownTimeout = answers.shutdownTimeout ? answers.shutdownTimeout :  this.options.shutdownTimeout || '30000';
           this.https = answers.https ? answers.https :  this.options.https || 'false';
