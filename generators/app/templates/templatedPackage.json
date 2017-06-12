@@ -55,6 +55,7 @@
     "cssCompiledOutput": "<%= cssCompiledOutput %>",
     "cssCompilerWhitelist": <%- cssCompilerWhitelist %>,
     "jsPath": "<%= jsPath %>",
+    "bundledJsPath": "<%= bundledJsPath %>",
     "jsCompiler": <%- jsCompiler %>,
     "jsCompiledOutput": "<%= jsCompiledOutput %>",
     "jsCompilerWhitelist": <%- jsCompilerWhitelist %>,
