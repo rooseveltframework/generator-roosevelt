@@ -28,6 +28,7 @@
     "noMinify": <%= noMinify %>,
     "enableValidator": <%= enableValidator %>,
     "htmlValidator": <%- htmlValidator %>,
+    "validatorExceptions": <%- validatorExceptions %>,
     "multipart": <%- multipart %>,
     "maxLagPerRequest": 2000,
     "shutdownTimeout": <%= shutdownTimeout %>,

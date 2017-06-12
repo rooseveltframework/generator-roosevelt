@@ -15,6 +15,7 @@ module.exports = generators.Base.extend({
     this.option('noMinify', {desc: 'Disables HTML minification as well as the minification step in (supporting) CSS and JS compilers. Automatically enabled during dev mode.' });
     this.option('enableValidator', {desc: 'Enables or disables the built-in HTML validator in dev mode.' });
     this.option('htmlValidator', {desc: 'Params to send to html-validator.' });
+    this.option('validatorExceptions', {desc: 'Params' });
     this.option('shutdownTimeout', {desc: 'Maximum amount of time in miliseconds given to Roosevelt to gracefully shut itself down when sent the kill signal.' });
     this.option('https', {desc: 'Run an HTTPS server using Roosevelt.' });
     this.option('httpsOnly', {desc: 'If running an HTTPS server, determines whether or not the default HTTP server will be disabled' });
@@ -259,6 +260,7 @@ module.exports = generators.Base.extend({
           this.noMinify = answers.noMinify ? answers.noMinify :  this.options.noMinify || 'false';
           this.enableValidator = this.options.enableValidator || 'false';
           this.htmlValidator = this.options.enableValidator || '{"port": "8888", "format": "text", "suppressWarnings": false}';
+          this.validatorExceptions = this.options.validatorExceptions || '{"requestHeader": "Partial", "modelValue": "_disableValidator"}';
           this.multipart = answers.multipart ? answers.multipart :  this.options.multipart || '{"multiples": true}';
           this.shutdownTimeout = answers.shutdownTimeout ? answers.shutdownTimeout :  this.options.shutdownTimeout || '30000';
           this.https = answers.https ? answers.https :  this.options.https || 'false';
@@ -584,6 +586,7 @@ module.exports = generators.Base.extend({
         noMinify: this.noMinify,
         enableValidator: this.enableValidator,
         htmlValidator: this.htmlValidator,
+        validatorExceptions: this.validatorExceptions,
         multipart: this.multipart,
         shutdownTimeout: this.shutdownTimeout,
         https: this.https,
