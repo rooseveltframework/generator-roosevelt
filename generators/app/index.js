@@ -15,7 +15,7 @@ module.exports = generators.Base.extend({
     this.option('noMinify', {desc: 'Disables HTML minification as well as the minification step in (supporting) CSS and JS compilers. Automatically enabled during dev mode.' });
     this.option('enableValidator', {desc: 'Enables or disables the built-in HTML validator in dev mode.' });
     this.option('htmlValidator', {desc: 'Params to send to html-validator.' });
-    this.option('validatorExceptions', {desc: 'Params' });
+    this.option('validatorExceptions', {desc: ' Use this to customize the name of the request header or model value that is used to disable the HTML validators' });
     this.option('shutdownTimeout', {desc: 'Maximum amount of time in miliseconds given to Roosevelt to gracefully shut itself down when sent the kill signal.' });
     this.option('https', {desc: 'Run an HTTPS server using Roosevelt.' });
     this.option('httpsOnly', {desc: 'If running an HTTPS server, determines whether or not the default HTTP server will be disabled' });
@@ -45,9 +45,9 @@ module.exports = generators.Base.extend({
     this.option('cssCompilerWhitelist', {desc: 'Whitelist of CSS files to compile as an array' });
     this.option('cssCompiledOutput', {desc: 'Where to place compiled CSS files' });
     this.option('jsPath', {desc: 'Subdirectory within staticsRoot where your JS files are located.' });
-    this.option('bundledJsPath', {desc: 'bundledJsPath' });
-    this.option('exposeBundles', {desc: 'exposeBundles' });
-    this.option('browserifyBundles', {desc: 'browserifyBundles' });
+    this.option('bundledJsPath', {desc: 'Subdirectory within jsPath where you would like browserify to deposit bundled JS files it produces (if you use browserify)' });
+    this.option('exposeBundles', {desc: 'Whether or not to copy the bundledJsPath directory to your build directory' });
+    this.option('browserifyBundles', {desc: ' Declare browserify bundles: one or more files in your jsPath for browserify to bundle via its bundle method.' });
     this.option('jsCompiler', {desc: 'Which JS minifier, if any, to use.' });
     this.option('jsCompilerWhitelist', {desc: 'Whitelist of JS files to compile as an array.' });
     this.option('jsCompiledOutput', {desc: 'Where to place compiled JS files.' });
@@ -336,7 +336,7 @@ module.exports = generators.Base.extend({
           this.jsPath = answers.jsPath ? answers.jsPath :  this.options.jsPath || 'js';
           this.bundledJsPath = answers.bundledJsPath ? answers.bundledJsPath :  this.options.bundledJsPath || '.bundled';
           this.exposeBundles = answers.exposeBundles ? answers.exposeBundles :  this.options.exposeBundles || 'true';
-          this.browserifyBundles = answers.browserifyBundles ? answers.browserifyBundles :  this.options.browserifyBundles || '[]';
+          this.browserifyBundles = answers.browserifyBundles ? answers.browserifyBundles :  this.options.browserifyBundles || [];
           this.jsCompiler = answers.jsCompiler ? answers.jsCompiler :  this.options.jsCompiler || '{"nodeModule": "roosevelt-closure", "params": {"compilationLevel": "ADVANCED"}}';
           this.jsCompilerWhitelist = answers.jsCompilerWhitelist ? answers.jsCompilerWhitelist :  this.options.jsCompilerWhitelist || 'null';
           this.jsCompiledOutput = answers.jsCompiledOutput ? answers.jsCompiledOutput :  this.options.jsCompiledOutput || '.build/js';
