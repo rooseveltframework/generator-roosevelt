@@ -330,13 +330,13 @@ module.exports = generators.Base.extend({
           this.cssCompiledOutput = answers.cssCompiledOutput ? answers.cssCompiledOutput :  this.options.cssCompiledOutput || '.build/css';
           this.jsPath = answers.jsPath ? answers.jsPath :  this.options.jsPath || 'js';
           this.jsCompiler = answers.jsCompiler ? answers.jsCompiler :  this.options.jsCompiler || '{"nodeModule": "roosevelt-closure", "params": {"compilationLevel": "ADVANCED"}}';
-          this.jsCompilerWhitelist = answers.jsCompilerWhitelist ? answers.jsCompilerWhitelist :  this.options.jsCompilerWhitelist || 'null';
+          this.jsCompilerWhitelist = answers.jsCompilerWhitelist ? answers.jsCompilerWhitelist :  this.options.jsCompilerWhitelist || 'undefined';
           this.jsCompiledOutput = answers.jsCompiledOutput ? answers.jsCompiledOutput :  this.options.jsCompiledOutput || '.build/js';
           this.publicFolder = answers.publicFolder ? answers.publicFolder :  this.options.publicFolder || 'public';
           this.favicon = answers.favicon ? answers.favicon :  this.options.favicon || 'images/favicon.ico';
           this.symlinksToStatics = answers.symlinksToStatics ? answers.symlinksToStatics :  this.options.symlinksToStatics || '["css: .build/css", "images", "js: .build/js"]';
           this.versionedStatics = answers.versionedStatics ? answers.versionedStatics :  this.options.versionedStatics || 'false';
-          this.versionedCssFile = answers.versionedCssFile ? answers.versionedCssFile :  this.options.versionedCssFile || 'null';
+          this.versionedCssFile = answers.versionedCssFile ? answers.versionedCssFile :  this.options.versionedCssFile || 'undefined';
           this.alwaysHostPublic = answers.alwaysHostPublic ? answers.alwaysHostPublic :  this.options.alwaysHostPublic || 'false';
           this.supressClosingMessage = this.options.supressClosingMessage ? this.options.supressClosingMessage : false;
         }.bind(this));
