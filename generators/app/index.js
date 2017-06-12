@@ -25,7 +25,7 @@ module.exports = generators.Base.extend({
     this.option('ca', {desc: 'Certificate authority to match client certificates against, as a file path or array of file paths.' });
     this.option('requestCert', {desc: 'Request a certificate from a client and attempt to verify it.' });
     this.option('rejectUnauthorized', {desc: 'Upon failing to authorize a user with supplied CA(s), reject their connection entirely.' });
-    this.option('bodyParserOptions', {desc: 'Controls the options for body-parser using a object.' });
+    this.option('bodyParserUrlencodedParams', {desc: 'Controls the options for body-parser using a object.' });
     this.option('bodyParserJsonParams', {desc: 'Controls the options for the json function of the body-parser using a object.' });
     this.option('modelsPath', {desc: 'Relative path on filesystem to where your model files are located.' });
     this.option('modelsNodeModulesSymlink', {desc: 'Name of the symlink to make in node_modules pointing to your models directory. Set to false to disable making this symlink.' });
@@ -311,7 +311,7 @@ module.exports = generators.Base.extend({
           this.appNameForPackageJson = answers.appName ? answers.appName.replace(/^\.|_/, '').replace(/\s+/g, '-').replace(/(.{1,213})(.*)/, '$1').toLowerCase() : this.options.appName.replace(/^\.|_/, '').replace(/\s+/g, '-').replace(/(.{1,213})(.*)/, '$1').toLowerCase() || 'new-project'; // First remove dot or underscore from beginning, trim whitespace and replace with dash for readability, chop off any characters past 214 in length, and then put all letters to lowercase. These are all requirements of package name for npm see: https://docs.npmjs.com/files/package.json#name
           this.requestCert = answers.requestCert ?  answers.requestCert :  this.options.requestCert || 'false';
           this.rejectUnauthorized = answers.rejectUnauthorized ? answers.rejectUnauthorized :  this.options.rejectUnauthorized || 'false';
-          this.bodyParserOptions = answers.bodyParserOptions ? answers.bodyParserOptions :  this.options.bodyParserOptions || '{"extended": true}';
+          this.bodyParserUrlencodedParams = answers.bodyParserUrlencodedParams ? answers.bodyParserUrlencodedParams :  this.options.bodyParserUrlencodedParams || '{"extended": true}';
           this.bodyParserJsonParams = answers.bodyParserJsonParams ? answers.bodyParserJsonParams :  this.options.bodyParserJsonParams || '{}';
           this.modelsPath = answers.modelsPath ? answers.modelsPath :  this.options.modelsPath || 'mvc/models';
           this.modelsNodeModulesSymlink = answers.modelsNodeModulesSymlink ? answers.modelsNodeModulesSymlink :  this.options.modelsNodeModulesSymlink || 'models';
@@ -595,7 +595,7 @@ module.exports = generators.Base.extend({
         ca: this.ca,
         requestCert: this.requestCert,
         rejectUnauthorized: this.rejectUnauthorized,
-        bodyParserOptions: this.bodyParserOptions,
+        bodyParserUrlencodedParams: this.bodyParserUrlencodedParams,
         bodyParserJsonParams: this.bodyParserJsonParams,
         modelsPath: this.modelsPath,
         modelsNodeModulesSymlink: this.modelsNodeModulesSymlink,
