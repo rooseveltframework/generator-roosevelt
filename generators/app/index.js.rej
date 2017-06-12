@@ -1,0 +1,10 @@
+diff a/generators/app/index.js b/generators/app/index.js	(rejected hunks)
+@@ -326,7 +326,7 @@
+           this.htmlMinify = this.options.htmlMinify || '{"override": true, "exception_url": false, "htmlMinifier": {"html5": true}}';
+           this.cssPath = answers.cssPath ? answers.cssPath :  this.options.cssPath || 'css';
+           this.cssCompiler = answers.cssCompiler ? answers.cssCompiler :  this.options.cssCompiler || '{"nodeModule": "roosevelt-less", "params": {"compress": true}}';
+-          this.cssCompilerWhitelist = answers.cssCompilerWhitelist ? answers.cssCompilerWhitelist :  this.options.cssCompilerWhitelist || 'null';
++          this.cssCompilerWhitelist = answers.cssCompilerWhitelist ? answers.cssCompilerWhitelist :  this.options.cssCompilerWhitelist || 'undefined';
+           this.cssCompiledOutput = answers.cssCompiledOutput ? answers.cssCompiledOutput :  this.options.cssCompiledOutput || '.build/css';
+           this.jsPath = answers.jsPath ? answers.jsPath :  this.options.jsPath || 'js';
+           this.jsCompiler = answers.jsCompiler ? answers.jsCompiler :  this.options.jsCompiler || '{"nodeModule": "roosevelt-closure", "params": {"compilationLevel": "ADVANCED"}}';
