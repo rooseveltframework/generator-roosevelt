@@ -64,7 +64,7 @@
     "versionedCssFile": <%- versionedCssFile %>,
     "alwaysHostPublic": <%= alwaysHostPublic %>,
     "bodyParserJsonParams": <%- bodyParserJsonParams %>,
-    "bodyParserOptions": <%- bodyParserOptions %>,
+    "bodyParserUrlencodedParams": <%- bodyParserUrlencodedParams %>,
     "libPath": "<%= libPath %>",
     "libPathNodeModulesSymlink": "<%= libPathNodeModulesSymlink %>",
     "modelsNodeModulesSymlink": "<%= modelsNodeModulesSymlink %>"
