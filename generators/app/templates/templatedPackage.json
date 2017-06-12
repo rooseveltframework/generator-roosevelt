@@ -49,7 +49,7 @@
     "error5xx": "<%= error5xx %>",
     "error503": "<%= error503 %>",
     "staticsRoot": "<%= staticsRoot %>",
-    "htmlMinify": "<%= "htmlMinify" %>",
+    "htmlMinify": <%- htmlMinify %>,
     "cssPath": "<%= cssPath %>",
     "cssCompiler": <%- cssCompiler %>,
     "cssCompiledOutput": "<%= cssCompiledOutput %>",
