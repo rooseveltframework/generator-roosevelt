@@ -326,6 +326,7 @@ module.exports = generators.Base.extend({
           this.htmlMinify = this.options.htmlMinify || '{"override": true, "exception_url": false, "htmlMinifier": {"html5": true}}';
           this.cssPath = answers.cssPath ? answers.cssPath :  this.options.cssPath || 'css';
           this.cssCompiler = answers.cssCompiler ? answers.cssCompiler :  this.options.cssCompiler || '{"nodeModule": "roosevelt-less", "params": {"compress": true}}';
+          this.cssCompilerWhitelist = answers.cssCompilerWhitelist ? answers.cssCompilerWhitelist :  this.options.cssCompilerWhitelist || 'null';
           this.cssCompilerWhitelist = answers.cssCompilerWhitelist ? answers.cssCompilerWhitelist :  this.options.cssCompilerWhitelist || 'undefined';
           this.cssCompiledOutput = answers.cssCompiledOutput ? answers.cssCompiledOutput :  this.options.cssCompiledOutput || '.build/css';
           this.jsPath = answers.jsPath ? answers.jsPath :  this.options.jsPath || 'js';
