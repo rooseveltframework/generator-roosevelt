@@ -18,9 +18,9 @@
     "roosevelt-closure": "^0.3.0"
   },
   "devDependencies": {
-    "eslint": "*",
-    "lesshint": "*",
-    "htmlhint": "*",
+    "eslint": "^4.0.0",
+    "lesshint": "^3.3.0",
+    "htmlhint": "^0.9.0",
     "supervisor": "*"
   },
   "rooseveltConfig": {
@@ -78,8 +78,7 @@
   "eslintConfig": {
     "env": {
       "browser": true,
-      "node": true,
-      "mocha": true
+      "node": true
     },
     "rules": {
       "eqeqeq": 2,
@@ -114,7 +113,6 @@
     "start": "npm run prod",
     "prod": "./node_modules/.bin/supervisor -k -e js,json,less,html -i statics/.build/,.git/,public/,node_modules/ -- app.js -prod",
     "dev": "./node_modules/.bin/supervisor -k -e js,json,less,html -i statics/.build/,.git/,public/,node_modules/ -- app.js -dev",
-    "test": "npm run lint app.js",
     "eslint": "./node_modules/.bin/eslint .",
     "stylelint": "./node_modules/.bin/stylelint \"statics/css/**/*.less\" --syntax less",
     "htmlhint": "./node_modules/.bin/htmlhint --config .htmlhintrc mvc/views",
