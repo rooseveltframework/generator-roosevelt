@@ -118,5 +118,10 @@
     "stylelint": "./node_modules/.bin/stylelint \"statics/css/**/*.less\" --syntax less",
     "htmlhint": "./node_modules/.bin/htmlhint --config .htmlhintrc mvc/views",
     "lint": "npm run htmlhint && npm run stylelint && npm run eslint"
-  }
+  },
+  "pre-commit": [
+    "htmlhint",
+    "stylelint",
+    "eslint"
+  ]
 }
