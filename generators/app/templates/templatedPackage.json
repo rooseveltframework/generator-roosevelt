@@ -113,6 +113,7 @@
     "start": "npm run prod",
     "prod": "./node_modules/.bin/supervisor -k -e js,json,less,html -i statics/.build/,.git/,public/,node_modules/ -- app.js -prod",
     "dev": "./node_modules/.bin/supervisor -k -e js,json,less,html -i statics/.build/,.git/,public/,node_modules/ -- app.js -dev",
+    "test": "npm run lint",
     "eslint": "./node_modules/.bin/eslint .",
     "stylelint": "./node_modules/.bin/stylelint \"statics/css/**/*.less\" --syntax less",
     "htmlhint": "./node_modules/.bin/htmlhint --config .htmlhintrc mvc/views",
