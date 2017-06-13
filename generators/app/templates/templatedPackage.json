@@ -21,6 +21,8 @@
     "eslint": "^4.0.0",
     "lesshint": "^3.3.0",
     "htmlhint": "^0.9.0",
+    "stylelint": "^7.10.1",
+    "stylelint-config-standard": "^16.0.0",
     "supervisor": "*"
   },
   "rooseveltConfig": {
