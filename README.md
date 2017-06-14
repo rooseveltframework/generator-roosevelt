@@ -5,7 +5,7 @@ Roosevelt Yeoman generator
 
 Command line application for creating [Roosevelt](https://github.com/rooseveltframework/roosevelt) apps.
 
-![Teddy Roosevelt's facial hair is a curly brace.](https://raw.githubusercontent.com/rooseveltframework/generator-roosevelt/master/sampleApp/statics/images/teddy.jpg "Teddy Roosevelt's facial hair is a curly brace.")
+![Teddy Roosevelt's facial hair is a curly brace.](https://raw.githubusercontent.com/rooseveltframework/generator-roosevelt/master/generators/app/templates/statics/images/teddy.jpg "Teddy Roosevelt's facial hair is a curly brace.")
 
 Usage
 ---
