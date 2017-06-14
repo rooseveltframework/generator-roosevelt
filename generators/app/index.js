@@ -640,7 +640,7 @@ module.exports = generators.Base.extend({
 
     this.fs.copyTpl(
       this.templatePath('.stylelintrc_template.json'),
-      this.destinationPath('.stylelint.json')
+      this.destinationPath('.stylelintrc.json')
     );
 
     this.fs.copyTpl(
