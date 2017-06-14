@@ -639,6 +639,11 @@ module.exports = generators.Base.extend({
     );
 
     this.fs.copyTpl(
+      this.templatePath('templated.stylelint.json'),
+      this.destinationPath('.stylelint.json')
+    );
+
+    this.fs.copyTpl(
       this.templatePath('app.js'),
       this.destinationPath('app.js')
     );
