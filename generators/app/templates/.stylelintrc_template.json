@@ -1,0 +1,11 @@
+{
+  "extends": "stylelint-config-standard",
+  "rules": {
+    "selector-list-comma-newline-after": null,
+    "number-no-trailing-zeros": null,
+    "unit-whitelist": ["px", "%", "vh", "s", "em","deg"],
+    "indentation": 2,
+    "declaration-block-no-ignored-properties": null,
+    "shorthand-property-no-redundant-values": null
+  }
+}
