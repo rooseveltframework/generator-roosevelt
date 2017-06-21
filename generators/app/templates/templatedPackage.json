@@ -21,7 +21,11 @@
     "eslint": "^4.0.0",
     "lesshint": "^3.3.0",
     "htmlhint": "^0.9.0",
-    "supervisor": "*"
+    "stylelint": "^7.10.1",
+    "stylelint-config-standard": "^16.0.0",
+    "supervisor": "*",
+    "lint-staged": "^4.0.0",
+    "husky": "^0.13.4"
   },
   "rooseveltConfig": {
     "port": <%= port %>,
@@ -113,9 +117,16 @@
     "start": "npm run prod",
     "prod": "./node_modules/.bin/supervisor -k -e js,json,less,html -i statics/.build/,.git/,public/,node_modules/ -- app.js -prod",
     "dev": "./node_modules/.bin/supervisor -k -e js,json,less,html -i statics/.build/,.git/,public/,node_modules/ -- app.js -dev",
+    "test": "npm run lint",
     "eslint": "./node_modules/.bin/eslint .",
     "stylelint": "./node_modules/.bin/stylelint \"statics/css/**/*.less\" --syntax less",
     "htmlhint": "./node_modules/.bin/htmlhint --config .htmlhintrc mvc/views",
-    "lint": "npm run htmlhint && npm run stylelint && npm run eslint"
+    "lint": "npm run htmlhint && npm run stylelint && npm run eslint",
+    "precommit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.html": "./node_modules/.bin/htmlhint --config .htmlhintrc",
+    "*.less": "./node_modules/.bin/stylelint --syntax less",
+    "*.js": "./node_modules/.bin/eslint"
   }
 }
