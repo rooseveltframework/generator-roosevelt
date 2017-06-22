@@ -684,7 +684,7 @@ module.exports = generators.Base.extend({
     this.fs.copy(
       this.templatePath('mvc/views/layouts/main.html'),
       this.destinationPath('mvc/views/layouts/main.html')
-
+    )
 
     this.fs.copy(
       this.templatePath('mvc/views/404.html'),
