@@ -24,7 +24,9 @@
     "eslint": "^2.11.1",
     "mocha": "^3.2.0",
     "is-my-json-valid": "^2.15.0",
-    "chai": "^3.5.0"
+    "chai": "^3.5.0",
+    "lint-staged": "^4.0.0",
+    "husky": "^0.13.4"
   },
   "eslintConfig": {
     "env": {
@@ -110,7 +112,11 @@
   "gitHead": "",
   "scripts": {
     "lint": "eslint .",
-    "test": "set NODE_ENV=test && \"./node_modules/.bin/mocha\" unitTest.js"
+    "test": "set NODE_ENV=test && \"./node_modules/.bin/mocha\" unitTest.js",
+    "precommit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.js": "./node_modules/.bin/eslint"
   },
   "files": [
     "generators/app",
