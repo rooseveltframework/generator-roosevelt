@@ -1,6 +1,7 @@
 var generators = require('yeoman-generator'),
     fse = require('fs-extra'),
     path = require('path'),
+    mkdirp = require('mkdirp'),
     rooseveltDefaults = fse.readJsonSync(path.join(__dirname + '/../../rooseveltDefaults.json')),
     currentDirectory = path.parse(process.cwd()).name;
 
@@ -636,6 +637,19 @@ module.exports = generators.Base.extend({
         versionedCssFile: this.versionedCssFile,
         alwaysHostPublic: this.alwaysHostPublic
       }
+    );
+
+    // Regular copy only copies folders with files. Using the line below to create empty directory
+    mkdirp.sync('.git/hooks');
+
+    this.fs.copyTpl(
+      this.templatePath('.stylelintrc_template.json'),
+      this.destinationPath('.stylelintrc.json')
+    );
+
+    this.fs.copyTpl(
+      this.templatePath('.htmlhintrc_template'),
+      this.destinationPath('.htmlhintrc')
     );
 
     this.fs.copyTpl(
