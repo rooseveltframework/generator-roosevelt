@@ -21,7 +21,7 @@
     "yeoman-test": "^1.6.0"
   },
   "devDependencies": {
-    "eslint": "^2.11.1",
+    "eslint": "^4.1.1",
     "mocha": "^3.2.0",
     "is-my-json-valid": "^2.15.0",
     "chai": "^3.5.0",
