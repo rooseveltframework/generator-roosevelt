@@ -170,6 +170,7 @@
   },
   "scripts": {
     "start": "npm run prod",
+    "killValidator": "node ./lib/killValidator.js",
     "prod": "./node_modules/.bin/supervisor -k -e js,json,less,html -i statics/.build/,.git/,public/,node_modules/ -- app.js -prod",
     "dev": "./node_modules/.bin/supervisor -k -e js,json,less,html -i statics/.build/,.git/,public/,node_modules/ -- app.js -dev",
     "test": "npm run lint",
