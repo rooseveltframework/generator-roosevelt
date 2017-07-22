@@ -36,7 +36,7 @@
     "htmlValidator": <%- htmlValidator %>,
     "validatorExceptions": <%- validatorExceptions %>,
     "multipart": <%- multipart %>,
-    "maxLagPerRequest": 2000,
+    "maxLagPerRequest": 5000,
     "shutdownTimeout": <%= shutdownTimeout %>,
     "https": <%= https %>,
     "httpsOnly": <%= httpsOnly %>,
@@ -62,8 +62,8 @@
     "cssCompilerWhitelist": <%- cssCompilerWhitelist %>,
     "jsPath": "<%= jsPath %>",
     "bundledJsPath": "<%= bundledJsPath %>",
-    "exposeBundles": "<%= exposeBundles %>",
-    "browserifyBundles": "<%= browserifyBundles %>",
+    "exposeBundles": <%= exposeBundles %>,
+    "browserifyBundles": [],
     "jsCompiler": <%- jsCompiler %>,
     "jsCompiledOutput": "<%= jsCompiledOutput %>",
     "jsCompilerWhitelist": <%- jsCompilerWhitelist %>,
@@ -73,11 +73,8 @@
     "versionedStatics": <%= versionedStatics %>,
     "versionedCssFile": <%- versionedCssFile %>,
     "alwaysHostPublic": <%= alwaysHostPublic %>,
-    "bodyParserJsonParams": <%- bodyParserJsonParams %>,
     "bodyParserUrlencodedParams": <%- bodyParserUrlencodedParams %>,
-    "libPath": "<%= libPath %>",
-    "libPathNodeModulesSymlink": "<%= libPathNodeModulesSymlink %>",
-    "modelsNodeModulesSymlink": "<%= modelsNodeModulesSymlink %>"
+    "bodyParserJsonParams": <%- bodyParserJsonParams %>
   },
   "eslintConfig": {
     "env": {
@@ -170,7 +167,7 @@
   },
   "scripts": {
     "start": "npm run prod",
-    "kill-validator": "node ./lib/killValidator.js",
+    "kill-validator": "node ./node_modules/roosevelt/lib/killValidator.js",
     "prod": "./node_modules/.bin/supervisor -k -e js,json,less,html -i statics/.build/,.git/,public/,node_modules/ -- app.js -prod",
     "dev": "./node_modules/.bin/supervisor -k -e js,json,less,html -i statics/.build/,.git/,public/,node_modules/ -- app.js -dev",
     "test": "npm run lint",
