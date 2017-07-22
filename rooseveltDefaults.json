@@ -31,9 +31,18 @@
   },
   "htmlValidator": {
     "default": {
-      "validator": "http://html5.validator.nu",
+      "port": "8888",
+      "separateProcess": false,
       "format": "text",
-      "suppressWarnings": true
+      "suppressWarnings": false
+    },
+    "type": "object",
+    "allowNull": false
+  },
+  "validatorExceptions": {
+    "default": {
+      "requestHeader": "Partial",
+      "modelValue": "_disableValidator"
     },
     "type": "object",
     "allowNull": false
@@ -45,8 +54,13 @@
     "type": "object",
     "allowNull": false
   },
+  "maxLagPerRequest": {
+    "default": 5000,
+    "type": "number",
+    "allowNull": false
+  },
   "shutdownTimeout": {
-    "default": 30000 ,
+    "default": 30000,
     "type": "number",
     "allowNull": false
   },
@@ -95,25 +109,20 @@
     "type": "boolean",
     "allowNull": false
   },
-  "bodyParserOptions": {
+  "bodyParserUrlencodedParams": {
     "default": {
       "extended": true
     },
     "type": "object",
     "allowNull": false
   },
-  "bodyParserJsonOptions": {
+  "bodyParserJsonParams": {
     "default": {},
     "type": "object",
     "allowNull": false
   },
   "modelsPath": {
     "default": "mvc/models",
-    "type": "string",
-    "allowNull": false
-  },
-  "modelsNodeModulesSymlink": {
-    "default": "models",
     "type": "string",
     "allowNull": false
   },
@@ -144,16 +153,6 @@
   },
   "controllersPath": {
     "default": "mvc/controllers",
-    "type": "string",
-    "allowNull": false
-  },
-  "libPath": {
-    "default": "lib",
-    "type": "string",
-    "allowNull": false
-  },
-  "libPathNodeModulesSymlink": {
-    "default": "lib",
     "type": "string",
     "allowNull": false
   },
@@ -216,6 +215,21 @@
   "jsPath": {
     "default": "js",
     "type": "string",
+    "allowNull": false
+  },
+  "bundledJsPath": {
+    "default": ".bundled",
+    "type": "string",
+    "allowNull": false
+  },
+  "exposeBundles": {
+    "default": true,
+    "type": "boolean",
+    "allowNull": false
+  },
+  "browserifyBundles": {
+    "default": [],
+    "type": "array",
     "allowNull": false
   },
   "jsCompiler": {
