@@ -360,40 +360,40 @@ module.exports = generators.Base.extend({
       }.bind(this));
     },
 
-    addTemplatingEngine: function (self, cb) {
+    addTemplatingEngine: function(self, cb) {
       self = self || this;
       cb = cb || this.async();
-      var whenTemplating = function (answer) {
+      var whenTemplating = function(answer) {
             return self.templatingEngine;
           },
-          fileExtensionMessage = function (answer) {
+          fileExtensionMessage = function(answer) {
             return 'What file extension do you want ' + answer.templatingEngineName + ' to use?';
           };
       return self.prompt(
         [
           {
-            when: whenTemplating,
-            type: 'input',
-            name: 'templatingEngineName',
-            message: 'What templating engine do you want to use? (Supply npm module name.)',
-            default: rooseveltDefaults.templatingEngineName.default
+            when    : whenTemplating,
+            type    : 'input',
+            name    : 'templatingEngineName',
+            message : 'What templating engine do you want to use? (Supply npm module name.)',
+            default :  rooseveltDefaults.templatingEngineName.default
           },
           {
-            when: whenTemplating,
-            type: 'input',
-            name: 'templatingExtension',
-            message: fileExtensionMessage,
-            default: rooseveltDefaults.templatingExtension.default
+            when    : whenTemplating,
+            type    : 'input',
+            name    : 'templatingExtension',
+            message : fileExtensionMessage,
+            default :  rooseveltDefaults.templatingExtension.default
           },
           {
-            when: whenTemplating,
-            type: 'confirm',
-            name: 'additionalTemplatingEngines',
-            message: 'Do you want to support an additional templating engine?',
-            default: rooseveltDefaults.additionalTemplatingEngines.default
+            when    : whenTemplating,
+            type    : 'confirm',
+            name    : 'additionalTemplatingEngines',
+            message : 'Do you want to support an additional templating engine?',
+            default :  rooseveltDefaults.additionalTemplatingEngines.default
           }
         ]
-      ).then(function (answers) {
+      ).then(function(answers) {
         if (self.standardInstall === 'Standard') {
           self.viewEngine = 'html: teddy';
           cb();
@@ -414,7 +414,6 @@ module.exports = generators.Base.extend({
         }
       }.bind(self));
     },
-
 
     addGitignore: function (self, cb) {
       self = self || this;
