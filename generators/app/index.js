@@ -63,6 +63,7 @@ module.exports = generators.Base.extend({
 
   initializing: function() {
     this.engineList = [];
+    this.ignoreList = '';
   },
 
   prompting: {
@@ -250,6 +251,13 @@ module.exports = generators.Base.extend({
           {
             when    : whenAdvanced,
             type    : 'confirm',
+            name    : 'gitIgnore',
+            message : 'Do you want to create a custom .gitignore?',
+            default :  true
+          },
+          {
+            when    : whenAdvanced,
+            type    : 'confirm',
             name    : 'templatingEngine',
             message : 'Do you want to use a HTML templating engine?',
             default :  rooseveltDefaults.templatingEngine.default
@@ -257,6 +265,7 @@ module.exports = generators.Base.extend({
         ]).then(function(answers) {
 
         this.standardInstall = answers.standardInstall;
+        this.gitIgnore = answers.gitIgnore;
         this.templatingEngine = answers.templatingEngine;
         this.port = answers.port ? answers.port : this.options.port || '43711';
         this.localhostOnly = answers.localhostOnly ? answers.localhostOnly :  this.options.localhostOnly || 'true';
@@ -351,40 +360,40 @@ module.exports = generators.Base.extend({
       }.bind(this));
     },
 
-    addTemplatingEngine: function(self, cb) {
+    addTemplatingEngine: function (self, cb) {
       self = self || this;
       cb = cb || this.async();
-      var whenTemplating = function(answer) {
+      var whenTemplating = function (answer) {
             return self.templatingEngine;
           },
-          fileExtensionMessage = function(answer) {
+          fileExtensionMessage = function (answer) {
             return 'What file extension do you want ' + answer.templatingEngineName + ' to use?';
           };
       return self.prompt(
         [
           {
-            when    : whenTemplating,
-            type    : 'input',
-            name    : 'templatingEngineName',
-            message : 'What templating engine do you want to use? (Supply npm module name.)',
-            default :  rooseveltDefaults.templatingEngineName.default
+            when: whenTemplating,
+            type: 'input',
+            name: 'templatingEngineName',
+            message: 'What templating engine do you want to use? (Supply npm module name.)',
+            default: rooseveltDefaults.templatingEngineName.default
           },
           {
-            when    : whenTemplating,
-            type    : 'input',
-            name    : 'templatingExtension',
-            message : fileExtensionMessage,
-            default :  rooseveltDefaults.templatingExtension.default
+            when: whenTemplating,
+            type: 'input',
+            name: 'templatingExtension',
+            message: fileExtensionMessage,
+            default: rooseveltDefaults.templatingExtension.default
           },
           {
-            when    : whenTemplating,
-            type    : 'confirm',
-            name    : 'additionalTemplatingEngines',
-            message : 'Do you want to support an additional templating engine?',
-            default :  rooseveltDefaults.additionalTemplatingEngines.default
+            when: whenTemplating,
+            type: 'confirm',
+            name: 'additionalTemplatingEngines',
+            message: 'Do you want to support an additional templating engine?',
+            default: rooseveltDefaults.additionalTemplatingEngines.default
           }
         ]
-      ).then(function(answers) {
+      ).then(function (answers) {
         if (self.standardInstall === 'Standard') {
           self.viewEngine = 'html: teddy';
           cb();
@@ -400,6 +409,46 @@ module.exports = generators.Base.extend({
           }
           else {
             self.viewEngine = self.engineList;
+            cb();
+          }
+        }
+      }.bind(self));
+    },
+
+
+    addGitignore: function (self, cb) {
+      self = self || this;
+      cb = cb || this.async();
+      var whenIgnoring = function () {
+        return self.gitIgnore;
+      };
+      return self.prompt(
+        [
+          {
+            when: whenIgnoring,
+            type: 'input',
+            name: 'gitIgnoreStream',
+            message: 'What location would you like you add to .gitignore?',
+          },
+          {
+            when: whenIgnoring,
+            type: 'confirm',
+            name: 'additionalGitIgnore',
+            message: 'Do you want to ignore an additional location?',
+            default: true
+          }
+        ]
+      ).then(function (answers) {
+        if (self.standardInstall === 'Standard') {
+          self.ignoreList = 'public\r\n.build\r\n';
+          cb();
+        }
+        else {
+          self.ignoreList += answers.gitIgnoreStream + '\r\n';
+          if (answers.additionalGitIgnore) {
+            self.prompting.addGitignore(self, cb);
+          }
+          else {
             cb();
           }
         }
@@ -657,9 +706,12 @@ module.exports = generators.Base.extend({
       this.destinationPath('app.js')
     );
 
-    this.fs.copy(
+    this.fs.copyTpl(
       this.templatePath('gitignore_template'),
-      this.destinationPath('.gitignore')
+      this.destinationPath('.gitignore'),
+      {
+        addedIgnore: this.ignoreList
+      }
     );
 
     this.fs.copy(
