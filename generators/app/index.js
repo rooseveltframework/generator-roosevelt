@@ -419,8 +419,11 @@ module.exports = generators.Base.extend({
       self = self || this;
       cb = cb || this.async();
       var whenIgnoring = function () {
-        return self.gitIgnore;
-      };
+            return self.gitIgnore;
+          },
+          cssCompiledPath = self.staticsRoot + '/' + (self.cssCompiledOutput).split('/')[0],
+          jsCompiledPath = self.staticsRoot + '/' + (self.jsCompiledOutput).split('/')[0];
+
       return self.prompt(
         [
           {
@@ -438,8 +441,15 @@ module.exports = generators.Base.extend({
           }
         ]
       ).then(function (answers) {
+        if (self.ignoreList.indexOf(self.publicFolder) < 0 && self.ignoreList.indexOf(cssCompiledPath) < 0 && self.ignoreList.indexOf(jsCompiledPath) < 0) {
+          if (cssCompiledPath === jsCompiledPath) {
+            self.ignoreList += self.publicFolder + '\r\n' + jsCompiledPath + '\r\n';
+          }
+          else {
+            self.ignoreList += self.publicFolder + '\r\n' + jsCompiledPath + '\r\n' + cssCompiledPath + '\r\n';
+          }
+        }
         if (self.standardInstall === 'Standard') {
-          self.ignoreList = 'public\r\n.build\r\n';
           cb();
         }
         else {
