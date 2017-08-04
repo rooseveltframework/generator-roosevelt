@@ -63,6 +63,7 @@ module.exports = generators.Base.extend({
 
   initializing: function() {
     this.engineList = [];
+    this.ignoreList = '';
   },
 
   prompting: {
@@ -250,6 +251,13 @@ module.exports = generators.Base.extend({
           {
             when    : whenAdvanced,
             type    : 'confirm',
+            name    : 'gitIgnore',
+            message : 'Do you want to create a custom .gitignore?',
+            default :  true
+          },
+          {
+            when    : whenAdvanced,
+            type    : 'confirm',
             name    : 'templatingEngine',
             message : 'Do you want to use a HTML templating engine?',
             default :  rooseveltDefaults.templatingEngine.default
@@ -257,6 +265,7 @@ module.exports = generators.Base.extend({
         ]).then(function(answers) {
 
         this.standardInstall = answers.standardInstall;
+        this.gitIgnore = answers.gitIgnore;
         this.templatingEngine = answers.templatingEngine;
         this.port = answers.port ? answers.port : this.options.port || '43711';
         this.localhostOnly = answers.localhostOnly ? answers.localhostOnly :  this.options.localhostOnly || 'true';
@@ -400,6 +409,55 @@ module.exports = generators.Base.extend({
           }
           else {
             self.viewEngine = self.engineList;
+            cb();
+          }
+        }
+      }.bind(self));
+    },
+
+    addGitignore: function (self, cb) {
+      self = self || this;
+      cb = cb || this.async();
+      var whenIgnoring = function () {
+            return self.gitIgnore;
+          },
+          cssCompiledPath = self.staticsRoot + '/' + (self.cssCompiledOutput).split('/')[0],
+          jsCompiledPath = self.staticsRoot + '/' + (self.jsCompiledOutput).split('/')[0];
+
+      return self.prompt(
+        [
+          {
+            when: whenIgnoring,
+            type: 'input',
+            name: 'gitIgnoreStream',
+            message: 'What location would you like you add to .gitignore?',
+          },
+          {
+            when: whenIgnoring,
+            type: 'confirm',
+            name: 'additionalGitIgnore',
+            message: 'Do you want to ignore an additional location?',
+            default: true
+          }
+        ]
+      ).then(function (answers) {
+        if (self.ignoreList.indexOf(self.publicFolder) < 0 && self.ignoreList.indexOf(cssCompiledPath) < 0 && self.ignoreList.indexOf(jsCompiledPath) < 0) {
+          if (cssCompiledPath === jsCompiledPath) {
+            self.ignoreList += self.publicFolder + '\r\n' + jsCompiledPath + '\r\n';
+          }
+          else {
+            self.ignoreList += self.publicFolder + '\r\n' + jsCompiledPath + '\r\n' + cssCompiledPath + '\r\n';
+          }
+        }
+        if (self.standardInstall === 'Standard') {
+          cb();
+        }
+        else {
+          self.ignoreList += answers.gitIgnoreStream + '\r\n';
+          if (answers.additionalGitIgnore) {
+            self.prompting.addGitignore(self, cb);
+          }
+          else {
             cb();
           }
         }
@@ -657,9 +715,12 @@ module.exports = generators.Base.extend({
       this.destinationPath('app.js')
     );
 
-    this.fs.copy(
+    this.fs.copyTpl(
       this.templatePath('gitignore_template'),
-      this.destinationPath('.gitignore')
+      this.destinationPath('.gitignore'),
+      {
+        addedIgnore: this.ignoreList
+      }
     );
 
     this.fs.copy(
