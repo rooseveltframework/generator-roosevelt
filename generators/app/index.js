@@ -437,7 +437,7 @@ module.exports = generators.Base.extend({
             type: 'confirm',
             name: 'additionalGitIgnore',
             message: 'Do you want to ignore an additional location?',
-            default: true
+            default: false
           }
         ]
       ).then(function (answers) {
