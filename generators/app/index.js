@@ -418,11 +418,11 @@ module.exports = generators.Base.extend({
     addGitignore: function (self, cb) {
       self = self || this;
       cb = cb || this.async();
-      var whenIgnoring = function () {
+      var cssCompiledPath = self.staticsRoot + '/' + (self.cssCompiledOutput).split('/')[0],
+          jsCompiledPath = self.staticsRoot + '/' + (self.jsCompiledOutput).split('/')[0],
+          whenIgnoring = function () {
             return self.gitIgnore;
-          },
-          cssCompiledPath = self.staticsRoot + '/' + (self.cssCompiledOutput).split('/')[0],
-          jsCompiledPath = self.staticsRoot + '/' + (self.jsCompiledOutput).split('/')[0];
+          };
 
       return self.prompt(
         [
