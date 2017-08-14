@@ -17,5 +17,4 @@ Thumbs.db
 npm-debug.log
 node_modules
 
-public
-.build
+<%- addedIgnore %>
