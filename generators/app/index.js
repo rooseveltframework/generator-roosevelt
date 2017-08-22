@@ -59,11 +59,12 @@ module.exports = generators.Base.extend({
     this.option('versionedCssFile', {desc: 'If enabled, Roosevelt will create a CSS file which declares a CSS variable exposing your app\'s version number from package.json. Enable this option by supplying an object with the member variables fileName and varName.' });
     this.option('alwaysHostPublic', {desc: 'By default in production mode Roosevelt will not expose the public folder.' });
     this.option('supressClosingMessage', {desc: 'Supresses closing message.'});
+    this.option('gitIgnore', {desc: 'Paths to ignore in git project' });
   },
 
   initializing: function() {
     this.engineList = [];
-    this.ignoreList = '';
+    this.gitIgnore = '';
   },
 
   prompting: {
@@ -251,13 +252,6 @@ module.exports = generators.Base.extend({
           {
             when    : whenAdvanced,
             type    : 'confirm',
-            name    : 'gitIgnore',
-            message : 'Do you want to create a custom .gitignore?',
-            default :  true
-          },
-          {
-            when    : whenAdvanced,
-            type    : 'confirm',
             name    : 'templatingEngine',
             message : 'Do you want to use a HTML templating engine?',
             default :  rooseveltDefaults.templatingEngine.default
@@ -357,6 +351,21 @@ module.exports = generators.Base.extend({
         this.versionedCssFile = answers.versionedCssFile ? answers.versionedCssFile :  this.options.versionedCssFile || 'null';
         this.alwaysHostPublic = answers.alwaysHostPublic ? answers.alwaysHostPublic :  this.options.alwaysHostPublic || 'false';
         this.supressClosingMessage = this.options.supressClosingMessage ? this.options.supressClosingMessage : false;
+        this.cssCompiledPath = this.staticsRoot + '/' + (this.cssCompiledOutput).split('/')[0];
+        this.jsCompiledPath = this.staticsRoot + '/' + (this.jsCompiledOutput).split('/')[0];
+        this.gitIgnore = this.options.gitIgnore ? this.options.gitIgnore + '\r\n' : '';
+
+
+        if (this.gitIgnore.indexOf(this.publicFolder) < 0 && this.gitIgnore.indexOf(this.cssCompiledPath) < 0 && this.gitIgnore.indexOf(this.jsCompiledPath) < 0) {
+          if (this.cssCompiledPath === this.jsCompiledPath) {
+            this.gitIgnore += this.publicFolder + '\r\n' + this.jsCompiledPath + '\r\n';
+            this.buildPath = this.jsCompiledPath;
+          }
+          else {
+            this.gitIgnore += this.publicFolder + '\r\n' + this.jsCompiledPath + '\r\n' + this.cssCompiledPath + '\r\n';
+            this.buildPath = this.jsCompiledPath + '/,' + this.cssCompiledPath;
+          }
+        }
       }.bind(this));
     },
 
@@ -414,55 +423,6 @@ module.exports = generators.Base.extend({
         }
       }.bind(self));
     },
-
-    addGitignore: function (self, cb) {
-      self = self || this;
-      cb = cb || this.async();
-      var cssCompiledPath = self.staticsRoot + '/' + (self.cssCompiledOutput).split('/')[0],
-          jsCompiledPath = self.staticsRoot + '/' + (self.jsCompiledOutput).split('/')[0],
-          whenIgnoring = function () {
-            return self.gitIgnore;
-          };
-
-      return self.prompt(
-        [
-          {
-            when: whenIgnoring,
-            type: 'input',
-            name: 'gitIgnoreStream',
-            message: 'What location would you like you add to .gitignore?',
-          },
-          {
-            when: whenIgnoring,
-            type: 'confirm',
-            name: 'additionalGitIgnore',
-            message: 'Do you want to ignore an additional location?',
-            default: false
-          }
-        ]
-      ).then(function (answers) {
-        if (self.ignoreList.indexOf(self.publicFolder) < 0 && self.ignoreList.indexOf(cssCompiledPath) < 0 && self.ignoreList.indexOf(jsCompiledPath) < 0) {
-          if (cssCompiledPath === jsCompiledPath) {
-            self.ignoreList += self.publicFolder + '\r\n' + jsCompiledPath + '\r\n';
-          }
-          else {
-            self.ignoreList += self.publicFolder + '\r\n' + jsCompiledPath + '\r\n' + cssCompiledPath + '\r\n';
-          }
-        }
-        if (self.standardInstall === 'Standard') {
-          cb();
-        }
-        else {
-          self.ignoreList += answers.gitIgnoreStream + '\r\n';
-          if (answers.additionalGitIgnore) {
-            self.prompting.addGitignore(self, cb);
-          }
-          else {
-            cb();
-          }
-        }
-      }.bind(self));
-    }
   },
 
   generateSslCerts: function() {
@@ -693,7 +653,8 @@ module.exports = generators.Base.extend({
         symlinksToStatics: this.symlinksToStatics,
         versionedStatics: this.versionedStatics,
         versionedCssFile: this.versionedCssFile,
-        alwaysHostPublic: this.alwaysHostPublic
+        alwaysHostPublic: this.alwaysHostPublic,
+        buildPath: this.buildPath
       }
     );
 
@@ -719,7 +680,7 @@ module.exports = generators.Base.extend({
       this.templatePath('gitignore_template'),
       this.destinationPath('.gitignore'),
       {
-        addedIgnore: this.ignoreList
+        addedIgnore: this.gitIgnore
       }
     );
 
