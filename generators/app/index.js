@@ -2,11 +2,11 @@ var generators = require('yeoman-generator'),
     fse = require('fs-extra'),
     path = require('path'),
     mkdirp = require('mkdirp'),
-    rooseveltDefaults = fse.readJsonSync(path.join(__dirname + '/../../rooseveltDefaults.json')),
+    rooseveltDefaults = require('../../rooseveltDefaults.json'),
     currentDirectory = path.parse(process.cwd()).name;
 
 module.exports = generators.Base.extend({
-  constructor: function () {
+  constructor: function() {
     generators.Base.apply(this, arguments);
 
     this.option('appName', {desc: 'The name of the application.' });
@@ -59,6 +59,7 @@ module.exports = generators.Base.extend({
     this.option('versionedCssFile', {desc: 'If enabled, Roosevelt will create a CSS file which declares a CSS variable exposing your app\'s version number from package.json. Enable this option by supplying an object with the member variables fileName and varName.' });
     this.option('alwaysHostPublic', {desc: 'By default in production mode Roosevelt will not expose the public folder.' });
     this.option('supressClosingMessage', {desc: 'Supresses closing message.'});
+    this.option('suppressLogs', {desc: 'If enabled Roosevelt will not log status messages to the console.'});
   },
 
   initializing: function() {
@@ -255,100 +256,100 @@ module.exports = generators.Base.extend({
             default :  rooseveltDefaults.templatingEngine.default
           }
         ]).then(function(answers) {
-
-        this.standardInstall = answers.standardInstall;
-        this.templatingEngine = answers.templatingEngine;
-        this.port = answers.port ? answers.port : this.options.port || '43711';
-        this.localhostOnly = answers.localhostOnly ? answers.localhostOnly :  this.options.localhostOnly || 'true';
-        this.disableLogger = answers.disableLogger ? answers.disableLogger :  this.options.disableLogger || 'false';
-        this.noMinify = answers.noMinify ? answers.noMinify :  this.options.noMinify || 'false';
-        this.enableValidator = this.options.enableValidator || 'false';
-        this.htmlValidator = this.options.enableValidator || '{"port": "8888", "format": "text", "suppressWarnings": false}';
-        this.validatorExceptions = this.options.validatorExceptions || '{"requestHeader": "Partial", "modelValue": "_disableValidator"}';
-        this.multipart = answers.multipart ? answers.multipart :  this.options.multipart || '{"multiples": true}';
-        this.shutdownTimeout = answers.shutdownTimeout ? answers.shutdownTimeout :  this.options.shutdownTimeout || '30000';
-        this.https = answers.https ? answers.https :  this.options.https || 'false';
-        this.shouldGenerateSslCerts = answers.shouldGenerateSslCerts ? (answers.shouldGenerateSslCerts === 'true') || (answers.shouldGenerateSslCerts === 'True') || (answers.shouldGenerateSslCerts === 'TRUE') : false;
-        this.httpsOnly = answers.httpsOnly ? answers.httpsOnly :  this.options.httpsOnly || 'false';
-        this.httpsPort = answers.httpsPort ? answers.httpsPort :  this.options.httpsPort || '43733';
-        if (answers.pfx === '.pfx' || this.options.pfx === '.pfx') {
-          this.pfx = 'false';
-        }
-        else {
-          this.pfx = 'true';
-        }
-        // this.keyPath = answers.keyPath ? '"' + answers.keyPath + '"' : this.options.keyPath !== undefined ? '"' + this.options.keyPath + '"' : null;
-        if (answers.keyPath) {
-          this.keyPath = '"' + answers.keyPath + '"';
-        }
-        else {
-          if (this.options.keyPath !== undefined) {
-            this.keyPath = '"' + this.options.keyPath + '"';
+          this.standardInstall = answers.standardInstall;
+          this.templatingEngine = answers.templatingEngine;
+          this.port = answers.port ? answers.port : this.options.port || '43711';
+          this.localhostOnly = answers.localhostOnly ? answers.localhostOnly :  this.options.localhostOnly || 'true';
+          this.disableLogger = answers.disableLogger ? answers.disableLogger :  this.options.disableLogger || 'false';
+          this.noMinify = answers.noMinify ? answers.noMinify :  this.options.noMinify || 'false';
+          this.enableValidator = this.options.enableValidator || 'false';
+          this.htmlValidator = this.options.enableValidator || '{"port": "8888", "format": "text", "suppressWarnings": false, "separateProcess": false}';
+          this.validatorExceptions = this.options.validatorExceptions || '{"requestHeader": "Partial", "modelValue": "_disableValidator"}';
+          this.multipart = answers.multipart ? answers.multipart :  this.options.multipart || '{"multiples": true}';
+          this.shutdownTimeout = answers.shutdownTimeout ? answers.shutdownTimeout :  this.options.shutdownTimeout || '30000';
+          this.https = answers.https ? answers.https :  this.options.https || 'false';
+          this.shouldGenerateSslCerts = answers.shouldGenerateSslCerts ? (answers.shouldGenerateSslCerts === 'true') || (answers.shouldGenerateSslCerts === 'True') || (answers.shouldGenerateSslCerts === 'TRUE') : false;
+          this.httpsOnly = answers.httpsOnly ? answers.httpsOnly :  this.options.httpsOnly || 'false';
+          this.httpsPort = answers.httpsPort ? answers.httpsPort :  this.options.httpsPort || '43733';
+          if (answers.pfx === '.pfx' || this.options.pfx === '.pfx') {
+            this.pfx = 'false';
           }
           else {
-            this.keyPath = 'null';
+            this.pfx = 'true';
           }
-        }
-        // this.passphrase = answers.passphrase ? '"' + answers.passphrase + '"' : '"' + this.options.passphrase + '"' || 'null';
-        if (answers.passphrase) {
-          this.passphrase = '"' + answers.passphrase + '"';
-        }
-        else {
-          if (this.options.passphrase !== undefined) {
-            this.passphrase = '"' + this.options.passphrase + '"';
+          // this.keyPath = answers.keyPath ? '"' + answers.keyPath + '"' : this.options.keyPath !== undefined ? '"' + this.options.keyPath + '"' : null;
+          if (answers.keyPath) {
+            this.keyPath = '"' + answers.keyPath + '"';
           }
           else {
-            this.passphrase = 'null';
+            if (this.options.keyPath !== undefined) {
+              this.keyPath = '"' + this.options.keyPath + '"';
+            }
+            else {
+              this.keyPath = 'null';
+            }
           }
-        }
-        // this.ca = answers.ca ? '"' + answers.ca + '"' : '"' + this.options.ca + '"' || 'null';
-        if (answers.ca) {
-          this.ca = '"' + answers.ca + '"';
-        }
-        else {
-          if (this.options.ca !== undefined) {
-            this.ca = '"' + this.options.ca + '"';
+          // this.passphrase = answers.passphrase ? '"' + answers.passphrase + '"' : '"' + this.options.passphrase + '"' || 'null';
+          if (answers.passphrase) {
+            this.passphrase = '"' + answers.passphrase + '"';
           }
           else {
-            this.ca = 'null';
+            if (this.options.passphrase !== undefined) {
+              this.passphrase = '"' + this.options.passphrase + '"';
+            }
+            else {
+              this.passphrase = 'null';
+            }
           }
-        }
-        this.appName = answers.appName ? answers.appName :  this.options.appName || 'my-roosevelt-sample-app';
-        this.appNameForPackageJson = answers.appName ? answers.appName.replace(/^\.|_/, '').replace(/\s+/g, '-').replace(/(.{1,213})(.*)/, '$1').toLowerCase() : this.options.appName.replace(/^\.|_/, '').replace(/\s+/g, '-').replace(/(.{1,213})(.*)/, '$1').toLowerCase() || 'new-project'; // First remove dot or underscore from beginning, trim whitespace and replace with dash for readability, chop off any characters past 214 in length, and then put all letters to lowercase. These are all requirements of package name for npm see: https://docs.npmjs.com/files/package.json#name
-        this.requestCert = answers.requestCert ?  answers.requestCert :  this.options.requestCert || 'false';
-        this.rejectUnauthorized = answers.rejectUnauthorized ? answers.rejectUnauthorized :  this.options.rejectUnauthorized || 'false';
-        this.bodyParserUrlencodedParams = answers.bodyParserUrlencodedParams ? answers.bodyParserUrlencodedParams :  this.options.bodyParserUrlencodedParams || '{"extended": true}';
-        this.bodyParserJsonParams = answers.bodyParserJsonParams ? answers.bodyParserJsonParams :  this.options.bodyParserJsonParams || '{}';
-        this.modelsPath = answers.modelsPath ? answers.modelsPath :  this.options.modelsPath || 'mvc/models';
-        this.modelsNodeModulesSymlink = answers.modelsNodeModulesSymlink ? answers.modelsNodeModulesSymlink :  this.options.modelsNodeModulesSymlink || 'models';
-        this.viewsPath = answers.viewsPath ? answers.viewsPath :  this.options.viewsPath || 'mvc/views';
-        this.controllersPath = answers.controllersPath ? answers.controllersPath :  this.options.controllersPath || 'mvc/controllers';
-        this.libPath = answers.libPath ? answers.libPath :  this.options.libPath || 'lib';
-        this.libPathNodeModulesSymlink = answers.libPathNodeModulesSymlink ? answers.libPathNodeModulesSymlink :  this.options.libPathNodeModulesSymlink || 'lib';
-        this.error404 = answers.error404 ? answers.error404 :  this.options.error404 || '404.js';
-        this.error5xx = answers.error5xx ? answers.error5xx :  this.options.error5xx || '5xx.js';
-        this.error503 = answers.error503 ? answers.error503 :  this.options.error503 || '503.js';
-        this.staticsRoot = answers.staticsRoot ? answers.staticsRoot :  this.options.staticsRoot || 'statics';
-        this.htmlMinify = this.options.htmlMinify || '{"override": true, "exception_url": false, "htmlMinifier": {"html5": true}}';
-        this.cssPath = answers.cssPath ? answers.cssPath :  this.options.cssPath || 'css';
-        this.cssCompiler = answers.cssCompiler ? answers.cssCompiler :  this.options.cssCompiler || '{"nodeModule": "roosevelt-less", "params": {"compress": true}}';
-        this.cssCompilerWhitelist = answers.cssCompilerWhitelist ? answers.cssCompilerWhitelist :  this.options.cssCompilerWhitelist || 'null';
-        this.cssCompiledOutput = answers.cssCompiledOutput ? answers.cssCompiledOutput :  this.options.cssCompiledOutput || '.build/css';
-        this.jsPath = answers.jsPath ? answers.jsPath :  this.options.jsPath || 'js';
-        this.bundledJsPath = answers.bundledJsPath ? answers.bundledJsPath :  this.options.bundledJsPath || '.bundled';
-        this.exposeBundles = answers.exposeBundles ? answers.exposeBundles :  this.options.exposeBundles || 'true';
-        this.browserifyBundles = answers.browserifyBundles ? answers.browserifyBundles :  this.options.browserifyBundles || [];
-        this.jsCompiler = answers.jsCompiler ? answers.jsCompiler :  this.options.jsCompiler || '{"nodeModule": "roosevelt-closure", "params": {"compilationLevel": "ADVANCED"}}';
-        this.jsCompilerWhitelist = answers.jsCompilerWhitelist ? answers.jsCompilerWhitelist :  this.options.jsCompilerWhitelist || 'null';
-        this.jsCompiledOutput = answers.jsCompiledOutput ? answers.jsCompiledOutput :  this.options.jsCompiledOutput || '.build/js';
-        this.publicFolder = answers.publicFolder ? answers.publicFolder :  this.options.publicFolder || 'public';
-        this.favicon = answers.favicon ? answers.favicon :  this.options.favicon || 'images/favicon.ico';
-        this.symlinksToStatics = answers.symlinksToStatics ? answers.symlinksToStatics :  this.options.symlinksToStatics || '["css: .build/css", "images", "js: .build/js"]';
-        this.versionedStatics = answers.versionedStatics ? answers.versionedStatics :  this.options.versionedStatics || 'false';
-        this.versionedCssFile = answers.versionedCssFile ? answers.versionedCssFile :  this.options.versionedCssFile || 'null';
-        this.alwaysHostPublic = answers.alwaysHostPublic ? answers.alwaysHostPublic :  this.options.alwaysHostPublic || 'false';
-        this.supressClosingMessage = this.options.supressClosingMessage ? this.options.supressClosingMessage : false;
-      }.bind(this));
+          // this.ca = answers.ca ? '"' + answers.ca + '"' : '"' + this.options.ca + '"' || 'null';
+          if (answers.ca) {
+            this.ca = '"' + answers.ca + '"';
+          }
+          else {
+            if (this.options.ca !== undefined) {
+              this.ca = '"' + this.options.ca + '"';
+            }
+            else {
+              this.ca = 'null';
+            }
+          }
+          this.appName = answers.appName ? answers.appName :  this.options.appName || 'my-roosevelt-sample-app';
+          this.appNameForPackageJson = answers.appName ? answers.appName.replace(/^\.|_/, '').replace(/\s+/g, '-').replace(/(.{1,213})(.*)/, '$1').toLowerCase() : this.options.appName.replace(/^\.|_/, '').replace(/\s+/g, '-').replace(/(.{1,213})(.*)/, '$1').toLowerCase() || 'new-project'; // First remove dot or underscore from beginning, trim whitespace and replace with dash for readability, chop off any characters past 214 in length, and then put all letters to lowercase. These are all requirements of package name for npm see: https://docs.npmjs.com/files/package.json#name
+          this.requestCert = answers.requestCert ?  answers.requestCert :  this.options.requestCert || 'false';
+          this.rejectUnauthorized = answers.rejectUnauthorized ? answers.rejectUnauthorized :  this.options.rejectUnauthorized || 'false';
+          this.bodyParserUrlencodedParams = answers.bodyParserUrlencodedParams ? answers.bodyParserUrlencodedParams :  this.options.bodyParserUrlencodedParams || '{"extended": true}';
+          this.bodyParserJsonParams = answers.bodyParserJsonParams ? answers.bodyParserJsonParams :  this.options.bodyParserJsonParams || '{}';
+          this.modelsPath = answers.modelsPath ? answers.modelsPath :  this.options.modelsPath || 'mvc/models';
+          this.modelsNodeModulesSymlink = answers.modelsNodeModulesSymlink ? answers.modelsNodeModulesSymlink :  this.options.modelsNodeModulesSymlink || 'models';
+          this.viewsPath = answers.viewsPath ? answers.viewsPath :  this.options.viewsPath || 'mvc/views';
+          this.controllersPath = answers.controllersPath ? answers.controllersPath :  this.options.controllersPath || 'mvc/controllers';
+          this.libPath = answers.libPath ? answers.libPath :  this.options.libPath || 'lib';
+          this.libPathNodeModulesSymlink = answers.libPathNodeModulesSymlink ? answers.libPathNodeModulesSymlink :  this.options.libPathNodeModulesSymlink || 'lib';
+          this.error404 = answers.error404 ? answers.error404 :  this.options.error404 || '404.js';
+          this.error5xx = answers.error5xx ? answers.error5xx :  this.options.error5xx || '5xx.js';
+          this.error503 = answers.error503 ? answers.error503 :  this.options.error503 || '503.js';
+          this.staticsRoot = answers.staticsRoot ? answers.staticsRoot :  this.options.staticsRoot || 'statics';
+          this.htmlMinify = this.options.htmlMinify || '{"override": true, "exception_url": false, "htmlMinifier": {"html5": true}}';
+          this.cssPath = answers.cssPath ? answers.cssPath :  this.options.cssPath || 'css';
+          this.cssCompiler = answers.cssCompiler ? answers.cssCompiler :  this.options.cssCompiler || '{"nodeModule": "roosevelt-less", "params": {"compress": true}}';
+          this.cssCompilerWhitelist = answers.cssCompilerWhitelist ? answers.cssCompilerWhitelist :  this.options.cssCompilerWhitelist || 'null';
+          this.cssCompiledOutput = answers.cssCompiledOutput ? answers.cssCompiledOutput :  this.options.cssCompiledOutput || '.build/css';
+          this.jsPath = answers.jsPath ? answers.jsPath :  this.options.jsPath || 'js';
+          this.bundledJsPath = answers.bundledJsPath ? answers.bundledJsPath :  this.options.bundledJsPath || '.bundled';
+          this.exposeBundles = answers.exposeBundles ? answers.exposeBundles :  this.options.exposeBundles || 'true';
+          this.browserifyBundles = answers.browserifyBundles ? answers.browserifyBundles :  this.options.browserifyBundles || [];
+          this.jsCompiler = answers.jsCompiler ? answers.jsCompiler :  this.options.jsCompiler || '{"nodeModule": "roosevelt-closure", "showWarnings": false,  "params": {"compilationLevel": "ADVANCED"}}';
+          this.jsCompilerWhitelist = answers.jsCompilerWhitelist ? answers.jsCompilerWhitelist :  this.options.jsCompilerWhitelist || 'null';
+          this.jsCompiledOutput = answers.jsCompiledOutput ? answers.jsCompiledOutput :  this.options.jsCompiledOutput || '.build/js';
+          this.publicFolder = answers.publicFolder ? answers.publicFolder :  this.options.publicFolder || 'public';
+          this.favicon = answers.favicon ? answers.favicon :  this.options.favicon || 'images/favicon.ico';
+          this.symlinksToStatics = answers.symlinksToStatics ? answers.symlinksToStatics :  this.options.symlinksToStatics || '["css: .build/css", "images", "js: .build/js"]';
+          this.versionedStatics = answers.versionedStatics ? answers.versionedStatics :  this.options.versionedStatics || 'false';
+          this.versionedCssFile = answers.versionedCssFile ? answers.versionedCssFile :  this.options.versionedCssFile || 'null';
+          this.alwaysHostPublic = answers.alwaysHostPublic ? answers.alwaysHostPublic :  this.options.alwaysHostPublic || 'false';
+          this.supressClosingMessage = this.options.supressClosingMessage ? this.options.supressClosingMessage : false;
+          this.suppressLogs = this.options.suppressLogs ? this.options.suppressLogs : false;
+        }.bind(this));
     },
 
     addTemplatingEngine: function(self, cb) {
@@ -476,104 +477,104 @@ module.exports = generators.Base.extend({
             default : '127.0.0.1'
           }
         ]).then(function (answers) {
-        var forge  = require('node-forge'),
+          var forge  = require('node-forge'),
 
-            commonName = answers.commonName,
-            countryName = answers.countryName,
-            stateName = answers.stateName,
-            localityName = answers.localityName,
-            organizationName = answers.organizationName,
-            organizationalUnit = answers.organizationalUnit,
-            altUri = answers.altUri,
-            altIp = answers.altIp,
+              commonName = answers.commonName,
+              countryName = answers.countryName,
+              stateName = answers.stateName,
+              localityName = answers.localityName,
+              organizationName = answers.organizationName,
+              organizationalUnit = answers.organizationalUnit,
+              altUri = answers.altUri,
+              altIp = answers.altIp,
 
-            publicPem,
-            certPem,
-            privatePem,
+              publicPem,
+              certPem,
+              privatePem,
 
-            pki   = forge.pki,
-            keys  = pki.rsa.generateKeyPair(2048),
-            cert  = pki.createCertificate(),
-            attrs = [
-              {
-                name: 'commonName',
-                value: commonName
-              }, {
-                name: 'countryName',
-                value: countryName
-              }, {
-                shortName: 'ST',
-                value: stateName
-              }, {
-                name: 'localityName',
-                value: localityName
-              }, {
-                name: 'organizationName',
-                value: organizationName
-              }, {
-                shortName: 'OU',
-                value: organizationalUnit
-              }
-            ];
+              pki   = forge.pki,
+              keys  = pki.rsa.generateKeyPair(2048),
+              cert  = pki.createCertificate(),
+              attrs = [
+                {
+                  name: 'commonName',
+                  value: commonName
+                }, {
+                  name: 'countryName',
+                  value: countryName
+                }, {
+                  shortName: 'ST',
+                  value: stateName
+                }, {
+                  name: 'localityName',
+                  value: localityName
+                }, {
+                  name: 'organizationName',
+                  value: organizationName
+                }, {
+                  shortName: 'OU',
+                  value: organizationalUnit
+                }
+              ];
 
-        cert.publicKey = keys.publicKey;
-        cert.serialNumber = '01';
-        cert.validity.notBefore = new Date();
-        cert.validity.notAfter = new Date();
-        cert.validity.notAfter.setFullYear(cert.validity.notBefore.getFullYear() + 1);
+          cert.publicKey = keys.publicKey;
+          cert.serialNumber = '01';
+          cert.validity.notBefore = new Date();
+          cert.validity.notAfter = new Date();
+          cert.validity.notAfter.setFullYear(cert.validity.notBefore.getFullYear() + 1);
 
-        cert.setSubject(attrs);
-        cert.setIssuer(attrs);
+          cert.setSubject(attrs);
+          cert.setIssuer(attrs);
 
-        cert.setExtensions([{
-          name: 'basicConstraints',
-          cA: true
-        }, {
-          name: 'keyUsage',
-          keyCertSign: true,
-          digitalSignature: true,
-          nonRepudiation: true,
-          keyEncipherment: true,
-          dataEncipherment: true
-        }, {
-          name: 'extKeyUsage',
-          serverAuth: true,
-          clientAuth: true,
-          codeSigning: true,
-          emailProtection: true,
-          timeStamping: true
-        }, {
-          name: 'nsCertType',
-          client: true,
-          server: true,
-          email: true,
-          objsign: true,
-          sslCA: true,
-          emailCA: true,
-          objCA: true
-        }, {
-          name: 'subjectAltName',
-          altNames: [{
-            type: 6,
-            value: altUri
+          cert.setExtensions([{
+            name: 'basicConstraints',
+            cA: true
           }, {
-            type: 7,
-            ip: altIp
-          }]
-        }, {
-          name: 'subjectKeyIdentifier'
-        }]);
+            name: 'keyUsage',
+            keyCertSign: true,
+            digitalSignature: true,
+            nonRepudiation: true,
+            keyEncipherment: true,
+            dataEncipherment: true
+          }, {
+            name: 'extKeyUsage',
+            serverAuth: true,
+            clientAuth: true,
+            codeSigning: true,
+            emailProtection: true,
+            timeStamping: true
+          }, {
+            name: 'nsCertType',
+            client: true,
+            server: true,
+            email: true,
+            objsign: true,
+            sslCA: true,
+            emailCA: true,
+            objCA: true
+          }, {
+            name: 'subjectAltName',
+            altNames: [{
+              type: 6,
+              value: altUri
+            }, {
+              type: 7,
+              ip: altIp
+            }]
+          }, {
+            name: 'subjectKeyIdentifier'
+          }]);
 
-        cert.sign(keys.privateKey);
+          cert.sign(keys.privateKey);
 
-        publicPem  = pki.publicKeyToPem(keys.publicKey);
-        certPem    = pki.certificateToPem(cert);
-        privatePem = pki.privateKeyToPem(keys.privateKey);
+          publicPem  = pki.publicKeyToPem(keys.publicKey);
+          certPem    = pki.certificateToPem(cert);
+          privatePem = pki.privateKeyToPem(keys.privateKey);
 
-        thing.fs.write(thing.destinationPath('public.pem'), publicPem);
-        thing.fs.write(thing.destinationPath('certPem.pem'), certPem);
-        thing.fs.write(thing.destinationPath('privatePem.pem'), privatePem);
-      });
+          thing.fs.write(thing.destinationPath('public.pem'), publicPem);
+          thing.fs.write(thing.destinationPath('certPem.pem'), certPem);
+          thing.fs.write(thing.destinationPath('privatePem.pem'), privatePem);
+        });
     }
   },
 
@@ -635,7 +636,8 @@ module.exports = generators.Base.extend({
         symlinksToStatics: this.symlinksToStatics,
         versionedStatics: this.versionedStatics,
         versionedCssFile: this.versionedCssFile,
-        alwaysHostPublic: this.alwaysHostPublic
+        alwaysHostPublic: this.alwaysHostPublic,
+        suppressLogs: this.suppressLogs
       }
     );
 
