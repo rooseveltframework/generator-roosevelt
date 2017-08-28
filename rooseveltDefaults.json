@@ -235,6 +235,7 @@
   "jsCompiler": {
     "default": {
       "nodeModule": "roosevelt-closure",
+      "showWarnings": false,
       "params": {
         "compilationLevel": "ADVANCED"
       }
@@ -287,6 +288,11 @@
     "allowNull": false
   },
   "supressClosingMessage": {
+    "default": false,
+    "type": "boolean",
+    "allowNull": false
+  },
+  "suppresslogs": {
     "default": false,
     "type": "boolean",
     "allowNull": false
