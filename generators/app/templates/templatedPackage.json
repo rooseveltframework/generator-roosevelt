@@ -74,7 +74,8 @@
     "versionedCssFile": <%- versionedCssFile %>,
     "alwaysHostPublic": <%= alwaysHostPublic %>,
     "bodyParserUrlencodedParams": <%- bodyParserUrlencodedParams %>,
-    "bodyParserJsonParams": <%- bodyParserJsonParams %>
+    "bodyParserJsonParams": <%- bodyParserJsonParams %>,
+    "suppressLogs": <%- suppressLogs %>
   },
   "eslintConfig": {
     "env": {
@@ -170,6 +171,8 @@
     "kill-validator": "node ./node_modules/roosevelt/lib/killValidator.js",
     "prod": "./node_modules/.bin/supervisor -k -e js,json,less,html -i <%= buildPath %>/,.git/,<%= publicFolder %>/,node_modules/,jsdoc/ -- app.js -prod",
     "dev": "./node_modules/.bin/supervisor -k -e js,json,less,html -i <%= buildPath %>/,.git/,<%= publicFolder %>/,node_modules/,jsdoc/ -- app.js -dev",
+    "cleanup": "node ./node_modules/roosevelt/lib/appCleanup.js",
+    "audit": "node ./node_modules/roosevelt/lib/configAuditor.js",
     "test": "npm run lint",
     "eslint": "./node_modules/.bin/eslint .",
     "stylelint": "./node_modules/.bin/stylelint \"statics/css/**/*.less\" --syntax less",
