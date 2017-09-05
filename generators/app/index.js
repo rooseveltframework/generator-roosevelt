@@ -59,11 +59,13 @@ module.exports = generators.Base.extend({
     this.option('versionedCssFile', {desc: 'If enabled, Roosevelt will create a CSS file which declares a CSS variable exposing your app\'s version number from package.json. Enable this option by supplying an object with the member variables fileName and varName.' });
     this.option('alwaysHostPublic', {desc: 'By default in production mode Roosevelt will not expose the public folder.' });
     this.option('supressClosingMessage', {desc: 'Supresses closing message.'});
+    this.option('gitIgnore', {desc: 'Paths to ignore in git project' });
     this.option('suppressLogs', {desc: 'If enabled Roosevelt will not log status messages to the console.'});
   },
 
   initializing: function() {
     this.engineList = [];
+    this.gitIgnore = '';
   },
 
   prompting: {
@@ -257,6 +259,7 @@ module.exports = generators.Base.extend({
           }
         ]).then(function(answers) {
           this.standardInstall = answers.standardInstall;
+          this.gitIgnore = answers.gitIgnore;
           this.templatingEngine = answers.templatingEngine;
           this.port = answers.port ? answers.port : this.options.port || '43711';
           this.localhostOnly = answers.localhostOnly ? answers.localhostOnly :  this.options.localhostOnly || 'true';
@@ -348,7 +351,21 @@ module.exports = generators.Base.extend({
           this.versionedCssFile = answers.versionedCssFile ? answers.versionedCssFile :  this.options.versionedCssFile || 'null';
           this.alwaysHostPublic = answers.alwaysHostPublic ? answers.alwaysHostPublic :  this.options.alwaysHostPublic || 'false';
           this.supressClosingMessage = this.options.supressClosingMessage ? this.options.supressClosingMessage : false;
+          this.cssCompiledPath = this.staticsRoot + '/' + (this.cssCompiledOutput).split('/')[0];
+          this.jsCompiledPath = this.staticsRoot + '/' + (this.jsCompiledOutput).split('/')[0];
+          this.gitIgnore = this.options.gitIgnore ? this.options.gitIgnore + '\r\n' : '';
           this.suppressLogs = this.options.suppressLogs ? this.options.suppressLogs : false;
+
+          if (this.gitIgnore.indexOf(this.publicFolder) < 0 && this.gitIgnore.indexOf(this.cssCompiledPath) < 0 &&      this.gitIgnore.indexOf(this.jsCompiledPath) < 0) {
+            if (this.cssCompiledPath === this.jsCompiledPath) {
+              this.gitIgnore += this.publicFolder + '\r\n' + this.jsCompiledPath + '\r\n';
+              this.buildPath = this.jsCompiledPath;
+            }
+            else {
+              this.gitIgnore += this.publicFolder + '\r\n' + this.jsCompiledPath + '\r\n' + this.cssCompiledPath + '\r\n';
+              this.buildPath = this.jsCompiledPath + '/,' + this.cssCompiledPath;
+            }
+          }
         }.bind(this));
     },
 
@@ -637,6 +654,7 @@ module.exports = generators.Base.extend({
         versionedStatics: this.versionedStatics,
         versionedCssFile: this.versionedCssFile,
         alwaysHostPublic: this.alwaysHostPublic,
+        buildPath: this.buildPath,
         suppressLogs: this.suppressLogs
       }
     );
@@ -659,9 +677,12 @@ module.exports = generators.Base.extend({
       this.destinationPath('app.js')
     );
 
-    this.fs.copy(
+    this.fs.copyTpl(
       this.templatePath('gitignore_template'),
-      this.destinationPath('.gitignore')
+      this.destinationPath('.gitignore'),
+      {
+        addedIgnore: this.gitIgnore
+      }
     );
 
     this.fs.copy(
