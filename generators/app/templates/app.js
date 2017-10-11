@@ -1,1 +1,1 @@
-require('roosevelt')().startServer();
+require('roosevelt')().startServer()
