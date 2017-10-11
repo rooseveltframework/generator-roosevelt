@@ -1,2 +1,2 @@
 // a sample progressive enhancement
-document.body.style.backgroundColor = '#eee';
+document.body.style.backgroundColor = '#eee'

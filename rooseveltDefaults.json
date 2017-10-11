@@ -14,9 +14,12 @@
     "type": "boolean",
     "allowNull": false
   },
-  "disableLogger": {
-    "default": false,
-    "type": "boolean",
+  "suppressLogs": {
+    "default": {
+      "httpLogs": false,
+      "rooseveltLogs": false
+    },
+    "type": "object",
     "allowNull": false
   },
   "noMinify": {
@@ -288,11 +291,6 @@
     "allowNull": false
   },
   "supressClosingMessage": {
-    "default": false,
-    "type": "boolean",
-    "allowNull": false
-  },
-  "suppresslogs": {
     "default": false,
     "type": "boolean",
     "allowNull": false

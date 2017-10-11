@@ -18,7 +18,7 @@
     "roosevelt-closure": "^0.3.0"
   },
   "devDependencies": {
-    "eslint": "^4.0.0",
+    "standard": "^10.0.0",
     "lesshint": "^3.3.0",
     "htmlhint": "^0.9.0",
     "stylelint": "^7.10.1",
@@ -30,7 +30,7 @@
   "rooseveltConfig": {
     "port": <%= port %>,
     "localhostOnly": <%= localhostOnly %>,
-    "disableLogger": <%= disableLogger %>,
+    "suppressLogs": <%- suppressLogs %>,
     "noMinify": <%= noMinify %>,
     "enableValidator": <%= enableValidator %>,
     "htmlValidator": <%- htmlValidator %>,
@@ -74,93 +74,7 @@
     "versionedCssFile": <%- versionedCssFile %>,
     "alwaysHostPublic": <%= alwaysHostPublic %>,
     "bodyParserUrlencodedParams": <%- bodyParserUrlencodedParams %>,
-    "bodyParserJsonParams": <%- bodyParserJsonParams %>,
-    "suppressLogs": <%- suppressLogs %>
-  },
-  "eslintConfig": {
-    "env": {
-      "browser": true,
-      "node": true
-    },
-    "rules": {
-      "eqeqeq": 2,
-      "curly": 2,
-      "semi": 2,
-      "strict": [
-        2,
-        "never"
-      ],
-      "quotes": [
-        2,
-        "single"
-      ],
-      "no-trailing-spaces": [
-        "error",
-        {
-          "skipBlankLines": false
-        }
-      ],
-      "camelcase": [
-        2,
-        {
-          "properties": "always"
-        }
-      ],
-      "comma-spacing": [
-        2,
-        {
-          "before": false,
-          "after": true
-        }
-      ],
-      "indent": [
-        2,
-        2,
-        {
-          "VariableDeclarator": 2,
-          "SwitchCase": 1
-        }
-      ],
-      "handle-callback-err": 0,
-      "no-use-before-define": [
-        2,
-        "nofunc"
-      ],
-      "no-unused-vars": [
-        2,
-        {
-          "vars": "all",
-          "args": "none"
-        }
-      ],
-      "no-console": 0,
-      "no-mixed-requires": 0,
-      "one-var": [
-        2,
-        "always"
-      ],
-      "dot-notation": 0,
-      "no-path-concat": 0,
-      "no-alert": 0,
-      "brace-style": [
-        2,
-        "stroustrup"
-      ],
-      "keyword-spacing": [
-        "error",
-        {
-          "before": true,
-          "after": true
-        }
-      ],
-      "space-before-blocks": [
-        "error"
-      ],
-      "eol-last": [
-        "error",
-        "always"
-      ]
-    }
+    "bodyParserJsonParams": <%- bodyParserJsonParams %>
   },
   "private": true,
   "repository": {
@@ -174,7 +88,7 @@
     "cleanup": "node ./node_modules/roosevelt/lib/appCleanup.js",
     "audit": "node ./node_modules/roosevelt/lib/configAuditor.js",
     "test": "npm run lint",
-    "eslint": "./node_modules/.bin/eslint .",
+    "eslint": "standard",
     "stylelint": "./node_modules/.bin/stylelint \"statics/css/**/*.less\" --syntax less",
     "htmlhint": "./node_modules/.bin/htmlhint --config .htmlhintrc mvc/views",
     "lint": "npm run htmlhint && npm run stylelint && npm run eslint",
@@ -183,6 +97,6 @@
   "lint-staged": {
     "*.html": "./node_modules/.bin/htmlhint --config .htmlhintrc",
     "*.less": "./node_modules/.bin/stylelint --syntax less",
-    "*.js": "./node_modules/.bin/eslint"
+    "*.js": "standard"
   }
 }
