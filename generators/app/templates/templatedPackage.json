@@ -12,10 +12,10 @@
   },
   "engineStrict": true,
   "dependencies": {
-    "roosevelt": "^0.8.0",
+    "roosevelt": "^0.9.0",
     "teddy": "^0.4.0",
     "roosevelt-less": "^0.2.0",
-    "roosevelt-closure": "^0.3.0"
+    "roosevelt-closure": "^0.4.0"
   },
   "devDependencies": {
     "standard": "^10.0.0",
