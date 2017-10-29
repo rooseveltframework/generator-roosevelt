@@ -20,7 +20,6 @@
   "devDependencies": {
     "standard": "^10.0.0",
     "lesshint": "^3.3.0",
-    "htmlhint": "^0.9.0",
     "stylelint": "^7.10.1",
     "stylelint-config-standard": "^16.0.0",
     "supervisor": "^0.12.0",
@@ -90,12 +89,10 @@
     "test": "npm run lint",
     "eslint": "standard",
     "stylelint": "./node_modules/.bin/stylelint \"statics/css/**/*.less\" --syntax less",
-    "htmlhint": "./node_modules/.bin/htmlhint --config .htmlhintrc mvc/views",
-    "lint": "npm run htmlhint && npm run stylelint && npm run eslint",
+    "lint": "npm run stylelint && npm run eslint",
     "precommit": "lint-staged"
   },
   "lint-staged": {
-    "*.html": "./node_modules/.bin/htmlhint --config .htmlhintrc",
     "*.less": "./node_modules/.bin/stylelint --syntax less",
     "*.js": "standard"
   }
