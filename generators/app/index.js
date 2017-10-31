@@ -749,7 +749,7 @@ module.exports = generators.Base.extend({
       this.log('- To run in dev mode:   npm run dev')
       this.log('- To run in prod mode:  npm run prod')
       this.log('Once running, visit ' + whichHttpToShow + '://localhost:' + this.port + '/\n')
-      this.log('To make further changes to the config, edit package.json. See https://github.com/kethinov/roosevelt#configure-your-app-with-parameters for information on the configuration options.')
+      this.log('To make further changes to the config, edit package.json. See https://github.com/rooseveltframework/roosevelt#configure-your-app-with-parameters for information on the configuration options.')
     }
   }
 })
