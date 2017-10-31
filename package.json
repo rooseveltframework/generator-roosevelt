@@ -47,7 +47,7 @@
   "gitHead": "",
   "scripts": {
     "lint": "standard",
-    "test": "set NODE_ENV=test && \"./node_modules/.bin/mocha\" unitTest.js",
+    "test": "npm run lint",
     "precommit": "lint-staged"
   },
   "lint-staged": {
