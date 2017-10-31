@@ -237,11 +237,9 @@
   },
   "jsCompiler": {
     "default": {
-      "nodeModule": "roosevelt-closure",
+      "nodeModule": "roosevelt-uglify",
       "showWarnings": false,
-      "params": {
-        "compilationLevel": "ADVANCED"
-      }
+      "params": {}
     },
     "type": "string",
     "allowNull": false

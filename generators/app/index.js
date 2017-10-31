@@ -327,7 +327,7 @@ module.exports = generators.Base.extend({
           this.bundledJsPath = answers.bundledJsPath ? answers.bundledJsPath : this.options.bundledJsPath || '.bundled'
           this.exposeBundles = answers.exposeBundles ? answers.exposeBundles : this.options.exposeBundles || 'true'
           this.browserifyBundles = answers.browserifyBundles ? answers.browserifyBundles : this.options.browserifyBundles || []
-          this.jsCompiler = answers.jsCompiler ? answers.jsCompiler : this.options.jsCompiler || '{"nodeModule": "roosevelt-closure", "showWarnings": false,  "params": {"compilationLevel": "ADVANCED"}}'
+          this.jsCompiler = answers.jsCompiler ? answers.jsCompiler : this.options.jsCompiler || '{"nodeModule": "roosevelt-uglify", "showWarnings": false,  "params": {}}'
           this.jsCompilerWhitelist = answers.jsCompilerWhitelist ? answers.jsCompilerWhitelist : this.options.jsCompilerWhitelist || 'null'
           this.jsCompiledOutput = answers.jsCompiledOutput ? answers.jsCompiledOutput : this.options.jsCompiledOutput || '.build/js'
           this.publicFolder = answers.publicFolder ? answers.publicFolder : this.options.publicFolder || 'public'
@@ -749,7 +749,7 @@ module.exports = generators.Base.extend({
       this.log('- To run in dev mode:   npm run dev')
       this.log('- To run in prod mode:  npm run prod')
       this.log('Once running, visit ' + whichHttpToShow + '://localhost:' + this.port + '/\n')
-      this.log('To make further changes to the config, edit package.json. See https://github.com/kethinov/roosevelt#configure-your-app-with-parameters for information on the configuration options.')
+      this.log('To make further changes to the config, edit package.json. See https://github.com/rooseveltframework/roosevelt#configure-your-app-with-parameters for information on the configuration options.')
     }
   }
 })
