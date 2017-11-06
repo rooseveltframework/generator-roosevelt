@@ -1,0 +1,75 @@
+{
+  "dependencies": {
+    "roosevelt": "^0.9.0"
+  },
+  "appName": "My Roosevelt Sample App",
+  "createDir": true,
+  "https": false,
+  "httpsOnly": false,
+  "httpPort": 43711,
+  "httpsPort": 43733,
+  "pfx": false,
+  "keyPath": "null",
+  "passphrase": "null",
+  "ca": "null",
+  "requestCert": false,
+  "rejectUnauthorized": false,
+  "stateName": "n/a",
+  "localityName": "n/a",
+  "organizationName": "n/a",
+  "organizationalUnit": "n/a",
+  "altURI": "http://localhost/",
+  "altIP": "127.0.0.1",
+  "defaultCSSCompiler": "rooseveltLess",
+  "rooseveltLess": {
+    "dependencies": {
+      "roosevelt-less": "^0.2.0"
+    },
+    "options": {
+      "nodeModule": "roosevelt-less",
+      "params": {
+        "compress": true
+      }
+    },
+    "scripts": {
+      "cssExt": "less",
+      "cssSyntax": " --syntax less"
+    }
+  },
+  "defaultJSCompiler": "rooseveltUglify",
+  "rooseveltUglify": {
+    "dependencies": {
+      "roosevelt-uglify": "^0.1.0"
+    },
+    "options": {
+      "nodeModule": "roosevelt-uglify",
+      "showWarnings": false,
+      "params": {}
+    }
+  },
+  "rooseveltClosure": {
+    "dependencies": {
+      "roosevelt-closure": "^0.4.0"
+    },
+    "options": {
+      "nodeModule": "roosevelt-closure",
+      "showWarnings": false,
+      "params": {
+        "compilationLevel": "ADVANCED"
+      }
+    }
+  },
+  "modelsPath": "mvc/models",
+  "viewsPath": "mvc/views",
+  "controllersPath": "mvc/controllers",
+  "templatingEngine": true,
+  "templatingEngineName": "teddy",
+  "templatingExtension": "html",
+  "additionalTemplatingEngines": false,
+  "teddy": {
+    "teddy": "^0.4.0"
+  },
+  "viewEngine": [
+    "html: teddy"
+  ]
+}

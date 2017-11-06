@@ -12,19 +12,11 @@
   },
   "engineStrict": true,
   "dependencies": {
-    "fs-extra": "^4.0.2",
     "node-forge": "^0.7.1",
-    "prompt": "^1.0.0",
-    "update-notifier": "^2.3.0",
-    "yeoman-assert": "^3.1.0",
-    "yeoman-generator": "^2.0.1",
-    "yeoman-test": "^1.6.0"
+    "yeoman-generator": "^2.0.1"
   },
   "devDependencies": {
     "standard": "^10.0.0",
-    "mocha": "^4.0.1",
-    "is-my-json-valid": "^2.15.0",
-    "chai": "^4.1.2",
     "lint-staged": "^4.0.0",
     "husky": "^0.14.3"
   },
@@ -52,10 +44,5 @@
   },
   "lint-staged": {
     "*.js": "standard"
-  },
-  "files": [
-    "generators/app",
-    "sampleApp",
-    "rooseveltDefaults.json"
-  ]
+  }
 }

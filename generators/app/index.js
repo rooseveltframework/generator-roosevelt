@@ -1,599 +1,547 @@
-const generators = require('yeoman-generator')
-const fse = require('fs-extra')
-const path = require('path')
-const mkdirp = require('mkdirp')
-const rooseveltDefaults = require('../../rooseveltDefaults.json')
-const currentDirectory = path.parse(process.cwd()).name
+const Generator = require('yeoman-generator')
+const defaults = require('./templates/defaults.json')
 
-module.exports = generators.Base.extend({
-  constructor: function () {
-    generators.Base.apply(this, arguments)
+module.exports = class extends Generator {
+  constructor (args, opts) {
+    super(args, opts)
 
-    this.option('appName', {desc: 'The name of the application.'})
-    this.option('port', {desc: 'The port your app will run on'})
-    this.option('localhostOnly', {desc: 'Listen only to requests coming from localhost in production mode. This is useful in environments where it is expected that HTTP requests to your app will be proxied through a more traditional web server like Apache or nginx. This setting is ignored in development mode.'})
-    this.option('suppressLogs', {desc: 'Enables or disables Roosevelt logs and/or HTTP logs.'})
-    this.option('noMinify', {desc: 'Disables HTML minification as well as the minification step in (supporting) CSS and JS compilers. Automatically enabled during dev mode.'})
-    this.option('enableValidator', {desc: 'Enables or disables the built-in HTML validator in dev mode.'})
-    this.option('htmlValidator', {desc: 'Params to send to html-validator.'})
-    this.option('validatorExceptions', {desc: ' Use this to customize the name of the request header or model value that is used to disable the HTML validators'})
-    this.option('shutdownTimeout', {desc: 'Maximum amount of time in miliseconds given to Roosevelt to gracefully shut itself down when sent the kill signal.'})
-    this.option('https', {desc: 'Run an HTTPS server using Roosevelt.'})
-    this.option('httpsOnly', {desc: 'If running an HTTPS server, determines whether or not the default HTTP server will be disabled'})
-    this.option('httpsPort', {desc: 'The port your app will run an HTTPS server on, if enabled.'})
-    this.option('pfx', {desc: 'Specify whether or not your app will use pfx or standard certification.'})
-    this.option('keyPath', {desc: 'Stores the file paths of specific key/certificate to be used by the server.'})
-    this.option('passphrase', {desc: 'Supply the HTTPS server with the password for the certificate being used, if necessary.'})
-    this.option('ca', {desc: 'Certificate authority to match client certificates against, as a file path or array of file paths.'})
-    this.option('requestCert', {desc: 'Request a certificate from a client and attempt to verify it.'})
-    this.option('rejectUnauthorized', {desc: 'Upon failing to authorize a user with supplied CA(s), reject their connection entirely.'})
-    this.option('bodyParserUrlencodedParams', {desc: 'Controls the options for body-parser using a object.'})
-    this.option('bodyParserJsonParams', {desc: 'Controls the options for the json function of the body-parser using a object.'})
-    this.option('modelsPath', {desc: 'Relative path on filesystem to where your model files are located.'})
-    this.option('modelsNodeModulesSymlink', {desc: 'Name of the symlink to make in node_modules pointing to your models directory. Set to false to disable making this symlink.'})
-    this.option('viewsPath', {desc: 'Relative path on filesystem to where your view files are located.'})
-    this.option('viewEngine', {desc: 'What templating engine to use, formatted as \'fileExtension: nodeModule\'.'})
-    this.option('controllersPath', {desc: 'Relative path on filesystem to where your controller files are located.'})
-    this.option('libPath', {desc: 'Relative path on filesystem to where your optional utility library files are located'})
-    this.option('libPathNodeModulesSymlink', {desc: 'Name of the symlink to make in node_modules pointing to your lib directory. Set to false to disable making this symlink'})
-    this.option('error404', {desc: 'Relative path on filesystem to where your "404 Not Found" controller is located'})
-    this.option('error5xx', {desc: 'Relative path on filesystem to where your "Internal Server Error" controller is located'})
-    this.option('error503', {desc: 'Relative path on filesystem to where your "503 Service Unavailable" controller is located.'})
-    this.option('staticsRoot', {desc: 'Relative path on filesystem to where your static assets are located'})
-    this.option('htmlMinify', {desc: 'Configuration for html-minifier.'})
-    this.option('cssPath', {desc: 'Subdirectory within staticsRoot where your CSS files are located. By default this folder will not be made public, but is instead meant to store unminified CSS source files which will be minified and stored elsewhere when the app is started.'})
-    this.option('cssCompiler', {desc: 'Which CSS preprocessor, if any, to use'})
-    this.option('cssCompilerWhitelist', {desc: 'Whitelist of CSS files to compile as an array'})
-    this.option('cssCompiledOutput', {desc: 'Where to place compiled CSS files'})
-    this.option('jsPath', {desc: 'Subdirectory within staticsRoot where your JS files are located.'})
-    this.option('bundledJsPath', {desc: 'Subdirectory within jsPath where you would like browserify to deposit bundled JS files it produces (if you use browserify)'})
-    this.option('exposeBundles', {desc: 'Whether or not to copy the bundledJsPath directory to your build directory'})
-    this.option('browserifyBundles', {desc: ' Declare browserify bundles: one or more files in your jsPath for browserify to bundle via its bundle method.'})
-    this.option('jsCompiler', {desc: 'Which JS minifier, if any, to use.'})
-    this.option('jsCompilerWhitelist', {desc: 'Whitelist of JS files to compile as an array.'})
-    this.option('jsCompiledOutput', {desc: 'Where to place compiled JS files.'})
-    this.option('publicFolder', {desc: 'All files and folders specified in this path will be exposed as static files.'})
-    this.option('favicon', {desc: 'Location of your favicon file.'})
-    this.option('symlinksToStatics', {desc: 'Array of folders from staticsRoot to make symlinks to in your public folder, formatted as either \'linkName: linkTarget\' or simply \'linkName\' if the link target has the same name as the desired link name.'})
-    this.option('versionedStatics', {desc: 'If set to true, Roosevelt will prepend your app\'s version number from package.json to your statics URLs.'})
-    this.option('versionedCssFile', {desc: 'If enabled, Roosevelt will create a CSS file which declares a CSS variable exposing your app\'s version number from package.json. Enable this option by supplying an object with the member variables fileName and varName.'})
-    this.option('alwaysHostPublic', {desc: 'By default in production mode Roosevelt will not expose the public folder.'})
-    this.option('supressClosingMessage', {desc: 'Supresses closing message.'})
-    this.option('gitIgnore', {desc: 'Paths to ignore in git project'})
-  },
+    this.option('standard-install', {
+      required: false,
+      default: false,
+      desc: 'Skips all prompts and creates a Roosevelt app with all defaults.'
+    })
 
-  initializing: function () {
-    this.engineList = []
-    this.gitIgnore = ''
-  },
+    this.option('install-deps', {
+      type: Boolean,
+      required: false,
+      default: false,
+      desc: 'Automatically installs app dependencies.'
+    })
 
-  prompting: {
-    setupPrompts: function () {
-      let thing = this
-      let whenAdvanced = function (answer) {
-        if (answer.standardInstall === 'Customize') {
-          return true
-        } else {
-          return false
+    this.option('skip-closing-message', {
+      type: Boolean,
+      required: false,
+      default: false,
+      desc: 'Skips the closing message when app generation is complete.'
+    })
+  }
+
+  _setAppName (appName) {
+    this.appName = appName || defaults.appName
+
+    // sanitize appName for package.json name field via https://docs.npmjs.com/files/package.json#name
+    this.packageName = this.appName
+      .replace(/^\.|_/, '')
+      .replace(/\s+/g, '-')
+      .replace(/(.{1,213})(.*)/, '$1')
+      .toLowerCase()
+  }
+
+  start () {
+    if (this.options['standard-install']) {
+      this._setAppName()
+      return true
+    }
+
+    return this.prompt(
+      [
+        {
+          type: 'input',
+          name: 'appName',
+          message: 'What would you like to name your Roosevelt app?',
+          default: defaults.appName
+        },
+        {
+          type: 'confirm',
+          name: 'createDir',
+          message: 'Would you like to create a new directory for your app?',
+          default: defaults.createDir
         }
-      }
-      let whenHTTPS = function (answer) {
-        return answer.https
-      }
-      let whenHTTPSOnly = function (answer) {
-        if (answer.httpsOnly === true) {
-          return false
-        } else if (whenAdvanced(answer)) {
-          return true
-        } else {
-          return false
+      ]
+    )
+    .then((response) => {
+      this._setAppName(response.appName)
+      this.createDir = response.createDir
+    })
+  }
+
+  dir () {
+    if (!this.createDir) {
+      return true
+    }
+
+    return this.prompt(
+      [
+        {
+          type: 'input',
+          name: 'dirname',
+          message: 'Enter directory name',
+          default: this.packageName
         }
-      }
-      let validateDir = function (answer) {
-        let installDirectoryPath
-        let createdDirectory = false
+      ]
+    )
+    .then((response) => {
+      this.dirname = response.dirname
+    })
+  }
 
-        if (answer !== currentDirectory) {
-          if (path.isAbsolute(answer) === false) {
-            installDirectoryPath = path.join(process.cwd() + '/' + answer)
-          } else {
-            installDirectoryPath = path.normalize(answer)
-          }
+  mode () {
+    if (this.options['standard-install']) {
+      return true
+    }
 
-          try {
-            fse.mkdirsSync(installDirectoryPath)
-            createdDirectory = true
-          } catch (e) {
-            createdDirectory = false
-          }
-
-          thing.destinationRoot(installDirectoryPath)
-        } else {
-          createdDirectory = true
+    return this.prompt(
+      [
+        {
+          type: 'list',
+          name: 'configMode',
+          choices: [
+            'Standard',
+            'Customize'
+          ],
+          message: 'Generate a standard config or customize it now?'
         }
+      ]
+    )
+    .then((response) => {
+      this.configMode = response.configMode
+    })
+  }
 
-        return createdDirectory === true ? true : 'Directory did not exist and we could not create it'
-      }
-      let validatePort = function (answer) {
-        if (!/^(?:6553[0-5]|655[0-2][0-9]|65[0-4][0-9]{2}|6[0-4][0-9]{3}|[1-5][0-9]{4}|[1-9][0-9]{1,3}|[0-9])$/.test(answer)) {
-          return 'Invalid port, input a port between 1 and 65535'
+  customize () {
+    if (this.configMode !== 'Customize') {
+      return true
+    }
+
+    return this.prompt(
+      [
+        {
+          type: 'confirm',
+          name: 'https',
+          message: 'Use HTTPS?',
+          default: defaults.https
+        },
+        {
+          when: (answers) => answers.https,
+          type: 'confirm',
+          name: 'httpsOnly',
+          message: 'Use HTTPS only? (Disable HTTP?)',
+          default: defaults.httpsOnly
+        },
+        {
+          when: (answers) => !answers.httpsOnly,
+          type: 'input',
+          name: 'httpPort',
+          message: 'HTTP port your app will run on:',
+          default: defaults.httpPort,
+          validate: (input) => {
+            if (!/^(?:6553[0-5]|655[0-2][0-9]|65[0-4][0-9]{2}|6[0-4][0-9]{3}|[1-5][0-9]{4}|[1-9][0-9]{1,3}|[0-9])$/.test(input)) {
+              return 'Invalid port, input a port between 1 and 65535'
+            }
+            return true
+          }
         }
-        return true
+      ]
+    ).then((response) => {
+      this.https = response.https
+      this.httpsOnly = response.httpsOnly
+      this.httpPort = response.httpPort
+    })
+  }
+
+  HTTPS () {
+    if (!this.https) {
+      return true
+    }
+
+    return this.prompt(
+      [
+        {
+          type: 'input',
+          name: 'httpsPort',
+          message: 'HTTPS port your app will run on:',
+          default: defaults.httpsPort,
+          validate: (input) => {
+            if (!/^(?:6553[0-5]|655[0-2][0-9]|65[0-4][0-9]{2}|6[0-4][0-9]{3}|[1-5][0-9]{4}|[1-9][0-9]{1,3}|[0-9])$/.test(input)) {
+              return 'Invalid port, input a port between 1 and 65535'
+            }
+            return true
+          }
+        },
+        {
+          type: 'confirm',
+          name: 'shouldGenerateSSLCerts',
+          message: 'Would you like to generate SSL Certs?',
+          default: false
+        },
+        {
+          type: 'list',
+          name: 'pfx',
+          choices: [
+            '.pfx',
+            '.cert'
+          ],
+          message: 'Use .pfx or .cert for SSL connections?'
+        },
+        {
+          type: 'input',
+          name: 'keyPath',
+          message: 'Key Path: Stores the file paths of specific key/certificate to be used by the server. Object values: pfx, key, cert -- use one of {pfx} or {key, cert}',
+          default: defaults.keyPath
+        },
+        {
+          type: 'password',
+          name: 'passphrase',
+          message: 'Passphrase for HTTPS server to use with the SSL cert (optional):',
+          default: defaults.passphrase
+        },
+        {
+          type: 'input',
+          name: 'ca',
+          message: 'Ca: Certificate authority to match client certificates against, as a file path or array of file paths.',
+          default: defaults.ca
+        },
+        {
+          type: 'input',
+          name: 'requestCert',
+          message: 'Request Cert: Request a certificate from a client and attempt to verify it',
+          default: defaults.requestCert
+        },
+        {
+          type: 'input',
+          name: 'rejectUnauthorized',
+          message: 'Reject Unauthorized: Upon failing to authorize a user with supplied CA(s), reject their connection entirely',
+          default: defaults.rejectUnauthorized
+        }
+      ]
+    )
+    .then((response) => {
+      const responseKeys = Object.keys(response)
+
+      responseKeys.forEach((answer) => {
+        this[answer] = response[answer]
+      })
+    })
+  }
+
+  generateSSLCerts () {
+    if (!this.shouldGenerateSSLCerts) {
+      return true
+    }
+
+    return this.prompt(
+      [
+        {
+          type: 'input',
+          name: 'commonName',
+          message: 'Enter the public domain name of your website (e.g. www.google.com)',
+          validate: (input) => !input ? 'This is required' : true
+        },
+        {
+          type: 'input',
+          name: 'countryName',
+          message: 'Enter the two-character denomination of your country (e.g. US, CA)',
+          validate: function (input) {
+            if (!/^[A-Z]{2}$/.test(input)) {
+              return 'Incorrect input please enter in this format (e.g. US, CA)'
+            }
+            return true
+          }
+        },
+        {
+          type: 'input',
+          name: 'stateName',
+          message: 'Enter the name of your state or province, if applicable',
+          default: defaults.stateName
+        },
+        {
+          type: 'input',
+          name: 'localityName',
+          message: 'Enter the name of your city',
+          default: defaults.localityName
+        },
+        {
+          type: 'input',
+          name: 'organizationName',
+          message: 'Enter the legal name of your organization, if applicable',
+          default: defaults.organizationName
+        },
+        {
+          type: 'input',
+          name: 'organizationalUnit',
+          message: 'Enter the organizational unit represented by the site, if applicable (e.g. Internet Sales)',
+          default: defaults.organizationalUnit
+        }
+      ]
+    )
+    .then((response) => {
+      const responseKeys = Object.keys(response)
+
+      responseKeys.forEach((answer) => {
+        this[answer] = response[answer]
+      })
+    })
+  }
+
+  statics () {
+    if (this.configMode !== 'Customize') {
+      return true
+    }
+
+    return this.prompt(
+      [
+        {
+          type: 'list',
+          name: 'cssCompiler',
+          choices: [
+            'LESS',
+            'none'
+          ],
+          message: 'Which CSS preprocessor would you like to use?'
+        },
+        {
+          type: 'list',
+          name: 'jsCompiler',
+          choices: [
+            'UglifyJS',
+            'Closure Compiler',
+            'none'
+          ],
+          message: 'Which JS compiler would you like to use?'
+        }
+      ]
+    )
+    .then((response) => {
+      this.cssCompiler = response.cssCompiler
+      this.jsCompiler = response.jsCompiler
+    })
+  }
+
+  mvc () {
+    if (this.configMode !== 'Customize') {
+      return true
+    }
+
+    return this.prompt(
+      [
+        {
+          type: 'input',
+          name: 'modelsPath',
+          message: 'Where should data model files be located in the app\'s directory structure?',
+          default: defaults.modelsPath
+        },
+        {
+          type: 'input',
+          name: 'viewsPath',
+          message: 'Where should view (HTML template) files be located in the app\'s directory structure?',
+          default: defaults.viewsPath
+        },
+        {
+          type: 'input',
+          name: 'controllersPath',
+          message: 'Where should controller (Express route) files be located in the app\'s directory structure?',
+          default: defaults.controllersPath
+        },
+        {
+          type: 'confirm',
+          name: 'templatingEngine',
+          message: 'Do you want to use a HTML templating engine?',
+          default: defaults.templatingEngine
+        }
+      ]
+    )
+    .then((response) => {
+      this.modelsPath = response.modelsPath
+      this.viewsPath = response.viewsPath
+      this.controllersPath = response.controllersPath
+      this.templatingEngine = response.templatingEngine
+    })
+  }
+
+  chooseViewEngine () {
+    if (!this.templatingEngine) {
+      return true
+    }
+
+    this.viewEngineList = this.viewEngineList || []
+
+    return this.prompt(
+      [
+        {
+          type: 'input',
+          name: 'templatingEngineName',
+          message: 'What templating engine do you want to use? (Supply npm module name.)',
+          default: defaults.templatingEngineName
+        },
+        {
+          type: 'input',
+          name: 'templatingExtension',
+          message: (answers) => `What file extension do you want ${answers.templatingEngineName} to use?`,
+          default: defaults.templatingExtension
+        },
+        {
+          type: 'confirm',
+          name: 'additionalTemplatingEngines',
+          message: 'Do you want to support an additional templating engine?',
+          default: defaults.additionalTemplatingEngines
+        }
+      ]
+    )
+    .then((answers) => {
+      this.viewEngineList.push(
+        `${answers.templatingExtension}: ${answers.templatingEngineName}`
+      )
+
+      if (answers.additionalTemplatingEngines) {
+        return this.chooseViewEngine()
       }
+    })
+  }
 
-      return this.prompt(
-        [
-          {
-            type: 'input',
-            name: 'installPath',
-            message: 'Where would you like to generate a new Roosevelt app?',
-            default: currentDirectory,
-            validate: validateDir
-          },
-          {
-            type: 'input',
-            name: 'appName',
-            message: 'Your app\'s name:',
-            default: rooseveltDefaults.appName.default
-          },
-          {
-            type: 'list',
-            name: 'standardInstall',
-            choices: ['Standard', 'Customize'],
-            message: 'Generate a standard config or customize it now?'
-          },
-          { // HTTPS
-            when: whenAdvanced,
-            type: 'confirm',
-            name: 'https',
-            message: 'Use HTTPS?',
-            default: rooseveltDefaults.https.default
-          },
-          {
-            when: whenHTTPS,
-            type: 'confirm',
-            name: 'httpsOnly',
-            message: 'Use HTTPS only? (Disable HTTP?)',
-            default: rooseveltDefaults.httpsOnly.default
-          },
-          {
-            when: whenHTTPS,
-            type: 'input',
-            name: 'httpsPort',
-            message: 'HTTPS port your app will run on:',
-            default: rooseveltDefaults.httpsPort.default,
-            validate: validatePort
-          },
-          {
-            when: whenHTTPS,
-            type: 'confirm',
-            name: 'shouldGenerateSslCerts',
-            message: 'Generate SSL certs now?',
-            default: false
-          },
-          {
-            when: whenHTTPS,
-            type: 'list',
-            name: 'pfx',
-            choices: ['.pfx', '.cert'],
-            message: 'Use .pfx or .cert for SSL connections?',
-            default: '.pfx'
-          },
-          {
-            when: whenHTTPS,
-            type: 'input',
-            name: 'keyPath',
-            message: 'Key Path: Stores the file paths of specific key/certificate to be used by the server. Object values: pfx, key, cert -- use one of {pfx} or {key, cert}',
-            default: rooseveltDefaults.keyPath.default || 'null'
-          },
-          {
-            when: whenHTTPS,
-            type: 'password',
-            name: 'passphrase',
-            message: 'Passphrase for HTTPS server to use with the SSL cert (optional):',
-            default: rooseveltDefaults.passphrase.default || 'null'
-          },
-          {
-            when: whenHTTPS,
-            type: 'input',
-            name: 'ca',
-            message: 'Ca: Certificate authority to match client certificates against, as a file path or array of file paths.',
-            default: rooseveltDefaults.ca.default || 'null'
-          },
-          {
-            when: whenHTTPS,
-            type: 'input',
-            name: 'requestCert',
-            message: 'Request Cert: Request a certificate from a client and attempt to verify it',
-            default: rooseveltDefaults.requestCert.default
-          },
-          {
-            when: whenHTTPS,
-            type: 'input',
-            name: 'rejectUnauthorized',
-            message: 'Reject Unauthorized: Upon failing to authorize a user with supplied CA(s), reject their connection entirely',
-            default: rooseveltDefaults.rejectUnauthorized.default
-          },
-          {
-            when: whenHTTPSOnly,
-            type: 'input',
-            name: 'port',
-            message: 'HTTP port your app will run on:',
-            default: rooseveltDefaults.port.default,
-            validate: validatePort
-          },
-          {
-            when: whenAdvanced,
-            type: 'input',
-            name: 'modelsPath',
-            message: 'Where should data model files be located in the app\'s directory structure?',
-            default: rooseveltDefaults.modelsPath.default
-          },
-          {
-            when: whenAdvanced,
-            type: 'input',
-            name: 'viewsPath',
-            message: 'Where should view (HTML template) files be located in the app\'s directory structure?',
-            default: rooseveltDefaults.viewsPath.default
-          },
-          {
-            when: whenAdvanced,
-            type: 'input',
-            name: 'controllersPath',
-            message: 'Where should controller (Express route) files be located in the app\'s directory structure?',
-            default: rooseveltDefaults.controllersPath.default
-          },
-          {
-            when: whenAdvanced,
-            type: 'confirm',
-            name: 'templatingEngine',
-            message: 'Do you want to use a HTML templating engine?',
-            default: rooseveltDefaults.templatingEngine.default
-          }
-        ]).then(function (answers) {
-          this.standardInstall = answers.standardInstall
-          this.gitIgnore = answers.gitIgnore
-          this.templatingEngine = answers.templatingEngine
-          this.port = answers.port ? answers.port : this.options.port || '43711'
-          this.localhostOnly = answers.localhostOnly ? answers.localhostOnly : this.options.localhostOnly || 'true'
-          this.suppressLogs = answers.suppressLogs ? answers.suppressLogs : this.options.suppressLogs || '{"httpLogs": false, "rooseveltLogs": false}'
-          this.noMinify = answers.noMinify ? answers.noMinify : this.options.noMinify || 'false'
-          this.enableValidator = this.options.enableValidator || 'false'
-          this.htmlValidator = this.options.enableValidator || '{"port": "8888", "format": "text", "suppressWarnings": false, "separateProcess": false}'
-          this.validatorExceptions = this.options.validatorExceptions || '{"requestHeader": "Partial", "modelValue": "_disableValidator"}'
-          this.multipart = answers.multipart ? answers.multipart : this.options.multipart || '{"multiples": true}'
-          this.shutdownTimeout = answers.shutdownTimeout ? answers.shutdownTimeout : this.options.shutdownTimeout || '30000'
-          this.https = answers.https ? answers.https : this.options.https || 'false'
-          this.shouldGenerateSslCerts = answers.shouldGenerateSslCerts ? (answers.shouldGenerateSslCerts === 'true') || (answers.shouldGenerateSslCerts === 'True') || (answers.shouldGenerateSslCerts === 'TRUE') : false
-          this.httpsOnly = answers.httpsOnly ? answers.httpsOnly : this.options.httpsOnly || 'false'
-          this.httpsPort = answers.httpsPort ? answers.httpsPort : this.options.httpsPort || '43733'
-          if (answers.pfx === '.pfx' || this.options.pfx === '.pfx') {
-            this.pfx = 'false'
-          } else {
-            this.pfx = 'true'
-          }
+  setParams () {
+    let usesTeddy
+    let destination
 
-          if (answers.keyPath) {
-            this.keyPath = '"' + answers.keyPath + '"'
-          } else {
-            if (this.options.keyPath !== undefined) {
-              this.keyPath = '"' + this.options.keyPath + '"'
-            } else {
-              this.keyPath = 'null'
-            }
-          }
+    if (this.options['standard-install'] || this.createDir) {
+      destination = this.options['standard-install'] || this.dirname
+      this.destinationRoot(destination)
+    }
 
-          if (answers.passphrase) {
-            this.passphrase = '"' + answers.passphrase + '"'
-          } else {
-            if (this.options.passphrase !== undefined) {
-              this.passphrase = '"' + this.options.passphrase + '"'
-            } else {
-              this.passphrase = 'null'
-            }
-          }
+    this.httpPort = this.httpPort || defaults.httpPort
 
-          if (answers.ca) {
-            this.ca = '"' + answers.ca + '"'
-          } else {
-            if (this.options.ca !== undefined) {
-              this.ca = '"' + this.options.ca + '"'
-            } else {
-              this.ca = 'null'
-            }
-          }
-          this.appName = answers.appName ? answers.appName : this.options.appName || 'my-roosevelt-sample-app'
-          this.appNameForPackageJson = answers.appName ? answers.appName.replace(/^\.|_/, '').replace(/\s+/g, '-').replace(/(.{1,213})(.*)/, '$1').toLowerCase() : this.options.appName.replace(/^\.|_/, '').replace(/\s+/g, '-').replace(/(.{1,213})(.*)/, '$1').toLowerCase() || 'new-project' // First remove dot or underscore from beginning, trim whitespace and replace with dash for readability, chop off any characters past 214 in length, and then put all letters to lowercase. These are all requirements of package name for npm see: https://docs.npmjs.com/files/package.json#name
-          this.requestCert = answers.requestCert ? answers.requestCert : this.options.requestCert || 'false'
-          this.rejectUnauthorized = answers.rejectUnauthorized ? answers.rejectUnauthorized : this.options.rejectUnauthorized || 'false'
-          this.bodyParserUrlencodedParams = answers.bodyParserUrlencodedParams ? answers.bodyParserUrlencodedParams : this.options.bodyParserUrlencodedParams || '{"extended": true}'
-          this.bodyParserJsonParams = answers.bodyParserJsonParams ? answers.bodyParserJsonParams : this.options.bodyParserJsonParams || '{}'
-          this.modelsPath = answers.modelsPath ? answers.modelsPath : this.options.modelsPath || 'mvc/models'
-          this.modelsNodeModulesSymlink = answers.modelsNodeModulesSymlink ? answers.modelsNodeModulesSymlink : this.options.modelsNodeModulesSymlink || 'models'
-          this.viewsPath = answers.viewsPath ? answers.viewsPath : this.options.viewsPath || 'mvc/views'
-          this.controllersPath = answers.controllersPath ? answers.controllersPath : this.options.controllersPath || 'mvc/controllers'
-          this.libPath = answers.libPath ? answers.libPath : this.options.libPath || 'lib'
-          this.libPathNodeModulesSymlink = answers.libPathNodeModulesSymlink ? answers.libPathNodeModulesSymlink : this.options.libPathNodeModulesSymlink || 'lib'
-          this.error404 = answers.error404 ? answers.error404 : this.options.error404 || '404.js'
-          this.error5xx = answers.error5xx ? answers.error5xx : this.options.error5xx || '5xx.js'
-          this.error503 = answers.error503 ? answers.error503 : this.options.error503 || '503.js'
-          this.staticsRoot = answers.staticsRoot ? answers.staticsRoot : this.options.staticsRoot || 'statics'
-          this.htmlMinify = this.options.htmlMinify || '{"override": true, "exception_url": false, "htmlMinifier": {"html5": true}}'
-          this.cssPath = answers.cssPath ? answers.cssPath : this.options.cssPath || 'css'
-          this.cssCompiler = answers.cssCompiler ? answers.cssCompiler : this.options.cssCompiler || '{"nodeModule": "roosevelt-less", "params": {"compress": true}}'
-          this.cssCompilerWhitelist = answers.cssCompilerWhitelist ? answers.cssCompilerWhitelist : this.options.cssCompilerWhitelist || 'null'
-          this.cssCompiledOutput = answers.cssCompiledOutput ? answers.cssCompiledOutput : this.options.cssCompiledOutput || '.build/css'
-          this.jsPath = answers.jsPath ? answers.jsPath : this.options.jsPath || 'js'
-          this.bundledJsPath = answers.bundledJsPath ? answers.bundledJsPath : this.options.bundledJsPath || '.bundled'
-          this.exposeBundles = answers.exposeBundles ? answers.exposeBundles : this.options.exposeBundles || 'true'
-          this.browserifyBundles = answers.browserifyBundles ? answers.browserifyBundles : this.options.browserifyBundles || []
-          this.jsCompiler = answers.jsCompiler ? answers.jsCompiler : this.options.jsCompiler || '{"nodeModule": "roosevelt-uglify", "showWarnings": false,  "params": {}}'
-          this.jsCompilerWhitelist = answers.jsCompilerWhitelist ? answers.jsCompilerWhitelist : this.options.jsCompilerWhitelist || 'null'
-          this.jsCompiledOutput = answers.jsCompiledOutput ? answers.jsCompiledOutput : this.options.jsCompiledOutput || '.build/js'
-          this.publicFolder = answers.publicFolder ? answers.publicFolder : this.options.publicFolder || 'public'
-          this.favicon = answers.favicon ? answers.favicon : this.options.favicon || 'images/favicon.ico'
-          this.symlinksToStatics = answers.symlinksToStatics ? answers.symlinksToStatics : this.options.symlinksToStatics || '["css: .build/css", "images", "js: .build/js"]'
-          this.versionedStatics = answers.versionedStatics ? answers.versionedStatics : this.options.versionedStatics || 'false'
-          this.versionedCssFile = answers.versionedCssFile ? answers.versionedCssFile : this.options.versionedCssFile || 'null'
-          this.alwaysHostPublic = answers.alwaysHostPublic ? answers.alwaysHostPublic : this.options.alwaysHostPublic || 'false'
-          this.supressClosingMessage = this.options.supressClosingMessage ? this.options.supressClosingMessage : false
-          this.cssCompiledPath = this.staticsRoot + '/' + (this.cssCompiledOutput).split('/')[0]
-          this.jsCompiledPath = this.staticsRoot + '/' + (this.jsCompiledOutput).split('/')[0]
-          this.gitIgnore = this.options.gitIgnore ? this.options.gitIgnore + '\r\n' : ''
+    // HTTPS
+    this.https = this.https || defaults.https
+    this.httpsOnly = this.httpsOnly || defaults.httpsOnly
+    this.httpsPort = this.httpsPort || defaults.httpsPort
+    this.pfx = this.pfx === '.pfx'
+    this.keyPath = JSON.stringify(this.keyPath) || defaults.keyPath
+    this.passphrase = JSON.stringify(this.passphrase) || defaults.passphrase
+    this.ca = JSON.stringify(this.ca) || defaults.ca
+    this.requestCert = this.requestCert || defaults.requestCert
+    this.rejectUnauthorized = this.rejectUnauthorized || defaults.rejectUnauthorized
 
-          if (this.gitIgnore.indexOf(this.publicFolder) < 0 && this.gitIgnore.indexOf(this.cssCompiledPath) < 0 && this.gitIgnore.indexOf(this.jsCompiledPath) < 0) {
-            if (this.cssCompiledPath === this.jsCompiledPath) {
-              this.gitIgnore += this.publicFolder + '\r\n' + this.jsCompiledPath + '\r\n'
-              this.buildPath = this.jsCompiledPath
-            } else {
-              this.gitIgnore += this.publicFolder + '\r\n' + this.jsCompiledPath + '\r\n' + this.cssCompiledPath + '\r\n'
-              this.buildPath = this.jsCompiledPath + '/,' + this.cssCompiledPath
-            }
-          }
-        }.bind(this))
-    },
+    this.cssCompiler = this.cssCompiler || 'default'
+    this.jsCompiler = this.jsCompiler || 'default'
+    this.modelsPath = this.modelsPath || defaults.modelsPath
+    this.viewsPath = this.viewsPath || defaults.viewsPath
+    this.controllersPath = this.controllersPath || defaults.controllersPath
+    this.viewEngine = this.templatingEngine !== false ? this.viewEngineList || defaults.viewEngine : 'none'
 
-    addTemplatingEngine: function (self, cb) {
-      self = self || this
-      cb = cb || this.async()
-      let whenTemplating = function (answer) {
-        return self.templatingEngine
-      }
-      let fileExtensionMessage = function (answer) {
-        return 'What file extension do you want ' + answer.templatingEngineName + ' to use?'
-      }
-      return self.prompt(
-        [
-          {
-            when: whenTemplating,
-            type: 'input',
-            name: 'templatingEngineName',
-            message: 'What templating engine do you want to use? (Supply npm module name.)',
-            default: rooseveltDefaults.templatingEngineName.default
-          },
-          {
-            when: whenTemplating,
-            type: 'input',
-            name: 'templatingExtension',
-            message: fileExtensionMessage,
-            default: rooseveltDefaults.templatingExtension.default
-          },
-          {
-            when: whenTemplating,
-            type: 'confirm',
-            name: 'additionalTemplatingEngines',
-            message: 'Do you want to support an additional templating engine?',
-            default: rooseveltDefaults.additionalTemplatingEngines.default
-          }
-        ]
-      ).then(function (answers) {
-        if (self.standardInstall === 'Standard') {
-          self.viewEngine = 'html: teddy'
-          cb()
-        } else if (!self.templatingEngine) {
-          self.viewEngine = 'none'
-          cb()
-        } else {
-          self.engineList.push(answers.templatingExtension + ': ' + answers.templatingEngineName)
-          if (answers.additionalTemplatingEngines === true) {
-            self.prompting.addTemplatingEngine(self, cb)
-          } else {
-            self.viewEngine = self.engineList
-            cb()
-          }
+    this.dependencies = defaults.dependencies
+
+    // determine if teddy will be used
+    if (this.viewEngine !== 'none') {
+      this.viewEngine.forEach((engine) => {
+        if (engine.includes('teddy')) {
+          usesTeddy = true
         }
       })
     }
-  },
-
-  generateSslCerts: function () {
-    let thing = this
-
-    if (thing.shouldGenerateSslCerts === true) {
-      this.log('\nGenerating SSL Certs\n')
-      return this.prompt(
-        [
-          {
-            type: 'input',
-            name: 'commonName',
-            message: 'Enter the public domain name of your website (e.g. www.google.com)',
-            validate: function (input) {
-              return !input ? 'This is required' : true
-            }
-          },
-          {
-            type: 'input',
-            name: 'countryName',
-            message: 'Enter the two-character denomination of your country (e.g. US, CA)',
-            validate: function (input) {
-              if (!input) {
-                return 'This input is required'
-              }
-
-              if (!/^[A-Z]{2}$/.test(input)) {
-                return 'Incorrect input please enter in this format (e.g. US, CA)'
-              } else {
-                return true
-              }
-            }
-          },
-          {
-            type: 'input',
-            name: 'stateName',
-            message: 'Enter the name of your state or province, if applicable',
-            default: 'n/a'
-          },
-          {
-            type: 'input',
-            name: 'localityName',
-            message: 'Enter the name of your city',
-            default: 'n/a'
-          },
-          {
-            type: 'input',
-            name: 'organizationName',
-            message: 'Enter the legal name of your organization, if applicable',
-            default: 'n/a'
-          },
-          {
-            type: 'input',
-            name: 'organizationalUnit',
-            message: 'Enter the organizational unit represented by the site, if applicable (e.g. Internet Sales)',
-            default: 'n/a'
-          },
-          {
-            type: 'input',
-            name: 'altUri',
-            message: 'Enter any alternative URI the certificate would be active for',
-            default: 'http://localhost/'
-          },
-          {
-            type: 'input',
-            name: 'altIp',
-            message: 'Enter the IP address the certificate would be active for',
-            default: '127.0.0.1'
-          }
-        ]).then(function (answers) {
-          const forge = require('node-forge')
-
-          let commonName = answers.commonName
-          let countryName = answers.countryName
-          let stateName = answers.stateName
-          let localityName = answers.localityName
-          let organizationName = answers.organizationName
-          let organizationalUnit = answers.organizationalUnit
-          let altUri = answers.altUri
-          let altIp = answers.altIp
-
-          let publicPem
-          let certPem
-          let privatePem
-
-          let pki = forge.pki
-          let keys = pki.rsa.generateKeyPair(2048)
-          let cert = pki.createCertificate()
-          let attrs = [
-            {
-              name: 'commonName',
-              value: commonName
-            }, {
-              name: 'countryName',
-              value: countryName
-            }, {
-              shortName: 'ST',
-              value: stateName
-            }, {
-              name: 'localityName',
-              value: localityName
-            }, {
-              name: 'organizationName',
-              value: organizationName
-            }, {
-              shortName: 'OU',
-              value: organizationalUnit
-            }
-          ]
-
-          cert.publicKey = keys.publicKey
-          cert.serialNumber = '01'
-          cert.validity.notBefore = new Date()
-          cert.validity.notAfter = new Date()
-          cert.validity.notAfter.setFullYear(cert.validity.notBefore.getFullYear() + 1)
-
-          cert.setSubject(attrs)
-          cert.setIssuer(attrs)
-
-          cert.setExtensions([{
-            name: 'basicConstraints',
-            cA: true
-          }, {
-            name: 'keyUsage',
-            keyCertSign: true,
-            digitalSignature: true,
-            nonRepudiation: true,
-            keyEncipherment: true,
-            dataEncipherment: true
-          }, {
-            name: 'extKeyUsage',
-            serverAuth: true,
-            clientAuth: true,
-            codeSigning: true,
-            emailProtection: true,
-            timeStamping: true
-          }, {
-            name: 'nsCertType',
-            client: true,
-            server: true,
-            email: true,
-            objsign: true,
-            sslCA: true,
-            emailCA: true,
-            objCA: true
-          }, {
-            name: 'subjectAltName',
-            altNames: [{
-              type: 6,
-              value: altUri
-            }, {
-              type: 7,
-              ip: altIp
-            }]
-          }, {
-            name: 'subjectKeyIdentifier'
-          }])
-
-          cert.sign(keys.privateKey)
-
-          publicPem = pki.publicKeyToPem(keys.publicKey)
-          certPem = pki.certificateToPem(cert)
-          privatePem = pki.privateKeyToPem(keys.privateKey)
-
-          thing.fs.write(thing.destinationPath('public.pem'), publicPem)
-          thing.fs.write(thing.destinationPath('certPem.pem'), certPem)
-          thing.fs.write(thing.destinationPath('privatePem.pem'), privatePem)
-        })
+    if (usesTeddy) {
+      this.dependencies = Object.assign(this.dependencies, defaults.teddy)
     }
-  },
 
-  paths: function () {
-    this.sourceRoot()
-  },
+    // generate params for selected CSS preprocessor
+    if (this.cssCompiler !== 'none') {
+      if (this.cssCompiler === 'default') {
+        this.dependencies = Object.assign(this.dependencies, defaults[defaults.defaultCSSCompiler].dependencies)
+        this.cssCompilerParams = defaults[defaults.defaultCSSCompiler].options
+        this.cssExt = defaults[defaults.defaultCSSCompiler].scripts.cssExt
+        this.cssSyntax = defaults[defaults.defaultCSSCompiler].scripts.cssSyntax
+      } else if (this.cssCompiler === 'LESS') {
+        this.dependencies = Object.assign(this.dependencies, defaults.rooseveltLess.dependencies)
+        this.cssCompilerParams = defaults.rooseveltLess.options
+        this.cssExt = defaults.rooseveltLess.scripts.cssExt
+        this.cssSyntax = defaults.rooseveltLess.scripts.cssSyntax
+      }
+    } else {
+      this.cssCompilerParams = 'none'
+      this.cssExt = 'css'
+      this.cssSyntax = ''
+    }
 
-  writing: function () {
+    // generate params for selected JS compiler
+    if (this.jsCompiler !== 'none') {
+      if (this.jsCompiler === 'default') {
+        this.dependencies = Object.assign(this.dependencies, defaults[defaults.defaultJSCompiler].dependencies)
+        this.jsCompilerParams = defaults[defaults.defaultJSCompiler].options
+      } else if (this.jsCompiler === 'UglifyJS') {
+        this.dependencies = Object.assign(this.dependencies, defaults.rooseveltUglify.dependencies)
+        this.jsCompilerParams = defaults.rooseveltUglify.options
+      } else if (this.jsCompiler === 'Closure Compiler') {
+        this.dependencies = Object.assign(this.dependencies, defaults.rooseveltClosure.dependencies)
+        this.jsCompilerParams = defaults.rooseveltClosure.options
+      }
+    } else {
+      this.jsCompilerParams = 'none'
+    }
+  }
+
+  writing () {
+    if (this.shouldGenerateSSLCerts) {
+      const forge = require('node-forge')
+      let publicPem
+      let certPem
+      let privatePem
+      let pki = forge.pki
+      let keys = pki.rsa.generateKeyPair(2048)
+      let cert = pki.createCertificate()
+      let attrs = [
+        {
+          name: 'commonName',
+          value: this.commonName
+        },
+        {
+          name: 'countryName',
+          value: this.countryName
+        },
+        {
+          shortName: 'ST',
+          value: this.stateName
+        },
+        {
+          name: 'localityName',
+          value: this.localityName
+        },
+        {
+          name: 'organizationName',
+          value: this.organizationName
+        },
+        {
+          shortName: 'OU',
+          value: this.organizationalUnit
+        }
+      ]
+
+      this.log('Generating SSL certs...')
+
+      cert.publicKey = keys.publicKey
+      cert.serialNumber = '01'
+      cert.validity.notBefore = new Date()
+      cert.validity.notAfter = new Date()
+      cert.validity.notAfter.setFullYear(cert.validity.notBefore.getFullYear() + 1)
+
+      cert.setSubject(attrs)
+      cert.setIssuer(attrs)
+
+      cert.sign(keys.privateKey)
+
+      publicPem = pki.publicKeyToPem(keys.publicKey)
+      certPem = pki.certificateToPem(cert)
+      privatePem = pki.privateKeyToPem(keys.privateKey)
+
+      this.fs.write(this.destinationPath('public.pem'), publicPem)
+      this.fs.write(this.destinationPath('certPem.pem'), certPem)
+      this.fs.write(this.destinationPath('privatePem.pem'), privatePem)
+    }
+
     this.fs.copyTpl(
-      this.templatePath('templatedPackage.json'),
+      this.templatePath('_package.json'),
       this.destinationPath('package.json'),
       {
-        appName: this.appNameForPackageJson,
-        port: this.port,
-        localhostOnly: this.localhostOnly,
-        disableLogger: this.disableLogger,
-        noMinify: this.noMinify,
-        enableValidator: this.enableValidator,
-        htmlValidator: this.htmlValidator,
-        validatorExceptions: this.validatorExceptions,
-        multipart: this.multipart,
-        shutdownTimeout: this.shutdownTimeout,
+        appName: this.packageName,
+        dependencies: this.dependencies,
+        port: this.httpPort,
         https: this.https,
         httpsOnly: this.httpsOnly,
         httpsPort: this.httpsPort,
@@ -603,47 +551,19 @@ module.exports = generators.Base.extend({
         ca: this.ca,
         requestCert: this.requestCert,
         rejectUnauthorized: this.rejectUnauthorized,
-        bodyParserUrlencodedParams: this.bodyParserUrlencodedParams,
-        bodyParserJsonParams: this.bodyParserJsonParams,
         modelsPath: this.modelsPath,
-        modelsNodeModulesSymlink: this.modelsNodeModulesSymlink,
         viewsPath: this.viewsPath,
-        viewEngine: this.viewEngine,
         controllersPath: this.controllersPath,
-        libPath: this.libPath,
-        libPathNodeModulesSymlink: this.libPathNodeModulesSymlink,
-        error404: this.error404,
-        error5xx: this.error5xx,
-        error503: this.error503,
-        staticsRoot: this.staticsRoot,
-        htmlMinify: this.htmlMinify,
-        cssPath: this.cssPath,
-        cssCompiler: this.cssCompiler,
-        cssCompilerWhitelist: this.cssCompilerWhitelist,
-        cssCompiledOutput: this.cssCompiledOutput,
-        jsPath: this.jsPath,
-        bundledJsPath: this.bundledJsPath,
-        exposeBundles: this.exposeBundles,
-        browserifyBundles: this.browserifyBundles,
-        jsCompiler: this.jsCompiler,
-        jsCompilerWhitelist: this.jsCompilerWhitelist,
-        jsCompiledOutput: this.jsCompiledOutput,
-        publicFolder: this.publicFolder,
-        favicon: this.favicon,
-        symlinksToStatics: this.symlinksToStatics,
-        versionedStatics: this.versionedStatics,
-        versionedCssFile: this.versionedCssFile,
-        alwaysHostPublic: this.alwaysHostPublic,
-        buildPath: this.buildPath,
-        suppressLogs: this.suppressLogs
+        viewEngine: this.viewEngine,
+        cssCompiler: this.cssCompilerParams,
+        jsCompiler: this.jsCompilerParams,
+        cssExt: this.cssExt,
+        cssSyntax: this.cssSyntax
       }
     )
 
-    // Regular copy only copies folders with files. Using the line below to create empty directory
-    mkdirp.sync('.git/hooks')
-
     this.fs.copyTpl(
-      this.templatePath('.stylelintrc_template.json'),
+      this.templatePath('_.stylelintrc.json'),
       this.destinationPath('.stylelintrc.json')
     )
 
@@ -652,12 +572,9 @@ module.exports = generators.Base.extend({
       this.destinationPath('app.js')
     )
 
-    this.fs.copyTpl(
-      this.templatePath('gitignore_template'),
-      this.destinationPath('.gitignore'),
-      {
-        addedIgnore: this.gitIgnore
-      }
+    this.fs.copy(
+      this.templatePath('_.gitignore'),
+      this.destinationPath('.gitignore')
     )
 
     this.fs.copy(
@@ -703,15 +620,22 @@ module.exports = generators.Base.extend({
       this.destinationPath('mvc/views/robots.txt')
     )
 
-    this.fs.copy(
-      this.templatePath('statics/css/more.less'),
-      this.destinationPath('statics/css/more.less')
-    )
+    if (this.cssExt === 'less') {
+      this.fs.copy(
+        this.templatePath('statics/css/styles.less'),
+        this.destinationPath('statics/css/styles.less')
+      )
 
-    this.fs.copy(
-      this.templatePath('statics/css/styles.less'),
-      this.destinationPath('statics/css/styles.less')
-    )
+      this.fs.copy(
+        this.templatePath('statics/css/more.less'),
+        this.destinationPath('statics/css/more.less')
+      )
+    } else if (this.cssExt === 'css') {
+      this.fs.copy(
+        this.templatePath('statics/css/styles.css'),
+        this.destinationPath('statics/css/styles.css')
+      )
+    }
 
     this.fs.copy(
       this.templatePath('statics/images/teddy.jpg'),
@@ -727,12 +651,16 @@ module.exports = generators.Base.extend({
       this.templatePath('statics/js/main.js'),
       this.destinationPath('statics/js/main.js')
     )
-  },
+  }
 
-  end: function () {
-    let testEnvironmentCheck = process.env.NODE_ENV ? process.env.NODE_ENV.trim() : 'notTest'
+  install () {
+    if (this.options['install-deps']) {
+      this.npmInstall()
+    }
+  }
 
-    if (this.supressClosingMessage === false && testEnvironmentCheck !== 'test') {
+  end () {
+    if (!this.options['skip-closing-message']) {
       let whichHttpToShow
 
       if (this.https === 'true' && this.httpsOnly === 'false') {
@@ -743,13 +671,15 @@ module.exports = generators.Base.extend({
         whichHttpToShow = 'http'
       }
 
-      this.log('\nYour app ' + this.appName + ' has been generated.\n')
+      this.log(`\nYour app ${this.appName} has been generated.\n`)
       this.log('To run the app:')
-      this.log('- Install dependencies: npm i')
+      if (!this.options['install-deps']) {
+        this.log('- Install dependencies: npm i')
+      }
       this.log('- To run in dev mode:   npm run dev')
       this.log('- To run in prod mode:  npm run prod')
-      this.log('Once running, visit ' + whichHttpToShow + '://localhost:' + this.port + '/\n')
+      this.log(`Once running, visit ${whichHttpToShow}://localhost:${this.httpPort}\n`)
       this.log('To make further changes to the config, edit package.json. See https://github.com/rooseveltframework/roosevelt#configure-your-app-with-parameters for information on the configuration options.')
     }
   }
-})
+}
