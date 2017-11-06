@@ -16,8 +16,8 @@
     "yeoman-generator": "^2.0.1"
   },
   "devDependencies": {
-    "standard": "^10.0.0",
-    "lint-staged": "^4.0.0",
+    "standard": "^10.0.3",
+    "lint-staged": "^4.3.0",
     "husky": "^0.14.3"
   },
   "repository": {
