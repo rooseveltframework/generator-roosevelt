@@ -6,6 +6,7 @@ module.exports = class extends Generator {
     super(args, opts)
 
     this.option('standard-install', {
+      type: String,
       required: false,
       default: false,
       desc: 'Skips all prompts and creates a Roosevelt app with all defaults.'
