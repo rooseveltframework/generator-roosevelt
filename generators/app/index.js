@@ -6,13 +6,14 @@ module.exports = class extends Generator {
     super(args, opts)
 
     this.option('standard-install', {
+      alias: 's',
       type: String,
       required: false,
-      default: false,
       desc: 'Skips all prompts and creates a Roosevelt app with all defaults.'
     })
 
     this.option('install-deps', {
+      alias: 'i',
       type: Boolean,
       required: false,
       default: false,
@@ -400,13 +401,17 @@ module.exports = class extends Generator {
   }
 
   setParams () {
+    let standardInstall = this.options['standard-install']
     let usesTeddy
     let destination
 
-    if (this.options['standard-install'] || this.createDir) {
-      destination = this.options['standard-install'] || this.dirname
-      this.destinationRoot(destination)
+    if (standardInstall === 'true') {
+      destination = this.packageName
+    } else if (standardInstall || this.createDir) {
+      destination = standardInstall || this.dirname
     }
+
+    this.destinationRoot(destination)
 
     this.httpPort = this.httpPort || defaults.httpPort
 
