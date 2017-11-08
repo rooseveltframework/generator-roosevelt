@@ -85,11 +85,7 @@
     "jsCompilerWhitelist": null,
     "publicFolder": "public",
     "favicon": "images/favicon.ico",
-    "symlinksToStatics": [
-      "css: .build/css",
-      "images",
-      "js: .build/js"
-    ],
+    "symlinksToStatics": <%- JSON.stringify(symlinksToStatics) %>,
     "versionedStatics": false,
     "versionedCssFile": null,
     "alwaysHostPublic": false

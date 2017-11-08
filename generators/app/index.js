@@ -405,6 +405,8 @@ module.exports = class extends Generator {
     let usesTeddy
     let destination
 
+    this.symlinksToStatics = ['images']
+
     if (standardInstall === 'true') {
       destination = this.packageName
     } else if (standardInstall || this.createDir) {
@@ -449,6 +451,9 @@ module.exports = class extends Generator {
 
     // generate params for selected CSS preprocessor
     if (this.cssCompiler !== 'none') {
+      this.symlinksToStatics.push(
+        'css: .build/css'
+      )
       if (this.cssCompiler === 'default') {
         this.dependencies = Object.assign(this.dependencies, defaults[defaults.defaultCSSCompiler].dependencies)
         this.cssCompilerParams = defaults[defaults.defaultCSSCompiler].options
@@ -461,6 +466,9 @@ module.exports = class extends Generator {
         this.cssSyntax = defaults.rooseveltLess.scripts.cssSyntax
       }
     } else {
+      this.symlinksToStatics.push(
+        'css'
+      )
       this.cssCompilerParams = 'none'
       this.cssExt = 'css'
       this.cssSyntax = ''
@@ -468,6 +476,9 @@ module.exports = class extends Generator {
 
     // generate params for selected JS compiler
     if (this.jsCompiler !== 'none') {
+      this.symlinksToStatics.push(
+        'js: .build/js'
+      )
       if (this.jsCompiler === 'default') {
         this.dependencies = Object.assign(this.dependencies, defaults[defaults.defaultJSCompiler].dependencies)
         this.jsCompilerParams = defaults[defaults.defaultJSCompiler].options
@@ -480,6 +491,9 @@ module.exports = class extends Generator {
       }
     } else {
       this.jsCompilerParams = 'none'
+      this.symlinksToStatics.push(
+        'js'
+      )
     }
   }
 
@@ -563,6 +577,7 @@ module.exports = class extends Generator {
         viewEngine: this.viewEngine,
         cssCompiler: this.cssCompilerParams,
         jsCompiler: this.jsCompilerParams,
+        symlinksToStatics: this.symlinksToStatics,
         cssExt: this.cssExt,
         cssSyntax: this.cssSyntax
       }
