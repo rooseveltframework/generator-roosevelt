@@ -16,7 +16,7 @@
     "standard": "^10.0.0",
     "stylelint": "^8.2.0",
     "stylelint-config-standard": "^17.0.0",
-    "supervisor": "^0.12.0",
+    "nodemon": "^1.12.1",
     "lint-staged": "^5.0.0",
     "husky": "^0.14.0"
   },
@@ -90,6 +90,14 @@
     "versionedCssFile": null,
     "alwaysHostPublic": false
   },
+  "nodemonConfig": {
+    "ignore": [
+      ".build/",
+      "public/",
+      "jsdoc/"
+    ],
+    "ext": "<%= cssExt %> html"
+  },
   "private": true,
   "repository": {
     "private-repo": "git+ssh://somewhere:port/folder/on/server"
@@ -97,8 +105,8 @@
   "scripts": {
     "start": "npm run prod",
     "kill-validator": "node ./node_modules/roosevelt/lib/killValidator.js",
-    "prod": "./node_modules/.bin/supervisor -k -e js,json,<%= cssExt %>,html -i .build/,.git/,public/,node_modules/,jsdoc/ -- app.js -prod",
-    "dev": "./node_modules/.bin/supervisor -k -e js,json,<%= cssExt %>,html -i .build/,.git/,public/,node_modules/,jsdoc/ -- app.js -dev",
+    "prod": "nodemon app.js -prod",
+    "dev": "nodemon app.js -dev",
     "cleanup": "node ./node_modules/roosevelt/lib/appCleanup.js",
     "audit": "node ./node_modules/roosevelt/lib/configAuditor.js",
     "test": "npm run lint",
