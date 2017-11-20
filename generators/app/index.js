@@ -297,6 +297,7 @@ module.exports = class extends Generator {
           name: 'cssCompiler',
           choices: [
             'LESS',
+            'SASS',
             'none'
           ],
           message: 'Which CSS preprocessor would you like to use?'
@@ -464,6 +465,11 @@ module.exports = class extends Generator {
         this.cssCompilerParams = defaults.rooseveltLess.options
         this.cssExt = defaults.rooseveltLess.scripts.cssExt
         this.cssSyntax = defaults.rooseveltLess.scripts.cssSyntax
+      } else if (this.cssCompiler === 'SASS') {
+        this.dependencies = Object.assign(this.dependencies, defaults.rooseveltSass.dependencies)
+        this.cssCompilerParams = defaults.rooseveltSass.options
+        this.cssExt = defaults.rooseveltSass.scripts.cssExt
+        this.cssSyntax = defaults.rooseveltSass.scripts.cssSyntax
       }
     } else {
       this.symlinksToStatics.push(
@@ -643,17 +649,27 @@ module.exports = class extends Generator {
 
     if (this.cssExt === 'less') {
       this.fs.copy(
-        this.templatePath('statics/css/styles.less'),
+        this.templatePath('statics/css/less/styles.less'),
         this.destinationPath('statics/css/styles.less')
       )
 
       this.fs.copy(
-        this.templatePath('statics/css/more.less'),
+        this.templatePath('statics/css/less/more.less'),
         this.destinationPath('statics/css/more.less')
+      )
+    } else if (this.cssExt === 'scss') {
+      this.fs.copy(
+        this.templatePath('statics/css/sass/styles.scss'),
+        this.destinationPath('statics/css/styles.scss')
+      )
+
+      this.fs.copy(
+        this.templatePath('statics/css/sass/more.scss'),
+        this.destinationPath('statics/css/more.scss')
       )
     } else if (this.cssExt === 'css') {
       this.fs.copy(
-        this.templatePath('statics/css/styles.css'),
+        this.templatePath('statics/css/vanilla/styles.css'),
         this.destinationPath('statics/css/styles.css')
       )
     }
