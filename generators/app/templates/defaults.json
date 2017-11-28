@@ -12,6 +12,7 @@
   "keyPath": "null",
   "passphrase": "null",
   "ca": "null",
+  "cafile": true,
   "requestCert": false,
   "rejectUnauthorized": false,
   "stateName": "n/a",
