@@ -204,6 +204,12 @@ module.exports = class extends Generator {
           default: defaults.ca
         },
         {
+          type: 'confirm',
+          name: 'cafile',
+          message: 'Is the selected certificate authority a file?',
+          default: defaults.cafile
+        },
+        {
           type: 'input',
           name: 'requestCert',
           message: 'Request Cert: Request a certificate from a client and attempt to verify it',
@@ -575,12 +581,13 @@ module.exports = class extends Generator {
         keyPath: this.keyPath,
         passphrase: this.passphrase,
         ca: this.ca,
+        cafile: this.cafile,
         requestCert: this.requestCert,
         rejectUnauthorized: this.rejectUnauthorized,
         modelsPath: this.modelsPath,
         viewsPath: this.viewsPath,
-        controllersPath: this.controllersPath,
         viewEngine: this.viewEngine,
+        controllersPath: this.controllersPath,
         cssCompiler: this.cssCompilerParams,
         jsCompiler: this.jsCompilerParams,
         symlinksToStatics: this.symlinksToStatics,

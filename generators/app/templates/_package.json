@@ -29,15 +29,15 @@
     },
     "noMinify": false,
     "enableValidator": false,
+    "validatorExceptions": {
+      "requestHeader": "Partial",
+      "modelValue": "_disableValidator"
+    },
     "htmlValidator": {
       "port": 8888,
       "separateProcess": false,
       "format": "text",
       "suppressWarnings": false
-    },
-    "validatorExceptions": {
-      "requestHeader": "Partial",
-      "modelValue": "_disableValidator"
     },
     "multipart": {
       "multiples": true
@@ -55,12 +55,13 @@
     "keyPath": <%- keyPath %>,
     "passphrase": <%- passphrase %>,
     "ca": <%- ca %>,
+    "cafile": <%- cafile %>,
     "requestCert": <%- requestCert %>,
     "rejectUnauthorized": <%- rejectUnauthorized %>,
     "modelsPath": <%- JSON.stringify(modelsPath) %>,
     "viewsPath": <%- JSON.stringify(viewsPath) %>,
-    "controllersPath": <%- JSON.stringify(controllersPath) %>,
     "viewEngine": <%- JSON.stringify(viewEngine) %>,
+    "controllersPath": <%- JSON.stringify(controllersPath) %>,
     "error404": "404.js",
     "error5xx": "5xx.js",
     "error503": "503.js",
@@ -74,15 +75,15 @@
     },
     "cssPath": "css",
     "cssCompiler": <%- JSON.stringify(cssCompiler) %>,
-    "cssCompiledOutput": ".build/css",
     "cssCompilerWhitelist": null,
+    "cssCompiledOutput": ".build/css",
     "jsPath": "js",
+    "browserifyBundles": [],
     "bundledJsPath": ".bundled",
     "exposeBundles": true,
-    "browserifyBundles": [],
     "jsCompiler": <%- JSON.stringify(jsCompiler) %>,
-    "jsCompiledOutput": ".build/js",
     "jsCompilerWhitelist": null,
+    "jsCompiledOutput": ".build/js",
     "publicFolder": "public",
     "favicon": "images/favicon.ico",
     "symlinksToStatics": <%- JSON.stringify(symlinksToStatics) %>,
