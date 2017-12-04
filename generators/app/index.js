@@ -432,6 +432,7 @@ module.exports = class extends Generator {
     this.keyPath = JSON.stringify(this.keyPath) || defaults.keyPath
     this.passphrase = JSON.stringify(this.passphrase) || defaults.passphrase
     this.ca = JSON.stringify(this.ca) || defaults.ca
+    this.cafile = this.ca || defaults.cafile
     this.requestCert = this.requestCert || defaults.requestCert
     this.rejectUnauthorized = this.rejectUnauthorized || defaults.rejectUnauthorized
 
