@@ -1,0 +1,123 @@
+{
+  "name": "<%= appName %>",
+  "description": "",
+  "author": "",
+  "version": "0.1.0",
+  "homepage": "",
+  "license": "",
+  "main": "app.js",
+  "readmeFilename": "",
+  "engines": {
+    "node": ">=6.0.0"
+  },
+  "engineStrict": true,
+  "dependencies": <%- JSON.stringify(dependencies) %>,
+  "devDependencies": {
+    "standard": "^10.0.3",
+    "stylelint": "^8.3.1",
+    "stylelint-config-standard": "^18.0.0",
+    "nodemon": "^1.12.1",
+    "lint-staged": "^5.0.0",
+    "husky": "^0.14.3"
+  },
+  "rooseveltConfig": {
+    "port": <%= port %>,
+    "localhostOnly": true,
+    "suppressLogs": {
+      "httpLogs": false,
+      "rooseveltLogs": false
+    },
+    "noMinify": false,
+    "enableValidator": false,
+    "validatorExceptions": {
+      "requestHeader": "Partial",
+      "modelValue": "_disableValidator"
+    },
+    "htmlValidator": {
+      "port": 8888,
+      "separateProcess": false,
+      "format": "text",
+      "suppressWarnings": false
+    },
+    "multipart": {
+      "multiples": true
+    },
+    "maxLagPerRequest": 70,
+    "shutdownTimeout": 30000,
+    "bodyParserUrlencodedParams": {
+      "extended": true
+    },
+    "bodyParserJsonParams": {},
+    "https": <%- https %>,
+    "httpsOnly": <%- httpsOnly %>,
+    "httpsPort": <%- httpsPort %>,
+    "pfx": <%- pfx %>,
+    "keyPath": <%- keyPath %>,
+    "passphrase": <%- passphrase %>,
+    "ca": <%- ca %>,
+    "cafile": <%- cafile %>,
+    "requestCert": <%- requestCert %>,
+    "rejectUnauthorized": <%- rejectUnauthorized %>,
+    "modelsPath": <%- JSON.stringify(modelsPath) %>,
+    "viewsPath": <%- JSON.stringify(viewsPath) %>,
+    "viewEngine": <%- JSON.stringify(viewEngine) %>,
+    "controllersPath": <%- JSON.stringify(controllersPath) %>,
+    "error404": "404.js",
+    "error5xx": "5xx.js",
+    "error503": "503.js",
+    "staticsRoot": "statics",
+    "htmlMinify": {
+      "override": true,
+      "exception_url": false,
+      "htmlMinifier": {
+        "html5": true
+      }
+    },
+    "cssPath": "css",
+    "cssCompiler": <%- JSON.stringify(cssCompiler) %>,
+    "cssCompilerWhitelist": null,
+    "cssCompiledOutput": ".build/css",
+    "jsPath": "js",
+    "browserifyBundles": [],
+    "bundledJsPath": ".bundled",
+    "exposeBundles": true,
+    "jsCompiler": <%- JSON.stringify(jsCompiler) %>,
+    "jsCompilerWhitelist": null,
+    "jsCompiledOutput": ".build/js",
+    "publicFolder": "public",
+    "favicon": "images/favicon.ico",
+    "symlinksToStatics": <%- JSON.stringify(symlinksToStatics) %>,
+    "versionedStatics": false,
+    "versionedCssFile": null,
+    "alwaysHostPublic": false
+  },
+  "nodemonConfig": {
+    "ignore": [
+      ".build/",
+      "public/",
+      "jsdoc/"
+    ],
+    "ext": "<%= cssExt %> html"
+  },
+  "private": true,
+  "repository": {
+    "private-repo": "git+ssh://somewhere:port/folder/on/server"
+  },
+  "scripts": {
+    "start": "npm run prod",
+    "kill-validator": "node ./node_modules/roosevelt/lib/killValidator.js",
+    "prod": "nodemon app.js -prod",
+    "dev": "nodemon app.js -dev",
+    "cleanup": "node ./node_modules/roosevelt/lib/appCleanup.js",
+    "audit": "node ./node_modules/roosevelt/lib/configAuditor.js",
+    "test": "npm run lint",
+    "eslint": "standard",
+    "stylelint": "./node_modules/.bin/stylelint \"statics/css/**/*.<%= cssExt %>\"<%= cssSyntax %>",
+    "lint": "npm run stylelint && npm run eslint",
+    "precommit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.less": "./node_modules/.bin/stylelint<%= cssSyntax %>",
+    "*.js": "standard"
+  }
+}
