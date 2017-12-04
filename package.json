@@ -2,7 +2,7 @@
   "name": "generator-roosevelt",
   "description": "Yeoman generator for Roosevelt apps",
   "author": "Eric Newport <kethinov@gmail.com>",
-  "version": "0.2.9",
+  "version": "0.3.0",
   "homepage": "https://github.com/rooseveltframework/generator-roosevelt",
   "license": "CC-BY-4.0",
   "main": "generators/app/index.js",
