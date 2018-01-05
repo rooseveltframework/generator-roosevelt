@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "roosevelt": "^0.11.4"
+    "roosevelt": "~0.11.4"
   },
   "appName": "My Roosevelt Sample App",
   "createDir": true,
@@ -25,7 +25,7 @@
   "defaultCSSCompiler": "rooseveltLess",
   "rooseveltLess": {
     "dependencies": {
-      "roosevelt-less": "^0.4.0"
+      "roosevelt-less": "~0.4.0"
     },
     "options": {
       "nodeModule": "roosevelt-less",
@@ -44,7 +44,7 @@
   },
   "rooseveltSass": {
     "dependencies": {
-      "roosevelt-sass": "^0.2.0"
+      "roosevelt-sass": "~0.2.0"
     },
     "options": {
       "nodeModule": "roosevelt-sass",
@@ -60,7 +60,7 @@
   "defaultJSCompiler": "rooseveltUglify",
   "rooseveltUglify": {
     "dependencies": {
-      "roosevelt-uglify": "^0.2.0"
+      "roosevelt-uglify": "~0.2.0"
     },
     "options": {
       "nodeModule": "roosevelt-uglify",
@@ -70,7 +70,7 @@
   },
   "rooseveltClosure": {
     "dependencies": {
-      "roosevelt-closure": "^0.5.0"
+      "roosevelt-closure": "~0.5.0"
     },
     "options": {
       "nodeModule": "roosevelt-closure",
@@ -88,7 +88,7 @@
   "templatingExtension": "html",
   "additionalTemplatingEngines": false,
   "teddy": {
-    "teddy": "^0.4.0"
+    "teddy": "~0.4.0"
   },
   "viewEngine": [
     "html:teddy"

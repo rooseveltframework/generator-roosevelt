@@ -13,12 +13,12 @@
   "engineStrict": true,
   "dependencies": <%- JSON.stringify(dependencies) %>,
   "devDependencies": {
-    "standard": "^10.0.3",
-    "stylelint": "^8.4.0",
-    "stylelint-config-standard": "^18.0.0",
-    "nodemon": "^1.14.7",
-    "lint-staged": "^6.0.0",
-    "husky": "^0.14.3"
+    "standard": "~10.0.3",
+    "stylelint": "~8.4.0",
+    "stylelint-config-standard": "~18.0.0",
+    "nodemon": "~1.14.7",
+    "lint-staged": "~6.0.0",
+    "husky": "~0.14.3"
   },
   "rooseveltConfig": {
     "port": <%= port %>,
@@ -53,7 +53,7 @@
     },
     "bodyParserJsonParams": {},
     "https": {
-      "enabled": <%= enableHTTPS %>,
+      "enable": <%= enableHTTPS %>,
       "httpsOnly": <%= httpsOnly %>,
       "httpsPort": <%= httpsPort %>,
       "pfx": <%= pfx %>,
