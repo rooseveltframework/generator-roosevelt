@@ -121,7 +121,7 @@
     "start": "npm run production",
     "production": "nodemon app.js --production-mode",
     "prod": "npm run production",
-    "p": "npm run p",
+    "p": "npm run production",
     "development": "nodemon app.js --development-mode",
     "dev": "npm run development",
     "d": "npm run development",
