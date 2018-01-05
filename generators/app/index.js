@@ -119,16 +119,16 @@ module.exports = class extends Generator {
       [
         {
           type: 'confirm',
-          name: 'https',
+          name: 'enableHTTPS',
           message: 'Use HTTPS?',
-          default: defaults.https
+          default: defaults.https.enable
         },
         {
-          when: (answers) => answers.https,
+          when: (answers) => answers.enableHTTPS,
           type: 'confirm',
           name: 'httpsOnly',
           message: 'Use HTTPS only? (Disable HTTP?)',
-          default: defaults.httpsOnly
+          default: defaults.https.httpsOnly
         },
         {
           when: (answers) => !answers.httpsOnly,
@@ -145,14 +145,85 @@ module.exports = class extends Generator {
         }
       ]
     ).then((response) => {
-      this.https = response.https
+      this.enableHTTPS = response.enableHTTPS
       this.httpsOnly = response.httpsOnly
       this.httpPort = response.httpPort
     })
   }
 
+  generateSSLCerts () {
+    if (!this.enableHTTPS) {
+      return true
+    }
+
+    return this.prompt(
+      [
+        {
+          type: 'confirm',
+          name: 'generateSSL',
+          message: 'Would you like to generate SSL certs now?',
+          default: false
+        },
+        {
+          when: (answers) => answers.generateSSL,
+          type: 'input',
+          name: 'commonName',
+          message: 'Enter the public domain name of your website (e.g. www.google.com)',
+          validate: (input) => !input ? 'This is required' : true
+        },
+        {
+          when: (answers) => answers.generateSSL,
+          type: 'input',
+          name: 'countryName',
+          message: 'Enter the two-character denomination of your country (e.g. US, CA)',
+          validate: function (input) {
+            if (!/^[A-Z]{2}$/.test(input)) {
+              return 'Incorrect input please enter in this format (e.g. US, CA)'
+            }
+            return true
+          }
+        },
+        {
+          when: (answers) => answers.generateSSL,
+          type: 'input',
+          name: 'stateName',
+          message: 'Enter the name of your state or province, if applicable',
+          default: defaults.stateName
+        },
+        {
+          when: (answers) => answers.generateSSL,
+          type: 'input',
+          name: 'localityName',
+          message: 'Enter the name of your city',
+          default: defaults.localityName
+        },
+        {
+          when: (answers) => answers.generateSSL,
+          type: 'input',
+          name: 'organizationName',
+          message: 'Enter the legal name of your organization, if applicable',
+          default: defaults.organizationName
+        },
+        {
+          when: (answers) => answers.generateSSL,
+          type: 'input',
+          name: 'organizationalUnit',
+          message: 'Enter the organizational unit represented by the site, if applicable (e.g. Internet Sales)',
+          default: defaults.organizationalUnit
+        }
+      ]
+    )
+    .then((response) => {
+      const responseKeys = Object.keys(response)
+
+      responseKeys.forEach((answer) => {
+        this[answer] = response[answer]
+      })
+    })
+  }
+
   HTTPS () {
-    if (!this.https) {
+    if (!this.enableHTTPS) {
       return true
     }
 
@@ -162,19 +233,13 @@ module.exports = class extends Generator {
           type: 'input',
           name: 'httpsPort',
           message: 'HTTPS port your app will run on:',
-          default: defaults.httpsPort,
+          default: defaults.https.httpsPort,
           validate: (input) => {
             if (!/^(?:6553[0-5]|655[0-2][0-9]|65[0-4][0-9]{2}|6[0-4][0-9]{3}|[1-5][0-9]{4}|[1-9][0-9]{1,3}|[0-9])$/.test(input)) {
               return 'Invalid port, input a port between 1 and 65535'
             }
             return true
           }
-        },
-        {
-          type: 'confirm',
-          name: 'shouldGenerateSSLCerts',
-          message: 'Would you like to generate SSL Certs?',
-          default: false
         },
         {
           type: 'list',
@@ -189,96 +254,31 @@ module.exports = class extends Generator {
           type: 'input',
           name: 'keyPath',
           message: 'Key Path: Stores the file paths of specific key/certificate to be used by the server. Object values: pfx, key, cert -- use one of {pfx} or {key, cert}',
-          default: defaults.keyPath
+          default: defaults.https.keyPath
         },
         {
           type: 'password',
           name: 'passphrase',
           message: 'Passphrase for HTTPS server to use with the SSL cert (optional):',
-          default: defaults.passphrase
+          default: defaults.https.passphrase
         },
         {
           type: 'input',
           name: 'ca',
           message: 'Ca: Certificate authority to match client certificates against, as a file path or array of file paths.',
-          default: defaults.ca
-        },
-        {
-          type: 'confirm',
-          name: 'cafile',
-          message: 'Is the selected certificate authority a file?',
-          default: defaults.cafile
+          default: defaults.https.ca
         },
         {
           type: 'input',
           name: 'requestCert',
           message: 'Request Cert: Request a certificate from a client and attempt to verify it',
-          default: defaults.requestCert
+          default: defaults.https.requestCert
         },
         {
           type: 'input',
           name: 'rejectUnauthorized',
           message: 'Reject Unauthorized: Upon failing to authorize a user with supplied CA(s), reject their connection entirely',
-          default: defaults.rejectUnauthorized
-        }
-      ]
-    )
-    .then((response) => {
-      const responseKeys = Object.keys(response)
-
-      responseKeys.forEach((answer) => {
-        this[answer] = response[answer]
-      })
-    })
-  }
-
-  generateSSLCerts () {
-    if (!this.shouldGenerateSSLCerts) {
-      return true
-    }
-
-    return this.prompt(
-      [
-        {
-          type: 'input',
-          name: 'commonName',
-          message: 'Enter the public domain name of your website (e.g. www.google.com)',
-          validate: (input) => !input ? 'This is required' : true
-        },
-        {
-          type: 'input',
-          name: 'countryName',
-          message: 'Enter the two-character denomination of your country (e.g. US, CA)',
-          validate: function (input) {
-            if (!/^[A-Z]{2}$/.test(input)) {
-              return 'Incorrect input please enter in this format (e.g. US, CA)'
-            }
-            return true
-          }
-        },
-        {
-          type: 'input',
-          name: 'stateName',
-          message: 'Enter the name of your state or province, if applicable',
-          default: defaults.stateName
-        },
-        {
-          type: 'input',
-          name: 'localityName',
-          message: 'Enter the name of your city',
-          default: defaults.localityName
-        },
-        {
-          type: 'input',
-          name: 'organizationName',
-          message: 'Enter the legal name of your organization, if applicable',
-          default: defaults.organizationName
-        },
-        {
-          type: 'input',
-          name: 'organizationalUnit',
-          message: 'Enter the organizational unit represented by the site, if applicable (e.g. Internet Sales)',
-          default: defaults.organizationalUnit
+          default: defaults.https.rejectUnauthorized
         }
       ]
     )
@@ -409,10 +409,9 @@ module.exports = class extends Generator {
 
   setParams () {
     let standardInstall = this.options['standard-install']
-    let usesTeddy
     let destination
 
-    this.symlinksToStatics = ['images']
+    this.staticsSymlinksToPublic = ['images']
 
     if (standardInstall === 'true') {
       destination = this.packageName
@@ -425,16 +424,15 @@ module.exports = class extends Generator {
     this.httpPort = this.httpPort || defaults.httpPort
 
     // HTTPS
-    this.https = this.https || defaults.https
-    this.httpsOnly = this.httpsOnly || defaults.httpsOnly
-    this.httpsPort = this.httpsPort || defaults.httpsPort
+    this.enableHTTPS = this.https || defaults.https.enable
+    this.httpsOnly = this.httpsOnly || defaults.https.httpsOnly
+    this.httpsPort = this.httpsPort || defaults.https.httpsPort
     this.pfx = this.pfx === '.pfx'
-    this.keyPath = JSON.stringify(this.keyPath) || defaults.keyPath
-    this.passphrase = JSON.stringify(this.passphrase) || defaults.passphrase
-    this.ca = JSON.stringify(this.ca) || defaults.ca
-    this.cafile = this.ca || defaults.cafile
-    this.requestCert = this.requestCert || defaults.requestCert
-    this.rejectUnauthorized = this.rejectUnauthorized || defaults.rejectUnauthorized
+    this.keyPath = this.keyPath || defaults.https.keyPath
+    this.passphrase = this.passphrase || defaults.https.passphrase
+    this.ca = this.ca || defaults.https.ca
+    this.requestCert = this.requestCert || defaults.https.requestCert
+    this.rejectUnauthorized = this.rejectUnauthorized || defaults.https.rejectUnauthorized
 
     this.cssCompiler = this.cssCompiler || 'default'
     this.jsCompiler = this.jsCompiler || 'default'
@@ -449,17 +447,17 @@ module.exports = class extends Generator {
     if (this.viewEngine !== 'none') {
       this.viewEngine.forEach((engine) => {
         if (engine.includes('teddy')) {
-          usesTeddy = true
+          this.usesTeddy = true
         }
       })
     }
-    if (usesTeddy) {
+    if (this.usesTeddy) {
       this.dependencies = Object.assign(this.dependencies, defaults.teddy)
     }
 
     // generate params for selected CSS preprocessor
     if (this.cssCompiler !== 'none') {
-      this.symlinksToStatics.push(
+      this.staticsSymlinksToPublic.push(
         'css: .build/css'
       )
       if (this.cssCompiler === 'default') {
@@ -479,7 +477,7 @@ module.exports = class extends Generator {
         this.cssSyntax = defaults.rooseveltSass.scripts.cssSyntax
       }
     } else {
-      this.symlinksToStatics.push(
+      this.staticsSymlinksToPublic.push(
         'css'
       )
       this.cssCompilerParams = 'none'
@@ -489,7 +487,7 @@ module.exports = class extends Generator {
 
     // generate params for selected JS compiler
     if (this.jsCompiler !== 'none') {
-      this.symlinksToStatics.push(
+      this.staticsSymlinksToPublic.push(
         'js: .build/js'
       )
       if (this.jsCompiler === 'default') {
@@ -504,14 +502,14 @@ module.exports = class extends Generator {
       }
     } else {
       this.jsCompilerParams = 'none'
-      this.symlinksToStatics.push(
+      this.staticsSymlinksToPublic.push(
         'js'
       )
     }
   }
 
   writing () {
-    if (this.shouldGenerateSSLCerts) {
+    if (this.generateSSL) {
       const forge = require('node-forge')
       let publicPem
       let certPem
@@ -575,14 +573,13 @@ module.exports = class extends Generator {
         appName: this.packageName,
         dependencies: this.dependencies,
         port: this.httpPort,
-        https: this.https,
+        enableHTTPS: this.enableHTTPS,
         httpsOnly: this.httpsOnly,
         httpsPort: this.httpsPort,
         pfx: this.pfx,
         keyPath: this.keyPath,
         passphrase: this.passphrase,
         ca: this.ca,
-        cafile: this.cafile,
         requestCert: this.requestCert,
         rejectUnauthorized: this.rejectUnauthorized,
         modelsPath: this.modelsPath,
@@ -591,7 +588,7 @@ module.exports = class extends Generator {
         controllersPath: this.controllersPath,
         cssCompiler: this.cssCompilerParams,
         jsCompiler: this.jsCompilerParams,
-        symlinksToStatics: this.symlinksToStatics,
+        staticsSymlinksToPublic: this.staticsSymlinksToPublic,
         cssExt: this.cssExt,
         cssSyntax: this.cssSyntax
       }
@@ -612,48 +609,72 @@ module.exports = class extends Generator {
       this.destinationPath('.gitignore')
     )
 
-    this.fs.copy(
-      this.templatePath('mvc/controllers/404.js'),
-      this.destinationPath('mvc/controllers/404.js')
-    )
+    // models
+    if (this.usesTeddy) {
+      this.fs.copyTpl(
+        this.templatePath('mvc/models/teddy/global.js'),
+        this.destinationPath(this.modelsPath + '/global.js'),
+        {
+          appName: this.appName
+        }
+      )
+    }
 
-    this.fs.copy(
-      this.templatePath('mvc/controllers/homepage.js'),
-      this.destinationPath('mvc/controllers/homepage.js')
-    )
-
-    this.fs.copy(
-      this.templatePath('mvc/controllers/robots.txt.js'),
-      this.destinationPath('mvc/controllers/robots.txt.js')
-    )
-
-    this.fs.copyTpl(
-      this.templatePath('mvc/models/global.js'),
-      this.destinationPath('mvc/models/global.js'),
-      {
-        appName: this.appName
-      }
-    )
-
-    this.fs.copy(
-      this.templatePath('mvc/views/layouts/main.html'),
-      this.destinationPath('mvc/views/layouts/main.html')
-    )
-
-    this.fs.copy(
-      this.templatePath('mvc/views/404.html'),
-      this.destinationPath('mvc/views/404.html')
-    )
-
-    this.fs.copy(
-      this.templatePath('mvc/views/homepage.html'),
-      this.destinationPath('mvc/views/homepage.html')
-    )
-
+    // views
     this.fs.copy(
       this.templatePath('mvc/views/robots.txt'),
-      this.destinationPath('mvc/views/robots.txt')
+      this.destinationPath(this.viewsPath + '/robots.txt')
     )
+
+    if (this.usesTeddy) {
+      this.fs.copy(
+        this.templatePath('mvc/views/teddy/layouts/main.html'),
+        this.destinationPath(this.viewsPath + '/layouts/main.html')
+      )
+
+      this.fs.copy(
+        this.templatePath('mvc/views/teddy/404.html'),
+        this.destinationPath(this.viewsPath + '/404.html')
+      )
+
+      this.fs.copy(
+        this.templatePath('mvc/views/teddy/homepage.html'),
+        this.destinationPath(this.viewsPath + '/homepage.html')
+      )
+    } else {
+      // assume vanilla for now
+      this.fs.copyTpl(
+        this.templatePath('mvc/views/vanilla/homepage.html'),
+        this.destinationPath(this.viewsPath + '/homepage.html'),
+        {
+          appName: this.appName
+        }
+      )
+    }
+
+    // controllers
+    this.fs.copy(
+      this.templatePath('mvc/controllers/robots.txt.js'),
+      this.destinationPath(this.controllersPath + '/robots.txt.js')
+    )
+
+    if (this.usesTeddy) {
+      this.fs.copy(
+        this.templatePath('mvc/controllers/teddy/404.js'),
+        this.destinationPath(this.controllersPath + '/404.js')
+      )
+
+      this.fs.copy(
+        this.templatePath('mvc/controllers/teddy/homepage.js'),
+        this.destinationPath(this.controllersPath + '/homepage.js')
+      )
+    } else {
+      // assume vanilla for now
+      this.fs.copy(
+        this.templatePath('mvc/controllers/vanilla/homepage.js'),
+        this.destinationPath(this.controllersPath + '/homepage.js')
+      )
+    }
 
     if (this.cssExt === 'less') {
       this.fs.copy(
