@@ -1,5 +1,5 @@
 module.exports = function (app) {
-  app.route('*').all(function (req, res) {
+  app.route('*').all((req, res) => {
     let model = require('models/global')(req, res)
     model.content.pageTitle = '{content.appTitle} - 404 not found'
     model.host = req.hostname
