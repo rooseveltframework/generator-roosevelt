@@ -121,7 +121,7 @@ module.exports = class extends Generator {
           type: 'confirm',
           name: 'enableHTTPS',
           message: 'Use HTTPS?',
-          default: defaults.https.enabled
+          default: defaults.https.enable
         },
         {
           when: (answers) => answers.enableHTTPS,
