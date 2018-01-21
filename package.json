@@ -18,7 +18,7 @@
   "devDependencies": {
     "standard": "10.0.3",
     "lint-staged": "6.0.0",
-    "husky": "0.14.3"
+    "husky": "0.15.0-rc.2"
   },
   "repository": {
     "type": "git",
