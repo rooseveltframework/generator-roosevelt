@@ -13,11 +13,11 @@
   "engineStrict": true,
   "dependencies": {
     "node-forge": "0.7.1",
-    "yeoman-generator": "2.0.2"
+    "yeoman-generator": "2.0.3"
   },
   "devDependencies": {
     "standard": "11.0.0",
-    "lint-staged": "6.0.1",
+    "lint-staged": "6.1.1",
     "husky": "0.14.3"
   },
   "repository": {
