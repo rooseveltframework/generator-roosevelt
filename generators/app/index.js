@@ -61,10 +61,10 @@ module.exports = class extends Generator {
         }
       ]
     )
-    .then((response) => {
-      this._setAppName(response.appName)
-      this.createDir = response.createDir
-    })
+      .then((response) => {
+        this._setAppName(response.appName)
+        this.createDir = response.createDir
+      })
   }
 
   dir () {
@@ -82,9 +82,9 @@ module.exports = class extends Generator {
         }
       ]
     )
-    .then((response) => {
-      this.dirname = response.dirname
-    })
+      .then((response) => {
+        this.dirname = response.dirname
+      })
   }
 
   mode () {
@@ -105,9 +105,9 @@ module.exports = class extends Generator {
         }
       ]
     )
-    .then((response) => {
-      this.configMode = response.configMode
-    })
+      .then((response) => {
+        this.configMode = response.configMode
+      })
   }
 
   customize () {
@@ -213,13 +213,13 @@ module.exports = class extends Generator {
         }
       ]
     )
-    .then((response) => {
-      const responseKeys = Object.keys(response)
+      .then((response) => {
+        const responseKeys = Object.keys(response)
 
-      responseKeys.forEach((answer) => {
-        this[answer] = response[answer]
+        responseKeys.forEach((answer) => {
+          this[answer] = response[answer]
+        })
       })
-    })
   }
 
   HTTPS () {
@@ -282,13 +282,13 @@ module.exports = class extends Generator {
         }
       ]
     )
-    .then((response) => {
-      const responseKeys = Object.keys(response)
+      .then((response) => {
+        const responseKeys = Object.keys(response)
 
-      responseKeys.forEach((answer) => {
-        this[answer] = response[answer]
+        responseKeys.forEach((answer) => {
+          this[answer] = response[answer]
+        })
       })
-    })
   }
 
   statics () {
@@ -320,10 +320,10 @@ module.exports = class extends Generator {
         }
       ]
     )
-    .then((response) => {
-      this.cssCompiler = response.cssCompiler
-      this.jsCompiler = response.jsCompiler
-    })
+      .then((response) => {
+        this.cssCompiler = response.cssCompiler
+        this.jsCompiler = response.jsCompiler
+      })
   }
 
   mvc () {
@@ -359,12 +359,12 @@ module.exports = class extends Generator {
         }
       ]
     )
-    .then((response) => {
-      this.modelsPath = response.modelsPath
-      this.viewsPath = response.viewsPath
-      this.controllersPath = response.controllersPath
-      this.templatingEngine = response.templatingEngine
-    })
+      .then((response) => {
+        this.modelsPath = response.modelsPath
+        this.viewsPath = response.viewsPath
+        this.controllersPath = response.controllersPath
+        this.templatingEngine = response.templatingEngine
+      })
   }
 
   chooseViewEngine () {
@@ -396,15 +396,15 @@ module.exports = class extends Generator {
         }
       ]
     )
-    .then((answers) => {
-      this.viewEngineList.push(
-        `${answers.templatingExtension}: ${answers.templatingEngineName}`
-      )
+      .then((answers) => {
+        this.viewEngineList.push(
+          `${answers.templatingExtension}: ${answers.templatingEngineName}`
+        )
 
-      if (answers.additionalTemplatingEngines) {
-        return this.chooseViewEngine()
-      }
-    })
+        if (answers.additionalTemplatingEngines) {
+          return this.chooseViewEngine()
+        }
+      })
   }
 
   setParams () {
