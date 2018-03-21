@@ -13,12 +13,12 @@
   "engineStrict": true,
   "dependencies": <%- JSON.stringify(dependencies) %>,
   "devDependencies": {
-    "standard": "~10.0.3",
-    "stylelint": "~8.4.0",
-    "stylelint-config-standard": "~18.0.0",
-    "nodemon": "~1.14.7",
-    "lint-staged": "~6.0.0",
-    "husky": "~0.14.3"
+    "standard": "~11.0.0",
+    "stylelint": "~9.1.0",
+    "stylelint-config-standard": "~18.2.0",
+    "nodemon": "~1.17.0",
+    "lint-staged": "~7.0.0",
+    "husky": "~0.14.0"
   },
   "rooseveltConfig": {
     "port": <%= port %>,
@@ -118,23 +118,23 @@
     "private-repo": "git+ssh://somewhere:port/folder/on/server"
   },
   "scripts": {
-    "start": "npm run production",
+    "start": "nodemon app.js --production-mode",
     "production": "nodemon app.js --production-mode",
-    "prod": "npm run production",
-    "p": "npm run production",
+    "prod": "nodemon app.js --production-mode",
+    "p": "nodemon app.js --production-mode",
     "development": "nodemon app.js --development-mode",
-    "dev": "npm run development",
-    "d": "npm run development",
+    "dev": "nodemon app.js --development-mode",
+    "d": "nodemon app.js --development-mode",
     "kill-validator": "node ./node_modules/roosevelt/lib/scripts/killValidator.js",
-    "kv": "npm run kill-validator",
+    "kv": "node ./node_modules/roosevelt/lib/scripts/killValidator.js",
     "clean": "node ./node_modules/roosevelt/lib/scripts/appCleanup.js",
     "audit": "node ./node_modules/roosevelt/lib/scripts/configAuditor.js",
     "standard": "standard",
     "stylelint": "./node_modules/.bin/stylelint \"statics/css/**/*.<%= cssExt %>\"<%= cssSyntax %>",
-    "lint": "npm run standard && npm run stylelint",
-    "test": "npm run lint",
+    "lint": "standard && ./node_modules/.bin/stylelint \"statics/css/**/*.<%= cssExt %>\"<%= cssSyntax %>",
+    "test": "echo \"TODO: tests\"",
     "precommit": "lint-staged",
-    "pc": "npm run precommit"
+    "pc": "lint-staged"
   },
   "lint-staged": {
     "*.less": "./node_modules/.bin/stylelint<%= cssSyntax %>",
