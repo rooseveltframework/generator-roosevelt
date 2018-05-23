@@ -145,7 +145,7 @@ module.exports = class extends Generator {
           name: 'portNumber',
           choices: [
             'Random',
-            '43711',
+            `${defaults.httpPort}`,
             'Custom'
           ],
           message: 'Which HTTP port would you like to use?'
@@ -171,7 +171,7 @@ module.exports = class extends Generator {
       } else if (response.portNumber === 'Custom') {
         this.httpPort = response.customHttpPort
       } else {
-        this.httpPort = 43711
+        this.httpPort = defaults.httpPort
       }
     })
   }
@@ -259,7 +259,7 @@ module.exports = class extends Generator {
           name: 'portNumber',
           choices: [
             'Random',
-            '43733',
+            `${defaults.https.httpsPort}`,
             'Custom'
           ],
           message: 'Which HTTPS port would you like to use?'
@@ -327,7 +327,7 @@ module.exports = class extends Generator {
         } else if (response.portNumber === 'Custom') {
           this.httpsPort = response.customHttpsPort
         } else {
-          this.httpsPort = 43733
+          this.httpsPort = defaults.https.httpsPort
         }
         this.pfx = response.pfx
         this.keyPath = response.keyPath
