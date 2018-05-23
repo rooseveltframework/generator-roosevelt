@@ -39,6 +39,15 @@ module.exports = class extends Generator {
       .toLowerCase()
   }
 
+  // port 1000-65535 excluding 8888
+  _randomPort () {
+    var port = Math.round(Math.random() * (65536 - 1000) + 1000)
+    if (port === 8888 || port === this.httpPort) {
+      this._randomPort()
+    }
+    return port
+  }
+
   start () {
     if (this.options['standard-install']) {
       this._setAppName()
@@ -132,10 +141,20 @@ module.exports = class extends Generator {
         },
         {
           when: (answers) => !answers.httpsOnly,
+          type: 'list',
+          name: 'portNumber',
+          choices: [
+            '43711',
+            'Custom',
+            'Random'
+          ],
+          message: 'Which HTTP port would you like to use?'
+        },
+        {
+          when: (answers) => answers.portNumber === 'Custom',
           type: 'input',
-          name: 'httpPort',
-          message: 'HTTP port your app will run on:',
-          default: defaults.httpPort,
+          name: 'customHttpPort',
+          message: 'Custom HTTP port your app will run on:',
           validate: (input) => {
             if (!/^(?:6553[0-5]|655[0-2][0-9]|65[0-4][0-9]{2}|6[0-4][0-9]{3}|[1-5][0-9]{4}|[1-9][0-9]{1,3}|[0-9])$/.test(input)) {
               return 'Invalid port, input a port between 1 and 65535'
@@ -147,7 +166,13 @@ module.exports = class extends Generator {
     ).then((response) => {
       this.enableHTTPS = response.enableHTTPS
       this.httpsOnly = response.httpsOnly
-      this.httpPort = response.httpPort
+      if (response.portNumber === 'Random') {
+        this.httpPort = this._randomPort()
+      } else if (response.portNumber === 'Custom') {
+        this.httpPort = response.customHttpPort
+      } else {
+        this.httpPort = 43711
+      }
     })
   }
 
@@ -230,13 +255,27 @@ module.exports = class extends Generator {
     return this.prompt(
       [
         {
+          type: 'list',
+          name: 'portNumber',
+          choices: [
+            '43733',
+            'Custom',
+            'Random'
+          ],
+          message: 'Which HTTPS port would you like to use?'
+        },
+        {
+          when: (answers) => answers.portNumber === 'Custom',
           type: 'input',
-          name: 'httpsPort',
-          message: 'HTTPS port your app will run on:',
+          name: 'customHttpsPort',
+          message: 'Custom HTTPS port your app will run on:',
           default: defaults.https.httpsPort,
           validate: (input) => {
             if (!/^(?:6553[0-5]|655[0-2][0-9]|65[0-4][0-9]{2}|6[0-4][0-9]{3}|[1-5][0-9]{4}|[1-9][0-9]{1,3}|[0-9])$/.test(input)) {
               return 'Invalid port, input a port between 1 and 65535'
+            }
+            if (input === this.httpPort) {
+              return 'Port cannot be the same as HTTP port'
             }
             return true
           }
@@ -283,11 +322,19 @@ module.exports = class extends Generator {
       ]
     )
       .then((response) => {
-        const responseKeys = Object.keys(response)
-
-        responseKeys.forEach((answer) => {
-          this[answer] = response[answer]
-        })
+        if (response.portNumber === 'Random') {
+          this.httpsPort = this._randomPort()
+        } else if (response.portNumber === 'Custom') {
+          this.httpsPort = response.customHttpsPort
+        } else {
+          this.httpsPort = 43733
+        }
+        this.pfx = response.pfx
+        this.keyPath = response.keyPath
+        this.passphrase = response.passphrase
+        this.ca = response.ca
+        this.requestCert = response.requestCert
+        this.rejectUnauthorized = response.rejectUnauthorized
       })
   }
 
