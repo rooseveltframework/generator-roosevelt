@@ -144,9 +144,9 @@ module.exports = class extends Generator {
           type: 'list',
           name: 'portNumber',
           choices: [
+            'Random',
             '43711',
-            'Custom',
-            'Random'
+            'Custom'
           ],
           message: 'Which HTTP port would you like to use?'
         },
@@ -258,9 +258,9 @@ module.exports = class extends Generator {
           type: 'list',
           name: 'portNumber',
           choices: [
+            'Random',
             '43733',
-            'Custom',
-            'Random'
+            'Custom'
           ],
           message: 'Which HTTPS port would you like to use?'
         },
