@@ -11,5 +11,5 @@ test_script:
   - npm --version
   - npm run lint
   - npm run coverage
-  - codecov
+  - npm run codecov
 build: off
