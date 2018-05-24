@@ -1,7 +1,7 @@
 Roosevelt Yeoman generator
 ===
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/rooseveltframework/generator-roosevelt.svg)](https://greenkeeper.io/) [![Build Status](https://travis-ci.org/rooseveltframework/generator-roosevelt.svg?branch=master)](https://travis-ci.org/rooseveltframework/generator-roosevelt) [![npm](https://img.shields.io/npm/v/generator-roosevelt.svg)](https://www.npmjs.com/package/generator-roosevelt)
+[![Greenkeeper badge](https://badges.greenkeeper.io/rooseveltframework/generator-roosevelt.svg)](https://greenkeeper.io/) [![Build Status](https://travis-ci.org/rooseveltframework/generator-roosevelt.svg?branch=master)](https://travis-ci.org/rooseveltframework/generator-roosevelt) ![Codecov](https://img.shields.io/codecov/c/github/rooseveltframework/generator-roosevelt.svg) [![npm](https://img.shields.io/npm/v/generator-roosevelt.svg)](https://www.npmjs.com/package/generator-roosevelt)
 
 Command line application for creating [Roosevelt](https://github.com/rooseveltframework/roosevelt) apps.
 
