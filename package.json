@@ -68,7 +68,7 @@
   "_from": "generator-roosevelt@*",
   "gitHead": "",
   "scripts": {
-    "codecov": "./node_modules/bin/codecov",
+    "codecov": "./node_modules/.bin/codecov",
     "coverage": "nyc mocha test/unit",
     "lint": "standard && eslint ./test",
     "precommit": "lint-staged",
