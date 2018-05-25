@@ -471,7 +471,7 @@ module.exports = class extends Generator {
     this.httpPort = this.httpPort || defaults.httpPort
 
     // HTTPS
-    this.enableHTTPS = this.https || defaults.https.enable
+    this.enableHTTPS = this.enableHTTPS || defaults.https.enable
     this.httpsOnly = this.httpsOnly || defaults.https.httpsOnly
     this.httpsPort = this.httpsPort || defaults.https.httpsPort
     this.pfx = this.pfx === '.pfx'
