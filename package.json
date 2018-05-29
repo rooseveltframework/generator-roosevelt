@@ -32,24 +32,6 @@
     "yeoman-assert": "~3.1.1",
     "yeoman-test": "~1.7.0"
   },
-  "eslintConfig": {
-    "parserOptions": {
-      "ecmaVersion": 6
-    },
-    "plugins": [
-      "mocha"
-    ],
-    "rules": {
-      "mocha/no-exclusive-tests": "error"
-    }
-  },
-  "nyc": {
-    "reporter": [
-      "html",
-      "text",
-      "lcov"
-    ]
-  },
   "repository": {
     "type": "git",
     "url": "git://github.com/rooseveltframework/generator-roosevelt.git"
@@ -67,12 +49,30 @@
   "preferGlobal": true,
   "_from": "generator-roosevelt@*",
   "gitHead": "",
+  "eslintConfig": {
+    "parserOptions": {
+      "ecmaVersion": 2017
+    },
+    "plugins": [
+      "mocha"
+    ],
+    "rules": {
+      "mocha/no-exclusive-tests": "error"
+    }
+  },
+  "nyc": {
+    "reporter": [
+      "html",
+      "text",
+      "lcov"
+    ]
+  },
   "scripts": {
     "codecov": "./node_modules/.bin/codecov",
     "coverage": "nyc mocha test/unit",
     "lint": "standard && eslint ./test",
     "precommit": "lint-staged",
-    "test": "mocha test/unit"
+    "test": "npm run lint && mocha test/unit"
   },
   "lint-staged": {
     "*.js": "standard"
