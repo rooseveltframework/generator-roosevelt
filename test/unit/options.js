@@ -84,7 +84,7 @@ describe('generator options', function () {
 
   describe('Install Dependencies', function () {
     it('Should automatically install dependencies with -i', function () {
-      return helpers.run(path.join(__dirname, '../../generators/app/index'))
+      return helpers.run(path.join(__dirname, '../../generators/app'))
         .withOptions({
           'standard-install': true,
           'install-deps': true

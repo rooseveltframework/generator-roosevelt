@@ -13,7 +13,7 @@ const defaults = require('../../generators/app/templates/defaults.json')
 describe('Generator Prompts', function () {
   describe('App Name', function () {
     it('Sets app name to default app name', function () {
-      return helpers.run(path.join(__dirname, '../../generators/app/index'))
+      return helpers.run(path.join(__dirname, '../../generators/app'))
         .withOptions({appName: defaults.appName})
         .then(function () {
           assert.JSONFileContent('package.json', {
@@ -23,7 +23,7 @@ describe('Generator Prompts', function () {
     })
 
     it('Sets app name to users choice', function () {
-      return helpers.run(path.join(__dirname, '../../generators/app/index'))
+      return helpers.run(path.join(__dirname, '../../generators/app'))
         .withPrompts({appName: 'my app without spaces'})
         .then(function () {
           assert.JSONFileContent('package.json', {
@@ -35,7 +35,7 @@ describe('Generator Prompts', function () {
 
   describe('Directory Name', function () {
     it('Creates a new directory for the app with default settings', function () {
-      return helpers.run(path.join(__dirname, '../../generators/app/index'))
+      return helpers.run(path.join(__dirname, '../../generators/app'))
         .withOptions({createDir: true})
         .then(function () {
           assert.equal(path.basename(process.cwd()), defaults.appName.toLowerCase().replace(/ /g, '-'))
@@ -43,7 +43,7 @@ describe('Generator Prompts', function () {
     })
 
     it('Creates a new directory with a custom name', function () {
-      return helpers.run(path.join(__dirname, '../../generators/app/index'))
+      return helpers.run(path.join(__dirname, '../../generators/app'))
         .withOptions({createDir: true})
         .withPrompts({dirname: 'custom directory'})
         .then(function () {
@@ -54,7 +54,7 @@ describe('Generator Prompts', function () {
 
   describe('HTTPS', function () {
     it('Disables HTTPS from user prompt', function () {
-      return helpers.run(path.join(__dirname, '../../generators/app/index'))
+      return helpers.run(path.join(__dirname, '../../generators/app'))
         .withPrompts({configMode: 'Customize'})
         .withPrompts({enableHTTPS: false})
         .then(function () {
@@ -69,7 +69,7 @@ describe('Generator Prompts', function () {
     })
 
     it('Enables HTTPS from user prompt', function () {
-      return helpers.run(path.join(__dirname, '../../generators/app/index'))
+      return helpers.run(path.join(__dirname, '../../generators/app'))
         .withPrompts({configMode: 'Customize'})
         .withPrompts({enableHTTPS: true})
         .then(function () {
@@ -84,7 +84,7 @@ describe('Generator Prompts', function () {
     })
 
     it('Uses HTTPS only from user prompt', function () {
-      return helpers.run(path.join(__dirname, '../../generators/app/index'))
+      return helpers.run(path.join(__dirname, '../../generators/app'))
         .withPrompts({configMode: 'Customize'})
         .withPrompts({enableHTTPS: true})
         .withPrompts({httpsOnly: true})
@@ -100,7 +100,7 @@ describe('Generator Prompts', function () {
     })
 
     it('Does not only use HTTPS from user prompt', function () {
-      return helpers.run(path.join(__dirname, '../../generators/app/index'))
+      return helpers.run(path.join(__dirname, '../../generators/app'))
         .withPrompts({configMode: 'Customize'})
         .withPrompts({enableHTTPS: true})
         .withPrompts({httpsOnly: false})
@@ -118,7 +118,7 @@ describe('Generator Prompts', function () {
 
   describe('MVC files and paths', function () {
     it('Should set the MVC files and path to default path', function () {
-      return helpers.run(path.join(__dirname, '../../generators/app/index'))
+      return helpers.run(path.join(__dirname, '../../generators/app'))
         .withPrompts({
           configMode: 'Customize',
           modelsPath: defaults.modelsPath,
@@ -149,7 +149,7 @@ describe('Generator Prompts', function () {
     })
 
     it('Should set the MVC files and path to user specific location', function () {
-      return helpers.run(path.join(__dirname, '../../generators/app/index'))
+      return helpers.run(path.join(__dirname, '../../generators/app'))
         .withPrompts({
           configMode: 'Customize',
           modelsPath: 'test/models',
@@ -182,7 +182,7 @@ describe('Generator Prompts', function () {
 
   describe('Templating Engine', function () {
     it('Should use the default view engine and templating extension', function () {
-      return helpers.run(path.join(__dirname, '../../generators/app/index'))
+      return helpers.run(path.join(__dirname, '../../generators/app'))
         .withPrompts({
           configMode: 'Customize',
           templatingEngine: true,
@@ -199,7 +199,7 @@ describe('Generator Prompts', function () {
     })
 
     it('Should use a custom view engine and templating extension', function () {
-      return helpers.run(path.join(__dirname, '../../generators/app/index'))
+      return helpers.run(path.join(__dirname, '../../generators/app'))
         .withPrompts({
           configMode: 'Customize',
           templatingEngine: true,
@@ -218,7 +218,7 @@ describe('Generator Prompts', function () {
 
   describe('HTTP Ports', function () {
     it('Should set the HTTP Port to the default port', function () {
-      return helpers.run(path.join(__dirname, '../../generators/app/index'))
+      return helpers.run(path.join(__dirname, '../../generators/app'))
         .withPrompts({
           configMode: 'Customize',
           portNumber: defaults.httpPort
@@ -233,7 +233,7 @@ describe('Generator Prompts', function () {
     })
 
     it('Should set the HTTP Port to a custom port', function () {
-      return helpers.run(path.join(__dirname, '../../generators/app/index'))
+      return helpers.run(path.join(__dirname, '../../generators/app'))
         .withPrompts({
           configMode: 'Customize',
           portNumber: 'Custom',
@@ -251,7 +251,7 @@ describe('Generator Prompts', function () {
 
   describe('HTTPS Ports', function () {
     it('Should set the HTTPS Port to the default port', function () {
-      return helpers.run(path.join(__dirname, '../../generators/app/index'))
+      return helpers.run(path.join(__dirname, '../../generators/app'))
         .withPrompts({
           configMode: 'Customize',
           enableHTTPS: true,
@@ -270,7 +270,7 @@ describe('Generator Prompts', function () {
     })
 
     it('Should set the HTTPS Port to a custom port', function () {
-      return helpers.run(path.join(__dirname, '../../generators/app/index'))
+      return helpers.run(path.join(__dirname, '../../generators/app'))
         .withPrompts({
           configMode: 'Customize',
           enableHTTPS: true,
