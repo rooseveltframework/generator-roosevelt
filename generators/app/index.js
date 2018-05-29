@@ -256,7 +256,7 @@ module.exports = class extends Generator {
       [
         {
           type: 'list',
-          name: 'portNumber',
+          name: 'httpsPortNumber',
           choices: [
             'Random',
             `${defaults.https.httpsPort}`,
@@ -265,7 +265,7 @@ module.exports = class extends Generator {
           message: 'Which HTTPS port would you like to use?'
         },
         {
-          when: (answers) => answers.portNumber === 'Custom',
+          when: (answers) => answers.httpsPortNumber === 'Custom',
           type: 'input',
           name: 'customHttpsPort',
           message: 'Custom HTTPS port your app will run on:',
@@ -322,9 +322,9 @@ module.exports = class extends Generator {
       ]
     )
       .then((response) => {
-        if (response.portNumber === 'Random') {
+        if (response.httpsPortNumber === 'Random') {
           this.httpsPort = this._randomPort()
-        } else if (response.portNumber === 'Custom') {
+        } else if (response.httpsPortNumber === 'Custom') {
           this.httpsPort = response.customHttpsPort
         } else {
           this.httpsPort = defaults.https.httpsPort
