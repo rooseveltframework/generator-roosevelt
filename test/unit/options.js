@@ -25,7 +25,7 @@ const defaultFiles = [
 ]
 
 describe('generator options', function () {
-  describe('standard-install', function () {
+  describe('Should automatically do a standard install with -s', function () {
     beforeEach(function () {
       return helpers.run(path.join(__dirname, '../../generators/app')).withOptions({
         'standard-install': true
@@ -79,6 +79,19 @@ describe('generator options', function () {
     it('generated correct view file(s)', function () {
       assert.fileContent('mvc/views/homepage.html', /{content\.hello}/)
       assert.fileContent('mvc/views/404.html', /{appVersion}/)
+    })
+  })
+
+  describe('Install Dependencies', function () {
+    it('Should automatically install dependencies with -i', function () {
+      return helpers.run(path.join(__dirname, '../../generators/app/index'))
+        .withOptions({
+          'standard-install': true,
+          'install-deps': true
+        })
+        .then(function () {
+          assert.equal(path.basename(process.cwd()) + '/node_modules', defaults.appName.toLowerCase().replace(/ /g, '-') + '/node_modules')
+        })
     })
   })
 })
