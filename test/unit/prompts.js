@@ -12,7 +12,6 @@ const defaults = require('../../generators/app/templates/defaults.json')
 const fs = require('fs')
 
 describe('Generator Prompts', function () {
-  this.slow(10000)
   describe('App Name', function () {
     it('Sets app name to default app name', function () {
       return helpers.run(path.join(__dirname, '../../generators/app'))
@@ -344,6 +343,7 @@ describe('Generator Prompts', function () {
     })
 
     it('Should create SSL certs if generate ssl is true', function () {
+      this.timeout(10000)
       return helpers.run(path.join(__dirname, '../../generators/app'))
         .withPrompts({
           configMode: 'Customize',
@@ -353,7 +353,7 @@ describe('Generator Prompts', function () {
           countryName: 'US',
           pfx: '.pfx'
         })
-        .then(function () {
+        .then(function (done) {
           assert.file('certPem.pem')
           assert.file('privatePem.pem')
           assert.file('public.pem')
