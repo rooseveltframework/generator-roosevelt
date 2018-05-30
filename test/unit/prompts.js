@@ -9,8 +9,10 @@ const path = require('path')
 const assert = require('yeoman-assert')
 const helpers = require('yeoman-test')
 const defaults = require('../../generators/app/templates/defaults.json')
+const fs = require('fs')
 
 describe('Generator Prompts', function () {
+  this.slow(10000)
   describe('App Name', function () {
     it('Sets app name to default app name', function () {
       return helpers.run(path.join(__dirname, '../../generators/app'))
@@ -247,6 +249,19 @@ describe('Generator Prompts', function () {
           })
         })
     })
+
+    it('Should set the HTTP Port to a random port', function () {
+      return helpers.run(path.join(__dirname, '../../generators/app'))
+        .withPrompts({
+          configMode: 'Customize',
+          portNumber: 'Random'
+        })
+        .then(function () {
+          var data = fs.readFileSync('package.json')
+          var jsonData = JSON.parse(data)
+          assert.strictEqual(typeof jsonData.rooseveltConfig.https.httpsPort, 'number')
+        })
+    })
   })
 
   describe('HTTPS Ports', function () {
@@ -283,6 +298,183 @@ describe('Generator Prompts', function () {
             rooseveltConfig: {
               https: {
                 httpsPort: 1234
+              }
+            }
+          })
+        })
+    })
+
+    it('Should set the HTTPS Port to a random port', function () {
+      return helpers.run(path.join(__dirname, '../../generators/app'))
+        .withPrompts({
+          configMode: 'Customize',
+          enableHTTPS: true,
+          httpsOnly: true,
+          httpsPortNumber: 'Random'
+        })
+        .then(function () {
+          var data = fs.readFileSync('package.json')
+          var jsonData = JSON.parse(data)
+          assert.notEqual(jsonData.rooseveltConfig.https.httpsPort, jsonData.rooseveltConfig.port)
+          assert.strictEqual(typeof jsonData.rooseveltConfig.https.httpsPort, 'number')
+        })
+    })
+  })
+
+  describe('SSL', function () {
+    it('Should not create SSL certs if generate ssl is false', function () {
+      return helpers.run(path.join(__dirname, '../../generators/app'))
+        .withPrompts({
+          configMode: 'Customize',
+          enableHTTPS: true,
+          generateSSL: false
+        })
+        .then(function () {
+          assert.JSONFileContent('package.json', {
+            rooseveltConfig: {
+              https: {
+                pfx: false
+              }
+            }
+          })
+          assert.noFile('certPem.pem')
+          assert.noFile('privatePem.pem')
+          assert.noFile('public.pem')
+        })
+    })
+
+    it('Should create SSL certs if generate ssl is true', function () {
+      return helpers.run(path.join(__dirname, '../../generators/app'))
+        .withPrompts({
+          configMode: 'Customize',
+          enableHTTPS: true,
+          generateSSL: true,
+          commonName: 'www.google.com',
+          countryName: 'US',
+          pfx: '.pfx'
+        })
+        .then(function () {
+          assert.file('certPem.pem')
+          assert.file('privatePem.pem')
+          assert.file('public.pem')
+        })
+    })
+  })
+
+  describe('Statics', function () {
+    it('Should set the CSS preprocessor to LESS', function () {
+      return helpers.run(path.join(__dirname, '../../generators/app'))
+        .withPrompts({
+          configMode: 'Customize',
+          cssCompiler: 'LESS'
+        })
+        .then(function () {
+          assert.JSONFileContent('package.json', {
+            rooseveltConfig: {
+              css: {
+                compiler: {
+                  nodeModule: 'roosevelt-less'
+                }
+              }
+            }
+          })
+          assert.file('statics/css/more.less')
+          assert.file('statics/css/styles.less')
+        })
+    })
+
+    it('Should set the CSS preprocessor to SASS', function () {
+      return helpers.run(path.join(__dirname, '../../generators/app'))
+        .withPrompts({
+          configMode: 'Customize',
+          cssCompiler: 'SASS'
+        })
+        .then(function () {
+          assert.JSONFileContent('package.json', {
+            rooseveltConfig: {
+              css: {
+                compiler: {
+                  nodeModule: 'roosevelt-sass'
+                }
+              }
+            }
+          })
+          assert.file('statics/css/more.scss')
+          assert.file('statics/css/styles.scss')
+        })
+    })
+
+    it('Should set the CSS preprocessor to none', function () {
+      return helpers.run(path.join(__dirname, '../../generators/app'))
+        .withPrompts({
+          configMode: 'Customize',
+          cssCompiler: 'none'
+        })
+        .then(function () {
+          assert.JSONFileContent('package.json', {
+            rooseveltConfig: {
+              css: {
+                compiler: 'none'
+              }
+            }
+          })
+          assert.file('statics/css/styles.css')
+        })
+    })
+
+    it('Should set the JS compiler to UglifyJS', function () {
+      return helpers.run(path.join(__dirname, '../../generators/app'))
+        .withPrompts({
+          configMode: 'Customize',
+          jsCompiler: 'UglifyJS'
+        })
+        .then(function () {
+          assert.JSONFileContent('package.json', {
+            rooseveltConfig: {
+              js: {
+                compiler: {
+                  nodeModule: 'roosevelt-uglify',
+                  params: {}
+                }
+              }
+            }
+          })
+        })
+    })
+
+    it('Should set the JS compiler to Closure', function () {
+      return helpers.run(path.join(__dirname, '../../generators/app'))
+        .withPrompts({
+          configMode: 'Customize',
+          jsCompiler: 'Closure Compiler'
+        })
+        .then(function () {
+          assert.JSONFileContent('package.json', {
+            rooseveltConfig: {
+              js: {
+                compiler: {
+                  nodeModule: 'roosevelt-closure',
+                  params: {
+                    compilationLevel: 'ADVANCED'
+                  }
+                }
+              }
+            }
+          })
+        })
+    })
+
+    it('Should set the JS compiler to none', function () {
+      return helpers.run(path.join(__dirname, '../../generators/app'))
+        .withPrompts({
+          configMode: 'Customize',
+          jsCompiler: 'none'
+        })
+        .then(function () {
+          assert.JSONFileContent('package.json', {
+            rooseveltConfig: {
+              js: {
+                compiler: 'none'
               }
             }
           })
