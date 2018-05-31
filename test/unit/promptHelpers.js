@@ -62,4 +62,18 @@ describe('Prompt Helpers', function () {
       assert.strictEqual(helper.countryValidation('USA'), 'Incorrect input please enter in this format (e.g. US, CA)')
     })
   })
+
+  describe('whichHttpToShow()', function () {
+    it('Should return \'http(s)\' if https is true and httpsOnly is false', function () {
+      assert.strictEqual(helper.whichHttpToShow('true', 'false'), 'http(s)')
+    })
+
+    it('Should return \'https\' if https is true and httpsOnly is true', function () {
+      assert.strictEqual(helper.whichHttpToShow('true', 'true'), 'https')
+    })
+
+    it('Should return \'http\' is https is false and httpsOnly is false', function () {
+      assert.strictEqual(helper.whichHttpToShow('false', 'false'), 'http')
+    })
+  })
 })

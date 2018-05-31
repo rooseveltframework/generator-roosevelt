@@ -386,37 +386,36 @@ module.exports = class extends Generator {
 
     this.viewEngineList = this.viewEngineList || []
 
-    return this.prompt(
-      [
-        {
-          type: 'input',
-          name: 'templatingEngineName',
-          message: 'What templating engine do you want to use? (Supply npm module name.)',
-          default: defaults.templatingEngineName
-        },
-        {
-          type: 'input',
-          name: 'templatingExtension',
-          message: (answers) => `What file extension do you want ${answers.templatingEngineName} to use?`,
-          default: defaults.templatingExtension
-        },
-        {
-          type: 'confirm',
-          name: 'additionalTemplatingEngines',
-          message: 'Do you want to support an additional templating engine?',
-          default: defaults.additionalTemplatingEngines
-        }
-      ]
-    )
-      .then((answers) => {
-        this.viewEngineList.push(
-          `${answers.templatingExtension}: ${answers.templatingEngineName}`
-        )
-
-        if (answers.additionalTemplatingEngines) {
-          return this.chooseViewEngine()
-        }
-      })
+    do {
+      return this.prompt(
+        [
+          {
+            type: 'input',
+            name: 'templatingEngineName',
+            message: 'What templating engine do you want to use? (Supply npm module name.)',
+            default: defaults.templatingEngineName
+          },
+          {
+            type: 'input',
+            name: 'templatingExtension',
+            message: (answers) => `What file extension do you want ${answers.templatingEngineName} to use?`,
+            default: defaults.templatingExtension
+          },
+          {
+            type: 'confirm',
+            name: 'additionalTemplatingEngines',
+            message: 'Do you want to support an additional templating engine?',
+            default: defaults.additionalTemplatingEngines
+          }
+        ]
+      )
+        .then((answers) => {
+          this.viewEngineList.push(
+            `${answers.templatingExtension}: ${answers.templatingEngineName}`
+          )
+          this.additionalTemplatingEngines = answers.additionalTemplatingEngines
+        })
+    } while (this.additionalTemplatingEngines)
   }
 
   setParams () {
@@ -739,16 +738,6 @@ module.exports = class extends Generator {
 
   end () {
     if (!this.options['skip-closing-message']) {
-      let whichHttpToShow
-
-      if (this.https === 'true' && this.httpsOnly === 'false') {
-        whichHttpToShow = 'http(s)'
-      } else if (this.https === 'true' && this.httpsOnly === 'true') {
-        whichHttpToShow = 'https'
-      } else {
-        whichHttpToShow = 'http'
-      }
-
       this.log(`\nYour app ${this.appName} has been generated.\n`)
       this.log('To run the app:')
       if (!this.options['install-deps']) {
@@ -756,7 +745,7 @@ module.exports = class extends Generator {
       }
       this.log('- To run in dev mode:   npm run dev')
       this.log('- To run in prod mode:  npm run prod')
-      this.log(`Once running, visit ${whichHttpToShow}://localhost:${this.httpPort}\n`)
+      this.log(`Once running, visit ${helper.whichHttpToShow(this.https, this.httpsOnly)}://localhost:${this.httpPort}\n`)
       this.log('To make further changes to the config, edit package.json. See https://github.com/rooseveltframework/roosevelt#configure-your-app-with-parameters for information on the configuration options.')
     }
   }

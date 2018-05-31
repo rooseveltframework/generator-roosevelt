@@ -41,4 +41,14 @@ helper.countryValidation = function (input) {
   return true
 }
 
+helper.whichHttpToShow = function (https, httpsOnly) {
+  if (https === 'true' && httpsOnly === 'false') {
+    return 'http(s)'
+  } else if (https === 'true' && httpsOnly === 'true') {
+    return 'https'
+  } else {
+    return 'http'
+  }
+}
+
 module.exports = helper
