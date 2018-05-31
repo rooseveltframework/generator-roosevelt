@@ -1,4 +1,5 @@
 const Generator = require('yeoman-generator')
+const helper = require('./promptingHelpers')
 const defaults = require('./templates/defaults.json')
 
 module.exports = class extends Generator {
@@ -28,29 +29,10 @@ module.exports = class extends Generator {
     })
   }
 
-  _setAppName (appName) {
-    this.appName = appName || defaults.appName
-
-    // sanitize appName for package.json name field via https://docs.npmjs.com/files/package.json#name
-    this.packageName = this.appName
-      .replace(/^\.|_/, '')
-      .replace(/\s+/g, '-')
-      .replace(/(.{1,213})(.*)/, '$1')
-      .toLowerCase()
-  }
-
-  // port 1000-65535 excluding 8888
-  _randomPort () {
-    var port = Math.round(Math.random() * (65536 - 1000) + 1000)
-    if (port === 8888 || port === this.httpPort) {
-      this._randomPort()
-    }
-    return port
-  }
-
   start () {
     if (this.options['standard-install']) {
-      this._setAppName()
+      this.appName = defaults.appName
+      this.packageName = helper.sanitizePackageName(this.appName)
       return true
     }
 
@@ -71,7 +53,8 @@ module.exports = class extends Generator {
       ]
     )
       .then((response) => {
-        this._setAppName(response.appName)
+        this.appName = response.appName
+        this.packageName = helper.sanitizePackageName(this.appName)
         this.createDir = response.createDir
       })
   }
@@ -155,19 +138,14 @@ module.exports = class extends Generator {
           type: 'input',
           name: 'customHttpPort',
           message: 'Custom HTTP port your app will run on:',
-          validate: (input) => {
-            if (!/^(?:6553[0-5]|655[0-2][0-9]|65[0-4][0-9]{2}|6[0-4][0-9]{3}|[1-5][0-9]{4}|[1-9][0-9]{1,3}|[0-9])$/.test(input)) {
-              return 'Invalid port, input a port between 1 and 65535'
-            }
-            return true
-          }
+          validate: helper.validatePortNumber
         }
       ]
     ).then((response) => {
       this.enableHTTPS = response.enableHTTPS
       this.httpsOnly = response.httpsOnly
       if (response.portNumber === 'Random') {
-        this.httpPort = this._randomPort()
+        this.httpPort = helper.randomPort()
       } else if (response.portNumber === 'Custom') {
         this.httpPort = response.customHttpPort
       } else {
@@ -194,19 +172,14 @@ module.exports = class extends Generator {
           type: 'input',
           name: 'commonName',
           message: 'Enter the public domain name of your website (e.g. www.google.com)',
-          validate: (input) => !input ? 'This is required' : true
+          validate: helper.inputRequired
         },
         {
           when: (answers) => answers.generateSSL,
           type: 'input',
           name: 'countryName',
           message: 'Enter the two-character denomination of your country (e.g. US, CA)',
-          validate: function (input) {
-            if (!/^[A-Z]{2}$/.test(input)) {
-              return 'Incorrect input please enter in this format (e.g. US, CA)'
-            }
-            return true
-          }
+          validate: helper.countryValidation
         },
         {
           when: (answers) => answers.generateSSL,
@@ -270,15 +243,7 @@ module.exports = class extends Generator {
           name: 'customHttpsPort',
           message: 'Custom HTTPS port your app will run on:',
           default: defaults.https.httpsPort,
-          validate: (input) => {
-            if (!/^(?:6553[0-5]|655[0-2][0-9]|65[0-4][0-9]{2}|6[0-4][0-9]{3}|[1-5][0-9]{4}|[1-9][0-9]{1,3}|[0-9])$/.test(input)) {
-              return 'Invalid port, input a port between 1 and 65535'
-            }
-            if (input === this.httpPort) {
-              return 'Port cannot be the same as HTTP port'
-            }
-            return true
-          }
+          validate: helper.validatePortNumber
         },
         {
           type: 'list',
@@ -323,7 +288,7 @@ module.exports = class extends Generator {
     )
       .then((response) => {
         if (response.httpsPortNumber === 'Random') {
-          this.httpsPort = this._randomPort()
+          this.httpsPort = helper.randomPort(this.httpPort)
         } else if (response.httpsPortNumber === 'Custom') {
           this.httpsPort = response.customHttpsPort
         } else {
