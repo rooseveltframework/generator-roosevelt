@@ -215,6 +215,24 @@ describe('Generator Prompts', function () {
           })
         })
     })
+
+    it('Should use additional templating engines', function () {
+      return helpers.run(path.join(__dirname, '../../generators/app'))
+        .withPrompts({
+          configMode: 'Customize',
+          templatingEngine: true,
+          templatingEngineName: 'test',
+          templatingExtension: 'html',
+          additionalTemplatingEngines: true
+        })
+        .then(function () {
+          assert.JSONFileContent('package.json', {
+            rooseveltConfig: {
+              viewEngine: [`html: test`]
+            }
+          })
+        })
+    })
   })
 
   describe('HTTP Ports', function () {
