@@ -386,37 +386,36 @@ module.exports = class extends Generator {
 
     this.viewEngineList = this.viewEngineList || []
 
-    return this.prompt(
-      [
-        {
-          type: 'input',
-          name: 'templatingEngineName',
-          message: 'What templating engine do you want to use? (Supply npm module name.)',
-          default: defaults.templatingEngineName
-        },
-        {
-          type: 'input',
-          name: 'templatingExtension',
-          message: (answers) => `What file extension do you want ${answers.templatingEngineName} to use?`,
-          default: defaults.templatingExtension
-        },
-        {
-          type: 'confirm',
-          name: 'additionalTemplatingEngines',
-          message: 'Do you want to support an additional templating engine?',
-          default: defaults.additionalTemplatingEngines
-        }
-      ]
-    )
-      .then((answers) => {
-        this.viewEngineList.push(
-          `${answers.templatingExtension}: ${answers.templatingEngineName}`
-        )
-
-        if (answers.additionalTemplatingEngines) {
-          return this.chooseViewEngine()
-        }
-      })
+    do {
+      return this.prompt(
+        [
+          {
+            type: 'input',
+            name: 'templatingEngineName',
+            message: 'What templating engine do you want to use? (Supply npm module name.)',
+            default: defaults.templatingEngineName
+          },
+          {
+            type: 'input',
+            name: 'templatingExtension',
+            message: (answers) => `What file extension do you want ${answers.templatingEngineName} to use?`,
+            default: defaults.templatingExtension
+          },
+          {
+            type: 'confirm',
+            name: 'additionalTemplatingEngines',
+            message: 'Do you want to support an additional templating engine?',
+            default: defaults.additionalTemplatingEngines
+          }
+        ]
+      )
+        .then((answers) => {
+          this.viewEngineList.push(
+            `${answers.templatingExtension}: ${answers.templatingEngineName}`
+          )
+          this.additionalTemplatingEngines = answers.additionalTemplatingEngines
+        })
+    } while (this.additionalTemplatingEngines)
   }
 
   setParams () {
