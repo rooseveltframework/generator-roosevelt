@@ -187,8 +187,8 @@ describe('Generator Prompts', function () {
         .withPrompts({
           configMode: 'Customize',
           templatingEngine: true,
-          templatingEngineName: defaults.templatingEngineName,
-          templatingExtension: defaults.templatingExtension
+          templatingEngineName1: defaults.templatingEngineName,
+          templatingExtension1: defaults.templatingExtension
         })
         .then(function () {
           assert.JSONFileContent('package.json', {
@@ -204,13 +204,37 @@ describe('Generator Prompts', function () {
         .withPrompts({
           configMode: 'Customize',
           templatingEngine: true,
-          templatingEngineName: 'test',
-          templatingExtension: 'html'
+          templatingEngineName1: 'test',
+          templatingExtension1: 'html'
         })
         .then(function () {
           assert.JSONFileContent('package.json', {
             rooseveltConfig: {
               viewEngine: [`html: test`]
+            }
+          })
+        })
+    })
+
+    it('Should use multiple view engines and templating extensions', function () {
+      return helpers.run(path.join(__dirname, '../../generators/app'))
+        .withPrompts({
+          configMode: 'Customize',
+          templatingEngine: true,
+          templatingEngineName1: 'test1',
+          templatingExtension1: 'html1',
+          additionalTemplatingEngines1: true,
+          templatingEngineName2: 'test2',
+          templatingExtension2: 'html2',
+          additionalTemplatingEngines2: true,
+          templatingEngineName3: 'test3',
+          templatingExtension3: 'html3',
+          additionalTemplatingEngines3: false
+        })
+        .then(function () {
+          assert.JSONFileContent('package.json', {
+            rooseveltConfig: {
+              viewEngine: [`html1: test1`, 'html2: test2', 'html3: test3']
             }
           })
         })

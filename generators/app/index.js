@@ -379,9 +379,13 @@ module.exports = class extends Generator {
       })
   }
 
-  chooseViewEngine () {
+  chooseViewEngine (num) {
     if (!this.templatingEngine) {
       return true
+    }
+
+    if (!num) {
+      num = 1
     }
 
     this.viewEngineList = this.viewEngineList || []
@@ -390,19 +394,19 @@ module.exports = class extends Generator {
       [
         {
           type: 'input',
-          name: 'templatingEngineName',
+          name: `templatingEngineName${num}`,
           message: 'What templating engine do you want to use? (Supply npm module name.)',
           default: defaults.templatingEngineName
         },
         {
           type: 'input',
-          name: 'templatingExtension',
+          name: `templatingExtension${num}`,
           message: (answers) => `What file extension do you want ${answers.templatingEngineName} to use?`,
           default: defaults.templatingExtension
         },
         {
           type: 'confirm',
-          name: 'additionalTemplatingEngines',
+          name: `additionalTemplatingEngines${num}`,
           message: 'Do you want to support an additional templating engine?',
           default: defaults.additionalTemplatingEngines
         }
@@ -410,11 +414,12 @@ module.exports = class extends Generator {
     )
       .then((answers) => {
         this.viewEngineList.push(
-          `${answers.templatingExtension}: ${answers.templatingEngineName}`
+          `${answers[`templatingExtension` + num]}: ${answers['templatingEngineName' + num]}`
         )
 
-        if (answers.additionalTemplatingEngines) {
-          return this.chooseViewEngine()
+        if (answers[`additionalTemplatingEngines` + num]) {
+          num++
+          return this.chooseViewEngine(num)
         }
       })
   }
