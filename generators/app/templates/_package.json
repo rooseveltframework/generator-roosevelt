@@ -37,7 +37,10 @@
         "requestHeader": "Partial",
         "modelValue": "_disableValidator"
       },
-      "separateProcess": false,
+      "separateProcess": {
+        "enable": false,
+        "autoKiller": false
+      },
       "suppressWarnings": false
     },
     "multipart": {
