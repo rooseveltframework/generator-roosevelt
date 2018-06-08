@@ -1,5 +1,10 @@
 /* eslint-env mocha */
 
+/**
+ * Unit tests for prompt helpers
+ * @module test/unit/promptsHelpers
+ */
+
 const assert = require('yeoman-assert')
 const helper = require('../../generators/app/promptingHelpers')
 
@@ -12,10 +17,6 @@ describe('Prompt Helpers', function () {
     it('Should fail with a space', function () {
       assert.strictEqual(helper.inputRequired(' '), 'This is required')
     })
-
-    it('Should fail with more than one space', function () {
-      assert.strictEqual(helper.inputRequired('  '), 'This is required')
-    })
   })
 
   describe('validatePortNumber()', function () {
@@ -27,10 +28,6 @@ describe('Prompt Helpers', function () {
       assert.strictEqual(helper.validatePortNumber('8888'), 'Port cannot be 8888')
     })
 
-    it('Should not allow port \'65536\'', function () {
-      assert.strictEqual(helper.validatePortNumber('65536'), 'Invalid port, input a port between 1 and 65535')
-    })
-
     it('Should not allow port \'0\'', function () {
       assert.strictEqual(helper.validatePortNumber('0'), 'Invalid port, input a port between 1 and 65535')
     })
@@ -40,22 +37,11 @@ describe('Prompt Helpers', function () {
     it('Should return a number.', function () {
       assert.strictEqual(typeof helper.randomPort(), 'number')
     })
-
-    it('Should return a port number between 1000 -> 65535', function () {
-      var port = helper.randomPort()
-      if (port >= 1000 && port <= 65535) {
-        assert.ok(true)
-      }
-    })
   })
 
   describe('countryValidation()', function () {
     it('Should allow a 2 character country abbreviation', function () {
       assert.strictEqual(helper.countryValidation('US'), true)
-    })
-
-    it('Should not allow 2 numbers, \'10\'', function () {
-      assert.strictEqual(helper.countryValidation('10'), 'Incorrect input please enter in this format (e.g. US, CA)')
     })
 
     it('Should not allow 3 letters, \'USA\'', function () {
@@ -70,10 +56,6 @@ describe('Prompt Helpers', function () {
 
     it('Should return \'https\' if https is true and httpsOnly is true', function () {
       assert.strictEqual(helper.whichHttpToShow('true', 'true'), 'https')
-    })
-
-    it('Should return \'http\' is https is false and httpsOnly is false', function () {
-      assert.strictEqual(helper.whichHttpToShow('false', 'false'), 'http')
     })
   })
 })
