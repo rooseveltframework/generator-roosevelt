@@ -74,7 +74,6 @@ describe('Generator Prompts', function () {
         .withPrompts({
           configMode: 'Customize',
           enableHTTPS: true,
-          httpsOnly: true,
           httpsPortNumber: 'Custom',
           customHttpsPort: 1234
         })
@@ -94,7 +93,6 @@ describe('Generator Prompts', function () {
         .withPrompts({
           configMode: 'Customize',
           enableHTTPS: true,
-          httpsOnly: true,
           httpsPortNumber: 'Random'
         })
         .then(function () {
