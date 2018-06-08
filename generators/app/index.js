@@ -1,4 +1,5 @@
 const Generator = require('yeoman-generator')
+const helper = require('./promptingHelpers')
 const defaults = require('./templates/defaults.json')
 
 module.exports = class extends Generator {
@@ -28,29 +29,10 @@ module.exports = class extends Generator {
     })
   }
 
-  _setAppName (appName) {
-    this.appName = appName || defaults.appName
-
-    // sanitize appName for package.json name field via https://docs.npmjs.com/files/package.json#name
-    this.packageName = this.appName
-      .replace(/^\.|_/, '')
-      .replace(/\s+/g, '-')
-      .replace(/(.{1,213})(.*)/, '$1')
-      .toLowerCase()
-  }
-
-  // port 1000-65535 excluding 8888
-  _randomPort () {
-    var port = Math.round(Math.random() * (65536 - 1000) + 1000)
-    if (port === 8888 || port === this.httpPort) {
-      this._randomPort()
-    }
-    return port
-  }
-
   start () {
     if (this.options['standard-install']) {
-      this._setAppName()
+      this.appName = defaults.appName
+      this.packageName = helper.sanitizePackageName(this.appName)
       return true
     }
 
@@ -71,7 +53,8 @@ module.exports = class extends Generator {
       ]
     )
       .then((response) => {
-        this._setAppName(response.appName)
+        this.appName = response.appName
+        this.packageName = helper.sanitizePackageName(this.appName)
         this.createDir = response.createDir
       })
   }
@@ -155,19 +138,14 @@ module.exports = class extends Generator {
           type: 'input',
           name: 'customHttpPort',
           message: 'Custom HTTP port your app will run on:',
-          validate: (input) => {
-            if (!/^(?:6553[0-5]|655[0-2][0-9]|65[0-4][0-9]{2}|6[0-4][0-9]{3}|[1-5][0-9]{4}|[1-9][0-9]{1,3}|[0-9])$/.test(input)) {
-              return 'Invalid port, input a port between 1 and 65535'
-            }
-            return true
-          }
+          validate: helper.validatePortNumber
         }
       ]
     ).then((response) => {
       this.enableHTTPS = response.enableHTTPS
       this.httpsOnly = response.httpsOnly
       if (response.portNumber === 'Random') {
-        this.httpPort = this._randomPort()
+        this.httpPort = helper.randomPort()
       } else if (response.portNumber === 'Custom') {
         this.httpPort = response.customHttpPort
       } else {
@@ -194,19 +172,14 @@ module.exports = class extends Generator {
           type: 'input',
           name: 'commonName',
           message: 'Enter the public domain name of your website (e.g. www.google.com)',
-          validate: (input) => !input ? 'This is required' : true
+          validate: helper.inputRequired
         },
         {
           when: (answers) => answers.generateSSL,
           type: 'input',
           name: 'countryName',
           message: 'Enter the two-character denomination of your country (e.g. US, CA)',
-          validate: function (input) {
-            if (!/^[A-Z]{2}$/.test(input)) {
-              return 'Incorrect input please enter in this format (e.g. US, CA)'
-            }
-            return true
-          }
+          validate: helper.countryValidation
         },
         {
           when: (answers) => answers.generateSSL,
@@ -256,7 +229,7 @@ module.exports = class extends Generator {
       [
         {
           type: 'list',
-          name: 'portNumber',
+          name: 'httpsPortNumber',
           choices: [
             'Random',
             `${defaults.https.httpsPort}`,
@@ -265,20 +238,12 @@ module.exports = class extends Generator {
           message: 'Which HTTPS port would you like to use?'
         },
         {
-          when: (answers) => answers.portNumber === 'Custom',
+          when: (answers) => answers.httpsPortNumber === 'Custom',
           type: 'input',
           name: 'customHttpsPort',
           message: 'Custom HTTPS port your app will run on:',
           default: defaults.https.httpsPort,
-          validate: (input) => {
-            if (!/^(?:6553[0-5]|655[0-2][0-9]|65[0-4][0-9]{2}|6[0-4][0-9]{3}|[1-5][0-9]{4}|[1-9][0-9]{1,3}|[0-9])$/.test(input)) {
-              return 'Invalid port, input a port between 1 and 65535'
-            }
-            if (input === this.httpPort) {
-              return 'Port cannot be the same as HTTP port'
-            }
-            return true
-          }
+          validate: helper.validatePortNumber
         },
         {
           type: 'list',
@@ -322,9 +287,9 @@ module.exports = class extends Generator {
       ]
     )
       .then((response) => {
-        if (response.portNumber === 'Random') {
-          this.httpsPort = this._randomPort()
-        } else if (response.portNumber === 'Custom') {
+        if (response.httpsPortNumber === 'Random') {
+          this.httpsPort = helper.randomPort(this.httpPort)
+        } else if (response.httpsPortNumber === 'Custom') {
           this.httpsPort = response.customHttpsPort
         } else {
           this.httpsPort = defaults.https.httpsPort
@@ -414,9 +379,13 @@ module.exports = class extends Generator {
       })
   }
 
-  chooseViewEngine () {
+  chooseViewEngine (num) {
     if (!this.templatingEngine) {
       return true
+    }
+
+    if (!num) {
+      num = 1
     }
 
     this.viewEngineList = this.viewEngineList || []
@@ -425,19 +394,19 @@ module.exports = class extends Generator {
       [
         {
           type: 'input',
-          name: 'templatingEngineName',
+          name: `templatingEngineName${num}`,
           message: 'What templating engine do you want to use? (Supply npm module name.)',
           default: defaults.templatingEngineName
         },
         {
           type: 'input',
-          name: 'templatingExtension',
+          name: `templatingExtension${num}`,
           message: (answers) => `What file extension do you want ${answers.templatingEngineName} to use?`,
           default: defaults.templatingExtension
         },
         {
           type: 'confirm',
-          name: 'additionalTemplatingEngines',
+          name: `additionalTemplatingEngines${num}`,
           message: 'Do you want to support an additional templating engine?',
           default: defaults.additionalTemplatingEngines
         }
@@ -445,11 +414,12 @@ module.exports = class extends Generator {
     )
       .then((answers) => {
         this.viewEngineList.push(
-          `${answers.templatingExtension}: ${answers.templatingEngineName}`
+          `${answers[`templatingExtension` + num]}: ${answers['templatingEngineName' + num]}`
         )
 
-        if (answers.additionalTemplatingEngines) {
-          return this.chooseViewEngine()
+        if (answers[`additionalTemplatingEngines` + num]) {
+          num++
+          return this.chooseViewEngine(num)
         }
       })
   }
@@ -774,16 +744,6 @@ module.exports = class extends Generator {
 
   end () {
     if (!this.options['skip-closing-message']) {
-      let whichHttpToShow
-
-      if (this.https === 'true' && this.httpsOnly === 'false') {
-        whichHttpToShow = 'http(s)'
-      } else if (this.https === 'true' && this.httpsOnly === 'true') {
-        whichHttpToShow = 'https'
-      } else {
-        whichHttpToShow = 'http'
-      }
-
       this.log(`\nYour app ${this.appName} has been generated.\n`)
       this.log('To run the app:')
       if (!this.options['install-deps']) {
@@ -791,7 +751,7 @@ module.exports = class extends Generator {
       }
       this.log('- To run in dev mode:   npm run dev')
       this.log('- To run in prod mode:  npm run prod')
-      this.log(`Once running, visit ${whichHttpToShow}://localhost:${this.httpPort}\n`)
+      this.log(`Once running, visit ${helper.whichHttpToShow(this.https, this.httpsOnly)}://localhost:${this.httpPort}\n`)
       this.log('To make further changes to the config, edit package.json. See https://github.com/rooseveltframework/roosevelt#configure-your-app-with-parameters for information on the configuration options.')
     }
   }
