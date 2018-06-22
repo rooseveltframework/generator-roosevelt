@@ -1,7 +1,7 @@
 Roosevelt Yeoman generator
 ===
 
-[![Build Status](https://travis-ci.org/rooseveltframework/generator-roosevelt.svg?branch=master)](https://travis-ci.org/rooseveltframework/generator-roosevelt) [![npm](https://img.shields.io/npm/v/generator-roosevelt.svg)](https://www.npmjs.com/package/generator-roosevelt)
+[![Build Status](https://travis-ci.org/rooseveltframework/generator-roosevelt.svg?branch=master)](https://travis-ci.org/rooseveltframework/generator-roosevelt) [![Build status](https://ci.appveyor.com/api/projects/status/b68pbhkh7ng58s7n?svg=true)](https://ci.appveyor.com/project/kethinov/generator-roosevelt) [![codecov](https://codecov.io/gh/rooseveltframework/generator-roosevelt/branch/master/graph/badge.svg)](https://codecov.io/gh/rooseveltframework/generator-roosevelt) [![npm](https://img.shields.io/npm/v/generator-roosevelt.svg)](https://www.npmjs.com/package/generator-roosevelt)
 
 Command line application for creating [Roosevelt](https://github.com/rooseveltframework/roosevelt) apps.
 
