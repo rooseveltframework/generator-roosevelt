@@ -33,7 +33,7 @@ describe('generator options', function () {
     })
 
     it('created and navigated to default app folder', function () {
-      assert.equal(path.basename(process.cwd()), defaults.appName.toLowerCase().replace(/ /g, '-'))
+      assert.strictEqual(path.basename(process.cwd()), defaults.appName.toLowerCase().replace(/ /g, '-'))
     })
 
     it('generated default app files', function () {
@@ -90,7 +90,7 @@ describe('generator options', function () {
           'install-deps': true
         })
         .then(function () {
-          assert.equal(path.basename(process.cwd()) + '/node_modules', defaults.appName.toLowerCase().replace(/ /g, '-') + '/node_modules')
+          assert.strictEqual(path.basename(process.cwd()) + '/node_modules', defaults.appName.toLowerCase().replace(/ /g, '-') + '/node_modules')
         })
     })
   })
