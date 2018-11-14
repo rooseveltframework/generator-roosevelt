@@ -13,32 +13,38 @@
   "engineStrict": true,
   "dependencies": <%- JSON.stringify(dependencies) %>,
   "devDependencies": {
-    "husky": "~0.14.0",
-    "lint-staged": "~7.0.0",
-    "nodemon": "~1.17.0",
-    "standard": "~11.0.0",
-    "stylelint": "~9.1.0",
+    "husky": "~1.1.4",
+    "lint-staged": "~8.0.4",
+    "nodemon": "~1.18.6",
+    "standard": "~12.0.1",
+    "stylelint": "~9.8.0",
     "stylelint-config-standard": "~18.2.0"
   },
   "rooseveltConfig": {
     "port": <%= port %>,
+    "enableCLIFlags": true,
     "generateFolderStructure": true,
     "localhostOnly": true,
-    "suppressLogs": {
-      "httpLogs": false,
-      "rooseveltLogs": false,
-      "rooseveltWarnings": false
+    "logging": {
+      "http": true,
+      "appStatus": true,
+      "warnings": true,
+      "verbose": false
     },
-    "noMinify": false,
+    "minify": true,
     "htmlValidator": {
-      "enable": false,
-      "port": 8888,
+      "enable": true,
+      "separateProcess": {
+        "enable": true,
+        "autoKiller": true,
+        "autoKillerTimeout": 3600000
+      },
+      "port": 48888,
+      "showWarnings": true,
       "exceptions": {
         "requestHeader": "Partial",
         "modelValue": "_disableValidator"
-      },
-      "separateProcess": false,
-      "suppressWarnings": false
+      }
     },
     "multipart": {
       "multiples": true
@@ -47,11 +53,13 @@
       "maxLagPerRequest": 70,
       "lagCheckInterval": 500
     },
-    "shutdownTimeout": 30000,
-    "bodyParserUrlencodedParams": {
-      "extended": true
+    "bodyParser": {
+      "urlEncoded": {
+        "extended": true
+      },
+      "json": {}
     },
-    "bodyParserJsonParams": {},
+    "shutdownTimeout": 30000,
     "https": {
       "enable": <%= enableHTTPS %>,
       "httpsOnly": <%= httpsOnly %>,
@@ -68,30 +76,38 @@
     "viewsPath": <%- JSON.stringify(viewsPath) %>,
     "viewEngine": <%- JSON.stringify(viewEngine) %>,
     "controllersPath": <%- JSON.stringify(controllersPath) %>,
-    "error404": "404.js",
-    "error5xx": "5xx.js",
-    "error503": "503.js",
+    "errorPages": {
+      "notFound": "404.js",
+      "internalServerError": "5xx.js",
+      "serviceUnavailable": "503.js"
+    },
     "staticsRoot": "statics",
-    "htmlMinify": {
-      "override": true,
-      "exception_url": false,
-      "htmlMinifier": {
-        "html5": true
+    "htmlMinifier": {
+      "enable": true,
+      "exceptionRoutes": false,
+      "options": {
+        "removeComments": true,
+        "collapseWhitespace": true,
+        "collapseBooleanAttributes": true,
+        "removeAttributeQuotes": true,
+        "removeEmptyAttributes": true
       }
     },
     "css": {
-      "sourceDir": "css",
+      "sourcePath": "css",
       "compiler": <%- JSON.stringify(cssCompiler) %>,
       "whitelist": null,
       "output": ".build/css",
+      "symlinkToPublic": true,
       "versionFile": null
     },
     "js": {
-      "sourceDir": "js",
+      "sourcePath": "js",
       "compiler": <%- JSON.stringify(jsCompiler) %>,
       "whitelist": null,
       "blacklist": null,
       "output": ".build/js",
+      "symlinkToPublic": true,
       "bundler": {
         "bundles": [],
         "output": ".bundled",
@@ -102,7 +118,9 @@
     "favicon": "images/favicon.ico",
     "staticsSymlinksToPublic": <%- JSON.stringify(staticsSymlinksToPublic) %>,
     "versionedPublic": false,
-    "alwaysHostPublic": false
+    "alwaysHostPublic": false,
+    "checkDependencies": true,
+    "cores": 1
   },
   "nodemonConfig": {
     "ignore": [
@@ -117,6 +135,11 @@
   "repository": {
     "private-repo": "git+ssh://somewhere:port/folder/on/server"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
   "scripts": {
     "start": "nodemon app.js --production-mode",
     "production": "nodemon app.js --production-mode",
@@ -128,13 +151,11 @@
     "kill-validator": "node ./node_modules/roosevelt/lib/scripts/killValidator.js",
     "kv": "node ./node_modules/roosevelt/lib/scripts/killValidator.js",
     "clean": "node ./node_modules/roosevelt/lib/scripts/appCleanup.js",
-    "audit": "node ./node_modules/roosevelt/lib/scripts/configAuditor.js",
+    "config-audit": "node ./node_modules/roosevelt/lib/scripts/configAuditor.js",
     "standard": "standard",
     "stylelint": "./node_modules/.bin/stylelint \"statics/css/**/*.<%= cssExt %>\"<%= cssSyntax %>",
     "lint": "standard && ./node_modules/.bin/stylelint \"statics/css/**/*.<%= cssExt %>\"<%= cssSyntax %>",
-    "test": "echo \"TODO: tests\"",
-    "precommit": "lint-staged",
-    "pc": "lint-staged"
+    "test": "echo \"TODO: tests\""
   },
   "lint-staged": {
     "*.less": "./node_modules/.bin/stylelint<%= cssSyntax %>",
