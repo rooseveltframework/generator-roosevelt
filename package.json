@@ -11,7 +11,6 @@
   "homepage": "https://github.com/rooseveltframework/generator-roosevelt",
   "license": "CC-BY-4.0",
   "main": "generators/app/index.js",
-  "readmeFilename": "README.md",
   "engines": {
     "node": ">=10.0.0"
   },
