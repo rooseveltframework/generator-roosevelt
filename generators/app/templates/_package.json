@@ -6,7 +6,6 @@
   "homepage": "",
   "license": "",
   "main": "app.js",
-  "readmeFilename": "",
   "engines": {
     "node": ">=8.0.0"
   },
@@ -133,7 +132,8 @@
   },
   "private": true,
   "repository": {
-    "private-repo": "git+ssh://somewhere:port/folder/on/server"
+    "type": "git",
+    "url": "https://somewhere.url/user/repo.git"
   },
   "husky": {
     "hooks": {
