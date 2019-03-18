@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "roosevelt": "~0.12.0"
+    "roosevelt": "~0.13.0"
   },
   "appName": "My Roosevelt Sample App",
   "createDir": true,
