@@ -24,6 +24,8 @@
     "enableCLIFlags": true,
     "generateFolderStructure": true,
     "localhostOnly": true,
+    "routers": false,
+    "cleanTimer": 604800000,
     "logging": {
       "http": true,
       "appStatus": true,

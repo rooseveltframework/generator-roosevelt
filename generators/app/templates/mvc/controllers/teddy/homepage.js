@@ -1,5 +1,5 @@
-module.exports = function (app) {
-  app.route('/').get((req, res) => {
+module.exports = (router, app) => {
+  router.route('/').get((req, res) => {
     let model = require('models/global')(req, res)
     model.content.pageTitle = '{content.appTitle} - Homepage'
     model.content.hello = 'Hi! I\'m a variable trickling down through the MVC structure!'
