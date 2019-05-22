@@ -27,10 +27,13 @@
     "routers": false,
     "cleanTimer": 604800000,
     "logging": {
-      "http": true,
-      "appStatus": true,
-      "warnings": true,
-      "verbose": false
+      "methods": {
+        "http": true,
+        "info": true,
+        "warn": true,
+        "error": true,
+        "verbose": false
+      }
     },
     "minify": true,
     "htmlValidator": {
@@ -61,18 +64,7 @@
       "json": {}
     },
     "shutdownTimeout": 30000,
-    "https": {
-      "enable": <%= enableHTTPS %>,
-      "httpsOnly": <%= httpsOnly %>,
-      "httpsPort": <%= httpsPort %>,
-      "pfx": <%= pfx %>,
-      "keyPath": <%- JSON.stringify(keyPath) %>,
-      "passphrase": <%- JSON.stringify(passphrase) %>,
-      "ca": <%- JSON.stringify(ca) %>,
-      "cafile": true,
-      "requestCert": <%= requestCert %>,
-      "rejectUnauthorized": <%= rejectUnauthorized %>
-    },
+    "https": <%- JSON.stringify(https) %>,
     "modelsPath": <%- JSON.stringify(modelsPath) %>,
     "viewsPath": <%- JSON.stringify(viewsPath) %>,
     "viewEngine": <%- JSON.stringify(viewEngine) %>,
