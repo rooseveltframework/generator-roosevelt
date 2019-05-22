@@ -113,14 +113,14 @@ module.exports = class extends Generator {
           type: 'confirm',
           name: 'enableHTTPS',
           message: 'Use HTTPS?',
-          default: defaults.https.enable
+          default: false
         },
         {
           when: (answers) => answers.enableHTTPS,
           type: 'confirm',
           name: 'httpsOnly',
           message: 'Use HTTPS only? (Disable HTTP?)',
-          default: defaults.https.httpsOnly
+          default: false
         },
         {
           when: (answers) => !answers.httpsOnly,
@@ -232,7 +232,7 @@ module.exports = class extends Generator {
           name: 'httpsPortNumber',
           choices: [
             'Random',
-            `${defaults.https.httpsPort}`,
+            43733,
             'Custom'
           ],
           message: 'Which HTTPS port would you like to use?'
@@ -249,40 +249,54 @@ module.exports = class extends Generator {
           type: 'list',
           name: 'pfx',
           choices: [
-            '.pfx',
-            '.cert'
+            'pfx',
+            'cert'
           ],
           message: 'Use .pfx or .cert for SSL connections?'
         },
         {
+          when: (answers) => answers.pfx === 'pfx',
           type: 'input',
-          name: 'keyPath',
-          message: 'Key Path: Stores the file paths of specific key/certificate to be used by the server. Object values: pfx, key, cert -- use one of {pfx} or {key, cert}',
-          default: defaults.https.keyPath
+          name: 'pfxPath',
+          message: 'The file path to your pfx file:',
+          default: './cert.p12'
         },
         {
+          when: (answers) => answers.pfx === 'pfx',
           type: 'password',
-          name: 'passphrase',
-          message: 'Passphrase for HTTPS server to use with the SSL cert (optional):',
-          default: defaults.https.passphrase
+          name: 'pfxPassphrase',
+          message: 'Passphrase for HTTPS server to use with the SSL cert (optional):'
+        },
+        {
+          when: (answers) => answers.pfx === 'cert',
+          type: 'input',
+          name: 'certPath',
+          message: 'The file path to your cert file:',
+          default: './cert.pem'
+        },
+        {
+          when: (answers) => answers.pfx === 'cert',
+          type: 'password',
+          name: 'keyPath',
+          message: 'The file path to your key file:',
+          default: './key.pem'
         },
         {
           type: 'input',
           name: 'ca',
-          message: 'Ca: Certificate authority to match client certificates against, as a file path or array of file paths.',
-          default: defaults.https.ca
+          message: 'Ca: Certificate authority to match client certificates against, as a file path or array of file paths.'
         },
         {
           type: 'input',
           name: 'requestCert',
           message: 'Request Cert: Request a certificate from a client and attempt to verify it',
-          default: defaults.https.requestCert
+          default: false
         },
         {
           type: 'input',
           name: 'rejectUnauthorized',
           message: 'Reject Unauthorized: Upon failing to authorize a user with supplied CA(s), reject their connection entirely',
-          default: defaults.https.rejectUnauthorized
+          default: false
         }
       ]
     )
@@ -292,11 +306,18 @@ module.exports = class extends Generator {
         } else if (response.httpsPortNumber === 'Custom') {
           this.httpsPort = response.customHttpsPort
         } else {
-          this.httpsPort = defaults.https.httpsPort
+          this.httpsPort = response.httpsPortNumber
         }
+
+        if (response.pfx === 'pfx') {
+          this.pfxPath = response.pfxPath
+          this.pfxPassphrase = response.pfxPassphrase
+        } else {
+          this.certPath = response.certPath
+          this.keyPath = response.keyPath
+        }
+
         this.pfx = response.pfx
-        this.keyPath = response.keyPath
-        this.passphrase = response.passphrase
         this.ca = response.ca
         this.requestCert = response.requestCert
         this.rejectUnauthorized = response.rejectUnauthorized
@@ -427,6 +448,7 @@ module.exports = class extends Generator {
   setParams () {
     let standardInstall = this.options['standard-install']
     let destination
+    let httpsParams
 
     this.staticsSymlinksToPublic = ['images']
 
@@ -438,19 +460,38 @@ module.exports = class extends Generator {
 
     this.destinationRoot(destination)
 
-    this.httpPort = this.httpPort || defaults.httpPort
+    this.httpPort = this.httpPort
 
     // HTTPS
-    this.enableHTTPS = this.enableHTTPS || defaults.https.enable
-    this.httpsOnly = this.httpsOnly || defaults.https.httpsOnly
-    this.httpsPort = this.httpsPort || defaults.https.httpsPort
-    this.pfx = this.pfx === '.pfx'
-    this.keyPath = this.keyPath || defaults.https.keyPath
-    this.passphrase = this.passphrase || defaults.https.passphrase
-    this.ca = this.ca || defaults.https.ca
-    this.requestCert = this.requestCert || defaults.https.requestCert
-    this.rejectUnauthorized = this.rejectUnauthorized || defaults.https.rejectUnauthorized
+    if (this.enableHTTPS) {
+      console.log('port ', this.httpsPort)
+      httpsParams = {
+        enable: this.enableHTTPS,
+        port: this.httpsPort,
+        force: this.httpsOnly
+      }
 
+      httpsParams.authInfoPath = {}
+      if (this.pfx === 'pfx') {
+        httpsParams.authInfoPath.p12 = {
+          p12Path: this.pfxPath,
+          passphrase: this.pfxPassphrase
+        }
+      } else {
+        httpsParams.authInfoPath.authCertAndKey = {
+          cert: this.certPath,
+          key: this.keyPath
+        }
+      }
+
+      httpsParams.caCert = this.ca
+      httpsParams.requestCert = this.requestCert
+      httpsParams.rejectUnauthorized = this.rejectUnauthorized
+    } else {
+      httpsParams = false
+    }
+
+    this.httpsParams = httpsParams
     this.cssCompiler = this.cssCompiler || 'default'
     this.jsCompiler = this.jsCompiler || 'default'
     this.modelsPath = this.modelsPath || defaults.modelsPath
@@ -590,15 +631,7 @@ module.exports = class extends Generator {
         appName: this.packageName,
         dependencies: this.dependencies,
         port: this.httpPort,
-        enableHTTPS: this.enableHTTPS,
-        httpsOnly: this.httpsOnly,
-        httpsPort: this.httpsPort,
-        pfx: this.pfx,
-        keyPath: this.keyPath,
-        passphrase: this.passphrase,
-        ca: this.ca,
-        requestCert: this.requestCert,
-        rejectUnauthorized: this.rejectUnauthorized,
+        https: this.httpsParams,
         modelsPath: this.modelsPath,
         viewsPath: this.viewsPath,
         viewEngine: this.viewEngine,
