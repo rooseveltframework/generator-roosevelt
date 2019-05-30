@@ -16,6 +16,7 @@
   },
   "engineStrict": true,
   "dependencies": {
+    "gulp-beautify": "3.0.0",
     "node-forge": "0.8.2",
     "yeoman-generator": "3.2.0"
   },
@@ -70,8 +71,7 @@
     "codecov": "./node_modules/.bin/codecov",
     "coverage": "nyc mocha test/unit",
     "lint": "standard && eslint ./test",
-    "test": "npm run lint && mocha test/unit",
-    "dev-install": "npm install && cd ./node_modules/roosevelt && npm install --only=dev"
+    "test": "npm run lint && mocha test/unit"
   },
   "lint-staged": {
     "*.js": "standard"

@@ -1,6 +1,7 @@
 const Generator = require('yeoman-generator')
 const helper = require('./promptingHelpers')
 const defaults = require('./templates/defaults.json')
+const beautify = require('gulp-beautify')
 
 module.exports = class extends Generator {
   constructor (args, opts) {
@@ -460,7 +461,7 @@ module.exports = class extends Generator {
 
     this.destinationRoot(destination)
 
-    this.httpPort = this.httpPort
+    this.httpPort = this.httpPort || defaults.httpPort
 
     // HTTPS
     if (this.enableHTTPS) {
@@ -567,6 +568,8 @@ module.exports = class extends Generator {
   }
 
   writing () {
+    this.registerTransformStream(beautify({ indent_size: 2 }))
+
     if (this.generateSSL) {
       const forge = require('node-forge')
       let publicPem
