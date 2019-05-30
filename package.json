@@ -70,7 +70,8 @@
     "codecov": "./node_modules/.bin/codecov",
     "coverage": "nyc mocha test/unit",
     "lint": "standard && eslint ./test",
-    "test": "npm run lint && mocha test/unit"
+    "test": "npm run lint && mocha test/unit",
+    "dev-install": "npm install && cd ./node_modules/roosevelt && npm install --only=dev"
   },
   "lint-staged": {
     "*.js": "standard"
