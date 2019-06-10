@@ -71,8 +71,6 @@
   "scripts": {
     "codecov": "./node_modules/.bin/codecov",
     "coverage": "nyc mocha test/unit",
-    "dev-install": "cd ./node_modules/roosevelt && npm install --only=dev",
-    "dev-prune": "cd ./node_modules/roosevelt && npm prune --production",
     "lint": "standard && eslint ./test",
     "test": "npm run lint && mocha test/unit"
   },
