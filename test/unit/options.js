@@ -77,8 +77,8 @@ describe('generator options', function () {
     })
 
     it('generated correct view file(s)', function () {
-      assert.fileContent('mvc/views/teddy/homepage.html', /{content\.hello}/)
-      assert.fileContent('mvc/views/teddy/404.html', /{appVersion}/)
+      assert.fileContent('mvc/views/homepage.html', /{content\.hello/)
+      assert.fileContent('mvc/views/404.html', /{appVersion}/)
     })
   })
 
