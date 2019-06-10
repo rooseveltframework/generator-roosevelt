@@ -63,6 +63,12 @@
       },
       "json": {}
     },
+    "frontendReload": {
+      "enable": true,
+      "port": 9856,
+      "httpsPort": 9857,
+      "verbose": false
+    },
     "shutdownTimeout": 30000,
     "https": <%- JSON.stringify(https) %>,
     "modelsPath": <%- JSON.stringify(modelsPath) %>,
