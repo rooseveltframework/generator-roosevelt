@@ -2,6 +2,7 @@ const Generator = require('yeoman-generator')
 const helper = require('./promptingHelpers')
 const defaults = require('./templates/defaults.json')
 const beautify = require('gulp-beautify')
+const filter = require('gulp-filter')
 
 module.exports = class extends Generator {
   constructor (args, opts) {
@@ -568,7 +569,13 @@ module.exports = class extends Generator {
   }
 
   writing () {
-    this.registerTransformStream(beautify({ indent_size: 2 }))
+    const jsonFilter = filter(['**/*.json'], { restore: true })
+
+    this.registerTransformStream([
+      jsonFilter,
+      beautify({ indent_size: 2 }),
+      jsonFilter.restore
+    ])
 
     if (this.generateSSL) {
       const forge = require('node-forge')
