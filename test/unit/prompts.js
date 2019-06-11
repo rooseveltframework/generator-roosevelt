@@ -69,7 +69,7 @@ describe('Generator Prompts', function () {
   })
 
   describe('HTTPS Ports', function () {
-    it('Should set the HTTPS Port to a custom port', function () {
+    it.only('Should set the HTTPS Port to a custom port', function () {
       return helpers.run(path.join(__dirname, '../../generators/app'))
         .withPrompts({
           configMode: 'Customize',
@@ -81,7 +81,7 @@ describe('Generator Prompts', function () {
           assert.JSONFileContent('package.json', {
             rooseveltConfig: {
               https: {
-                httpsPort: 1234
+                port: 1234
               }
             }
           })
