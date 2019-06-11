@@ -98,8 +98,8 @@ describe('Generator Prompts', function () {
         .then(function () {
           var data = fs.readFileSync('package.json')
           var jsonData = JSON.parse(data)
-          assert.notEqual(jsonData.rooseveltConfig.https.httpsPort, jsonData.rooseveltConfig.port)
-          assert.strictEqual(typeof jsonData.rooseveltConfig.https.httpsPort, 'number')
+          assert.notEqual(jsonData.rooseveltConfig.https.port, jsonData.rooseveltConfig.port)
+          assert.strictEqual(typeof jsonData.rooseveltConfig.https.port, 'number')
         })
     })
   })
