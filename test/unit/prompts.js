@@ -58,12 +58,12 @@ describe('Generator Prompts', function () {
       return helpers.run(path.join(__dirname, '../../generators/app'))
         .withPrompts({
           configMode: 'Customize',
-          portNumber: 'Random'
+          httpsPortNumber: 'Random'
         })
         .then(function () {
           var data = fs.readFileSync('package.json')
           var jsonData = JSON.parse(data)
-          assert.strictEqual(typeof jsonData.rooseveltConfig.https.httpsPort, 'number')
+          assert.strictEqual(jsonData.rooseveltConfig.https, false)
         })
     })
   })
