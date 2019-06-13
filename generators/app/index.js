@@ -466,7 +466,6 @@ module.exports = class extends Generator {
 
     // HTTPS
     if (this.enableHTTPS) {
-      console.log('port ', this.httpsPort)
       httpsParams = {
         enable: this.enableHTTPS,
         port: this.httpsPort,
