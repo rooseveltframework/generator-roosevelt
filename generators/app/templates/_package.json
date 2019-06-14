@@ -27,10 +27,13 @@
     "routers": false,
     "cleanTimer": 604800000,
     "logging": {
-      "http": true,
-      "appStatus": true,
-      "warnings": true,
-      "verbose": false
+      "methods": {
+        "http": true,
+        "info": true,
+        "warn": true,
+        "error": true,
+        "verbose": false
+      }
     },
     "minify": true,
     "htmlValidator": {
@@ -60,19 +63,14 @@
       },
       "json": {}
     },
-    "shutdownTimeout": 30000,
-    "https": {
-      "enable": <%= enableHTTPS %>,
-      "httpsOnly": <%= httpsOnly %>,
-      "httpsPort": <%= httpsPort %>,
-      "pfx": <%= pfx %>,
-      "keyPath": <%- JSON.stringify(keyPath) %>,
-      "passphrase": <%- JSON.stringify(passphrase) %>,
-      "ca": <%- JSON.stringify(ca) %>,
-      "cafile": true,
-      "requestCert": <%= requestCert %>,
-      "rejectUnauthorized": <%= rejectUnauthorized %>
+    "frontendReload": {
+      "enable": true,
+      "port": 9856,
+      "httpsPort": 9857,
+      "verbose": false
     },
+    "shutdownTimeout": 30000,
+    "https": <%- JSON.stringify(https) %>,
     "modelsPath": <%- JSON.stringify(modelsPath) %>,
     "viewsPath": <%- JSON.stringify(viewsPath) %>,
     "viewEngine": <%- JSON.stringify(viewEngine) %>,
@@ -150,6 +148,10 @@
     "development": "nodemon app.js --development-mode",
     "dev": "nodemon app.js --development-mode",
     "d": "nodemon app.js --development-mode",
+    "dev-install": "cd ./node_modules/roosevelt && npm install --only=dev",
+    "di": "cd ./node_modules/roosevelt && npm install --only=dev",
+    "dev-prune": "cd ./node_modules/roosevelt && npm prune --production",
+    "dp": "cd ./node_modules/roosevelt && npm prune --production",
     "kill-validator": "node ./node_modules/roosevelt/lib/scripts/killValidator.js",
     "kv": "node ./node_modules/roosevelt/lib/scripts/killValidator.js",
     "clean": "node ./node_modules/roosevelt/lib/scripts/appCleanup.js",

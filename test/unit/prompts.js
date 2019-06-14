@@ -58,12 +58,12 @@ describe('Generator Prompts', function () {
       return helpers.run(path.join(__dirname, '../../generators/app'))
         .withPrompts({
           configMode: 'Customize',
-          portNumber: 'Random'
+          httpsPortNumber: 'Random'
         })
         .then(function () {
           var data = fs.readFileSync('package.json')
           var jsonData = JSON.parse(data)
-          assert.strictEqual(typeof jsonData.rooseveltConfig.https.httpsPort, 'number')
+          assert.strictEqual(jsonData.rooseveltConfig.https, false)
         })
     })
   })
@@ -81,7 +81,7 @@ describe('Generator Prompts', function () {
           assert.JSONFileContent('package.json', {
             rooseveltConfig: {
               https: {
-                httpsPort: 1234
+                port: 1234
               }
             }
           })
@@ -98,8 +98,8 @@ describe('Generator Prompts', function () {
         .then(function () {
           var data = fs.readFileSync('package.json')
           var jsonData = JSON.parse(data)
-          assert.notEqual(jsonData.rooseveltConfig.https.httpsPort, jsonData.rooseveltConfig.port)
-          assert.strictEqual(typeof jsonData.rooseveltConfig.https.httpsPort, 'number')
+          assert.notEqual(jsonData.rooseveltConfig.https.port, jsonData.rooseveltConfig.port)
+          assert.strictEqual(typeof jsonData.rooseveltConfig.https.port, 'number')
         })
     })
   })

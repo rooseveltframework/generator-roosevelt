@@ -2,7 +2,9 @@
 
 ## Next version
 
-- Put your changes here.
+- Updated to Roosevelt 0.14.
+- Upgraded http and logger params.
+- Prettified App package's JSON.
 
 ## 0.6.0
 
