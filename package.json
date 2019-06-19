@@ -16,7 +16,7 @@
   },
   "engineStrict": true,
   "dependencies": {
-    "node-forge": "0.8.4",
+    "node-forge": "0.8.5",
     "yeoman-generator": "4.0.1"
   },
   "devDependencies": {
