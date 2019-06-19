@@ -123,7 +123,7 @@ describe('Generator Prompts', function () {
         })
     })
 
-    it('Should create pfx certs', function () {
+    it('Should create p12 pfx certs', function () {
       this.timeout(10000)
       return helpers.run(path.join(__dirname, '../../generators/app'))
         .withPrompts({
@@ -145,6 +145,35 @@ describe('Generator Prompts', function () {
                 authInfoPath: {
                   p12: {
                     p12Path: './cert.p12'
+                  }
+                }
+              }
+            }
+          })
+        })
+    })
+
+    it('Should create .cert cert files', function () {
+      this.timeout(10000)
+      return helpers.run(path.join(__dirname, '../../generators/app'))
+        .withPrompts({
+          configMode: 'Customize',
+          enableHTTPS: true,
+          generateSSL: true,
+          commonName: 'www.google.com',
+          countryName: 'US',
+          pfx: 'cert',
+          certPath: './cert.pem',
+          keyPath: './key.pem'
+        })
+        .then(function (done) {
+          assert.JSONFileContent('package.json', {
+            rooseveltConfig: {
+              https: {
+                authInfoPath: {
+                  authCertAndKey: {
+                    cert: './cert.pem',
+                    key: './key.pem'
                   }
                 }
               }
