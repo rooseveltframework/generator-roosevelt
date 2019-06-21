@@ -63,7 +63,7 @@ describe('Generator Prompts', function () {
         .then(function () {
           var data = fs.readFileSync('package.json')
           var jsonData = JSON.parse(data)
-          assert.strictEqual(typeof jsonData.rooseveltConfig.https.httpsPort, 'number')
+          assert.strictEqual(typeof jsonData.rooseveltConfig.port, 'number')
         })
     })
   })
@@ -81,7 +81,7 @@ describe('Generator Prompts', function () {
           assert.JSONFileContent('package.json', {
             rooseveltConfig: {
               https: {
-                httpsPort: 1234
+                port: 1234
               }
             }
           })
@@ -98,8 +98,8 @@ describe('Generator Prompts', function () {
         .then(function () {
           var data = fs.readFileSync('package.json')
           var jsonData = JSON.parse(data)
-          assert.notEqual(jsonData.rooseveltConfig.https.httpsPort, jsonData.rooseveltConfig.port)
-          assert.strictEqual(typeof jsonData.rooseveltConfig.https.httpsPort, 'number')
+          assert.notEqual(jsonData.rooseveltConfig.https.port, jsonData.rooseveltConfig.port)
+          assert.strictEqual(typeof jsonData.rooseveltConfig.https.port, 'number')
         })
     })
   })
@@ -114,12 +114,71 @@ describe('Generator Prompts', function () {
           generateSSL: true,
           commonName: 'www.google.com',
           countryName: 'US',
-          pfx: '.pfx'
+          pfx: 'pfx'
         })
         .then(function (done) {
           assert.file('certPem.pem')
           assert.file('privatePem.pem')
           assert.file('public.pem')
+        })
+    })
+
+    it('Should create p12 pfx certs', function () {
+      this.timeout(10000)
+      return helpers.run(path.join(__dirname, '../../generators/app'))
+        .withPrompts({
+          configMode: 'Customize',
+          enableHTTPS: true,
+          generateSSL: true,
+          commonName: 'www.google.com',
+          countryName: 'US',
+          pfx: 'pfx',
+          pfxPath: './cert.p12'
+        })
+        .then(function (done) {
+          var data = fs.readFileSync('package.json')
+          var jsonData = JSON.parse(data)
+          assert.strictEqual(typeof jsonData.rooseveltConfig.https.authInfoPath, 'object')
+          assert.JSONFileContent('package.json', {
+            rooseveltConfig: {
+              https: {
+                authInfoPath: {
+                  p12: {
+                    p12Path: './cert.p12'
+                  }
+                }
+              }
+            }
+          })
+        })
+    })
+
+    it('Should create .cert cert files', function () {
+      this.timeout(10000)
+      return helpers.run(path.join(__dirname, '../../generators/app'))
+        .withPrompts({
+          configMode: 'Customize',
+          enableHTTPS: true,
+          generateSSL: true,
+          commonName: 'www.google.com',
+          countryName: 'US',
+          pfx: 'cert',
+          certPath: './cert.pem',
+          keyPath: './key.pem'
+        })
+        .then(function (done) {
+          assert.JSONFileContent('package.json', {
+            rooseveltConfig: {
+              https: {
+                authInfoPath: {
+                  authCertAndKey: {
+                    cert: './cert.pem',
+                    key: './key.pem'
+                  }
+                }
+              }
+            }
+          })
         })
     })
   })

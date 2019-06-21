@@ -1,21 +1,11 @@
 {
   "dependencies": {
-    "roosevelt": "~0.13.0"
+    "roosevelt": "~0.14.0"
   },
   "appName": "My Roosevelt Sample App",
   "createDir": true,
   "httpPort": 43711,
-  "https": {
-    "enable": false,
-    "httpsOnly": false,
-    "httpsPort": 43733,
-    "pfx": false,
-    "keyPath": "null",
-    "passphrase": "null",
-    "ca": "null",
-    "requestCert": false,
-    "rejectUnauthorized": false
-  },
+  "https": false,
   "stateName": "n/a",
   "localityName": "n/a",
   "organizationName": "n/a",
