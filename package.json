@@ -24,9 +24,9 @@
   },
   "devDependencies": {
     "codecov": "~3.5.0",
-    "eslint": "~6.0.0",
+    "eslint": "~6.0.1",
     "eslint-plugin-mocha": "~5.3.0",
-    "husky": "~2.4.1",
+    "husky": "~2.7.0",
     "lint-staged": "~8.2.1",
     "mocha": "~6.1.4",
     "nyc": "~14.1.1",
@@ -73,14 +73,14 @@
     "codecov": "./node_modules/.bin/codecov",
     "coverage": "nyc mocha test/unit",
     "lint": "standard && eslint ./test",
-    "test": "npm run lint && mocha test/unit"
+    "test": "mocha test/unit"
   },
   "lint-staged": {
     "*.js": "standard"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "lint-staged && eslint ./test"
     }
   }
 }
