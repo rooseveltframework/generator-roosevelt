@@ -11,6 +11,9 @@
   "version": "0.7.0",
   "homepage": "https://github.com/rooseveltframework/generator-roosevelt",
   "license": "CC-BY-4.0",
+  "bin": {
+    "mkRoosevelt": "./mkRoosevelt.js"
+  },
   "main": "generators/app/index.js",
   "engines": {
     "node": ">=10.0.0"
@@ -30,6 +33,7 @@
     "lint-staged": "~8.2.1",
     "mocha": "~6.1.4",
     "nyc": "~14.1.1",
+    "inquirer": "6.4.1",
     "standard": "~12.0.1",
     "yeoman-assert": "~3.1.1",
     "yeoman-test": "~2.0.0"

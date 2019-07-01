@@ -29,12 +29,47 @@ module.exports = class extends Generator {
       default: false,
       desc: 'Skips the closing message when app generation is complete.'
     })
+
+    this.option('standard-install-no-default-app-name', {
+      alias: 'sa',
+      type: String,
+      required: false,
+      desc: 'Skips all prompts and creates a Roosevelt app with all defaults without default name'
+    })
   }
 
   start () {
     if (this.options['standard-install']) {
       this.appName = defaults.appName
       this.packageName = helper.sanitizePackageName(this.appName)
+      return true
+    }
+
+    if (this.options['standard-install-no-default-app-name']) {
+      // this.appName = defaults.appName
+      // this.packageName = helper.sanitizePackageName(this.appName)
+      this.prompt(
+        [
+          {
+            type: 'input',
+            name: 'appName',
+            message: 'What would you like to name your Roosevelt app?',
+            default: defaults.appName
+          },
+          {
+            type: 'confirm',
+            name: 'createDir',
+            message: 'Would you like to create a new directory for your app?',
+            default: defaults.createDir
+          }
+        ]
+      )
+        .then((response) => {
+          this.appName = response.appName
+          this.packageName = helper.sanitizePackageName(this.appName)
+          this.createDir = response.createDir
+        })
+
       return true
     }
 
@@ -83,6 +118,10 @@ module.exports = class extends Generator {
 
   mode () {
     if (this.options['standard-install']) {
+      return true
+    }
+
+    if (this.options['standard-install-no-default-app-name']) {
       return true
     }
 
