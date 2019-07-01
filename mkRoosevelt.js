@@ -5,31 +5,25 @@ const util = require('util')
 const exec = util.promisify(require('child_process').exec)
 
 let myArgs = process.argv.slice(2)
+let chosenDirectoryName
 
 function askDirectoryName () {
-  let directoryName = [
-    {
-      name: 'file',
-      type: 'input',
-      message: 'What would you like to name your Roosevelt app?',
-      validate: function (value) {
-        if (value.length) {
-          return true
-        } else {
-          return 'Please enter appName'
-        }
+  return inquirer
+    .prompt([
+      {
+        name: 'file',
+        type: 'input',
+        message: 'What would you like to name your Roosevelt app?',
+        default: 'my-roosevelt-sample-app'
       }
-    }
-  ]
-  return inquirer.prompt(directoryName)
+    ])
+    .then((response) => {
+      console.info('response is:', response.file)
+      chosenDirectoryName = response.file
+    })
 }
 
-if (myArgs.length < 1 || myArgs === undefined) {
-  // run prompt
-  askDirectoryName()
-}
-
-async function runGenerator () {
+async function runGenerator (filename) {
   const { stdout, stderr } = await exec('cd .. && yo roosevelt --standard-install')
 
   if (stderr) {
@@ -37,6 +31,14 @@ async function runGenerator () {
   }
 
   console.log(`output ${stdout}`)
+  console.log(`filename ${filename}`)
 }
 
-runGenerator()
+if (myArgs.length < 1 || myArgs === undefined) {
+  // run prompt
+  askDirectoryName()
+} else {
+  chosenDirectoryName = myArgs[0]
+}
+
+runGenerator(chosenDirectoryName)

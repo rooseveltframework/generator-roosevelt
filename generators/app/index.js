@@ -30,11 +30,11 @@ module.exports = class extends Generator {
       desc: 'Skips the closing message when app generation is complete.'
     })
 
-    this.option('standard-install-no-default-app-name', {
-      alias: 'sa',
+    this.option('default-app-name', {
+      alias: 'da',
       type: String,
       required: false,
-      desc: 'Skips all prompts and creates a Roosevelt app with all defaults without default name'
+      desc: 'Creates a Roosevelt app with all defaults and a custom appName'
     })
   }
 
@@ -45,30 +45,9 @@ module.exports = class extends Generator {
       return true
     }
 
-    if (this.options['standard-install-no-default-app-name']) {
-      // this.appName = defaults.appName
+    if (this.options['default-app-name']) {
+      this.appName = defaults.appName
       // this.packageName = helper.sanitizePackageName(this.appName)
-      this.prompt(
-        [
-          {
-            type: 'input',
-            name: 'appName',
-            message: 'What would you like to name your Roosevelt app?',
-            default: defaults.appName
-          },
-          {
-            type: 'confirm',
-            name: 'createDir',
-            message: 'Would you like to create a new directory for your app?',
-            default: defaults.createDir
-          }
-        ]
-      )
-        .then((response) => {
-          this.appName = response.appName
-          this.packageName = helper.sanitizePackageName(this.appName)
-          this.createDir = response.createDir
-        })
 
       return true
     }
@@ -121,7 +100,7 @@ module.exports = class extends Generator {
       return true
     }
 
-    if (this.options['standard-install-no-default-app-name']) {
+    if (this.options['default-app-name']) {
       return true
     }
 
@@ -488,6 +467,7 @@ module.exports = class extends Generator {
 
   setParams () {
     let standardInstall = this.options['standard-install']
+    let noDefaultName = this.options['default-app-name']
     let destination
     let httpsParams
 
@@ -497,6 +477,10 @@ module.exports = class extends Generator {
       destination = this.packageName
     } else if (standardInstall || this.createDir) {
       destination = standardInstall || this.dirname
+    }
+
+    if (noDefaultName === 'true') {
+      destination = this.dirname
     }
 
     this.destinationRoot(destination)

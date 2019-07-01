@@ -2,7 +2,7 @@
 
 ## Next version
 
-- Put your changes here...
+- Added mkRoosevelt script to generate fresh app.
 
 ## 0.7.0
 
