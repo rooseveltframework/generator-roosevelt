@@ -152,6 +152,7 @@
     "di": "cd ./node_modules/roosevelt && npm install --only=dev",
     "dev-prune": "cd ./node_modules/roosevelt && npm prune --production",
     "dp": "cd ./node_modules/roosevelt && npm prune --production",
+    "proddev": "node app.js --host-public",
     "kill-validator": "node ./node_modules/roosevelt/lib/scripts/killValidator.js",
     "kv": "node ./node_modules/roosevelt/lib/scripts/killValidator.js",
     "clean": "node ./node_modules/roosevelt/lib/scripts/appCleanup.js",
