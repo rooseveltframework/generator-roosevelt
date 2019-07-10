@@ -97,7 +97,7 @@ describe('generator options', function () {
   })
 
   describe('Run config Auditor', function () {
-    it('Should automatically run the config auditor', function (done) {
+    it('Should automatically run the config auditor', function () {
       let ConfigAuditPassing = false
 
       return helpers.run(path.join(__dirname, '../../generators/app'))
@@ -120,7 +120,6 @@ describe('generator options', function () {
 
           testApp.on('exit', () => {
             assert.strictEqual(ConfigAuditPassing, true, 'rooseveltConfig audit completed with no errors found')
-            done()
           })
         })
     })
