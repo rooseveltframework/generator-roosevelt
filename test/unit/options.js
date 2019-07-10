@@ -3,7 +3,7 @@
 const path = require('path')
 const assert = require('yeoman-assert')
 const helpers = require('yeoman-test')
-const { fork } = require('child_process')
+const exec = require('child_process').exec
 const defaults = require('../../generators/app/templates/defaults.json')
 const defaultFiles = [
   '.gitignore',
@@ -106,18 +106,12 @@ describe('generator options', function () {
           'install-deps': true
         })
         .then(function () {
-          var currentDir = process.cwd()
-          const testApp = fork(path.join(currentDir, 'npm run config-audit'), { 'stdio': ['pipe', 'pipe', 'pipe', 'ipc'] })
+          const testApp = exec(`node ${__dirname}/../../node_modules/roosevelt/lib/scripts/configAuditor.js`)
 
           testApp.stdout.on('data', (data) => {
-            console.log('data', data)
             if (data.includes('rooseveltConfig audit completed with no errors found')) {
               ConfigAuditPassing = true
             }
-          })
-
-          testApp.stderr.on('data', (data) => {
-            console.log('data', data)
           })
 
           testApp.on('message', () => {
