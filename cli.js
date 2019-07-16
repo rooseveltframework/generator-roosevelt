@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 
 const inquirer = require('inquirer')
-const util = require('util')
-const exec = util.promisify(require('child_process').exec)
+// const util = require('util')
+const exec = require('child_process').exec
 
-let myArgs = process.argv.slice(2)
+const myArgs = process.argv.slice(2)
 let chosenDirectoryName
 
 function askDirectoryName () {
@@ -23,22 +23,26 @@ function askDirectoryName () {
     })
 }
 
-async function runGenerator (filename) {
-  const { stdout, stderr } = await exec('cd .. && yo roosevelt --standard-install')
+function callYeoman () {
+  const { stdout, stderr } = exec('yo roosevelt --standard-install')
 
   if (stderr) {
     console.error(`error: ${stderr}`)
   }
 
   console.log(`output ${stdout}`)
-  console.log(`filename ${filename}`)
+  // console.log(`filename ${filename}`)
 }
 
-if (myArgs.length < 1 || myArgs === undefined) {
-  // run prompt
-  askDirectoryName()
-} else {
-  chosenDirectoryName = myArgs[0]
+function runGenerator () {
+  if (myArgs.length < 1 || myArgs === undefined) {
+    // run prompt
+    askDirectoryName()
+  } else {
+    chosenDirectoryName = myArgs[0]
+  }
+
+  callYeoman()
 }
 
-runGenerator(chosenDirectoryName)
+runGenerator()

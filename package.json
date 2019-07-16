@@ -12,7 +12,7 @@
   "homepage": "https://github.com/rooseveltframework/generator-roosevelt",
   "license": "CC-BY-4.0",
   "bin": {
-    "mkRoosevelt": "./mkRoosevelt.js"
+    "mkRoosevelt": "./cli.js"
   },
   "main": "generators/app/index.js",
   "engines": {
