@@ -30,11 +30,11 @@ module.exports = class extends Generator {
       desc: 'Skips the closing message when app generation is complete.'
     })
 
-    this.option('default-app-name', {
-      alias: 'da',
+    this.option('custom-app-name', {
+      alias: 'c',
       type: String,
       required: false,
-      desc: 'Creates a Roosevelt app with all defaults and a custom appName'
+      desc: 'Creates a Roosevelt app with all defaults and a custom app name'
     })
   }
 
@@ -45,9 +45,9 @@ module.exports = class extends Generator {
       return true
     }
 
-    if (this.options['default-app-name']) {
+    if (this.options['custom-app-name']) {
       this.appName = defaults.appName
-      // this.packageName = helper.sanitizePackageName(this.appName)
+      this.packageName = helper.sanitizePackageName(this.appName)
 
       return true
     }
@@ -100,7 +100,7 @@ module.exports = class extends Generator {
       return true
     }
 
-    if (this.options['default-app-name']) {
+    if (this.options['custom-app-name']) {
       return true
     }
 
@@ -467,7 +467,7 @@ module.exports = class extends Generator {
 
   setParams () {
     const standardInstall = this.options['standard-install']
-    const noDefaultName = this.options['default-app-name']
+    const customAppName = this.options['custom-app-name']
     let destination
     let httpsParams
 
@@ -479,8 +479,10 @@ module.exports = class extends Generator {
       destination = standardInstall || this.dirname
     }
 
-    if (noDefaultName === 'true') {
-      destination = this.dirname
+    if (customAppName === 'true') {
+      destination = this.packageName
+    } else if (customAppName || this.createDir) {
+      destination = customAppName || this.dirname
     }
 
     this.destinationRoot(destination)

@@ -7,6 +7,14 @@ const exec = require('child_process').exec
 const myArgs = process.argv.slice(2)
 let chosenDirectoryName
 
+// check if args specified
+if (myArgs.length < 1 || myArgs === undefined) {
+  // run prompt
+  askDirectoryName()
+} else {
+  chosenDirectoryName = myArgs[0]
+}
+
 function askDirectoryName () {
   return inquirer
     .prompt([
@@ -24,25 +32,32 @@ function askDirectoryName () {
 }
 
 function callYeoman () {
-  const { stdout, stderr } = exec('yo roosevelt --standard-install')
+  const { stdout, stderr } = exec('yo roosevelt --custom-app-name && ls')
 
   if (stderr) {
     console.error(`error: ${stderr}`)
+    console.log(`output ${stdout}`)
   }
 
-  console.log(`output ${stdout}`)
-  // console.log(`filename ${filename}`)
+  console.log(`end of callYeoman()`)
+}
+
+function renameDirectory (filename) {
+  console.log(`begin of renameDirectory()`)
+
+  const { stdout, stderr } = exec(`mv  my-roosevelt-sample-app ${filename}`)
+
+  if (stderr) {
+    console.log('stdout err', stderr)
+  } else {
+    console.log('renameDirectory stdout', stdout)
+  }
 }
 
 function runGenerator () {
-  if (myArgs.length < 1 || myArgs === undefined) {
-    // run prompt
-    askDirectoryName()
-  } else {
-    chosenDirectoryName = myArgs[0]
-  }
-
   callYeoman()
+
+  renameDirectory(chosenDirectoryName)
 }
 
 runGenerator()
