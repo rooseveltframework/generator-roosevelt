@@ -30,7 +30,7 @@ describe('Generator Prompts', function () {
         .then(function () {
           assert.JSONFileContent('package.json', {
             rooseveltConfig: {
-              viewEngine: [`html1: test1`, 'html2: test2', 'html3: test3']
+              viewEngine: ['html1: test1', 'html2: test2', 'html3: test3']
             }
           })
         })

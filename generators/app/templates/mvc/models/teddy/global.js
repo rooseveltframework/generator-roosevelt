@@ -1,5 +1,5 @@
 // sample static global base model
-let model = {
+const model = {
   content: {
     appTitle: '<%= appName %>',
     pageTitle: '{content.appTitle}'
