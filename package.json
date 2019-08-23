@@ -11,6 +11,9 @@
   "version": "0.7.0",
   "homepage": "https://github.com/rooseveltframework/generator-roosevelt",
   "license": "CC-BY-4.0",
+  "bin": {
+    "mkRoosevelt": "./cli.js"
+  },
   "main": "generators/app/index.js",
   "engines": {
     "node": ">=10.0.0"
