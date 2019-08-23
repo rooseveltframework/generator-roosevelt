@@ -437,10 +437,10 @@ module.exports = class extends Generator {
     )
       .then((answers) => {
         this.viewEngineList.push(
-          `${answers[`templatingExtension` + num]}: ${answers['templatingEngineName' + num]}`
+          `${answers['templatingExtension' + num]}: ${answers['templatingEngineName' + num]}`
         )
 
-        if (answers[`additionalTemplatingEngines` + num]) {
+        if (answers['additionalTemplatingEngines' + num]) {
           num++
           return this.chooseViewEngine(num)
         }
@@ -448,7 +448,7 @@ module.exports = class extends Generator {
   }
 
   setParams () {
-    let standardInstall = this.options['standard-install']
+    const standardInstall = this.options['standard-install']
     let destination
     let httpsParams
 
@@ -578,13 +578,10 @@ module.exports = class extends Generator {
 
     if (this.generateSSL) {
       const forge = require('node-forge')
-      let publicPem
-      let certPem
-      let privatePem
-      let pki = forge.pki
-      let keys = pki.rsa.generateKeyPair(2048)
-      let cert = pki.createCertificate()
-      let attrs = [
+      const pki = forge.pki
+      const keys = pki.rsa.generateKeyPair(2048)
+      const cert = pki.createCertificate()
+      const attrs = [
         {
           name: 'commonName',
           value: this.commonName
@@ -624,9 +621,9 @@ module.exports = class extends Generator {
 
       cert.sign(keys.privateKey)
 
-      publicPem = pki.publicKeyToPem(keys.publicKey)
-      certPem = pki.certificateToPem(cert)
-      privatePem = pki.privateKeyToPem(keys.privateKey)
+      const publicPem = pki.publicKeyToPem(keys.publicKey)
+      const certPem = pki.certificateToPem(cert)
+      const privatePem = pki.privateKeyToPem(keys.privateKey)
 
       this.fs.write(this.destinationPath('public.pem'), publicPem)
       this.fs.write(this.destinationPath('certPem.pem'), certPem)
