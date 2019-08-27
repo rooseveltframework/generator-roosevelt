@@ -109,11 +109,11 @@ describe('Run config Auditor', function () {
         const testApp = exec(`node ${__dirname}/../../node_modules/roosevelt/lib/scripts/configAuditor.js`)
 
         testApp.stdout.on('data', (data) => {
-          if (data.includes('rooseveltConfig audit completed with no errors found')) {
+          if (data.includes('Missing Dependency') && data.includes('rooseveltConfig audit completed with no errors found')) {
             ConfigAuditPassing = true
           }
 
-          if (data.includes('Missing Dependency')) {
+          if (data.includes('rooseveltConfig audit completed with no errors found')) {
             ConfigAuditPassing = true
           }
         })
