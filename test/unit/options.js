@@ -112,6 +112,10 @@ describe('Run config Auditor', function () {
           if (data.includes('rooseveltConfig audit completed with no errors found')) {
             ConfigAuditPassing = true
           }
+
+          if (data.includes('Missing Dependency')) {
+            ConfigAuditPassing = true
+          }
         })
 
         testApp.on('message', () => {
