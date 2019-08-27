@@ -103,8 +103,7 @@ describe('Run config Auditor', function () {
 
     return helpers.run(path.join(__dirname, '../../generators/app'))
       .withOptions({
-        'standard-install': true,
-        'install-deps': true
+        'standard-install': true
       })
       .then(function () {
         const testApp = exec(`node ${__dirname}/../../node_modules/roosevelt/lib/scripts/configAuditor.js`)
