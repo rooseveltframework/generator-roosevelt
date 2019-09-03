@@ -1,19 +1,10 @@
 #!/usr/bin/env node
 
 const inquirer = require('inquirer')
-// const util = require('util')
 const exec = require('child_process').exec
 
 const myArgs = process.argv.slice(2)
 let chosenDirectoryName
-
-// check if args specified
-if (myArgs.length < 1 || myArgs === undefined) {
-  // run prompt
-  askDirectoryName()
-} else {
-  chosenDirectoryName = myArgs[0]
-}
 
 function askDirectoryName () {
   return inquirer
@@ -26,38 +17,29 @@ function askDirectoryName () {
       }
     ])
     .then((response) => {
-      console.info('response is:', response.file)
       chosenDirectoryName = response.file
     })
 }
 
-function callYeoman () {
-  const { stdout, stderr } = exec('yo roosevelt --custom-app-name && ls')
+function callYeoman (filename) {
+  const { stdout, stderr } = exec(`yo roosevelt --custom-app-name --${filename}`)
 
   if (stderr) {
     console.error(`error: ${stderr}`)
     console.log(`output ${stdout}`)
   }
-
-  console.log('end of callYeoman()')
 }
 
-function renameDirectory (filename) {
-  console.log('begin of renameDirectory()')
-
-  const { stdout, stderr } = exec(`mv  my-roosevelt-sample-app ${filename}`)
-
-  if (stderr) {
-    console.log('stdout err', stderr)
+async function runGenerator () {
+  // check if args specified
+  if (myArgs.length < 1 || myArgs === undefined) {
+    // run prompt when no directory given
+    await askDirectoryName()
   } else {
-    console.log('renameDirectory stdout', stdout)
+    chosenDirectoryName = myArgs[0]
   }
-}
 
-function runGenerator () {
-  callYeoman()
-
-  renameDirectory(chosenDirectoryName)
+  callYeoman(chosenDirectoryName)
 }
 
 runGenerator()
