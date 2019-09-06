@@ -22,12 +22,13 @@ function askDirectoryName () {
 }
 
 function callYeoman (filename) {
-  const { stdout, stderr } = exec(`yo roosevelt --custom-app-name --${filename}`)
-
-  if (stderr) {
-    console.error(`error: ${stderr}`)
-    console.log(`output ${stdout}`)
-  }
+  exec(`yo roosevelt --standard-install ${filename}`, (err, stdout, stderr) => {
+    if (err) {
+      console.error(`exec error: ${err}`)
+      return
+    }
+    console.log(`sample app named ${filename} directory created`)
+  })
 }
 
 async function runGenerator () {
