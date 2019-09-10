@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 const inquirer = require('inquirer')
-const exec = require('child_process').exec
+const { exec } = require('child_process')
 
 const myArgs = process.argv.slice(2)
 let chosenDirectoryName
@@ -23,11 +23,12 @@ function askDirectoryName () {
 
 function callYeoman (filename) {
   exec(`yo roosevelt --standard-install ${filename}`, (err, stdout, stderr) => {
+    console.log(`${stdout}`)
+    console.log(`${stderr}`)
+
     if (err) {
       console.error(`exec error: ${err}`)
-      return
     }
-    console.log(`sample app named ${filename} directory created`)
   })
 }
 
