@@ -22,7 +22,7 @@ function askDirectoryName () {
 }
 
 function callYeoman (filename) {
-  exec(`yo roosevelt --standard-install ${filename}`, (err, stdout, stderr) => {
+  exec(`./node_modules/.bin/yo roosevelt --standard-install ${filename}`, (err, stdout, stderr) => {
     console.log(`${stdout}`)
     console.log(`${stderr}`)
 
