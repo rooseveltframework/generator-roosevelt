@@ -1,7 +1,9 @@
 #!/usr/bin/env node
 
 const inquirer = require('inquirer')
-const { exec } = require('child_process')
+const path = require('path')
+const yeoman = require('yeoman-environment')
+const env = yeoman.createEnv()
 
 const myArgs = process.argv.slice(2)
 let chosenDirectoryName
@@ -22,14 +24,9 @@ function askDirectoryName () {
 }
 
 function callYeoman (filename) {
-  exec(`./node_modules/.bin/yo roosevelt --standard-install ${filename}`, (err, stdout, stderr) => {
-    console.log(`${stdout}`)
-    console.log(`${stderr}`)
-
-    if (err) {
-      console.error(`exec error: ${err}`)
-    }
-  })
+  // run yeoman environment
+  env.register(path.join(__dirname, 'generators/app'), 'npm:app')
+  env.run(`npm:app --standard-install ${filename}`)
 }
 
 async function runGenerator () {
