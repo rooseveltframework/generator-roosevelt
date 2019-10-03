@@ -156,6 +156,7 @@
     "kv": "node ./node_modules/roosevelt/lib/scripts/killValidator.js",
     "clean": "node ./node_modules/roosevelt/lib/scripts/appCleanup.js",
     "config-audit": "node ./node_modules/roosevelt/lib/scripts/configAuditor.js",
+    "proddev": "nodemon app.js --host-public",
     "standard": "standard",
     "stylelint": "./node_modules/.bin/stylelint \"statics/css/**/*.<%= cssExt %>\"<%= cssSyntax %>",
     "lint": "standard && ./node_modules/.bin/stylelint \"statics/css/**/*.<%= cssExt %>\"<%= cssSyntax %>",
