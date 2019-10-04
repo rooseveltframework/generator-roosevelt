@@ -3,6 +3,7 @@
 const path = require('path')
 const assert = require('yeoman-assert')
 const helpers = require('yeoman-test')
+const execSync = require('child_process').execSync
 const defaults = require('../../generators/app/templates/defaults.json')
 const defaultFiles = [
   '.gitignore',
@@ -93,5 +94,25 @@ describe('generator options', function () {
           assert.strictEqual(path.basename(process.cwd()) + '/node_modules', defaults.appName.toLowerCase().replace(/ /g, '-') + '/node_modules')
         })
     })
+  })
+})
+
+describe('Run config Auditor', function () {
+  it('Should automatically run the config auditor', function () {
+    let ConfigAuditPassing = false
+
+    return helpers.run(path.join(__dirname, '../../generators/app'))
+      .withOptions({
+        'standard-install': true
+      })
+      .then(function () {
+        const data = execSync(`node ${__dirname}/../../node_modules/roosevelt/lib/scripts/configAuditor.js`)
+
+        if (data.includes('rooseveltConfig audit completed with no errors found')) {
+          ConfigAuditPassing = true
+        }
+
+        assert.strictEqual(ConfigAuditPassing, true, 'rooseveltConfig audit completed with no errors found')
+      })
   })
 })
