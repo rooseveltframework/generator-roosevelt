@@ -4,6 +4,11 @@
 
 - Put your changes here...
 
+## 0.7.1
+
+- Updated to Roosevelt 0.15.x.
+- Various dependencies bumped.
+
 ## 0.7.0
 
 - Updated to Roosevelt 0.14.x.
