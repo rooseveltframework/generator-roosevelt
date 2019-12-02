@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "roosevelt": "~0.15.0"
+    "roosevelt": "~0.15.1"
   },
   "appName": "My Roosevelt Sample App",
   "createDir": true,
@@ -15,7 +15,7 @@
   "defaultCSSCompiler": "rooseveltLess",
   "rooseveltLess": {
     "dependencies": {
-      "roosevelt-less": "~0.7.1"
+      "roosevelt-less": "~0.8.0"
     },
     "options": {
       "nodeModule": "roosevelt-less",
@@ -46,7 +46,7 @@
   "defaultJSCompiler": "rooseveltUglify",
   "rooseveltUglify": {
     "dependencies": {
-      "roosevelt-uglify": "~0.3.1"
+      "roosevelt-uglify": "~0.3.2"
     },
     "options": {
       "nodeModule": "roosevelt-uglify",

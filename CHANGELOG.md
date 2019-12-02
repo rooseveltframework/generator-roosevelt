@@ -4,6 +4,10 @@
 
 - Put your changes here...
 
+## 0.7.2
+
+- Various dependencies bumped.
+
 ## 0.7.1
 
 - Updated to Roosevelt 0.15.x.
@@ -17,7 +21,7 @@
 
 ## 0.6.0
 
-- Updated to Roosevelt 0.13.
+- Updated to Roosevelt 0.13.x.
 - Updated default .gitignore created by the generator.
 
 ## 0.5.0 and below
