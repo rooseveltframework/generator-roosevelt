@@ -46,8 +46,7 @@ describe('generator options', function () {
         name: defaults.appName.toLowerCase().replace(/ /g, '-'),
         dependencies: {
           roosevelt: defaults.dependencies.roosevelt,
-          'roosevelt-uglify': defaults.rooseveltUglify.dependencies['roosevelt-uglify'],
-          'roosevelt-less': defaults.rooseveltLess.dependencies['roosevelt-less'],
+          less: defaults.Less.dependencies.less,
           teddy: defaults.teddy.teddy
         },
         rooseveltConfig: {
@@ -58,12 +57,14 @@ describe('generator options', function () {
           viewEngine: defaults.viewEngine,
           controllersPath: defaults.controllersPath,
           css: {
-            compiler: defaults.rooseveltLess.options
+            compiler: defaults.Less.config
           },
           js: {
-            compiler: defaults.rooseveltUglify.options
+            webpack: {
+              bundles: defaults.webpackBundle
+            }
           },
-          staticsSymlinksToPublic: ['images', 'css: .build/css', 'js: .build/js']
+          staticsSymlinksToPublic: ['images']
         }
       })
     })

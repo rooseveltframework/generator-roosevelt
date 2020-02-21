@@ -12,119 +12,39 @@
   "engineStrict": true,
   "dependencies": <%- JSON.stringify(dependencies) %>,
   "devDependencies": {
-    "husky": "~3.1.0",
-    "lint-staged": "~9.5.0",
-    "nodemon": "~2.0.1",
+    "husky": "~4.2.3",
+    "lint-staged": "~10.0.7",
+    "nodemon": "~2.0.2",
     "standard": "~14.3.1",
-    "stylelint": "~12.0.0",
-    "stylelint-config-standard": "~19.0.0"
+    "stylelint": "~13.2.0",
+    "stylelint-config-standard": "~20.0.0"
   },
   "rooseveltConfig": {
     "port": <%= port %>,
-    "enableCLIFlags": true,
     "generateFolderStructure": true,
-    "localhostOnly": true,
-    "routers": false,
-    "cleanTimer": 604800000,
-    "logging": {
-      "methods": {
-        "http": true,
-        "info": true,
-        "warn": true,
-        "error": true,
-        "verbose": false
-      }
-    },
-    "minify": true,
-    "htmlValidator": {
-      "enable": true,
-      "separateProcess": {
-        "enable": true,
-        "autoKiller": true,
-        "autoKillerTimeout": 3600000
-      },
-      "port": 48888,
-      "showWarnings": true,
-      "exceptions": {
-        "requestHeader": "Partial",
-        "modelValue": "_disableValidator"
-      }
-    },
-    "multipart": {
-      "multiples": true
-    },
-    "toobusy": {
-      "maxLagPerRequest": 70,
-      "lagCheckInterval": 500
-    },
-    "bodyParser": {
-      "urlEncoded": {
-        "extended": true
-      },
-      "json": {}
-    },
-    "frontendReload": {
-      "enable": true,
-      "port": 9856,
-      "httpsPort": 9857,
-      "verbose": false
-    },
-    "shutdownTimeout": 30000,
     "https": <%- JSON.stringify(https) %>,
     "modelsPath": <%- JSON.stringify(modelsPath) %>,
     "viewsPath": <%- JSON.stringify(viewsPath) %>,
     "viewEngine": <%- JSON.stringify(viewEngine) %>,
     "controllersPath": <%- JSON.stringify(controllersPath) %>,
-    "errorPages": {
-      "notFound": "404.js",
-      "internalServerError": "5xx.js",
-      "serviceUnavailable": "503.js"
-    },
-    "staticsRoot": "statics",
-    "htmlMinifier": {
-      "enable": true,
-      "exceptionRoutes": false,
-      "options": {
-        "removeComments": true,
-        "collapseWhitespace": true,
-        "collapseBooleanAttributes": true,
-        "removeAttributeQuotes": true,
-        "removeEmptyAttributes": true
-      }
-    },
     "css": {
       "sourcePath": "css",
-      "compiler": <%- JSON.stringify(cssCompiler) %>,
+      "compiler": <%- JSON.stringify(cssCompilerOptions) %>,
       "whitelist": null,
-      "output": ".build/css",
-      "symlinkToPublic": true,
+      "output": "css",
       "versionFile": null
     },
     "js": {
       "sourcePath": "js",
-      "compiler": <%- JSON.stringify(jsCompiler) %>,
-      "whitelist": null,
-      "blacklist": null,
-      "output": ".build/js",
-      "symlinkToPublic": true,
-      "bundler": {
-        "bundles": [],
-        "output": ".bundled",
-        "expose": true
+      "webpack": {
+        "enable": <%- webpackEnable %>,
+        "bundles": <%- JSON.stringify(webpackBundle) %>
       }
     },
-    "publicFolder": "public",
-    "favicon": "images/favicon.ico",
-    "staticsSymlinksToPublic": <%- JSON.stringify(staticsSymlinksToPublic) %>,
-    "versionedPublic": false,
-    "alwaysHostPublic": false,
-    "checkDependencies": true,
-    "cores": 1
+    "staticsSymlinksToPublic": <%- JSON.stringify(staticsSymlinksToPublic) %>
   },
   "nodemonConfig": {
     "ignore": [
-      "**/.build/",
-      "statics/js/.bundled/",
       "public/",
       "jsdoc/"
     ],
@@ -141,29 +61,24 @@
     }
   },
   "scripts": {
-    "start": "nodemon app.js --production-mode",
-    "production": "nodemon app.js --production-mode",
-    "prod": "nodemon app.js --production-mode",
-    "p": "nodemon app.js --production-mode",
-    "development": "nodemon app.js --development-mode",
-    "dev": "nodemon app.js --development-mode",
+    "config-audit": "node ./node_modules/roosevelt/lib/scripts/configAuditor.js",
     "d": "nodemon app.js --development-mode",
-    "dev-install": "cd ./node_modules/roosevelt && npm install --only=dev",
-    "di": "cd ./node_modules/roosevelt && npm install --only=dev",
-    "dev-prune": "cd ./node_modules/roosevelt && npm prune --production",
-    "dp": "cd ./node_modules/roosevelt && npm prune --production",
+    "dev": "nodemon app.js --development-mode",
+    "development": "nodemon app.js --development-mode",
     "kill-validator": "node ./node_modules/roosevelt/lib/scripts/killValidator.js",
     "kv": "node ./node_modules/roosevelt/lib/scripts/killValidator.js",
-    "clean": "node ./node_modules/roosevelt/lib/scripts/appCleanup.js",
-    "config-audit": "node ./node_modules/roosevelt/lib/scripts/configAuditor.js",
+    "lint": "npm run standard && npm run stylelint",
+    "p": "nodemon app.js --production-mode",
+    "prod": "nodemon app.js --production-mode",
     "proddev": "nodemon app.js --host-public",
-    "standard": "standard",
-    "stylelint": "./node_modules/.bin/stylelint \"statics/css/**/*.<%= cssExt %>\"<%= cssSyntax %>",
-    "lint": "standard && ./node_modules/.bin/stylelint \"statics/css/**/*.<%= cssExt %>\"<%= cssSyntax %>",
-    "test": "echo \"TODO: tests\""
+    "production": "nodemon app.js --production-mode",
+    "standard": "./node_modules/.bin/standard",
+    "start": "nodemon app.js --production-mode",
+    "stylelint": "./node_modules/.bin/stylelint \"statics/css/**/*.<%= cssExt %>\" <%= cssSyntax %>",
+    "test": "npm run lint"
   },
   "lint-staged": {
-    "*.less": "./node_modules/.bin/stylelint<%= cssSyntax %>",
+    "*.<%= cssExt %>": "./node_modules/.bin/stylelint <%= cssSyntax %>",
     "*.js": "standard"
   }
 }

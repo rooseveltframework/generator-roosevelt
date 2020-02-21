@@ -2,7 +2,8 @@
 
 ## Next version
 
-- Put your changes here...
+- Updated to roosevelt 0.16.x.
+- Various dependencies bumped.
 
 ## 0.7.2
 

@@ -188,14 +188,14 @@ describe('Generator Prompts', function () {
       return helpers.run(path.join(__dirname, '../../generators/app'))
         .withPrompts({
           configMode: 'Customize',
-          cssCompiler: 'LESS'
+          cssCompiler: 'Less'
         })
         .then(function () {
           assert.JSONFileContent('package.json', {
             rooseveltConfig: {
               css: {
                 compiler: {
-                  nodeModule: 'roosevelt-less'
+                  module: 'less'
                 }
               }
             }
@@ -209,20 +209,41 @@ describe('Generator Prompts', function () {
       return helpers.run(path.join(__dirname, '../../generators/app'))
         .withPrompts({
           configMode: 'Customize',
-          cssCompiler: 'SASS'
+          cssCompiler: 'Sass'
         })
         .then(function () {
           assert.JSONFileContent('package.json', {
             rooseveltConfig: {
               css: {
                 compiler: {
-                  nodeModule: 'roosevelt-sass'
+                  module: 'node-sass'
                 }
               }
             }
           })
           assert.file('statics/css/more.scss')
           assert.file('statics/css/styles.scss')
+        })
+    })
+
+    it('Should set the CSS preprocessor to Stylus', function () {
+      return helpers.run(path.join(__dirname, '../../generators/app'))
+        .withPrompts({
+          configMode: 'Customize',
+          cssCompiler: 'Stylus'
+        })
+        .then(function () {
+          assert.JSONFileContent('package.json', {
+            rooseveltConfig: {
+              css: {
+                compiler: {
+                  module: 'stylus'
+                }
+              }
+            }
+          })
+          assert.file('statics/css/more.styl')
+          assert.file('statics/css/styles.styl')
         })
     })
 
@@ -236,7 +257,10 @@ describe('Generator Prompts', function () {
           assert.JSONFileContent('package.json', {
             rooseveltConfig: {
               css: {
-                compiler: 'none'
+                compiler: {
+                  enable: false,
+                  module: 'none'
+                }
               }
             }
           })
@@ -244,19 +268,34 @@ describe('Generator Prompts', function () {
         })
     })
 
-    it('Should set the JS compiler to UglifyJS', function () {
+    it('Should setup a default webpack config', function () {
       return helpers.run(path.join(__dirname, '../../generators/app'))
         .withPrompts({
           configMode: 'Customize',
-          jsCompiler: 'UglifyJS'
+          webpack: true
         })
         .then(function () {
           assert.JSONFileContent('package.json', {
             rooseveltConfig: {
               js: {
-                compiler: {
-                  nodeModule: 'roosevelt-uglify',
-                  params: {}
+                webpack: {
+                  enable: true,
+                  bundles: [
+                    {
+                      config: {
+                        entry: '${js.sourcePath}/main.js', // eslint-disable-line
+                        output: {
+                          path: '${publicFolder}/js' // eslint-disable-line
+                        },
+                        resolve: {
+                          modules: [
+                            '${js.sourcePath}', // eslint-disable-line
+                            'node_modules'
+                          ]
+                        }
+                      }
+                    }
+                  ]
                 }
               }
             }
@@ -264,39 +303,20 @@ describe('Generator Prompts', function () {
         })
     })
 
-    it('Should set the JS compiler to Closure', function () {
+    it('Should disable webpack when set to off', function () {
       return helpers.run(path.join(__dirname, '../../generators/app'))
         .withPrompts({
           configMode: 'Customize',
-          jsCompiler: 'Closure Compiler'
+          webpack: false
         })
         .then(function () {
           assert.JSONFileContent('package.json', {
             rooseveltConfig: {
               js: {
-                compiler: {
-                  nodeModule: 'roosevelt-closure',
-                  params: {
-                    compilationLevel: 'ADVANCED'
-                  }
+                webpack: {
+                  enable: false,
+                  bundles: []
                 }
-              }
-            }
-          })
-        })
-    })
-
-    it('Should set the JS compiler to none', function () {
-      return helpers.run(path.join(__dirname, '../../generators/app'))
-        .withPrompts({
-          configMode: 'Customize',
-          jsCompiler: 'none'
-        })
-        .then(function () {
-          assert.JSONFileContent('package.json', {
-            rooseveltConfig: {
-              js: {
-                compiler: 'none'
               }
             }
           })
