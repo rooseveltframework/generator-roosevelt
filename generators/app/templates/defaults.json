@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "roosevelt": "~0.15.1"
+    "roosevelt": "~0.16.0"
   },
   "appName": "My Roosevelt Sample App",
   "createDir": true,
@@ -12,60 +12,65 @@
   "organizationalUnit": "n/a",
   "altURI": "http://localhost/",
   "altIP": "127.0.0.1",
-  "defaultCSSCompiler": "rooseveltLess",
-  "rooseveltLess": {
+  "defaultCSSCompiler": "Less",
+  "Less": {
     "dependencies": {
-      "roosevelt-less": "~0.8.0"
+      "less": "~3.11.1"
     },
-    "options": {
-      "nodeModule": "roosevelt-less",
-      "params": {
-        "sourceMap": null
-      }
+    "config": {
+      "enable": true,
+      "module": "less",
+      "options": {}
     },
     "scripts": {
       "cssExt": "less",
-      "cssSyntax": " --syntax less"
+      "cssSyntax": "--syntax less"
     }
   },
-  "rooseveltSass": {
+  "Sass": {
     "dependencies": {
-      "roosevelt-sass": "~0.4.1"
+      "node-sass": "~4.13.1"
     },
-    "options": {
-      "nodeModule": "roosevelt-sass",
-      "params": {
-        "outputStyle": "compressed"
-      }
+    "config": {
+      "enable": true,
+      "module": "node-sass",
+      "options": {}
     },
     "scripts": {
       "cssExt": "scss",
-      "cssSyntax": " --syntax scss"
+      "cssSyntax": "--syntax scss"
     }
   },
-  "defaultJSCompiler": "rooseveltUglify",
-  "rooseveltUglify": {
+  "Stylus": {
     "dependencies": {
-      "roosevelt-uglify": "~0.3.2"
+      "stylus": "~0.54.7"
     },
-    "options": {
-      "nodeModule": "roosevelt-uglify",
-      "showWarnings": false,
-      "params": {}
+    "config": {
+      "enable": true,
+      "module": "stylus",
+      "options": {}
+    },
+    "scripts": {
+      "cssExt": "styl",
+      "cssSyntax": "--syntax styl"
     }
   },
-  "rooseveltClosure": {
-    "dependencies": {
-      "roosevelt-closure": "~0.5.3"
-    },
-    "options": {
-      "nodeModule": "roosevelt-closure",
-      "showWarnings": false,
-      "params": {
-        "compilationLevel": "ADVANCED"
+  "webpackBundle": [
+    {
+      "config": {
+        "entry": "${js.sourcePath}/main.js",
+        "output": {
+          "path": "${publicFolder}/js"
+        },
+        "resolve": {
+          "modules": [
+            "${js.sourcePath}",
+            "node_modules"
+          ]
+        }
       }
     }
-  },
+  ],
   "modelsPath": "mvc/models",
   "viewsPath": "mvc/views",
   "controllersPath": "mvc/controllers",

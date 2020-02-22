@@ -337,27 +337,23 @@ module.exports = class extends Generator {
           type: 'list',
           name: 'cssCompiler',
           choices: [
-            'LESS',
-            'SASS',
+            'Less',
+            'Sass',
+            'Stylus',
             'none'
           ],
           message: 'Which CSS preprocessor would you like to use?'
         },
         {
-          type: 'list',
-          name: 'jsCompiler',
-          choices: [
-            'UglifyJS',
-            'Closure Compiler',
-            'none'
-          ],
-          message: 'Which JS compiler would you like to use?'
+          type: 'confirm',
+          name: 'webpack',
+          message: 'Would you like to generate a default webpack config?'
         }
       ]
     )
       .then((response) => {
         this.cssCompiler = response.cssCompiler
-        this.jsCompiler = response.jsCompiler
+        this.webpack = response.webpack
       })
   }
 
@@ -494,7 +490,6 @@ module.exports = class extends Generator {
 
     this.httpsParams = httpsParams
     this.cssCompiler = this.cssCompiler || 'default'
-    this.jsCompiler = this.jsCompiler || 'default'
     this.modelsPath = this.modelsPath || defaults.modelsPath
     this.viewsPath = this.viewsPath || defaults.viewsPath
     this.controllersPath = this.controllersPath || defaults.controllersPath
@@ -516,51 +511,47 @@ module.exports = class extends Generator {
 
     // generate params for selected CSS preprocessor
     if (this.cssCompiler !== 'none') {
-      this.staticsSymlinksToPublic.push(
-        'css: .build/css'
-      )
       if (this.cssCompiler === 'default') {
         this.dependencies = Object.assign(this.dependencies, defaults[defaults.defaultCSSCompiler].dependencies)
-        this.cssCompilerParams = defaults[defaults.defaultCSSCompiler].options
+        this.cssCompilerOptions = defaults[defaults.defaultCSSCompiler].config
         this.cssExt = defaults[defaults.defaultCSSCompiler].scripts.cssExt
         this.cssSyntax = defaults[defaults.defaultCSSCompiler].scripts.cssSyntax
-      } else if (this.cssCompiler === 'LESS') {
-        this.dependencies = Object.assign(this.dependencies, defaults.rooseveltLess.dependencies)
-        this.cssCompilerParams = defaults.rooseveltLess.options
-        this.cssExt = defaults.rooseveltLess.scripts.cssExt
-        this.cssSyntax = defaults.rooseveltLess.scripts.cssSyntax
-      } else if (this.cssCompiler === 'SASS') {
-        this.dependencies = Object.assign(this.dependencies, defaults.rooseveltSass.dependencies)
-        this.cssCompilerParams = defaults.rooseveltSass.options
-        this.cssExt = defaults.rooseveltSass.scripts.cssExt
-        this.cssSyntax = defaults.rooseveltSass.scripts.cssSyntax
+      } else if (this.cssCompiler === 'Less') {
+        this.dependencies = Object.assign(this.dependencies, defaults.Less.dependencies)
+        this.cssCompilerOptions = defaults.Less.config
+        this.cssExt = defaults.Less.scripts.cssExt
+        this.cssSyntax = defaults.Less.scripts.cssSyntax
+      } else if (this.cssCompiler === 'Sass') {
+        this.dependencies = Object.assign(this.dependencies, defaults.Sass.dependencies)
+        this.cssCompilerOptions = defaults.Sass.config
+        this.cssExt = defaults.Sass.scripts.cssExt
+        this.cssSyntax = defaults.Sass.scripts.cssSyntax
+      } else if (this.cssCompiler === 'Stylus') {
+        this.dependencies = Object.assign(this.dependencies, defaults.Stylus.dependencies)
+        this.cssCompilerOptions = defaults.Stylus.config
+        this.cssExt = defaults.Stylus.scripts.cssExt
+        this.cssSyntax = defaults.Stylus.scripts.cssSyntax
       }
     } else {
       this.staticsSymlinksToPublic.push(
         'css'
       )
-      this.cssCompilerParams = 'none'
+      this.cssCompilerOptions = {
+        enable: false,
+        module: 'none',
+        options: {}
+      }
       this.cssExt = 'css'
       this.cssSyntax = ''
     }
 
     // generate params for selected JS compiler
-    if (this.jsCompiler !== 'none') {
-      this.staticsSymlinksToPublic.push(
-        'js: .build/js'
-      )
-      if (this.jsCompiler === 'default') {
-        this.dependencies = Object.assign(this.dependencies, defaults[defaults.defaultJSCompiler].dependencies)
-        this.jsCompilerParams = defaults[defaults.defaultJSCompiler].options
-      } else if (this.jsCompiler === 'UglifyJS') {
-        this.dependencies = Object.assign(this.dependencies, defaults.rooseveltUglify.dependencies)
-        this.jsCompilerParams = defaults.rooseveltUglify.options
-      } else if (this.jsCompiler === 'Closure Compiler') {
-        this.dependencies = Object.assign(this.dependencies, defaults.rooseveltClosure.dependencies)
-        this.jsCompilerParams = defaults.rooseveltClosure.options
-      }
+    if (this.webpack || this.webpack === undefined) {
+      this.webpackEnable = true
+      this.webpackBundle = defaults.webpackBundle
     } else {
-      this.jsCompilerParams = 'none'
+      this.webpackEnable = false
+      this.webpackBundle = []
       this.staticsSymlinksToPublic.push(
         'js'
       )
@@ -642,8 +633,9 @@ module.exports = class extends Generator {
         viewsPath: this.viewsPath,
         viewEngine: this.viewEngine,
         controllersPath: this.controllersPath,
-        cssCompiler: this.cssCompilerParams,
-        jsCompiler: this.jsCompilerParams,
+        cssCompilerOptions: this.cssCompilerOptions,
+        webpackEnable: this.webpackEnable,
+        webpackBundle: this.webpackBundle,
         staticsSymlinksToPublic: this.staticsSymlinksToPublic,
         cssExt: this.cssExt,
         cssSyntax: this.cssSyntax
@@ -751,6 +743,16 @@ module.exports = class extends Generator {
       this.fs.copy(
         this.templatePath('statics/css/sass/more.scss'),
         this.destinationPath('statics/css/more.scss')
+      )
+    } else if (this.cssExt === 'styl') {
+      this.fs.copy(
+        this.templatePath('statics/css/stylus/styles.styl'),
+        this.destinationPath('statics/css/styles.styl')
+      )
+
+      this.fs.copy(
+        this.templatePath('statics/css/stylus/more.styl'),
+        this.destinationPath('statics/css/more.styl')
       )
     } else if (this.cssExt === 'css') {
       this.fs.copy(
