@@ -4,7 +4,7 @@
 
 ## 0.16.0
 
-- Updated to roosevelt 0.16.x. Matched generator major and minor version to Roosevelt version, thus the big jump in version numbers.
+- Updated to Roosevelt 0.16.x. Matched generator major and minor version to Roosevelt version, thus the big jump in version numbers.
 - Various dependencies bumped.
 
 ## 0.7.2
