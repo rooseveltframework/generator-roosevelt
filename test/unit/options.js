@@ -10,6 +10,7 @@ const defaultFiles = [
   '.stylelintrc.json',
   'app.js',
   'package.json',
+  'rooseveltConfig.json',
   'mvc/controllers/404.js',
   'mvc/controllers/homepage.js',
   'mvc/controllers/robots.txt.js',
@@ -48,24 +49,32 @@ describe('generator options', function () {
           roosevelt: defaults.dependencies.roosevelt,
           less: defaults.Less.dependencies.less,
           teddy: defaults.teddy.teddy
-        },
-        rooseveltConfig: {
-          port: defaults.httpPort,
-          https: defaults.https,
-          modelsPath: defaults.modelsPath,
-          viewsPath: defaults.viewsPath,
-          viewEngine: defaults.viewEngine,
-          controllersPath: defaults.controllersPath,
-          css: {
-            compiler: defaults.Less.config
-          },
-          js: {
-            webpack: {
-              bundles: defaults.webpackBundle
-            }
-          },
-          staticsSymlinksToPublic: ['images']
         }
+      })
+    })
+
+    it('filled rooseveltConfig.json with correct contents', function () {
+      assert.JSONFileContent('rooseveltConfig.json', {
+        port: defaults.httpPort,
+        https: defaults.https,
+        modelsPath: defaults.modelsPath,
+        viewsPath: defaults.viewsPath,
+        viewEngine: defaults.viewEngine,
+        controllersPath: defaults.controllersPath,
+        css: {
+          compiler: defaults.Less.config
+        },
+        js: {
+          webpack: {
+            bundles: defaults.webpackBundle
+          }
+        },
+        symlinks: [
+          {
+            source: '${staticsRoot}/images', // eslint-disable-line
+            dest: '${publicFolder}/images' // eslint-disable-line
+          }
+        ]
       })
     })
 

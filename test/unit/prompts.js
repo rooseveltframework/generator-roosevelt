@@ -28,10 +28,8 @@ describe('Generator Prompts', function () {
           additionalTemplatingEngines3: false
         })
         .then(function () {
-          assert.JSONFileContent('package.json', {
-            rooseveltConfig: {
-              viewEngine: ['html1: test1', 'html2: test2', 'html3: test3']
-            }
+          assert.JSONFileContent('rooseveltConfig.json', {
+            viewEngine: ['html1: test1', 'html2: test2', 'html3: test3']
           })
         })
     })
@@ -46,10 +44,8 @@ describe('Generator Prompts', function () {
           customHttpPort: 1234
         })
         .then(function () {
-          assert.JSONFileContent('package.json', {
-            rooseveltConfig: {
-              port: 1234
-            }
+          assert.JSONFileContent('rooseveltConfig.json', {
+            port: 1234
           })
         })
     })
@@ -61,9 +57,9 @@ describe('Generator Prompts', function () {
           portNumber: 'Random'
         })
         .then(function () {
-          var data = fs.readFileSync('package.json')
+          var data = fs.readFileSync('rooseveltConfig.json')
           var jsonData = JSON.parse(data)
-          assert.strictEqual(typeof jsonData.rooseveltConfig.port, 'number')
+          assert.strictEqual(typeof jsonData.port, 'number')
         })
     })
   })
@@ -78,11 +74,9 @@ describe('Generator Prompts', function () {
           customHttpsPort: 1234
         })
         .then(function () {
-          assert.JSONFileContent('package.json', {
-            rooseveltConfig: {
-              https: {
-                port: 1234
-              }
+          assert.JSONFileContent('rooseveltConfig.json', {
+            https: {
+              port: 1234
             }
           })
         })
@@ -96,10 +90,10 @@ describe('Generator Prompts', function () {
           httpsPortNumber: 'Random'
         })
         .then(function () {
-          var data = fs.readFileSync('package.json')
+          var data = fs.readFileSync('rooseveltConfig.json')
           var jsonData = JSON.parse(data)
-          assert.notEqual(jsonData.rooseveltConfig.https.port, jsonData.rooseveltConfig.port)
-          assert.strictEqual(typeof jsonData.rooseveltConfig.https.port, 'number')
+          assert.notEqual(jsonData.https.port, jsonData.port)
+          assert.strictEqual(typeof jsonData.https.port, 'number')
         })
     })
   })
@@ -136,16 +130,14 @@ describe('Generator Prompts', function () {
           pfxPath: './cert.p12'
         })
         .then(function (done) {
-          var data = fs.readFileSync('package.json')
+          var data = fs.readFileSync('rooseveltConfig.json')
           var jsonData = JSON.parse(data)
-          assert.strictEqual(typeof jsonData.rooseveltConfig.https.authInfoPath, 'object')
-          assert.JSONFileContent('package.json', {
-            rooseveltConfig: {
-              https: {
-                authInfoPath: {
-                  p12: {
-                    p12Path: './cert.p12'
-                  }
+          assert.strictEqual(typeof jsonData.https.authInfoPath, 'object')
+          assert.JSONFileContent('rooseveltConfig.json', {
+            https: {
+              authInfoPath: {
+                p12: {
+                  p12Path: './cert.p12'
                 }
               }
             }
@@ -167,14 +159,12 @@ describe('Generator Prompts', function () {
           keyPath: './key.pem'
         })
         .then(function (done) {
-          assert.JSONFileContent('package.json', {
-            rooseveltConfig: {
-              https: {
-                authInfoPath: {
-                  authCertAndKey: {
-                    cert: './cert.pem',
-                    key: './key.pem'
-                  }
+          assert.JSONFileContent('rooseveltConfig.json', {
+            https: {
+              authInfoPath: {
+                authCertAndKey: {
+                  cert: './cert.pem',
+                  key: './key.pem'
                 }
               }
             }
@@ -191,12 +181,10 @@ describe('Generator Prompts', function () {
           cssCompiler: 'Less'
         })
         .then(function () {
-          assert.JSONFileContent('package.json', {
-            rooseveltConfig: {
-              css: {
-                compiler: {
-                  module: 'less'
-                }
+          assert.JSONFileContent('rooseveltConfig.json', {
+            css: {
+              compiler: {
+                module: 'less'
               }
             }
           })
@@ -212,12 +200,10 @@ describe('Generator Prompts', function () {
           cssCompiler: 'Sass'
         })
         .then(function () {
-          assert.JSONFileContent('package.json', {
-            rooseveltConfig: {
-              css: {
-                compiler: {
-                  module: 'node-sass'
-                }
+          assert.JSONFileContent('rooseveltConfig.json', {
+            css: {
+              compiler: {
+                module: 'node-sass'
               }
             }
           })
@@ -233,12 +219,10 @@ describe('Generator Prompts', function () {
           cssCompiler: 'Stylus'
         })
         .then(function () {
-          assert.JSONFileContent('package.json', {
-            rooseveltConfig: {
-              css: {
-                compiler: {
-                  module: 'stylus'
-                }
+          assert.JSONFileContent('rooseveltConfig.json', {
+            css: {
+              compiler: {
+                module: 'stylus'
               }
             }
           })
@@ -254,13 +238,11 @@ describe('Generator Prompts', function () {
           cssCompiler: 'none'
         })
         .then(function () {
-          assert.JSONFileContent('package.json', {
-            rooseveltConfig: {
-              css: {
-                compiler: {
-                  enable: false,
-                  module: 'none'
-                }
+          assert.JSONFileContent('rooseveltConfig.json', {
+            css: {
+              compiler: {
+                enable: false,
+                module: 'none'
               }
             }
           })
@@ -275,28 +257,26 @@ describe('Generator Prompts', function () {
           webpack: true
         })
         .then(function () {
-          assert.JSONFileContent('package.json', {
-            rooseveltConfig: {
-              js: {
-                webpack: {
-                  enable: true,
-                  bundles: [
-                    {
-                      config: {
-                        entry: '${js.sourcePath}/main.js', // eslint-disable-line
-                        output: {
-                          path: '${publicFolder}/js' // eslint-disable-line
-                        },
-                        resolve: {
-                          modules: [
-                            '${js.sourcePath}', // eslint-disable-line
-                            'node_modules'
-                          ]
-                        }
+          assert.JSONFileContent('rooseveltConfig.json', {
+            js: {
+              webpack: {
+                enable: true,
+                bundles: [
+                  {
+                    config: {
+                      entry: '${js.sourcePath}/main.js', // eslint-disable-line
+                      output: {
+                        path: '${publicFolder}/js' // eslint-disable-line
+                      },
+                      resolve: {
+                        modules: [
+                          '${js.sourcePath}', // eslint-disable-line
+                          'node_modules'
+                        ]
                       }
                     }
-                  ]
-                }
+                  }
+                ]
               }
             }
           })
@@ -310,13 +290,11 @@ describe('Generator Prompts', function () {
           webpack: false
         })
         .then(function () {
-          assert.JSONFileContent('package.json', {
-            rooseveltConfig: {
-              js: {
-                webpack: {
-                  enable: false,
-                  bundles: []
-                }
+          assert.JSONFileContent('rooseveltConfig.json', {
+            js: {
+              webpack: {
+                enable: false,
+                bundles: []
               }
             }
           })

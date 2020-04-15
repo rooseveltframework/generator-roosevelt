@@ -1,0 +1,24 @@
+{
+  "port": <%= port %>,
+  "generateFolderStructure": true,
+  "https": <%- JSON.stringify(https) %>,
+  "modelsPath": <%- JSON.stringify(modelsPath) %>,
+  "viewsPath": <%- JSON.stringify(viewsPath) %>,
+  "viewEngine": <%- JSON.stringify(viewEngine) %>,
+  "controllersPath": <%- JSON.stringify(controllersPath) %>,
+  "css": {
+    "sourcePath": "css",
+    "compiler": <%- JSON.stringify(cssCompilerOptions) %>,
+    "whitelist": null,
+    "output": "css",
+    "versionFile": null
+  },
+  "js": {
+    "sourcePath": "js",
+    "webpack": {
+      "enable": <%- webpackEnable %>,
+      "bundles": <%- JSON.stringify(webpackBundle) %>
+    }
+  },
+  "symlinks": <%- JSON.stringify(symlinks) %>
+}
