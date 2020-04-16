@@ -448,7 +448,12 @@ module.exports = class extends Generator {
     let destination
     let httpsParams
 
-    this.staticsSymlinksToPublic = ['images']
+    this.symlinks = [
+      {
+        source: '${staticsRoot}/images', // eslint-disable-line
+        dest: '${publicFolder}/images' // eslint-disable-line
+      }
+    ]
 
     if (standardInstall === 'true') {
       destination = this.packageName
@@ -533,8 +538,11 @@ module.exports = class extends Generator {
         this.cssSyntax = defaults.Stylus.scripts.cssSyntax
       }
     } else {
-      this.staticsSymlinksToPublic.push(
-        'css'
+      this.symlinks.push(
+        {
+          source: '${staticsRoot}/css', // eslint-disable-line
+          dest: '${publicFolder}/css' // eslint-disable-line
+        }
       )
       this.cssCompilerOptions = {
         enable: false,
@@ -552,8 +560,11 @@ module.exports = class extends Generator {
     } else {
       this.webpackEnable = false
       this.webpackBundle = []
-      this.staticsSymlinksToPublic.push(
-        'js'
+      this.symlinks.push(
+        {
+          source: '${staticsRoot}/js', // eslint-disable-line
+          dest: '${publicFolder}/js' // eslint-disable-line
+        }
       )
     }
   }
@@ -627,6 +638,15 @@ module.exports = class extends Generator {
       {
         appName: this.packageName,
         dependencies: this.dependencies,
+        cssExt: this.cssExt,
+        cssSyntax: this.cssSyntax
+      }
+    )
+
+    this.fs.copyTpl(
+      this.templatePath('_rooseveltConfig.json'),
+      this.destinationPath('rooseveltConfig.json'),
+      {
         port: this.httpPort,
         https: this.httpsParams,
         modelsPath: this.modelsPath,
@@ -636,9 +656,7 @@ module.exports = class extends Generator {
         cssCompilerOptions: this.cssCompilerOptions,
         webpackEnable: this.webpackEnable,
         webpackBundle: this.webpackBundle,
-        staticsSymlinksToPublic: this.staticsSymlinksToPublic,
-        cssExt: this.cssExt,
-        cssSyntax: this.cssSyntax
+        symlinks: this.symlinks
       }
     )
 
