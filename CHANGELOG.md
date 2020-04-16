@@ -2,10 +2,12 @@
 
 ## Next version
 
+- Put your changes here...
+
 ## 0.17.0
 
 - Updated to Roosevelt 0.17.x.
-- Generated roosevelt config is now placed in rooseveltConfig.json.
+- Generated Roosevelt config is now placed in rooseveltConfig.json.
 - Various dependencies bumped.
 
 ## 0.16.0
