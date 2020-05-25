@@ -13,10 +13,10 @@
   "dependencies": <%- JSON.stringify(dependencies) %>,
   "devDependencies": {
     "husky": "~4.2.5",
-    "lint-staged": "~10.1.3",
-    "nodemon": "~2.0.3",
-    "standard": "~14.3.3",
-    "stylelint": "~13.3.2",
+    "lint-staged": "~10.2.6",
+    "nodemon": "~2.0.4",
+    "standard": "~14.3.4",
+    "stylelint": "~13.5.0",
     "stylelint-config-standard": "~20.0.0"
   },
   "nodemonConfig": {
@@ -41,8 +41,6 @@
     "d": "nodemon app.js --development-mode",
     "dev": "nodemon app.js --development-mode",
     "development": "nodemon app.js --development-mode",
-    "kill-validator": "node ./node_modules/roosevelt/lib/scripts/killValidator.js",
-    "kv": "node ./node_modules/roosevelt/lib/scripts/killValidator.js",
     "lint": "npm run standard && npm run stylelint",
     "p": "nodemon app.js --production-mode",
     "prod": "nodemon app.js --production-mode",
