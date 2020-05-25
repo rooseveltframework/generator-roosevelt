@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "roosevelt": "~0.17.0"
+    "roosevelt": "~0.18.0"
   },
   "appName": "My Roosevelt Sample App",
   "createDir": true,
@@ -79,7 +79,7 @@
   "templatingExtension": "html",
   "additionalTemplatingEngines": false,
   "teddy": {
-    "teddy": "~0.4.28"
+    "teddy": "~0.5.2"
   },
   "viewEngine": [
     "html:teddy"
