@@ -15,7 +15,7 @@
   "defaultCSSCompiler": "Less",
   "Less": {
     "dependencies": {
-      "less": "~3.11.1"
+      "less": "~3.11.3"
     },
     "config": {
       "enable": true,
@@ -29,7 +29,7 @@
   },
   "Sass": {
     "dependencies": {
-      "node-sass": "~4.13.1"
+      "node-sass": "~4.14.1"
     },
     "config": {
       "enable": true,
@@ -79,7 +79,7 @@
   "templatingExtension": "html",
   "additionalTemplatingEngines": false,
   "teddy": {
-    "teddy": "~0.5.2"
+    "teddy": "~0.5.3"
   },
   "viewEngine": [
     "html:teddy"

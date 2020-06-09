@@ -13,10 +13,10 @@
   "dependencies": <%- JSON.stringify(dependencies) %>,
   "devDependencies": {
     "husky": "~4.2.5",
-    "lint-staged": "~10.2.6",
+    "lint-staged": "~10.2.9",
     "nodemon": "~2.0.4",
     "standard": "~14.3.4",
-    "stylelint": "~13.5.0",
+    "stylelint": "~13.6.0",
     "stylelint-config-standard": "~20.0.0"
   },
   "nodemonConfig": {
