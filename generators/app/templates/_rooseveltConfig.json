@@ -9,7 +9,6 @@
   "css": {
     "sourcePath": "css",
     "compiler": <%- JSON.stringify(cssCompilerOptions) %>,
-    "whitelist": null,
     "output": "css",
     "versionFile": null
   },
