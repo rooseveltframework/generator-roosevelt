@@ -33,7 +33,7 @@
     "husky": "~4.2.5",
     "lint-staged": "~10.2.9",
     "mocha": "~8.1.0",
-    "roosevelt": "~0.18.0",
+    "roosevelt": "~0.19.0",
     "standard": "~14.3.4",
     "yeoman-assert": "~3.1.1",
     "yeoman-test": "~2.7.0"
