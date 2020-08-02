@@ -4,6 +4,11 @@
 
 - Put your changes here...
 
+## 0.19.1
+
+- Fixed some typos in the generated files.
+- Various dependencies bumped.
+
 ## 0.19.0
 
 - Updated to Roosevelt 0.19.0.
