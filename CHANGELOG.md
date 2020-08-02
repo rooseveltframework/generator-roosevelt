@@ -4,6 +4,11 @@
 
 - Put your changes here...
 
+## 0.19.0
+
+- Updated to Roosevelt 0.19.0.
+- Various dependencies bumped.
+
 ## 0.18.3
 
 - Updated to Roosevelt 0.18.3.
