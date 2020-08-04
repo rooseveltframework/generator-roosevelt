@@ -36,7 +36,7 @@
     "roosevelt": "~0.19.0",
     "standard": "~14.3.4",
     "yeoman-assert": "~3.1.1",
-    "yeoman-test": "~2.7.0"
+    "yeoman-test": "~3.0.0"
   },
   "repository": {
     "type": "git",
