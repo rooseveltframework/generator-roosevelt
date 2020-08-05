@@ -19,5 +19,6 @@
       "bundles": <%- JSON.stringify(webpackBundle) %>
     }
   },
+  "favicon": "images/favicon.ico",
   "symlinks": <%- JSON.stringify(symlinks) %>
 }
