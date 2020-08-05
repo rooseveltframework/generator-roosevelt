@@ -4,6 +4,12 @@
 
 - Put your changes here...
 
+## 0.19.2
+
+- Fixed missing favicon from generated app.
+- Bumped default version of Node.js required to run the sample app.
+- Various dependencies bumped.
+
 ## 0.19.1
 
 - Fixed some typos in the generated files.
