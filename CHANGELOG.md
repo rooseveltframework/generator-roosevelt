@@ -4,6 +4,11 @@
 
 - Put your changes here...
 
+## 0.19.3
+
+- Fixed custom app name supplied via CLI.
+- Various dependencies bumped.
+
 ## 0.19.2
 
 - Fixed missing favicon from generated app.

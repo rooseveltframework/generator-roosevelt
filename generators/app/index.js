@@ -3,10 +3,16 @@ const helper = require('./promptingHelpers')
 const defaults = require('./templates/defaults.json')
 const beautify = require('gulp-beautify')
 const filter = require('gulp-filter')
+const cache = {}
 
 module.exports = class extends Generator {
   constructor (args, opts) {
     super(args, opts)
+
+    // if this is executed like `yo roosevelt --standard-install custom-app-name`, cache that name so it can override appName later
+    if (opts.standardInstall && typeof opts.standardInstall === 'string') {
+      cache.standardInstall = opts.standardInstall
+    }
 
     this.option('standard-install', {
       alias: 's',
@@ -34,6 +40,9 @@ module.exports = class extends Generator {
   start () {
     if (this.options['standard-install']) {
       this.appName = defaults.appName
+      if (cache.standardInstall) {
+        this.appName = cache.standardInstall
+      }
       this.packageName = helper.sanitizePackageName(this.appName)
       return true
     }
