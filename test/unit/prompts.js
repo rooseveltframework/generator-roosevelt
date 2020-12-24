@@ -57,8 +57,8 @@ describe('Generator Prompts', function () {
           portNumber: 'Random'
         })
         .then(function () {
-          var data = fs.readFileSync('rooseveltConfig.json')
-          var jsonData = JSON.parse(data)
+          const data = fs.readFileSync('rooseveltConfig.json')
+          const jsonData = JSON.parse(data)
           assert.strictEqual(typeof jsonData.port, 'number')
         })
     })
@@ -90,8 +90,8 @@ describe('Generator Prompts', function () {
           httpsPortNumber: 'Random'
         })
         .then(function () {
-          var data = fs.readFileSync('rooseveltConfig.json')
-          var jsonData = JSON.parse(data)
+          const data = fs.readFileSync('rooseveltConfig.json')
+          const jsonData = JSON.parse(data)
           assert.notEqual(jsonData.https.port, jsonData.port)
           assert.strictEqual(typeof jsonData.https.port, 'number')
         })
@@ -130,8 +130,8 @@ describe('Generator Prompts', function () {
           pfxPath: './cert.p12'
         })
         .then(function (done) {
-          var data = fs.readFileSync('rooseveltConfig.json')
-          var jsonData = JSON.parse(data)
+          const data = fs.readFileSync('rooseveltConfig.json')
+          const jsonData = JSON.parse(data)
           assert.strictEqual(typeof jsonData.https.authInfoPath, 'object')
           assert.JSONFileContent('rooseveltConfig.json', {
             https: {

@@ -116,7 +116,7 @@ describe('Run config Auditor', function () {
         'standard-install': true
       })
       .then(function () {
-        const data = execSync(`node ${__dirname}/../../node_modules/roosevelt/lib/scripts/configAuditor.js`)
+        const data = execSync('node ' + path.join(__dirname, '/../../node_modules/roosevelt/lib/scripts/configAuditor.js'))
 
         if (data.includes('rooseveltConfig audit completed with no errors found')) {
           ConfigAuditPassing = true
