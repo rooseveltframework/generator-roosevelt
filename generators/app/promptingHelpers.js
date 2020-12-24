@@ -18,7 +18,7 @@ helper.validatePortNumber = function (input) {
 }
 
 helper.randomPort = function (httpPort) {
-  var port
+  let port
   do {
     port = Math.round(Math.random() * (65536 - 1000) + 1000)
   }
