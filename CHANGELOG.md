@@ -4,6 +4,12 @@
 
 - Put your changes here...
 
+## 0.19.4
+
+- Removed deprecated code from generator.
+- Dropped Node 12.
+- Various dependencies bumped.
+
 ## 0.19.3
 
 - Fixed custom app name supplied via CLI.
