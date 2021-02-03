@@ -15,7 +15,7 @@
   "defaultCSSCompiler": "Less",
   "Less": {
     "dependencies": {
-      "less": "~3.12.0"
+      "less": "~4.1.0"
     },
     "config": {
       "enable": true,
