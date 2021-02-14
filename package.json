@@ -28,11 +28,9 @@
   "devDependencies": {
     "c8": "~7.5.0",
     "codecov": "~3.8.1",
-    "eslint": "~7.19.0",
+    "eslint": "~7.20.0",
     "eslint-plugin-mocha": "~8.0.0",
-    "husky": "~4.3.8",
-    "lint-staged": "~10.5.3",
-    "mocha": "~8.2.1",
+    "mocha": "~8.3.0",
     "roosevelt": "~0.19.6",
     "standard": "~16.0.3",
     "yeoman-assert": "~3.1.1",
@@ -71,14 +69,6 @@
     "lint": "standard && eslint ./test",
     "test": "mocha test/unit",
     "test-debug": "mocha --inspect-brk --timeout 10000 test/unit"
-  },
-  "lint-staged": {
-    "*.js": "standard"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged && eslint ./test"
-    }
   },
   "funding": {
     "type": "individual",
