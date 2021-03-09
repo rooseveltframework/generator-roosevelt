@@ -34,7 +34,7 @@
     "roosevelt": "~0.19.6",
     "standard": "~16.0.3",
     "yeoman-assert": "~3.1.1",
-    "yeoman-test": "~4.0.0"
+    "yeoman-test": "~5.1.0"
   },
   "repository": {
     "type": "git",
@@ -67,7 +67,7 @@
     "codecov": "codecov",
     "coverage": "c8 --reporter=text --reporter=lcov mocha --timeout 25000 test/unit",
     "lint": "standard && eslint ./test",
-    "test": "mocha test/unit",
+    "test": "mocha --timeout 25000 test/unit",
     "test-debug": "mocha --inspect-brk --timeout 10000 test/unit"
   },
   "funding": {
