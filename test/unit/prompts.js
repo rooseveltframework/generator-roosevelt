@@ -9,6 +9,7 @@ const path = require('path')
 const assert = require('yeoman-assert')
 const helpers = require('yeoman-test')
 const fs = require('fs')
+const testVals = require('./testValues.json')
 
 describe('Generator Prompts', function () {
   describe('Templating Engine', function () {
@@ -25,7 +26,10 @@ describe('Generator Prompts', function () {
           additionalTemplatingEngines2: true,
           templatingEngineName3: 'test3',
           templatingExtension3: 'html3',
-          additionalTemplatingEngines3: false
+          additionalTemplatingEngines3: false,
+          portNumber: testVals.httpPort,
+          cssCompiler: testVals.defaultCSSCompiler,
+          webpack: testVals.webpackBundle
         })
         .then(function () {
           assert.JSONFileContent('rooseveltConfig.json', {
@@ -41,7 +45,9 @@ describe('Generator Prompts', function () {
         .withPrompts({
           configMode: 'Customize',
           portNumber: 'Custom',
-          customHttpPort: 1234
+          customHttpPort: 1234,
+          cssCompiler: testVals.defaultCSSCompiler,
+          webpack: testVals.webpackBundle
         })
         .then(function () {
           assert.JSONFileContent('rooseveltConfig.json', {
@@ -54,7 +60,9 @@ describe('Generator Prompts', function () {
       return helpers.run(path.join(__dirname, '../../generators/app'))
         .withPrompts({
           configMode: 'Customize',
-          portNumber: 'Random'
+          portNumber: 'Random',
+          cssCompiler: testVals.defaultCSSCompiler,
+          webpack: testVals.webpackBundle
         })
         .then(function () {
           const data = fs.readFileSync('rooseveltConfig.json')
@@ -71,7 +79,13 @@ describe('Generator Prompts', function () {
           configMode: 'Customize',
           enableHTTPS: true,
           httpsPortNumber: 'Custom',
-          customHttpsPort: 1234
+          customHttpsPort: 1234,
+          portNumber: testVals.httpPort,
+          pfx: 'pfx',
+          pfxPassphrase: testVals.pfxPassphrase,
+          ca: testVals.ca,
+          cssCompiler: testVals.defaultCSSCompiler,
+          webpack: testVals.webpackBundle
         })
         .then(function () {
           assert.JSONFileContent('rooseveltConfig.json', {
@@ -87,7 +101,13 @@ describe('Generator Prompts', function () {
         .withPrompts({
           configMode: 'Customize',
           enableHTTPS: true,
-          httpsPortNumber: 'Random'
+          httpsPortNumber: 'Random',
+          portNumber: testVals.httpPort,
+          pfx: 'pfx',
+          pfxPassphrase: testVals.pfxPassphrase,
+          ca: testVals.ca,
+          cssCompiler: testVals.defaultCSSCompiler,
+          webpack: testVals.webpackBundle
         })
         .then(function () {
           const data = fs.readFileSync('rooseveltConfig.json')
@@ -108,7 +128,14 @@ describe('Generator Prompts', function () {
           generateSSL: true,
           commonName: 'www.google.com',
           countryName: 'US',
-          pfx: 'pfx'
+          pfx: 'pfx',
+          customHttpsPort: 1234,
+          portNumber: testVals.httpPort,
+          httpsPortNumber: testVals.httpsPortNumber,
+          pfxPassphrase: testVals.pfxPassphrase,
+          ca: testVals.ca,
+          cssCompiler: testVals.defaultCSSCompiler,
+          webpack: testVals.webpackBundle
         })
         .then(function (done) {
           assert.file('certPem.pem')
@@ -127,7 +154,13 @@ describe('Generator Prompts', function () {
           commonName: 'www.google.com',
           countryName: 'US',
           pfx: 'pfx',
-          pfxPath: './cert.p12'
+          pfxPath: './cert.p12',
+          portNumber: testVals.httpPort,
+          httpsPortNumber: testVals.httpsPortNumber,
+          pfxPassphrase: testVals.pfxPassphrase,
+          ca: testVals.ca,
+          cssCompiler: testVals.defaultCSSCompiler,
+          webpack: testVals.webpackBundle 
         })
         .then(function (done) {
           const data = fs.readFileSync('rooseveltConfig.json')
@@ -156,7 +189,12 @@ describe('Generator Prompts', function () {
           countryName: 'US',
           pfx: 'cert',
           certPath: './cert.pem',
-          keyPath: './key.pem'
+          keyPath: './key.pem',
+          portNumber: testVals.httpPort,
+          httpsPortNumber: testVals.httpsPortNumber,
+          ca: testVals.ca,
+          cssCompiler: testVals.defaultCSSCompiler,
+          webpack: testVals.webpackBundle 
         })
         .then(function (done) {
           assert.JSONFileContent('rooseveltConfig.json', {
@@ -178,7 +216,9 @@ describe('Generator Prompts', function () {
       return helpers.run(path.join(__dirname, '../../generators/app'))
         .withPrompts({
           configMode: 'Customize',
-          cssCompiler: 'Less'
+          cssCompiler: 'Less',
+          portNumber: testVals.httpPort,
+          webpack: testVals.webpackBundle
         })
         .then(function () {
           assert.JSONFileContent('rooseveltConfig.json', {
@@ -197,7 +237,9 @@ describe('Generator Prompts', function () {
       return helpers.run(path.join(__dirname, '../../generators/app'))
         .withPrompts({
           configMode: 'Customize',
-          cssCompiler: 'Sass'
+          cssCompiler: 'Sass',
+          portNumber: testVals.httpPort,
+          webpack: testVals.webpackBundle
         })
         .then(function () {
           assert.JSONFileContent('rooseveltConfig.json', {
@@ -216,7 +258,9 @@ describe('Generator Prompts', function () {
       return helpers.run(path.join(__dirname, '../../generators/app'))
         .withPrompts({
           configMode: 'Customize',
-          cssCompiler: 'Stylus'
+          cssCompiler: 'Stylus',
+          portNumber: testVals.httpPort,
+          webpack: testVals.webpackBundle
         })
         .then(function () {
           assert.JSONFileContent('rooseveltConfig.json', {
@@ -235,7 +279,9 @@ describe('Generator Prompts', function () {
       return helpers.run(path.join(__dirname, '../../generators/app'))
         .withPrompts({
           configMode: 'Customize',
-          cssCompiler: 'none'
+          cssCompiler: 'none',
+          portNumber: testVals.httpPort,
+          webpack: testVals.webpackBundle
         })
         .then(function () {
           assert.JSONFileContent('rooseveltConfig.json', {
@@ -254,7 +300,9 @@ describe('Generator Prompts', function () {
       return helpers.run(path.join(__dirname, '../../generators/app'))
         .withPrompts({
           configMode: 'Customize',
-          webpack: true
+          webpack: true,
+          portNumber: testVals.httpPort,
+          cssCompiler: testVals.defaultCSSCompiler
         })
         .then(function () {
           assert.JSONFileContent('rooseveltConfig.json', {
@@ -287,7 +335,9 @@ describe('Generator Prompts', function () {
       return helpers.run(path.join(__dirname, '../../generators/app'))
         .withPrompts({
           configMode: 'Customize',
-          webpack: false
+          webpack: false,
+          portNumber: testVals.httpPort,
+          cssCompiler: testVals.defaultCSSCompiler
         })
         .then(function () {
           assert.JSONFileContent('rooseveltConfig.json', {
