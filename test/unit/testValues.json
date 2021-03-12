@@ -1,0 +1,96 @@
+{
+  "dependencies": {
+    "roosevelt": "~0.19.0"
+  },
+  "appName": "My Roosevelt Sample App",
+  "createDir": true,
+  "httpPort": 43711,
+  "https": false,
+  "stateName": "n/a",
+  "localityName": "n/a",
+  "organizationName": "n/a",
+  "organizationalUnit": "n/a",
+  "altURI": "http://localhost/",
+  "altIP": "127.0.0.1",
+  "defaultCSSCompiler": "Less",
+  "Less": {
+    "dependencies": {
+      "less": "~4.1.0"
+    },
+    "config": {
+      "enable": true,
+      "module": "less",
+      "options": {}
+    },
+    "scripts": {
+      "cssExt": "less",
+      "cssSyntax": "--syntax less"
+    }
+  },
+  "Sass": {
+    "dependencies": {
+      "node-sass": "~4.14.0"
+    },
+    "config": {
+      "enable": true,
+      "module": "node-sass",
+      "options": {}
+    },
+    "scripts": {
+      "cssExt": "scss",
+      "cssSyntax": "--syntax scss"
+    }
+  },
+  "Stylus": {
+    "dependencies": {
+      "stylus": "~0.54.0"
+    },
+    "config": {
+      "enable": true,
+      "module": "stylus",
+      "options": {}
+    },
+    "scripts": {
+      "cssExt": "styl",
+      "cssSyntax": "--syntax styl"
+    }
+  },
+  "webpackBundle": [
+    {
+      "config": {
+        "entry": "${js.sourcePath}/main.js",
+        "output": {
+          "path": "${publicFolder}/js"
+        },
+        "resolve": {
+          "modules": [
+            "${js.sourcePath}",
+            "node_modules"
+          ]
+        }
+      }
+    }
+  ],
+  "modelsPath": "mvc/models",
+  "viewsPath": "mvc/views",
+  "controllersPath": "mvc/controllers",
+  "templatingEngine": true,
+  "templatingEngineName": "teddy",
+  "templatingExtension": "html",
+  "additionalTemplatingEngines": false,
+  "teddy": {
+    "teddy": "~0.5.0"
+  },
+  "viewEngine": [
+    "html:teddy"
+  ],
+  "pfxPassphrase":[
+    "pfxPassphrase"
+  ],
+  "ca":[
+    "filePath"
+  ],
+  "httpsPortNumber":[
+    1234
+  ]
+}
