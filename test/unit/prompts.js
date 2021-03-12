@@ -160,7 +160,7 @@ describe('Generator Prompts', function () {
           pfxPassphrase: testVals.pfxPassphrase,
           ca: testVals.ca,
           cssCompiler: testVals.defaultCSSCompiler,
-          webpack: testVals.webpackBundle 
+          webpack: testVals.webpackBundle
         })
         .then(function (done) {
           const data = fs.readFileSync('rooseveltConfig.json')
@@ -194,7 +194,7 @@ describe('Generator Prompts', function () {
           httpsPortNumber: testVals.httpsPortNumber,
           ca: testVals.ca,
           cssCompiler: testVals.defaultCSSCompiler,
-          webpack: testVals.webpackBundle 
+          webpack: testVals.webpackBundle
         })
         .then(function (done) {
           assert.JSONFileContent('rooseveltConfig.json', {
