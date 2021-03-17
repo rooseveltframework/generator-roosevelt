@@ -142,7 +142,8 @@ module.exports = class extends Generator {
             `${defaults.httpPort}`,
             'Custom'
           ],
-          message: 'Which HTTP port would you like to use?'
+          message: 'Which HTTP port would you like to use?',
+          default: 43711
         },
         {
           when: (answers) => answers.portNumber === 'Custom',
@@ -246,7 +247,8 @@ module.exports = class extends Generator {
             43733,
             'Custom'
           ],
-          message: 'Which HTTPS port would you like to use?'
+          message: 'Which HTTPS port would you like to use?',
+          default: 43733
         },
         {
           when: (answers) => answers.httpsPortNumber === 'Custom',
@@ -263,7 +265,8 @@ module.exports = class extends Generator {
             'pfx',
             'cert'
           ],
-          message: 'Use .pfx or .cert for SSL connections?'
+          message: 'Use .pfx or .cert for SSL connections?',
+          default: null
         },
         {
           when: (answers) => answers.pfx === 'pfx',
@@ -276,7 +279,8 @@ module.exports = class extends Generator {
           when: (answers) => answers.pfx === 'pfx',
           type: 'password',
           name: 'pfxPassphrase',
-          message: 'Passphrase for HTTPS server to use with the SSL cert (optional):'
+          message: 'Passphrase for HTTPS server to use with the SSL cert (optional):',
+          default: null
         },
         {
           when: (answers) => answers.pfx === 'cert',
@@ -295,7 +299,8 @@ module.exports = class extends Generator {
         {
           type: 'input',
           name: 'ca',
-          message: 'Ca: Certificate authority to match client certificates against, as a file path or array of file paths.'
+          message: 'Ca: Certificate authority to match client certificates against, as a file path or array of file paths.',
+          default: null
         },
         {
           type: 'input',
@@ -351,12 +356,14 @@ module.exports = class extends Generator {
             'Stylus',
             'none'
           ],
-          message: 'Which CSS preprocessor would you like to use?'
+          message: 'Which CSS preprocessor would you like to use?',
+          default: 'Less'
         },
         {
           type: 'confirm',
           name: 'webpack',
-          message: 'Would you like to generate a default webpack config?'
+          message: 'Would you like to generate a default webpack config?',
+          default: false
         }
       ]
     )
