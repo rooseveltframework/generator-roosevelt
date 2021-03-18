@@ -12,6 +12,9 @@ module.exports = class extends Generator {
     // if this is executed like `yo roosevelt --standard-install custom-app-name`, cache that name so it can override appName later
     if (opts.standardInstall && typeof opts.standardInstall === 'string') {
       cache.standardInstall = opts.standardInstall
+    } else if (args[0] === '--standard-install') {
+      // if mkroosevelt is being used, type of installation in args[0] and the project name will be in args[1]
+      cache.standardInstall = args[1]
     }
 
     this.option('standard-install', {
