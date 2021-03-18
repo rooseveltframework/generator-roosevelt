@@ -28,13 +28,8 @@
   "devDependencies": {
     "c8": "~7.6.0",
     "codecov": "~3.8.1",
-<<<<<<< HEAD
-    "eslint": "^7.21.0",
-    "eslint-plugin-mocha": "~8.0.0",
-=======
     "eslint": "~7.21.0",
     "eslint-plugin-mocha": "~8.1.0",
->>>>>>> upstream/master
     "mocha": "~8.3.0",
     "roosevelt": "~0.19.6",
     "standard": "^16.0.3",
