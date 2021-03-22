@@ -4,6 +4,13 @@
 
 - Put your changes here...
 
+## 0.19.5
+
+- Fixed bug that caused custom app names not to propagate correctly into the generated app if the the app was generated using the `mkroosevelt` command.
+- Removed husky and lint-staged from the default deps in generated apps.
+- Suppressed unnecessary logs in tests.
+- Various dependencies bumped.
+
 ## 0.19.4
 
 - Removed deprecated code from generator.

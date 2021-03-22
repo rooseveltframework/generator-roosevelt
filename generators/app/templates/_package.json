@@ -11,12 +11,10 @@
   },
   "dependencies": <%- JSON.stringify(dependencies) %>,
   "devDependencies": {
-    "husky": "~4.3.0",
-    "lint-staged": "~10.5.0",
     "nodemon": "~2.0.0",
     "standard": "~16.0.0",
-    "stylelint": "~13.9.0",
-    "stylelint-config-standard": "~20.0.0"
+    "stylelint": "~13.12.0",
+    "stylelint-config-standard": "~21.0.0"
   },
   "nodemonConfig": {
     "ignore": [
@@ -29,11 +27,6 @@
   "repository": {
     "type": "git",
     "url": "https://somewhere.url/user/repo.git"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
   },
   "scripts": {
     "config-audit": "node ./node_modules/roosevelt/lib/scripts/configAuditor.js",
@@ -51,9 +44,5 @@
     "start": "nodemon app.js --production-mode",
     "stylelint": "./node_modules/.bin/stylelint \"statics/css/**/*.<%= cssExt %>\" <%= cssSyntax %>",
     "test": "npm run lint"
-  },
-  "lint-staged": {
-    "*.<%= cssExt %>": "./node_modules/.bin/stylelint <%= cssSyntax %>",
-    "*.js": "standard"
   }
 }
