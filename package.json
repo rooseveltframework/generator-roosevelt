@@ -21,7 +21,7 @@
   "engineStrict": true,
   "dependencies": {
     "gulp-beautify": "~3.0.0",
-    "gulp-filter": "~6.0.0",
+    "gulp-filter": "~7.0.0",
     "node-forge": "~0.10.0",
     "yeoman-generator": "~4.13.0"
   },
