@@ -30,7 +30,7 @@
     "codecov": "~3.8.1",
     "eslint": "~7.24.0",
     "eslint-plugin-mocha": "~8.1.0",
-    "mocha": "~8.3.2",
+    "mocha": "~8.4.0",
     "roosevelt": "~0.19.6",
     "standard": "~16.0.3",
     "yeoman-assert": "~3.1.1",
