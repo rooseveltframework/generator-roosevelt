@@ -7,6 +7,7 @@
 ## 0.19.6
 
 - Added some additional Webpack config defaults to make it easier to bundle third party dependencies without needing to add additional Webpack configs manually.
+- Dropped Node 15 support. Added Node 16 support.
 - Various dependencies bumped.
 
 ## 0.19.5
