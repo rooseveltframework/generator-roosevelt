@@ -8,7 +8,7 @@
       "url": "https://github.com/rooseveltframework/generator-roosevelt/graphs/contributors"
     }
   ],
-  "version": "0.19.5",
+  "version": "0.19.6",
   "files": [
     "generators"
   ],
@@ -21,20 +21,20 @@
   "engineStrict": true,
   "dependencies": {
     "gulp-beautify": "~3.0.0",
-    "gulp-filter": "~6.0.0",
+    "gulp-filter": "~7.0.0",
     "node-forge": "~0.10.0",
     "yeoman-generator": "~4.13.0"
   },
   "devDependencies": {
-    "c8": "~7.6.0",
-    "codecov": "~3.8.1",
-    "eslint": "~7.24.0",
-    "eslint-plugin-mocha": "~8.1.0",
-    "mocha": "~8.3.2",
-    "roosevelt": "~0.19.6",
+    "c8": "~7.7.2",
+    "codecov": "~3.8.2",
+    "eslint": "~7.27.0",
+    "eslint-plugin-mocha": "~9.0.0",
+    "mocha": "~8.4.0",
+    "roosevelt": "~0.19.9",
     "standard": "~16.0.3",
     "yeoman-assert": "~3.1.1",
-    "yeoman-test": "~4.0.0"
+    "yeoman-test": "~6.1.0"
   },
   "repository": {
     "type": "git",
@@ -67,7 +67,7 @@
     "codecov": "codecov",
     "coverage": "c8 --reporter=text --reporter=lcov mocha --timeout 25000 test/unit",
     "lint": "standard && eslint ./test",
-    "test": "mocha test/unit",
+    "test": "mocha test/unit --timeout 25000",
     "test-debug": "mocha --inspect-brk --timeout 10000 test/unit"
   },
   "funding": {

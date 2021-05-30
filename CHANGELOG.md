@@ -4,6 +4,11 @@
 
 - Put your changes here...
 
+## 0.19.6
+
+- Added some additional Webpack config defaults to make it easier to bundle third party dependencies without needing to add additional Webpack configs manually.
+- Various dependencies bumped.
+
 ## 0.19.5
 
 - Fixed bug that caused custom app names not to propagate correctly into the generated app if the the app was generated using the `mkroosevelt` command.

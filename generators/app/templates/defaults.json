@@ -63,8 +63,14 @@
           "path": "${publicFolder}/js"
         },
         "resolve": {
+          "alias": {
+            "fs": false,
+            "path": false
+          },
           "modules": [
             "${js.sourcePath}",
+            "${publicFolder}/js",
+            "${appDir}",
             "node_modules"
           ]
         }
