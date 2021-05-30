@@ -271,6 +271,8 @@ describe('Generator Prompts', function () {
                       resolve: {
                         modules: [
                           '${js.sourcePath}', // eslint-disable-line
+                          '${publicFolder}/js', // eslint-disable-line
+                          '${appDir}', // eslint-disable-line
                           'node_modules'
                         ]
                       }
