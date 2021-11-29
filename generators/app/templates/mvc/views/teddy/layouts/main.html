@@ -4,15 +4,16 @@
     <meta charset='utf-8'>
     <meta name='viewport' content='width=device-width,initial-scale=1'>
     <meta name='format-detection' content='telephone=no'>
-    <title>{content.pageTitle}</title>
-    <link rel='stylesheet' href='/css/styles.css'>
+    <title>{content.titleTag}</title>
+    <link rel='stylesheet' href='/css/styles.css'><%- spaModeScript ? spaModeScript : '' %>
     <script type='text/javascript' src='/js/main.js' defer></script>
   </head>
   <body>
     <main>
       <header>
         <h1>{content.appTitle}</h1>
-      </header>
+        <h2>{content.pageTitle}</h2>
+      </header><%- spaModeNav ? spaModeNav : '' %>
       {pageContent}
     </main>
   </body>

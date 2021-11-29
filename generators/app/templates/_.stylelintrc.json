@@ -1,10 +1,15 @@
 {
+  "customSyntax": <%- JSON.stringify(stylelintPostCssModule) %>,
   "extends": "stylelint-config-standard",
   "rules": {
-    "selector-list-comma-newline-after": null,
-    "number-no-trailing-zeros": null,
-    "unit-allowed-list": ["px", "%", "vh", "s", "em", "deg"],
     "indentation": 2,
-    "shorthand-property-no-redundant-values": null
+    "number-no-trailing-zeros": null,
+    "property-no-vendor-prefix": null,
+    "selector-class-pattern": null,
+    "selector-id-pattern": null,
+    "selector-list-comma-newline-after": "always-multi-line",
+    "shorthand-property-no-redundant-values": null,
+    "string-quotes": null,
+    "unit-allowed-list": ["px", "%", "vh", "s", "em", "deg"]
   }
 }

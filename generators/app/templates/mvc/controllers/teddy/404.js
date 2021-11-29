@@ -1,10 +1,11 @@
 module.exports = (router, app) => {
   router.route('*').all((req, res) => {
     const model = require('models/global')(req, res)
-    model.content.pageTitle = '{content.appTitle} - 404 not found'
-    model.host = req.hostname
-    model.url = req.url
-    model.appVersion = app.get('package').version
+    model.content.pageTitle = 'Not Found'
+    model.server = require('models/server')(req, res)
+    model.server.host = req.hostname
+    model.server.url = req.url
+    model.server.appVersion = app.get('package').version<%- spaModeScript ? spaModeScript : '' %>
     res.status(404)
     res.render('404', model)
   })

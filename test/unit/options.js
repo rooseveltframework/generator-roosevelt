@@ -35,6 +35,11 @@ describe('generator options', function () {
     })
 
     it('created and navigated to default app folder', function () {
+      // TODO:
+      // the console log below used to output /private/tmp/[long string]/my-roosevelt-sample-app
+      // now it outputs /private/tmp/[long string] without "my-roosevelt-sample-app" at the end
+      // need to figure out why that is and how to fix it to fix these tests
+      console.log(process.cwd())
       assert.strictEqual(path.basename(process.cwd()), defaults.appName.toLowerCase().replace(/ /g, '-'))
     })
 
