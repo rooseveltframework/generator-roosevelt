@@ -203,7 +203,7 @@ describe('Generator Prompts', function () {
           assert.JSONFileContent('rooseveltConfig.json', {
             css: {
               compiler: {
-                module: 'node-sass'
+                module: 'sass'
               }
             }
           })
