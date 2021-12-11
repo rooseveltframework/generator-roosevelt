@@ -13,8 +13,9 @@
   "devDependencies": {
     "nodemon": "~2.0.0",
     "standard": "~16.0.0",
-    "stylelint": "~13.12.0",
-    "stylelint-config-standard": "~21.0.0"
+    "stylelint": "~14.1.0",
+    "stylelint-config-standard": "~24.0.0",
+    <%- stylelintPostCssModule %>
   },
   "nodemonConfig": {
     "ignore": [
@@ -42,7 +43,7 @@
     "production-proxy": "nodemon app.js --production-proxy-mode",
     "standard": "./node_modules/.bin/standard",
     "start": "nodemon app.js --production-mode",
-    "stylelint": "./node_modules/.bin/stylelint \"statics/css/**/*.<%= cssExt %>\" <%= cssSyntax %>",
+    "stylelint": "./node_modules/.bin/stylelint \"statics/css/**/*.<%= cssExt %>\"",
     "test": "npm run lint"
   }
 }

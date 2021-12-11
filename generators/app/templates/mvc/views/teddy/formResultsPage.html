@@ -1,0 +1,10 @@
+<include src='layouts/main'>
+  <arg pageContent>
+    <article id='formResultsPage'>
+      <p>Data submitted!</p>
+      <p>Text: {formData.textbox}</p>
+      <p if-formData.checkbox false='hidden'>Checkbox: {formData.checkbox}</p>
+      <p if-formData.radios false='hidden'>Radios: {formData.radios}</p>
+    </article>
+  </arg>
+</include>

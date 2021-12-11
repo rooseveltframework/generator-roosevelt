@@ -1,0 +1,13 @@
+// css class for hiding elements with text in them but keeping the text visible for screen readers
+// technique sourced from https://zellwk.com/blog/hide-content-accessibly/
+@mixin visuallyhidden {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: auto;
+  margin: 0;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+  white-space: nowrap;
+}
