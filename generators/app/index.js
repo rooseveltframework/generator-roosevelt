@@ -3,6 +3,7 @@ const helper = require('./promptingHelpers')
 const defaults = require('./templates/defaults.json')
 const beautify = require('gulp-beautify')
 const filter = require('gulp-filter')
+const terminalLink = require('terminal-link')
 const cache = {}
 
 module.exports = class extends Generator {
@@ -47,6 +48,7 @@ module.exports = class extends Generator {
         this.appName = cache.standardInstall
       }
       this.packageName = helper.sanitizePackageName(this.appName)
+      this.spaMode = false
       return true
     }
 
@@ -90,6 +92,30 @@ module.exports = class extends Generator {
     )
       .then((response) => {
         this.dirname = response.dirname
+      })
+  }
+
+  spa () {
+    if (this.spaMode === false) {
+      return true
+    }
+
+    return this.prompt(
+      [
+        {
+          type: 'list',
+          name: 'spaMode',
+          choices: [
+            'Standard app',
+            'Isomorphic (single page app)'
+          ],
+          message: 'Generate a standard app (for just doing server-side renders) or an isomorphic app (comes with bootstrapping for Roosevelt\'s single page app support)?',
+          default: false
+        }
+      ]
+    )
+      .then((response) => {
+        this.spaMode = response.spaMode === 'Isomorphic (single page app)' || false
       })
   }
 
@@ -146,7 +172,7 @@ module.exports = class extends Generator {
             'Custom'
           ],
           message: 'Which HTTP port would you like to use?',
-          default: 43711
+          default: 'Random'
         },
         {
           when: (answers) => answers.portNumber === 'Custom',
@@ -251,7 +277,7 @@ module.exports = class extends Generator {
             'Custom'
           ],
           message: 'Which HTTPS port would you like to use?',
-          default: 43733
+          default: 'Random'
         },
         {
           when: (answers) => answers.httpsPortNumber === 'Custom',
@@ -366,7 +392,7 @@ module.exports = class extends Generator {
           type: 'confirm',
           name: 'webpack',
           message: 'Would you like to generate a default webpack config?',
-          default: false
+          default: true
         }
       ]
     )
@@ -381,39 +407,46 @@ module.exports = class extends Generator {
       return true
     }
 
-    return this.prompt(
-      [
-        {
-          type: 'input',
-          name: 'modelsPath',
-          message: 'Where should data model files be located in the app\'s directory structure?',
-          default: defaults.modelsPath
-        },
-        {
-          type: 'input',
-          name: 'viewsPath',
-          message: 'Where should view (HTML template) files be located in the app\'s directory structure?',
-          default: defaults.viewsPath
-        },
-        {
-          type: 'input',
-          name: 'controllersPath',
-          message: 'Where should controller (Express route) files be located in the app\'s directory structure?',
-          default: defaults.controllersPath
-        },
+    // these 3 questions will always be asked
+    const questions = [
+      {
+        type: 'input',
+        name: 'modelsPath',
+        message: 'Where should data model files be located in the app\'s directory structure?',
+        default: defaults.modelsPath
+      },
+      {
+        type: 'input',
+        name: 'viewsPath',
+        message: 'Where should view (HTML template) files be located in the app\'s directory structure?',
+        default: defaults.viewsPath
+      },
+      {
+        type: 'input',
+        name: 'controllersPath',
+        message: 'Where should controller (Express route) files be located in the app\'s directory structure?',
+        default: defaults.controllersPath
+      }
+    ]
+
+    // this question will be skipped in SPA mode and the answer of teddy will be assumed yes
+    if (!this.spaMode) {
+      questions.push(
         {
           type: 'confirm',
           name: 'templatingEngine',
           message: 'Do you want to use a HTML templating engine?',
           default: defaults.templatingEngine
         }
-      ]
-    )
+      )
+    }
+
+    return this.prompt(questions)
       .then((response) => {
         this.modelsPath = response.modelsPath
         this.viewsPath = response.viewsPath
         this.controllersPath = response.controllersPath
-        this.templatingEngine = response.templatingEngine
+        this.templatingEngine = this.spaMode ? 'teddy' : response.templatingEngine // assume teddy in SPA mode
       })
   }
 
@@ -428,6 +461,12 @@ module.exports = class extends Generator {
 
     this.viewEngineList = this.viewEngineList || []
 
+    // skip this question in SPA mode, assume it's teddy
+    if (this.spaMode) {
+      this.viewEngineList.push(`${defaults.templatingExtension}: ${defaults.templatingEngineName}`)
+      return true
+    }
+
     return this.prompt(
       [
         {
@@ -439,7 +478,8 @@ module.exports = class extends Generator {
         {
           type: 'input',
           name: `templatingExtension${num}`,
-          message: (answers) => `What file extension do you want ${answers.templatingEngineName} to use?`,
+          // TODO: in this line we should replace "that templating engine" with ${answers.templatingEngineName}, but for some reason it doesn't work anymore
+          message: (answers) => 'What file extension do you want that templating engine to use?',
           default: defaults.templatingExtension
         },
         {
@@ -483,6 +523,9 @@ module.exports = class extends Generator {
     this.destinationRoot(destination)
 
     this.httpPort = this.httpPort || defaults.httpPort
+    if (this.httpPort === 'Random') {
+      this.httpPort = helper.randomPort()
+    }
 
     // HTTPS
     if (this.enableHTTPS) {
@@ -539,22 +582,22 @@ module.exports = class extends Generator {
         this.dependencies = Object.assign(this.dependencies, defaults[defaults.defaultCSSCompiler].dependencies)
         this.cssCompilerOptions = defaults[defaults.defaultCSSCompiler].config
         this.cssExt = defaults[defaults.defaultCSSCompiler].scripts.cssExt
-        this.cssSyntax = defaults[defaults.defaultCSSCompiler].scripts.cssSyntax
+        this.stylelintPostCssModule = defaults[defaults.defaultCSSCompiler].scripts.stylelintPostCssModule
       } else if (this.cssCompiler === 'Less') {
         this.dependencies = Object.assign(this.dependencies, defaults.Less.dependencies)
         this.cssCompilerOptions = defaults.Less.config
         this.cssExt = defaults.Less.scripts.cssExt
-        this.cssSyntax = defaults.Less.scripts.cssSyntax
+        this.stylelintPostCssModule = defaults.Less.scripts.stylelintPostCssModule
       } else if (this.cssCompiler === 'Sass') {
         this.dependencies = Object.assign(this.dependencies, defaults.Sass.dependencies)
         this.cssCompilerOptions = defaults.Sass.config
         this.cssExt = defaults.Sass.scripts.cssExt
-        this.cssSyntax = defaults.Sass.scripts.cssSyntax
+        this.stylelintPostCssModule = defaults.Sass.scripts.stylelintPostCssModule
       } else if (this.cssCompiler === 'Stylus') {
         this.dependencies = Object.assign(this.dependencies, defaults.Stylus.dependencies)
         this.cssCompilerOptions = defaults.Stylus.config
         this.cssExt = defaults.Stylus.scripts.cssExt
-        this.cssSyntax = defaults.Stylus.scripts.cssSyntax
+        this.stylelintPostCssModule = defaults.Stylus.scripts.stylelintPostCssModule
       }
     } else {
       this.symlinks.push(
@@ -569,7 +612,7 @@ module.exports = class extends Generator {
         options: {}
       }
       this.cssExt = 'css'
-      this.cssSyntax = ''
+      this.stylelintPostCssModule = ''
     }
 
     // generate params for selected JS compiler
@@ -658,10 +701,26 @@ module.exports = class extends Generator {
         appName: this.packageName,
         dependencies: this.dependencies,
         cssExt: this.cssExt,
-        cssSyntax: this.cssSyntax
+        stylelintPostCssModule: this.stylelintPostCssModule
       }
     )
 
+    let spaModeConfig = ''
+    if (this.spaMode) {
+      spaModeConfig = `
+  "clientViews": {
+    "exposeAll": true,
+    "blocklist": [],
+    "allowlist": [],
+    "defaultBundle": "views.js",
+    "output": "js",
+    "minify": false
+  },
+  "isomorphicControllers": {
+    "output": "js",
+    "file": "controllers.js"
+  },`
+    }
     this.fs.copyTpl(
       this.templatePath('_rooseveltConfig.json'),
       this.destinationPath('rooseveltConfig.json'),
@@ -675,13 +734,17 @@ module.exports = class extends Generator {
         cssCompilerOptions: this.cssCompilerOptions,
         webpackEnable: this.webpackEnable,
         webpackBundle: this.webpackBundle,
-        symlinks: this.symlinks
+        symlinks: this.symlinks,
+        spaModeConfig: spaModeConfig
       }
     )
 
     this.fs.copyTpl(
       this.templatePath('_.stylelintrc.json'),
-      this.destinationPath('.stylelintrc.json')
+      this.destinationPath('.stylelintrc.json'),
+      {
+        stylelintPostCssModule: this.stylelintPostCssModule
+      }
     )
 
     this.fs.copyTpl(
@@ -703,6 +766,14 @@ module.exports = class extends Generator {
           appName: this.appName
         }
       )
+      this.fs.copyTpl(
+        this.templatePath('mvc/models/teddy/server.js'),
+        this.destinationPath(this.modelsPath + '/server.js')
+      )
+      this.fs.copyTpl(
+        this.templatePath('mvc/models/teddy/homepage.js'),
+        this.destinationPath(this.modelsPath + '/homepage.js')
+      )
     }
 
     // views
@@ -712,9 +783,31 @@ module.exports = class extends Generator {
     )
 
     if (this.usesTeddy) {
-      this.fs.copy(
+      let spaModeScript = ''
+      let spaModeNav = ''
+      if (this.spaMode) {
+        spaModeScript = `
+    <script>
+      <if frontendModel>
+        window.model = {frontendModel|s|p}
+      </if>
+    </script>`
+        spaModeNav = `
+      <nav>
+        <ul>
+          <li><a href='/'>Homepage</a></li>
+          <li><a href='/otherPage'>Some other page</a></li>
+          <li><a href='/pageWithForm'>Page with a form</a></li>
+        </ul>
+      </nav>`
+      }
+      this.fs.copyTpl(
         this.templatePath('mvc/views/teddy/layouts/main.html'),
-        this.destinationPath(this.viewsPath + '/layouts/main.html')
+        this.destinationPath(this.viewsPath + '/layouts/main.html'),
+        {
+          spaModeScript: spaModeScript,
+          spaModeNav: spaModeNav
+        }
       )
 
       this.fs.copy(
@@ -726,6 +819,25 @@ module.exports = class extends Generator {
         this.templatePath('mvc/views/teddy/homepage.html'),
         this.destinationPath(this.viewsPath + '/homepage.html')
       )
+
+      if (this.spaMode) {
+        this.fs.copy(
+          this.templatePath('mvc/views/teddy/otherPage.html'),
+          this.destinationPath(this.viewsPath + '/otherPage.html')
+        )
+        this.fs.copy(
+          this.templatePath('mvc/views/teddy/pageWithForm.html'),
+          this.destinationPath(this.viewsPath + '/pageWithForm.html')
+        )
+        this.fs.copy(
+          this.templatePath('mvc/views/teddy/formResultsPage.html'),
+          this.destinationPath(this.viewsPath + '/formResultsPage.html')
+        )
+        this.fs.copy(
+          this.templatePath('mvc/views/teddy/loadingPage.html'),
+          this.destinationPath(this.viewsPath + '/loadingPage.html')
+        )
+      }
     } else {
       // assume vanilla for now
       this.fs.copyTpl(
@@ -744,15 +856,37 @@ module.exports = class extends Generator {
     )
 
     if (this.usesTeddy) {
-      this.fs.copy(
+      let spaModeScript = ''
+      if (this.spaMode) {
+        spaModeScript = `
+    model.frontendModel = JSON.stringify(model)`
+      }
+      this.fs.copyTpl(
         this.templatePath('mvc/controllers/teddy/404.js'),
-        this.destinationPath(this.controllersPath + '/404.js')
+        this.destinationPath(this.controllersPath + '/404.js'),
+        {
+          spaModeScript: spaModeScript
+        }
       )
-
-      this.fs.copy(
-        this.templatePath('mvc/controllers/teddy/homepage.js'),
-        this.destinationPath(this.controllersPath + '/homepage.js')
-      )
+      if (this.spaMode) {
+        this.fs.copy(
+          this.templatePath('mvc/controllers/teddy/spa/homepage.js'),
+          this.destinationPath(this.controllersPath + '/homepage.js')
+        )
+        this.fs.copy(
+          this.templatePath('mvc/controllers/teddy/spa/otherPage.js'),
+          this.destinationPath(this.controllersPath + '/otherPage.js')
+        )
+        this.fs.copy(
+          this.templatePath('mvc/controllers/teddy/spa/pageWithForm.js'),
+          this.destinationPath(this.controllersPath + '/pageWithForm.js')
+        )
+      } else {
+        this.fs.copy(
+          this.templatePath('mvc/controllers/teddy/homepage.js'),
+          this.destinationPath(this.controllersPath + '/homepage.js')
+        )
+      }
     } else {
       // assume vanilla for now
       this.fs.copy(
@@ -762,40 +896,110 @@ module.exports = class extends Generator {
     }
 
     if (this.cssExt === 'less') {
-      this.fs.copy(
-        this.templatePath('statics/css/less/styles.less'),
-        this.destinationPath('statics/css/styles.less')
-      )
-
-      this.fs.copy(
-        this.templatePath('statics/css/less/more.less'),
-        this.destinationPath('statics/css/more.less')
-      )
+      if (this.spaMode) {
+        this.fs.copy(
+          this.templatePath('statics/css/less/spa/styles.less'),
+          this.destinationPath('statics/css/styles.less')
+        )
+        this.fs.copy(
+          this.templatePath('statics/css/less/spa/widgets.less'),
+          this.destinationPath('statics/css/widgets.less')
+        )
+        this.fs.copy(
+          this.templatePath('statics/css/less/spa/helpers.less'),
+          this.destinationPath('statics/css/helpers.less')
+        )
+        this.fs.copy(
+          this.templatePath('statics/css/less/spa/pages/homepage.less'),
+          this.destinationPath('statics/css/pages/homepage.less')
+        )
+        this.fs.copy(
+          this.templatePath('statics/css/less/spa/pages/formResultsPage.less'),
+          this.destinationPath('statics/css/pages/formResultsPage.less')
+        )
+      } else {
+        this.fs.copy(
+          this.templatePath('statics/css/less/styles.less'),
+          this.destinationPath('statics/css/styles.less')
+        )
+        this.fs.copy(
+          this.templatePath('statics/css/less/more.less'),
+          this.destinationPath('statics/css/more.less')
+        )
+      }
     } else if (this.cssExt === 'scss') {
-      this.fs.copy(
-        this.templatePath('statics/css/sass/styles.scss'),
-        this.destinationPath('statics/css/styles.scss')
-      )
-
-      this.fs.copy(
-        this.templatePath('statics/css/sass/more.scss'),
-        this.destinationPath('statics/css/more.scss')
-      )
+      if (this.spaMode) {
+        this.fs.copy(
+          this.templatePath('statics/css/sass/spa/styles.scss'),
+          this.destinationPath('statics/css/styles.scss')
+        )
+        this.fs.copy(
+          this.templatePath('statics/css/sass/spa/widgets.scss'),
+          this.destinationPath('statics/css/widgets.scss')
+        )
+        this.fs.copy(
+          this.templatePath('statics/css/sass/spa/helpers.scss'),
+          this.destinationPath('statics/css/helpers.scss')
+        )
+        this.fs.copy(
+          this.templatePath('statics/css/sass/spa/pages/homepage.scss'),
+          this.destinationPath('statics/css/pages/homepage.scss')
+        )
+        this.fs.copy(
+          this.templatePath('statics/css/sass/spa/pages/formResultsPage.scss'),
+          this.destinationPath('statics/css/pages/formResultsPage.scss')
+        )
+      } else {
+        this.fs.copy(
+          this.templatePath('statics/css/sass/styles.scss'),
+          this.destinationPath('statics/css/styles.scss')
+        )
+        this.fs.copy(
+          this.templatePath('statics/css/sass/more.scss'),
+          this.destinationPath('statics/css/more.scss')
+        )
+      }
     } else if (this.cssExt === 'styl') {
-      this.fs.copy(
-        this.templatePath('statics/css/stylus/styles.styl'),
-        this.destinationPath('statics/css/styles.styl')
-      )
-
-      this.fs.copy(
-        this.templatePath('statics/css/stylus/more.styl'),
-        this.destinationPath('statics/css/more.styl')
-      )
+      if (this.spaMode) {
+        this.fs.copy(
+          this.templatePath('statics/css/stylus/spa/styles.styl'),
+          this.destinationPath('statics/css/styles.styl')
+        )
+        this.fs.copy(
+          this.templatePath('statics/css/stylus/spa/widgets.styl'),
+          this.destinationPath('statics/css/widgets.styl')
+        )
+        this.fs.copy(
+          this.templatePath('statics/css/stylus/spa/helpers.styl'),
+          this.destinationPath('statics/css/helpers.styl')
+        )
+        this.fs.copy(
+          this.templatePath('statics/css/stylus/spa/pages/homepage.styl'),
+          this.destinationPath('statics/css/pages/homepage.styl')
+        )
+        this.fs.copy(
+          this.templatePath('statics/css/stylus/spa/pages/formResultsPage.styl'),
+          this.destinationPath('statics/css/pages/formResultsPage.styl')
+        )
+      } else {
+        this.fs.copy(
+          this.templatePath('statics/css/stylus/styles.styl'),
+          this.destinationPath('statics/css/styles.styl')
+        )
+        this.fs.copy(
+          this.templatePath('statics/css/stylus/more.styl'),
+          this.destinationPath('statics/css/more.styl')
+        )
+      }
     } else if (this.cssExt === 'css') {
-      this.fs.copy(
-        this.templatePath('statics/css/vanilla/styles.css'),
-        this.destinationPath('statics/css/styles.css')
-      )
+      if (this.spaMode) {
+        // stuff
+      } else {
+        this.fs.copy(
+          this.templatePath('statics/css/vanilla/styles.css'),
+          this.destinationPath('statics/css/styles.css')
+        )
+      }
     }
 
     this.fs.copy(
@@ -808,15 +1012,16 @@ module.exports = class extends Generator {
       this.destinationPath('statics/images/favicon.ico')
     )
 
-    this.fs.copy(
-      this.templatePath('statics/js/main.js'),
-      this.destinationPath('statics/js/main.js')
-    )
-  }
-
-  install () {
-    if (this.options['install-deps']) {
-      this.npmInstall()
+    if (this.spaMode) {
+      this.fs.copy(
+        this.templatePath('statics/js/spa/main.js'),
+        this.destinationPath('statics/js/main.js')
+      )
+    } else {
+      this.fs.copy(
+        this.templatePath('statics/js/main.js'),
+        this.destinationPath('statics/js/main.js')
+      )
     }
   }
 
@@ -829,7 +1034,8 @@ module.exports = class extends Generator {
       }
       this.log('- To run in dev mode:   npm run dev')
       this.log('- To run in prod mode:  npm run prod')
-      this.log(`Once running, visit ${helper.whichHttpToShow(this.https, this.httpsOnly)}://localhost:${this.httpPort}\n`)
+      const url = helper.whichHttpToShow(this.https, this.httpsOnly) + '://localhost:' + this.httpPort
+      this.log('Once running, visit ' + terminalLink(url, url) + '\n')
       this.log('To make further changes to the config, edit package.json. See https://github.com/rooseveltframework/roosevelt#configure-your-app-with-parameters for information on the configuration options.')
     }
   }

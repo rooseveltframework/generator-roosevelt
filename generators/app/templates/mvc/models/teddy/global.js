@@ -1,21 +1,13 @@
-// sample static global base model
 const model = {
   content: {
     appTitle: '<%= appName %>',
-    pageTitle: '{content.appTitle}'
+    pageTitle: '{content.appTitle}', // override this on a per route level
+    titleTag: '{content.appTitle} — {content.pageTitle}'
   }
 }
 
-// extend global model provide additional useful vars at runtime and export it
-module.exports = function (req, res) {
+module.exports = (req, res) => {
   return {
-
-    // always static
-    content: model.content,
-
-    // recalculated each require
-    currentYear: new Date().getFullYear(),
-    mainDomain: req.headers['x-forwarded-host'] || req.headers.host,
-    NODE_ENV: process.env.NODE_ENV
+    content: model.content
   }
 }

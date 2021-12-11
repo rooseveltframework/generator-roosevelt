@@ -4,7 +4,7 @@
   },
   "appName": "My Roosevelt Sample App",
   "createDir": true,
-  "httpPort": 43711,
+  "httpPort": "Random",
   "https": false,
   "stateName": "n/a",
   "localityName": "n/a",
@@ -24,26 +24,26 @@
     },
     "scripts": {
       "cssExt": "less",
-      "cssSyntax": "--syntax less"
+      "stylelintPostCssModule": "\"postcss-less\": \"~5.0.0\""
     }
   },
   "Sass": {
     "dependencies": {
-      "node-sass": "~4.14.0"
+      "sass": "~1.39.0"
     },
     "config": {
       "enable": true,
-      "module": "node-sass",
+      "module": "sass",
       "options": {}
     },
     "scripts": {
       "cssExt": "scss",
-      "cssSyntax": "--syntax scss"
+      "stylelintPostCssModule": "\"postcss-sass\": \"~0.5.0\""
     }
   },
   "Stylus": {
     "dependencies": {
-      "stylus": "~0.54.0"
+      "stylus": "~0.55.0"
     },
     "config": {
       "enable": true,
@@ -52,7 +52,7 @@
     },
     "scripts": {
       "cssExt": "styl",
-      "cssSyntax": "--syntax styl"
+      "stylelintPostCssModule": "\"postcss-styl\": \"~0.9.0\""
     }
   },
   "webpackBundle": [

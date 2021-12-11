@@ -24,8 +24,20 @@ describe('Prompt Helpers', function () {
       assert.strictEqual(helper.validatePortNumber('1234'), true)
     })
 
-    it('Should not allow port number \'8888\'', function () {
-      assert.strictEqual(helper.validatePortNumber('8888'), 'Port cannot be 8888')
+    it('Should not allow port number \'8888\'', function () { // 8888 is frequently reserved by other software
+      assert.strictEqual(helper.validatePortNumber('8888'), 'Invalid port, 8888, 9856, 9857, and 5000 are not allowed')
+    })
+
+    it('Should not allow port number \'9856\'', function () { // 9856 and 9857 are the reload ports
+      assert.strictEqual(helper.validatePortNumber('9856'), 'Invalid port, 8888, 9856, 9857, and 5000 are not allowed')
+    })
+
+    it('Should not allow port number \'9857\'', function () { // 9856 and 9857 are the reload ports
+      assert.strictEqual(helper.validatePortNumber('9857'), 'Invalid port, 8888, 9856, 9857, and 5000 are not allowed')
+    })
+
+    it('Should not allow port number \'5000\'', function () { // 5000 is used by macOS monterey
+      assert.strictEqual(helper.validatePortNumber('5000'), 'Invalid port, 8888, 9856, 9857, and 5000 are not allowed')
     })
 
     it('Should not allow port \'0\'', function () {

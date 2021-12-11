@@ -1,0 +1,63 @@
+/*
+  This is a sample LESS CSS file. It compiles down to regular CSS.
+  The compilation process is handled automatically by Roosevelt.
+
+  For more information about what fancy new CSS syntax is introduced by LESS, have a look here: http://lesscss.org
+*/
+
+// reusables
+@import "helpers";
+@import "widgets";
+
+// specific pages
+@import "pages/homepage";
+@import "pages/formResultsPage";
+
+body {
+  font-family: sans-serif;
+}
+
+main {
+  header {
+    > h1 {
+      margin: 0;
+    }
+
+    > h2 {
+      margin: 5px 0 0 0;
+    }
+  }
+
+  nav {
+    clear: both;
+    overflow: hidden;
+    margin: 0 0 25px 0;
+
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+
+      li {
+        float: left;
+        margin: 5px 0 0 0;
+      }
+
+      li::after {
+        content: "|";
+        display: inline-block;
+        margin: 0 10px;
+      }
+
+      li:last-of-type::after {
+        content: "";
+        display: inline-block;
+        margin: 0;
+      }
+    }
+  }
+
+  article {
+    clear: both;
+  }
+}
