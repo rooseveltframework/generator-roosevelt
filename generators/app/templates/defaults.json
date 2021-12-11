@@ -29,11 +29,11 @@
   },
   "Sass": {
     "dependencies": {
-      "node-sass": "~6.0.0"
+      "sass": "~1.39.0"
     },
     "config": {
       "enable": true,
-      "module": "node-sass",
+      "module": "sass",
       "options": {}
     },
     "scripts": {
