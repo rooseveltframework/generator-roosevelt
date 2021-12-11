@@ -8,7 +8,7 @@
 
 - Added option to generate isomorphic app (comes with bootstrapping for Roosevelt's single page app support) off by default.
 - Refactored sample app to improve some defaults.
-- Various dependencies bumped. Notably large refactors were needed to update dependencies this time, mostly due to breaking changes with Yeoman and Stylelint.
+- Various dependencies bumped. Notably large refactors were needed to update dependencies this time, mostly due to breaking changes with Stylelint.
 
 ## 0.19.7
 

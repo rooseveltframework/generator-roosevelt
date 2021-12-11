@@ -35,11 +35,6 @@ describe('generator options', function () {
     })
 
     it('created and navigated to default app folder', function () {
-      // TODO:
-      // the console log below used to output /private/tmp/[long string]/my-roosevelt-sample-app
-      // now it outputs /private/tmp/[long string] without "my-roosevelt-sample-app" at the end
-      // need to figure out why that is and how to fix it to fix these tests
-      console.log(process.cwd())
       assert.strictEqual(path.basename(process.cwd()), defaults.appName.toLowerCase().replace(/ /g, '-'))
     })
 
@@ -60,7 +55,6 @@ describe('generator options', function () {
 
     it('filled rooseveltConfig.json with correct contents', function () {
       assert.JSONFileContent('rooseveltConfig.json', {
-        port: defaults.httpPort,
         https: defaults.https,
         modelsPath: defaults.modelsPath,
         viewsPath: defaults.viewsPath,
@@ -84,8 +78,8 @@ describe('generator options', function () {
     })
 
     it('generated correct controller file(s)', function () {
-      assert.fileContent('mvc/controllers/homepage.js', /{content\.appTitle}/)
-      assert.fileContent('mvc/controllers/404.js', /{content\.appTitle}/)
+      assert.fileContent('mvc/controllers/homepage.js', /model\.content\.pageTitle = 'Homepage'/)
+      assert.fileContent('mvc/controllers/404.js', /model\.server\.appVersion/)
     })
 
     it('generated correct model file(s)', function () {
@@ -94,7 +88,7 @@ describe('generator options', function () {
 
     it('generated correct view file(s)', function () {
       assert.fileContent('mvc/views/homepage.html', /{content\.hello}/)
-      assert.fileContent('mvc/views/404.html', /{appVersion}/)
+      assert.fileContent('mvc/views/404.html', /{server.appVersion}/)
     })
   })
 

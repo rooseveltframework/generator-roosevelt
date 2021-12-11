@@ -3,6 +3,7 @@ const helper = require('./promptingHelpers')
 const defaults = require('./templates/defaults.json')
 const beautify = require('gulp-beautify')
 const filter = require('gulp-filter')
+const terminalLink = require('terminal-link')
 const cache = {}
 
 module.exports = class extends Generator {
@@ -22,6 +23,14 @@ module.exports = class extends Generator {
       type: String,
       required: false,
       desc: 'Skips all prompts and creates a Roosevelt app with all defaults.'
+    })
+
+    this.option('install-deps', {
+      alias: 'i',
+      type: Boolean,
+      required: false,
+      default: false,
+      desc: 'Automatically installs app dependencies.'
     })
 
     this.option('skip-closing-message', {
@@ -518,18 +527,6 @@ module.exports = class extends Generator {
       this.httpPort = helper.randomPort()
     }
 
-    // prevents httpPort from being set to anything that is already being used
-    // 9856 and 9857 are the reload ports
-    while (this.httpPort === this.httpsPort || this.httpPort === 9856 || this.httpPort === 9857) {
-      this.httpPort = helper.randomPort()
-    }
-
-    // prevents httpsPort from being set to anything that is already being used
-    // 9856 and 9857 are the reload ports
-    while (this.httpPort === this.httpsPort || this.httpsPort === 9856 || this.httpsPort === 9857) {
-      this.httpsPort = helper.randomPort()
-    }
-
     // HTTPS
     if (this.enableHTTPS) {
       httpsParams = {
@@ -637,7 +634,7 @@ module.exports = class extends Generator {
   writing () {
     const jsonFilter = filter(['**/*.json'], { restore: true })
 
-    this.queueTransformStream([
+    this.registerTransformStream([
       jsonFilter,
       beautify({ indent_size: 2 }),
       jsonFilter.restore
@@ -1032,10 +1029,13 @@ module.exports = class extends Generator {
     if (!this.options['skip-closing-message']) {
       this.log(`\nYour app ${this.appName} has been generated.\n`)
       this.log('To run the app:')
-      this.log('- Install dependencies: npm i')
+      if (!this.options['install-deps']) {
+        this.log('- Install dependencies: npm i')
+      }
       this.log('- To run in dev mode:   npm run dev')
       this.log('- To run in prod mode:  npm run prod')
-      this.log(`Once running, visit ${helper.whichHttpToShow(this.https, this.httpsOnly)}://localhost:${this.httpPort}\n`)
+      const url = helper.whichHttpToShow(this.https, this.httpsOnly) + '://localhost:' + this.httpPort
+      this.log('Once running, visit ' + terminalLink(url, url) + '\n')
       this.log('To make further changes to the config, edit package.json. See https://github.com/rooseveltframework/roosevelt#configure-your-app-with-parameters for information on the configuration options.')
     }
   }
