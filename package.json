@@ -24,7 +24,7 @@
     "gulp-filter": "~7.0.0",
     "node-forge": "~0.10.0",
     "terminal-link": "~2.1.1",
-    "yeoman-generator": "~4.13.0"
+    "yeoman-generator": "~5.0.0"
   },
   "devDependencies": {
     "c8": "~7.11.0",
@@ -35,7 +35,7 @@
     "roosevelt": "~0.19.11",
     "standard": "~16.0.4",
     "yeoman-assert": "~3.1.1",
-    "yeoman-test": "~4.0.0"
+    "yeoman-test": "~5.0.0"
   },
   "repository": {
     "type": "git",
