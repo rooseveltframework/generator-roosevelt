@@ -37,14 +37,6 @@ helper.sanitizePackageName = function (appName) {
     .toLowerCase()
 }
 
-helper.whichHttpToShow = function (https, httpsOnly) {
-  if (https === 'true' && httpsOnly === 'false') {
-    return 'http(s)'
-  } else if (https === 'true' && httpsOnly === 'true') {
-    return 'https'
-  } else {
-    return 'http'
-  }
-}
+helper.whichHttpToShow = 'https'
 
 module.exports = helper
