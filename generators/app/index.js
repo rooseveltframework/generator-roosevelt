@@ -4,8 +4,7 @@ const defaults = require('./templates/defaults.json')
 const beautify = require('gulp-beautify')
 const filter = require('gulp-filter')
 const terminalLink = require('terminal-link')
-const selfsigned = require('selfsigned');
-const fs = require('fs')
+const selfsigned = require('selfsigned')
 const pems = selfsigned.generate(null, {
   keySize: 2048, // the size for the private key in bits (default: 1024)
   days: 3650, // how long till expiry of the signed certificate (default: 365) days:3650 = years: 10
@@ -14,7 +13,7 @@ const pems = selfsigned.generate(null, {
   pkcs7: true, // include PKCS#7 as part of the output (default: false)
   clientCertificate: true, // generate client cert signed by the original key (default: false)
   clientCertificateCN: 'unkown' // client certificate's common name (default: 'John Doe jdoe123')
-});
+})
 
 const cache = {}
 
@@ -36,7 +35,6 @@ module.exports = class extends Generator {
       required: false,
       desc: 'Skips all prompts and creates a Roosevelt app with all defaults.'
     })
-
   }
 
   start () {
@@ -92,7 +90,6 @@ module.exports = class extends Generator {
         this.dirname = response.dirname
       })
   }
-
 
   mvc () {
     if (this.configMode !== 'Customize') {
@@ -220,17 +217,17 @@ module.exports = class extends Generator {
     }
 
     // HTTPS
-      httpsParams = {
-        enable: true,
-        port: this.httpsPort,
-        force: this.httpsOnly,
-        authInfoPath: {
+    httpsParams = {
+      enable: true,
+      port: this.httpsPort,
+      force: this.httpsOnly,
+      authInfoPath: {
         authCertAndKey: {
           cert: './certs/cert.pem',
           key: './certs/key.pem'
         }
       }
-      }
+    }
 
     this.httpsParams = httpsParams
     this.cssCompiler = this.cssCompiler || 'default'
@@ -306,7 +303,7 @@ module.exports = class extends Generator {
         }
       )
     }
-  } 
+  }
 
   writing () {
     const jsonFilter = filter(['**/*.json'], { restore: true })
@@ -317,14 +314,13 @@ module.exports = class extends Generator {
       jsonFilter.restore
     ])
 
-      this.log('Generating SSL certs...')
+    this.log('Generating SSL certs...')
 
-      const cert = pems.cert
-      const key =  pems.private
-      
-      this.fs.write(this.destinationPath('./certs/cert.pem'), cert)
-      this.fs.write(this.destinationPath('./certs/key.pem'), key)
-    
+    const cert = pems.cert
+    const key = pems.private
+
+    this.fs.write(this.destinationPath('./certs/cert.pem'), cert)
+    this.fs.write(this.destinationPath('./certs/key.pem'), key)
 
     this.fs.copyTpl(
       this.templatePath('_package.json'),
