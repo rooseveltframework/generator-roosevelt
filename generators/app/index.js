@@ -91,6 +91,30 @@ module.exports = class extends Generator {
       })
   }
 
+  spa () {
+    if (this.spaMode === false) {
+      return true
+    }
+
+    return this.prompt(
+      [
+        {
+          type: 'list',
+          name: 'spaMode',
+          choices: [
+            'Standard app',
+            'Isomorphic (single page app)'
+          ],
+          message: 'Generate a standard app (for just doing server-side renders) or an isomorphic app (comes with bootstrapping for Roosevelt\'s single page app support)?',
+          default: false
+        }
+      ]
+    )
+      .then((response) => {
+        this.spaMode = response.spaMode === 'Isomorphic (single page app)' || false
+      })
+  }
+
   mvc () {
     if (this.configMode !== 'Customize') {
       return true
