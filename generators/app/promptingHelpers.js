@@ -37,12 +37,6 @@ helper.sanitizePackageName = function (appName) {
     .toLowerCase()
 }
 
-// helper.countryValidation = function (input) {
-//   if (!/^[A-Z]{2}$/.test(input)) {
-//     return 'Incorrect input please enter in this format (e.g. US, CA)'
-//   }
-//   return true
-// }
 
 helper.whichHttpToShow = function (https, httpsOnly) {
   if (https === 'true' && httpsOnly === 'false') {
