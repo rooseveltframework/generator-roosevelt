@@ -1,10 +1,7 @@
 {
   "port": <%= port %>,
   "generateFolderStructure": true,
-  "https": {
-    "cert": <%- JSON.stringify('./certs/certPem.pem') %>,
-    "key": <%- JSON.stringify('./certs/privatePem.pem') %>
-  },
+  "https": <%- JSON.stringify(https) %>,
   "modelsPath": <%- JSON.stringify(modelsPath) %>,
   "viewsPath": <%- JSON.stringify(viewsPath) %>,
   "viewEngine": <%- JSON.stringify(viewEngine) %>,<%- spaModeConfig ? spaModeConfig : '' %>

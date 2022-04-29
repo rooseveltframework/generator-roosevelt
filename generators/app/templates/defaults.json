@@ -6,7 +6,7 @@
   "createDir": true,
   "httpPort": "Random",
   "https": true,
-  "altURI": "http://localhost/",
+  "altURI": "https://localhost/",
   "altIP": "127.0.0.1",
   "defaultCSSCompiler": "Less",
   "Less": {
