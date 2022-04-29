@@ -20,12 +20,12 @@
     },
     "scripts": {
       "cssExt": "less",
-      "stylelintPostCssModule": "\"postcss-less\": \"~5.0.0\""
+      "stylelintPostCssModule": "\"postcss-less\": \"~6.0.0\""
     }
   },
   "Sass": {
     "dependencies": {
-      "sass": "~1.39.0"
+      "sass": "~1.51.0"
     },
     "config": {
       "enable": true,
