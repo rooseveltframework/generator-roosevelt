@@ -4,6 +4,17 @@ const defaults = require('./templates/defaults.json')
 const beautify = require('gulp-beautify')
 const filter = require('gulp-filter')
 const terminalLink = require('terminal-link')
+const selfsigned = require('selfsigned')
+const pems = selfsigned.generate(null, {
+  keySize: 2048, // the size for the private key in bits (default: 1024)
+  days: 3650, // how long till expiry of the signed certificate (default: 365) days:3650 = years: 10
+  algorithm: 'sha256', // sign the certificate with specified algorithm (default: 'sha1')
+  extensions: [{ name: 'basicConstraints', cA: true }], // certificate extensions array
+  pkcs7: true, // include PKCS#7 as part of the output (default: false)
+  clientCertificate: true, // generate client cert signed by the original key (default: false)
+  clientCertificateCN: 'unkown' // client certificate's common name (default: 'John Doe jdoe123')
+})
+
 const cache = {}
 
 module.exports = class extends Generator {
@@ -158,13 +169,13 @@ module.exports = class extends Generator {
             `${defaults.httpPort}`,
             'Custom'
           ],
-          message: 'Which HTTP port would you like to use?',
+          message: 'Which HTTPS port would you like to use?',
           default: 'Random'
         },
         {
           when: (answers) => answers.portNumber === 'Custom',
           type: 'input',
-          name: 'customHttpPort',
+          name: 'customHttpsPort',
           message: 'Custom HTTP port your app will run on:',
           validate: helper.validatePortNumber
         }
@@ -175,78 +186,12 @@ module.exports = class extends Generator {
       if (response.portNumber === 'Random') {
         this.httpPort = helper.randomPort()
       } else if (response.portNumber === 'Custom') {
-        this.httpPort = response.customHttpPort
+        this.httpPort = response.customHttpsPort
       } else {
         this.httpPort = defaults.httpPort
       }
     })
   }
-
-  // generateSSLCerts () {
-  //   if (!this.enableHTTPS) {
-  //     return true
-  //   }
-
-  //   return this.prompt(
-  //     [
-  //       {
-  //         type: 'confirm',
-  //         name: 'generateSSL',
-  //         message: 'Would you like to generate SSL certs now?',
-  //         default: false
-  //       },
-  //       {
-  //         when: (answers) => answers.generateSSL,
-  //         type: 'input',
-  //         name: 'commonName',
-  //         message: 'Enter the public domain name of your website (e.g. www.google.com)',
-  //         validate: helper.inputRequired
-  //       },
-  //       {
-  //         when: (answers) => answers.generateSSL,
-  //         type: 'input',
-  //         name: 'countryName',
-  //         message: 'Enter the two-character denomination of your country (e.g. US, CA)',
-  //         validate: helper.countryValidation
-  //       },
-  //       {
-  //         when: (answers) => answers.generateSSL,
-  //         type: 'input',
-  //         name: 'stateName',
-  //         message: 'Enter the name of your state or province, if applicable',
-  //         default: defaults.stateName
-  //       },
-  //       {
-  //         when: (answers) => answers.generateSSL,
-  //         type: 'input',
-  //         name: 'localityName',
-  //         message: 'Enter the name of your city',
-  //         default: defaults.localityName
-  //       },
-  //       {
-  //         when: (answers) => answers.generateSSL,
-  //         type: 'input',
-  //         name: 'organizationName',
-  //         message: 'Enter the legal name of your organization, if applicable',
-  //         default: defaults.organizationName
-  //       },
-  //       {
-  //         when: (answers) => answers.generateSSL,
-  //         type: 'input',
-  //         name: 'organizationalUnit',
-  //         message: 'Enter the organizational unit represented by the site, if applicable (e.g. Internet Sales)',
-  //         default: defaults.organizationalUnit
-  //       }
-  //     ]
-  //   )
-  //     .then((response) => {
-  //       const responseKeys = Object.keys(response)
-
-  //       responseKeys.forEach((answer) => {
-  //         this[answer] = response[answer]
-  //       })
-  //     })
-  // }
 
   HTTPS () {
     if (!this.enableHTTPS) {
@@ -273,12 +218,12 @@ module.exports = class extends Generator {
           message: 'Custom HTTPS port your app will run on:',
           default: defaults.https.httpsPort,
           validate: helper.validatePortNumber
-        },
+        }
       ]
     )
       .then((response) => {
         if (response.httpsPortNumber === 'Random') {
-          this.httpsPort = helper.randomPort(this.httpPort)
+          this.httpsPort = helper.randomPort(this.httpsPort)
         } else if (response.httpsPortNumber === 'Custom') {
           this.httpsPort = response.customHttpsPort
         } else {
@@ -425,7 +370,6 @@ module.exports = class extends Generator {
   setParams () {
     const standardInstall = this.options['standard-install']
     let destination
-    let httpsParams
 
     this.symlinks = [
       {
@@ -448,25 +392,17 @@ module.exports = class extends Generator {
     }
 
     // HTTPS
-      httpsParams = {
-        enable: this.enableHTTPS,
-        port: this.httpsPort,
-        force: this.httpsOnly
+    const httpsParams = {
+      enable: true,
+      port: this.httpsPort,
+      force: this.httpsOnly,
+      authInfoPath: {
+        authCertAndKey: {
+          cert: './certs/cert.pem',
+          key: './certs/key.pem'
+        }
       }
-
-      httpsParams.authInfoPath = {}
-
-      if (this.pfx === 'pfx') {
-        httpsParams.authInfoPath.p12 = {
-          p12Path: this.pfxPath,
-          passphrase: this.pfxPassphrase
-        }
-      } else {
-        httpsParams.authInfoPath.authCertAndKey = {
-          cert: this.certPath,
-          key: this.keyPath
-        }
-      } 
+    }
 
     this.httpsParams = httpsParams
     this.cssCompiler = this.cssCompiler || 'default'
@@ -547,65 +483,19 @@ module.exports = class extends Generator {
   writing () {
     const jsonFilter = filter(['**/*.json'], { restore: true })
 
+    this.log('Generating SSL certs...')
+
+    const cert = pems.cert
+    const key = pems.private
+
+    this.fs.write(this.destinationPath('./certs/cert.pem'), cert)
+    this.fs.write(this.destinationPath('./certs/key.pem'), key)
+
     this.registerTransformStream([
       jsonFilter,
       beautify({ indent_size: 2 }),
       jsonFilter.restore
     ])
-
-    if (this.generateSSL) {
-      const forge = require('node-forge')
-      const pki = forge.pki
-      const keys = pki.rsa.generateKeyPair(2048)
-      const cert = pki.createCertificate()
-      const attrs = [
-        {
-          name: 'commonName',
-          value: this.commonName
-        },
-        {
-          name: 'countryName',
-          value: this.countryName
-        },
-        {
-          shortName: 'ST',
-          value: this.stateName
-        },
-        {
-          name: 'localityName',
-          value: this.localityName
-        },
-        {
-          name: 'organizationName',
-          value: this.organizationName
-        },
-        {
-          shortName: 'OU',
-          value: this.organizationalUnit
-        }
-      ]
-
-      this.log('Generating SSL certs...')
-
-      cert.publicKey = keys.publicKey
-      cert.serialNumber = '01'
-      cert.validity.notBefore = new Date()
-      cert.validity.notAfter = new Date()
-      cert.validity.notAfter.setFullYear(cert.validity.notBefore.getFullYear() + 1)
-
-      cert.setSubject(attrs)
-      cert.setIssuer(attrs)
-
-      cert.sign(keys.privateKey)
-
-      const publicPem = pki.publicKeyToPem(keys.publicKey)
-      const certPem = pki.certificateToPem(cert)
-      const privatePem = pki.privateKeyToPem(keys.privateKey)
-
-      this.fs.write(this.destinationPath('public.pem'), publicPem)
-      this.fs.write(this.destinationPath('certPem.pem'), certPem)
-      this.fs.write(this.destinationPath('privatePem.pem'), privatePem)
-    }
 
     this.fs.copyTpl(
       this.templatePath('_package.json'),
@@ -947,7 +837,7 @@ module.exports = class extends Generator {
       }
       this.log('- To run in dev mode:   npm run dev')
       this.log('- To run in prod mode:  npm run prod')
-      const url = helper.whichHttpToShow(this.https, this.httpsOnly) + '://localhost:' + this.httpPort
+      const url = helper.whichHttpToShow + '://localhost:' + this.httpPort
       this.log('Once running, visit ' + terminalLink(url, url) + '\n')
       this.log('To make further changes to the config, edit package.json. See https://github.com/rooseveltframework/roosevelt#configure-your-app-with-parameters for information on the configuration options.')
     }
