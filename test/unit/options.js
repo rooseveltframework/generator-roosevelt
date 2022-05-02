@@ -53,30 +53,6 @@ describe('generator options', function () {
       })
     })
 
-    it('filled rooseveltConfig.json with correct contents', function () {
-      assert.JSONFileContent('rooseveltConfig.json', {
-        https: defaults.https,
-        modelsPath: defaults.modelsPath,
-        viewsPath: defaults.viewsPath,
-        viewEngine: defaults.viewEngine,
-        controllersPath: defaults.controllersPath,
-        css: {
-          compiler: defaults.Less.config
-        },
-        js: {
-          webpack: {
-            bundles: defaults.webpackBundle
-          }
-        },
-        symlinks: [
-          {
-            source: '${staticsRoot}/images', // eslint-disable-line
-            dest: '${publicFolder}/images' // eslint-disable-line
-          }
-        ]
-      })
-    })
-
     it('generated correct controller file(s)', function () {
       assert.fileContent('mvc/controllers/homepage.js', /model\.content\.pageTitle = 'Homepage'/)
       assert.fileContent('mvc/controllers/404.js', /model\.server\.appVersion/)

@@ -20,12 +20,12 @@ helper.validatePortNumber = function (input) {
   return true
 }
 
-helper.randomPort = function (httpPort) {
+helper.randomPort = function (httpsPort) {
   let port
   do {
     port = Math.round(Math.random() * (65536 - 1000) + 1000)
   }
-  while (helper.validatePortNumber(port) !== true || port === httpPort)
+  while (helper.validatePortNumber(port) !== true || port === httpsPort)
   return port
 }
 
@@ -35,23 +35,6 @@ helper.sanitizePackageName = function (appName) {
     .replace(/\s+/g, '-')
     .replace(/(.{1,213})(.*)/, '$1')
     .toLowerCase()
-}
-
-helper.countryValidation = function (input) {
-  if (!/^[A-Z]{2}$/.test(input)) {
-    return 'Incorrect input please enter in this format (e.g. US, CA)'
-  }
-  return true
-}
-
-helper.whichHttpToShow = function (https, httpsOnly) {
-  if (https === 'true' && httpsOnly === 'false') {
-    return 'http(s)'
-  } else if (https === 'true' && httpsOnly === 'true') {
-    return 'https'
-  } else {
-    return 'http'
-  }
 }
 
 module.exports = helper

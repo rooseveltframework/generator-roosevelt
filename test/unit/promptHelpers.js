@@ -50,24 +50,4 @@ describe('Prompt Helpers', function () {
       assert.strictEqual(typeof helper.randomPort(), 'number')
     })
   })
-
-  describe('countryValidation()', function () {
-    it('Should allow a 2 character country abbreviation', function () {
-      assert.strictEqual(helper.countryValidation('US'), true)
-    })
-
-    it('Should not allow 3 letters, \'USA\'', function () {
-      assert.strictEqual(helper.countryValidation('USA'), 'Incorrect input please enter in this format (e.g. US, CA)')
-    })
-  })
-
-  describe('whichHttpToShow()', function () {
-    it('Should return \'http(s)\' if https is true and httpsOnly is false', function () {
-      assert.strictEqual(helper.whichHttpToShow('true', 'false'), 'http(s)')
-    })
-
-    it('Should return \'https\' if https is true and httpsOnly is true', function () {
-      assert.strictEqual(helper.whichHttpToShow('true', 'true'), 'https')
-    })
-  })
 })
