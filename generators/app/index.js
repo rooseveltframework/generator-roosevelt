@@ -12,7 +12,7 @@ const pems = selfsigned.generate(null, {
   extensions: [{ name: 'basicConstraints', cA: true }], // certificate extensions array
   pkcs7: true, // include PKCS#7 as part of the output (default: false)
   clientCertificate: true, // generate client cert signed by the original key (default: false)
-  clientCertificateCN: 'unkown' // client certificate's common name (default: 'John Doe jdoe123')
+  clientCertificateCN: 'unknown' // client certificate's common name (default: 'John Doe jdoe123')
 })
 
 const cache = {}
