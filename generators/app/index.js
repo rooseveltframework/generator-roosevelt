@@ -157,47 +157,7 @@ module.exports = class extends Generator {
     if (this.configMode !== 'Customize') {
       return true
     }
-
-    return this.prompt(
-      [
-        {
-          when: (answers) => !answers.httpsOnly,
-          type: 'list',
-          name: 'portNumber',
-          choices: [
-            'Random',
-            `${defaults.httpPort}`,
-            'Custom'
-          ],
-          message: 'Which HTTPS port would you like to use?',
-          default: 'Random'
-        },
-        {
-          when: (answers) => answers.portNumber === 'Custom',
-          type: 'input',
-          name: 'customHttpsPort',
-          message: 'Custom HTTP port your app will run on:',
-          validate: helper.validatePortNumber
-        }
-      ]
-    ).then((response) => {
-      this.enableHTTPS = response.enableHTTPS
-      this.httpsOnly = response.httpsOnly
-      if (response.portNumber === 'Random') {
-        this.httpPort = helper.randomPort()
-      } else if (response.portNumber === 'Custom') {
-        this.httpPort = response.customHttpsPort
-      } else {
-        this.httpPort = defaults.httpPort
-      }
-    })
-  }
-
-  HTTPS () {
-    if (!this.enableHTTPS) {
-      return true
-    }
-
+    
     return this.prompt(
       [
         {
