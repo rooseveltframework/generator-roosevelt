@@ -50,10 +50,4 @@ describe('Prompt Helpers', function () {
       assert.strictEqual(typeof helper.randomPort(), 'number')
     })
   })
-
-  describe('whichHttpToShow()', function () {
-    it('Should return \'https\' ', function () {
-      assert.strictEqual('https')
-    })
-  })
 })

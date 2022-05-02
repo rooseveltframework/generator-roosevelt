@@ -35,35 +35,6 @@ describe('Generator Prompts', function () {
     })
   })
 
-  describe('HTTP Ports', function () {
-    it('Should set the HTTP Port to a custom port', function () {
-      return helpers.run(path.join(__dirname, '../../generators/app'))
-        .withPrompts({
-          configMode: 'Customize',
-          portNumber: 'Custom',
-          customHttpPort: 1234
-        })
-        .then(function () {
-          assert.JSONFileContent('rooseveltConfig.json', {
-            port: 1234
-          })
-        })
-    })
-
-    it('Should set the HTTP Port to a random port', function () {
-      return helpers.run(path.join(__dirname, '../../generators/app'))
-        .withPrompts({
-          configMode: 'Customize',
-          portNumber: 'Random'
-        })
-        .then(function () {
-          const data = fs.readFileSync('rooseveltConfig.json')
-          const jsonData = JSON.parse(data)
-          assert.strictEqual(typeof jsonData.port, 'number')
-        })
-    })
-  })
-
   describe('HTTPS Ports', function () {
     it('Should set the HTTPS Port to a custom port', function () {
       return helpers.run(path.join(__dirname, '../../generators/app'))
@@ -92,55 +63,7 @@ describe('Generator Prompts', function () {
         .then(function () {
           const data = fs.readFileSync('rooseveltConfig.json')
           const jsonData = JSON.parse(data)
-          assert.notEqual(jsonData.https.port, jsonData.port)
           assert.strictEqual(typeof jsonData.https.port, 'number')
-        })
-    })
-  })
-
-  describe('SSL', function () {
-    it('Should create SSL certs if generate ssl is true', function () {
-      this.timeout(10000)
-      return helpers.run(path.join(__dirname, '../../generators/app'))
-        .withPrompts({
-          configMode: 'Customize',
-          enableHTTPS: true,
-          generateSSL: true,
-          commonName: 'www.google.com',
-          countryName: 'US',
-          pfx: 'pfx'
-        })
-        .then(function (done) {
-          assert.file('certPem.pem')
-          assert.file('privatePem.pem')
-          assert.file('public.pem')
-        })
-    })
-
-    it('Should create .cert cert files', function () {
-      this.timeout(10000)
-      return helpers.run(path.join(__dirname, '../../generators/app'))
-        .withPrompts({
-          configMode: 'Customize',
-          enableHTTPS: true,
-          generateSSL: true,
-          commonName: 'www.google.com',
-          countryName: 'US',
-          pfx: 'cert',
-          certPath: './cert.pem',
-          keyPath: './key.pem'
-        })
-        .then(function (done) {
-          assert.JSONFileContent('rooseveltConfig.json', {
-            https: {
-              authInfoPath: {
-                authCertAndKey: {
-                  cert: './cert.pem',
-                  key: './key.pem'
-                }
-              }
-            }
-          })
         })
     })
   })
