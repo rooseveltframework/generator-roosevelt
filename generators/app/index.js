@@ -157,7 +157,7 @@ module.exports = class extends Generator {
     if (this.configMode !== 'Customize') {
       return true
     }
-    
+
     return this.prompt(
       [
         {
