@@ -117,34 +117,6 @@ describe('Generator Prompts', function () {
         })
     })
 
-    it('Should create p12 pfx certs', function () {
-      this.timeout(10000)
-      return helpers.run(path.join(__dirname, '../../generators/app'))
-        .withPrompts({
-          configMode: 'Customize',
-          enableHTTPS: true,
-          generateSSL: true,
-          commonName: 'www.google.com',
-          countryName: 'US',
-          pfx: 'pfx',
-          pfxPath: './cert.p12'
-        })
-        .then(function (done) {
-          const data = fs.readFileSync('rooseveltConfig.json')
-          const jsonData = JSON.parse(data)
-          assert.strictEqual(typeof jsonData.https.authInfoPath, 'object')
-          assert.JSONFileContent('rooseveltConfig.json', {
-            https: {
-              authInfoPath: {
-                p12: {
-                  p12Path: './cert.p12'
-                }
-              }
-            }
-          })
-        })
-    })
-
     it('Should create .cert cert files', function () {
       this.timeout(10000)
       return helpers.run(path.join(__dirname, '../../generators/app'))
