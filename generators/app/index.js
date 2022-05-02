@@ -355,7 +355,7 @@ module.exports = class extends Generator {
     const httpsParams = {
       enable: true,
       port: this.httpsPort,
-      force: this.httpsOnly,
+      force: true,
       authInfoPath: {
         authCertAndKey: {
           cert: './certs/cert.pem',
