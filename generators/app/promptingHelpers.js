@@ -20,12 +20,12 @@ helper.validatePortNumber = function (input) {
   return true
 }
 
-helper.randomPort = function (httpPort) {
+helper.randomPort = function (httpsPort) {
   let port
   do {
     port = Math.round(Math.random() * (65536 - 1000) + 1000)
   }
-  while (helper.validatePortNumber(port) !== true || port === httpPort)
+  while (helper.validatePortNumber(port) !== true || port === httpsPort)
   return port
 }
 

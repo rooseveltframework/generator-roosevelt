@@ -165,7 +165,6 @@ module.exports = class extends Generator {
           name: 'httpsPortNumber',
           choices: [
             'Random',
-            43733,
             'Custom'
           ],
           message: 'Which HTTPS port would you like to use?',
@@ -346,9 +345,9 @@ module.exports = class extends Generator {
 
     this.destinationRoot(destination)
 
-    this.httpPort = this.httpPort || defaults.httpPort
-    if (this.httpPort === 'Random') {
-      this.httpPort = helper.randomPort()
+    this.httpsPort = this.httpsPort || defaults.httpsPort
+    if (this.httpsPort === 'Random') {
+      this.httpsPort = helper.randomPort()
     }
 
     // HTTPS
@@ -488,7 +487,7 @@ module.exports = class extends Generator {
       this.templatePath('_rooseveltConfig.json'),
       this.destinationPath('rooseveltConfig.json'),
       {
-        port: this.httpPort,
+        port: this.httpsPort,
         https: this.httpsParams,
         modelsPath: this.modelsPath,
         viewsPath: this.viewsPath,
@@ -797,7 +796,7 @@ module.exports = class extends Generator {
       }
       this.log('- To run in dev mode:   npm run dev')
       this.log('- To run in prod mode:  npm run prod')
-      const url = helper.whichHttpToShow + '://localhost:' + this.httpPort
+      const url = helper.whichHttpToShow + '://localhost:' + this.httpsPort
       this.log('Once running, visit ' + terminalLink(url, url) + '\n')
       this.log('To make further changes to the config, edit package.json. See https://github.com/rooseveltframework/roosevelt#configure-your-app-with-parameters for information on the configuration options.')
     }

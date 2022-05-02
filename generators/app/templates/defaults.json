@@ -4,7 +4,7 @@
   },
   "appName": "My Roosevelt Sample App",
   "createDir": true,
-  "httpPort": "Random",
+  "httpsPort": "Random",
   "https": true,
   "altURI": "https://localhost/",
   "altIP": "127.0.0.1",
