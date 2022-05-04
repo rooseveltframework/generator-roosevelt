@@ -12,9 +12,9 @@
   "dependencies": <%- JSON.stringify(dependencies) %>,
   "devDependencies": {
     "nodemon": "~2.0.0",
-    "standard": "~16.0.0",
-    "stylelint": "~14.1.0",
-    "stylelint-config-standard": "~24.0.0",
+    "standard": "~17.0.0",
+    "stylelint": "~14.8.0",
+    "stylelint-config-standard": "~25.0.0",
     <%- stylelintPostCssModule %>
   },
   "nodemonConfig": {

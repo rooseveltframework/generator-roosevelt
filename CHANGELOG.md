@@ -4,6 +4,11 @@
 
 - Put your changes here...
 
+## 0.19.9
+
+- Generator will now only generate apps that use HTTPS by default. It will also generate a self-signed cert for you. Non-secure HTTP can still be used, but you have to enable it manually after the app is generated.
+- Various dependencies bumped.
+
 ## 0.19.8
 
 - Added option to generate isomorphic app (comes with bootstrapping for Roosevelt's single page app support) off by default.
