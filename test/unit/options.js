@@ -3,7 +3,6 @@
 const path = require('path')
 const assert = require('yeoman-assert')
 const helpers = require('yeoman-test')
-const execSync = require('child_process').execSync
 const defaults = require('../../generators/app/templates/defaults.json')
 const defaultFiles = [
   '.gitignore',
@@ -32,14 +31,14 @@ describe('generator options', function () {
   describe.only('Should automatically do a standard install with -s', function () {
     before(async function () {
       runner = await helpers
-      .create(path.join(__dirname, '../../generators/app'))
-      .withOptions({
-        'standard-install': true
-      })
-      .doInDir(folder => {
-        return folder
-      })
-      .run()
+        .create(path.join(__dirname, '../../generators/app'))
+        .withOptions({
+          'standard-install': true
+        })
+        .doInDir(folder => {
+          return folder
+        })
+        .run()
 
       // this fun line ensures that the runner context is looking at the folder the app got generated in
       runner.cwd += `/${defaults.appName.toLowerCase().replace(/ /g, '-')}`
@@ -95,7 +94,8 @@ describe('generator options', function () {
       const oldConsole = console
 
       // overload the console to prevent log spamming and to also store an array of logs that happen
-      console = {
+      // standard hates this
+      console = { // eslint-disable-line
         log: log => {
           logData.push(log)
         }
@@ -105,7 +105,8 @@ describe('generator options', function () {
       auditor.audit(runner.cwd)
 
       // restore the console
-      console = oldConsole
+      // standard hates this
+      console = oldConsole // eslint-disable-line
 
       // examine the log data and skim for an indication that the audit passed
       for (const log of logData) {
