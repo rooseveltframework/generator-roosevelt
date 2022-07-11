@@ -5,15 +5,6 @@ const beautify = require('gulp-beautify')
 const filter = require('gulp-filter')
 const terminalLink = require('terminal-link')
 const selfsigned = require('selfsigned')
-const pems = selfsigned.generate(null, {
-  keySize: 2048, // the size for the private key in bits (default: 1024)
-  days: 3650, // how long till expiry of the signed certificate (default: 365) days:3650 = years: 10
-  algorithm: 'sha256', // sign the certificate with specified algorithm (default: 'sha1')
-  extensions: [{ name: 'basicConstraints', cA: true }], // certificate extensions array
-  pkcs7: true, // include PKCS#7 as part of the output (default: false)
-  clientCertificate: true, // generate client cert signed by the original key (default: false)
-  clientCertificateCN: 'unknown' // client certificate's common name (default: 'John Doe jdoe123')
-})
 
 const cache = {}
 
@@ -34,14 +25,6 @@ module.exports = class extends Generator {
       type: String,
       required: false,
       desc: 'Skips all prompts and creates a Roosevelt app with all defaults.'
-    })
-
-    this.option('install-deps', {
-      alias: 'i',
-      type: Boolean,
-      required: false,
-      default: false,
-      desc: 'Automatically installs app dependencies.'
     })
 
     this.option('skip-closing-message', {
@@ -206,7 +189,6 @@ module.exports = class extends Generator {
           choices: [
             'Less',
             'Sass',
-            'Stylus',
             'none'
           ],
           message: 'Which CSS preprocessor would you like to use?',
@@ -390,22 +372,25 @@ module.exports = class extends Generator {
         this.dependencies = Object.assign(this.dependencies, defaults[defaults.defaultCSSCompiler].dependencies)
         this.cssCompilerOptions = defaults[defaults.defaultCSSCompiler].config
         this.cssExt = defaults[defaults.defaultCSSCompiler].scripts.cssExt
+        this.stylelintConfigModule = defaults[defaults.defaultCSSCompiler].scripts.stylelintConfigModule
+        this.stylelintConfigName = defaults[defaults.defaultCSSCompiler].scripts.stylelintConfigName
         this.stylelintPostCssModule = defaults[defaults.defaultCSSCompiler].scripts.stylelintPostCssModule
+        this.stylelintSyntax = defaults[defaults.defaultCSSCompiler].scripts.stylelintSyntax
       } else if (this.cssCompiler === 'Less') {
         this.dependencies = Object.assign(this.dependencies, defaults.Less.dependencies)
         this.cssCompilerOptions = defaults.Less.config
         this.cssExt = defaults.Less.scripts.cssExt
+        this.stylelintConfigModule = defaults.Less.scripts.stylelintConfigModule
+        this.stylelintConfigName = defaults.Less.scripts.stylelintConfigName
         this.stylelintPostCssModule = defaults.Less.scripts.stylelintPostCssModule
+        this.stylelintSyntax = defaults.Less.scripts.stylelintSyntax
       } else if (this.cssCompiler === 'Sass') {
         this.dependencies = Object.assign(this.dependencies, defaults.Sass.dependencies)
         this.cssCompilerOptions = defaults.Sass.config
         this.cssExt = defaults.Sass.scripts.cssExt
+        this.stylelintConfigModule = defaults.Sass.scripts.stylelintConfigModule
+        this.stylelintConfigName = defaults.Sass.scripts.stylelintConfigName
         this.stylelintPostCssModule = defaults.Sass.scripts.stylelintPostCssModule
-      } else if (this.cssCompiler === 'Stylus') {
-        this.dependencies = Object.assign(this.dependencies, defaults.Stylus.dependencies)
-        this.cssCompilerOptions = defaults.Stylus.config
-        this.cssExt = defaults.Stylus.scripts.cssExt
-        this.stylelintPostCssModule = defaults.Stylus.scripts.stylelintPostCssModule
       }
     } else {
       this.symlinks.push(
@@ -420,7 +405,8 @@ module.exports = class extends Generator {
         options: {}
       }
       this.cssExt = 'css'
-      this.stylelintPostCssModule = ''
+      this.stylelintConfigModule = defaults.Less.scripts.stylelintConfigModule
+      this.stylelintConfigName = defaults.Less.scripts.stylelintConfigName
     }
 
     // generate params for selected JS compiler
@@ -440,30 +426,43 @@ module.exports = class extends Generator {
   }
 
   writing () {
-    const jsonFilter = filter(['**/*.json'], { restore: true })
+    const jsonFilter = filter(['**/*.json'], { restore: true, dot: true })
 
     this.log('Generating SSL certs...')
 
-    const cert = pems.cert
-    const key = pems.private
+    // generate a self signed certificate with a far flung expiration date
+    const certs = selfsigned.generate(null, {
+      keySize: 2048, // the size for the private key in bits (default: 1024)
+      days: 3650, // how long till expiry of the signed certificate (default: 365) days:3650 = years: 10
+      algorithm: 'sha256', // sign the certificate with specified algorithm (default: 'sha1')
+      extensions: [{ name: 'basicConstraints', cA: true }], // certificate extensions array
+      pkcs7: true, // include PKCS#7 as part of the output (default: false)
+      clientCertificate: true, // generate client cert signed by the original key (default: false)
+      clientCertificateCN: 'unknown' // client certificate's common name (default: 'John Doe jdoe123')
+    })
+
+    // extract individual components of the cert and generate files
+    const cert = certs.cert
+    const key = certs.private
 
     this.fs.write(this.destinationPath('./certs/cert.pem'), cert)
     this.fs.write(this.destinationPath('./certs/key.pem'), key)
 
-    this.registerTransformStream([
+    this.queueTransformStream([
       jsonFilter,
-      beautify({ indent_size: 2 }),
+      beautify({ indent_size: 2, preserve_newlines: false, end_with_newline: true }),
       jsonFilter.restore
     ])
 
     this.fs.copyTpl(
-      this.templatePath('_package.json'),
+      this.templatePath('package.json.ejs'),
       this.destinationPath('package.json'),
       {
         appName: this.packageName,
         dependencies: this.dependencies,
         cssExt: this.cssExt,
-        stylelintPostCssModule: this.stylelintPostCssModule
+        stylelintPostCssModule: this.stylelintPostCssModule,
+        stylelintConfigModule: this.stylelintConfigModule
       }
     )
 
@@ -484,7 +483,7 @@ module.exports = class extends Generator {
   },`
     }
     this.fs.copyTpl(
-      this.templatePath('_rooseveltConfig.json'),
+      this.templatePath('rooseveltConfig.json.ejs'),
       this.destinationPath('rooseveltConfig.json'),
       {
         port: this.httpsPort,
@@ -497,15 +496,16 @@ module.exports = class extends Generator {
         webpackEnable: this.webpackEnable,
         webpackBundle: this.webpackBundle,
         symlinks: this.symlinks,
-        spaModeConfig: spaModeConfig
+        spaModeConfig
       }
     )
 
     this.fs.copyTpl(
-      this.templatePath('_.stylelintrc.json'),
+      this.templatePath('.stylelintrc.json.ejs'),
       this.destinationPath('.stylelintrc.json'),
       {
-        stylelintPostCssModule: this.stylelintPostCssModule
+        stylelintSyntax: this.stylelintSyntax,
+        stylelintConfigName: this.stylelintConfigName
       }
     )
 
@@ -567,8 +567,8 @@ module.exports = class extends Generator {
         this.templatePath('mvc/views/teddy/layouts/main.html'),
         this.destinationPath(this.viewsPath + '/layouts/main.html'),
         {
-          spaModeScript: spaModeScript,
-          spaModeNav: spaModeNav
+          spaModeScript,
+          spaModeNav
         }
       )
 
@@ -627,7 +627,7 @@ module.exports = class extends Generator {
         this.templatePath('mvc/controllers/teddy/404.js'),
         this.destinationPath(this.controllersPath + '/404.js'),
         {
-          spaModeScript: spaModeScript
+          spaModeScript
         }
       )
       if (this.spaMode) {
@@ -791,9 +791,6 @@ module.exports = class extends Generator {
     if (!this.options['skip-closing-message']) {
       this.log(`\nYour app ${this.appName} has been generated.\n`)
       this.log('To run the app:')
-      if (!this.options['install-deps']) {
-        this.log('- Install dependencies: npm i')
-      }
       this.log('- To run in dev mode:   npm run dev')
       this.log('- To run in prod mode:  npm run prod')
       const url = 'https://localhost:' + this.httpsPort
