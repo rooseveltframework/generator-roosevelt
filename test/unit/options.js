@@ -27,23 +27,40 @@ const defaultFiles = [
 ]
 
 describe('generator options', function () {
-  describe('Should automatically do a standard install with -s', function () {
-    beforeEach(function () {
-      return helpers.run(path.join(__dirname, '../../generators/app')).withOptions({
+  let runner
+
+  describe.only('Should automatically do a standard install with -s', function () {
+    before(async function () {
+      runner = await helpers
+      .create(path.join(__dirname, '../../generators/app'))
+      .withOptions({
         'standard-install': true
       })
+      .doInDir(folder => {
+        return folder
+      })
+      .run()
+
+      // this fun line ensures that the runner context is looking at the folder the app got generated in
+      runner.cwd += `/${defaults.appName.toLowerCase().replace(/ /g, '-')}`
+    })
+
+    after(() => {
+      if (runner) {
+        runner.restore()
+      }
     })
 
     it('created and navigated to default app folder', function () {
-      assert.strictEqual(path.basename(process.cwd()), defaults.appName.toLowerCase().replace(/ /g, '-'))
+      assert.strictEqual(path.basename(runner.cwd), defaults.appName.toLowerCase().replace(/ /g, '-'))
     })
 
     it('generated default app files', function () {
-      assert.file(defaultFiles)
+      runner.assertFile(defaultFiles)
     })
 
     it('filled package.json with correct contents', function () {
-      assert.JSONFileContent('package.json', {
+      runner.assertJsonFileContent('package.json', {
         name: defaults.appName.toLowerCase().replace(/ /g, '-'),
         dependencies: {
           roosevelt: defaults.dependencies.roosevelt,
@@ -54,50 +71,50 @@ describe('generator options', function () {
     })
 
     it('generated correct controller file(s)', function () {
-      assert.fileContent('mvc/controllers/homepage.js', /model\.content\.pageTitle = 'Homepage'/)
-      assert.fileContent('mvc/controllers/404.js', /model\.server\.appVersion/)
+      runner.assertFileContent('mvc/controllers/homepage.js', /model\.content\.pageTitle = 'Homepage'/)
+      runner.assertFileContent('mvc/controllers/404.js', /model\.server\.appVersion/)
     })
 
     it('generated correct model file(s)', function () {
-      assert.fileContent('mvc/models/global.js', /{content\.appTitle}/)
+      runner.assertFileContent('mvc/models/global.js', /{content\.appTitle}/)
     })
 
     it('generated correct view file(s)', function () {
-      assert.fileContent('mvc/views/homepage.html', /{content\.hello}/)
-      assert.fileContent('mvc/views/404.html', /{server.appVersion}/)
+      runner.assertFileContent('mvc/views/homepage.html', /{content\.hello}/)
+      runner.assertFileContent('mvc/views/404.html', /{server.appVersion}/)
     })
-  })
 
-  describe('Install Dependencies', function () {
-    it('Should automatically install dependencies with -i', function () {
-      return helpers.run(path.join(__dirname, '../../generators/app'))
-        .withOptions({
-          'standard-install': true,
-          'install-deps': true
-        })
-        .then(function () {
-          assert.strictEqual(path.basename(process.cwd()) + '/node_modules', defaults.appName.toLowerCase().replace(/ /g, '-') + '/node_modules')
-        })
-    })
-  })
-})
+    it('Should automatically run the config auditor', async function () {
+      let auditPassing = false
+      const logData = []
 
-describe('Run config Auditor', function () {
-  it('Should automatically run the config auditor', function () {
-    let ConfigAuditPassing = false
+      // grab the config auditor
+      const auditor = require('../../node_modules/roosevelt/lib/scripts/configAuditor')
 
-    return helpers.run(path.join(__dirname, '../../generators/app'))
-      .withOptions({
-        'standard-install': true
-      })
-      .then(function () {
-        const data = execSync('node ' + path.join(__dirname, '/../../node_modules/roosevelt/lib/scripts/configAuditor.js'))
+      // store a reference to the console
+      const oldConsole = console
 
-        if (data.includes('rooseveltConfig audit completed with no errors found')) {
-          ConfigAuditPassing = true
+      // overload the console to prevent log spamming and to also store an array of logs that happen
+      console = {
+        log: log => {
+          logData.push(log)
         }
+      }
 
-        assert.strictEqual(ConfigAuditPassing, true, 'rooseveltConfig audit completed with no errors found')
-      })
+      // run the auditor
+      auditor.audit(runner.cwd)
+
+      // restore the console
+      console = oldConsole
+
+      // examine the log data and skim for an indication that the audit passed
+      for (const log of logData) {
+        if (log.includes('no errors found')) {
+          auditPassing = true
+        }
+      }
+
+      assert.strictEqual(auditPassing, true, 'rooseveltConfig audit completed with no errors found')
+    })
   })
 })
