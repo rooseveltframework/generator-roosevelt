@@ -1,7 +1,7 @@
 /* eslint-env mocha */
 
 const path = require('path')
-const assert = require('yeoman-assert')
+const assert = require('assert')
 const helpers = require('yeoman-test')
 const defaults = require('../../generators/app/templates/defaults.json')
 const defaultFiles = [
