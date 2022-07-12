@@ -28,15 +28,12 @@ const defaultFiles = [
 describe('generator options', function () {
   let runner
 
-  describe.only('Should automatically do a standard install with -s', function () {
+  describe('Should automatically do a standard install with -s', function () {
     before(async function () {
       runner = await helpers
         .create(path.join(__dirname, '../../generators/app'))
         .withOptions({
           'standard-install': true
-        })
-        .doInDir(folder => {
-          return folder
         })
         .run()
 
