@@ -20,12 +20,15 @@
     },
     "scripts": {
       "cssExt": "less",
-      "stylelintPostCssModule": "\"postcss-less\": \"~6.0.0\""
+      "stylelintConfigModule": "\"stylelint-config-standard\": \"~26.0.0\"",
+      "stylelintConfigName": "stylelint-config-standard",
+      "stylelintPostCssModule": "\"postcss-less\": \"~6.0.0\",",
+      "stylelintSyntax": "\"customSyntax\": \"postcss-less\","
     }
   },
   "Sass": {
     "dependencies": {
-      "sass": "~1.51.0"
+      "sass": "~1.53.0"
     },
     "config": {
       "enable": true,
@@ -34,21 +37,9 @@
     },
     "scripts": {
       "cssExt": "scss",
-      "stylelintPostCssModule": "\"postcss-sass\": \"~0.5.0\""
-    }
-  },
-  "Stylus": {
-    "dependencies": {
-      "stylus": "~0.55.0"
-    },
-    "config": {
-      "enable": true,
-      "module": "stylus",
-      "options": {}
-    },
-    "scripts": {
-      "cssExt": "styl",
-      "stylelintPostCssModule": "\"postcss-styl\": \"~0.9.0\""
+      "stylelintPostCssModule": null,
+      "stylelintConfigModule": "\"stylelint-config-standard-scss\": \"~4.0.0\"",
+      "stylelintConfigName": "stylelint-config-standard-scss"
     }
   },
   "webpackBundle": [

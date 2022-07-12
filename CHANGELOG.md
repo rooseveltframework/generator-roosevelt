@@ -2,7 +2,13 @@
 
 ## Next version
 
-- Put your changes here...
+- Various fixes related to css preprocessor linting scripts.
+- Removed support for stylus css preprocessor for now.
+- Fixed compatibility with mkroosevelt in node v17+.
+- Removed `install-deps` flag, as newer versions of yeoman won't allow this to work in subdirectories.
+- Added `certs` directory to generated .gitignore.
+- Updated dependency versions for generated apps.
+- Various dependencies bumped.
 
 ## 0.19.9
 

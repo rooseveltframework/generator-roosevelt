@@ -7,15 +7,15 @@
   "license": "",
   "main": "app.js",
   "engines": {
-    "node": ">=14.0.0"
+    "node": ">=16.0.0"
   },
   "dependencies": <%- JSON.stringify(dependencies) %>,
   "devDependencies": {
     "nodemon": "~2.0.0",
     "standard": "~17.0.0",
-    "stylelint": "~14.8.0",
-    "stylelint-config-standard": "~25.0.0",
-    <%- stylelintPostCssModule %>
+    "stylelint": "~14.9.0",
+    <%- stylelintPostCssModule -%>
+    <%- stylelintConfigModule %>
   },
   "nodemonConfig": {
     "ignore": [
@@ -31,6 +31,7 @@
   },
   "scripts": {
     "config-audit": "node ./node_modules/roosevelt/lib/scripts/configAuditor.js",
+    "certsGenerator": "node ./node_modules/roosevelt/lib/scripts/httpsSelfsigned.js",
     "d": "nodemon app.js --development-mode",
     "dev": "nodemon app.js --development-mode",
     "development": "nodemon app.js --development-mode",
