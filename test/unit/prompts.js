@@ -6,14 +6,15 @@
  */
 
 const path = require('path')
-const assert = require('yeoman-assert')
+const assert = require('assert')
 const helpers = require('yeoman-test')
 const fs = require('fs')
 
 describe('Generator Prompts', function () {
   describe('Templating Engine', function () {
-    it('Should use multiple view engines and templating extensions', function () {
-      return helpers.run(path.join(__dirname, '../../generators/app'))
+    it('Should use multiple view engines and templating extensions', async function () {
+      const runner = await helpers
+        .create(path.join(__dirname, '../../generators/app'))
         .withPrompts({
           configMode: 'Customize',
           templatingEngine: true,
@@ -27,175 +28,190 @@ describe('Generator Prompts', function () {
           templatingExtension3: 'html3',
           additionalTemplatingEngines3: false
         })
-        .then(function () {
-          assert.JSONFileContent('rooseveltConfig.json', {
-            viewEngine: ['html1: test1', 'html2: test2', 'html3: test3']
-          })
-        })
+        .run()
+
+      // this fun line ensures that the runner context is looking at the folder the app got generated in
+      runner.cwd += '/my-roosevelt-sample-app'
+
+      runner.assertJsonFileContent('rooseveltConfig.json', {
+        viewEngine: ['html1: test1', 'html2: test2', 'html3: test3']
+      })
     })
   })
 
   describe('HTTPS Ports', function () {
-    it('Should set the HTTPS Port to a custom port', function () {
-      return helpers.run(path.join(__dirname, '../../generators/app'))
+    it('Should set the HTTPS Port to a custom port', async function () {
+      const runner = await helpers
+        .create(path.join(__dirname, '../../generators/app'))
         .withPrompts({
           configMode: 'Customize',
           enableHTTPS: true,
           httpsPortNumber: 'Custom',
           customHttpsPort: 1234
         })
-        .then(function () {
-          assert.JSONFileContent('rooseveltConfig.json', {
-            https: {
-              port: 1234
-            }
-          })
-        })
+        .run()
+
+      // this fun line ensures that the runner context is looking at the folder the app got generated in
+      runner.cwd += '/my-roosevelt-sample-app'
+
+      runner.assertJsonFileContent('rooseveltConfig.json', {
+        https: {
+          port: 1234
+        }
+      })
     })
 
-    it('Should set the HTTPS Port to a random port', function () {
-      return helpers.run(path.join(__dirname, '../../generators/app'))
+    it('Should set the HTTPS Port to a random port', async function () {
+      const runner = await helpers
+        .create(path.join(__dirname, '../../generators/app'))
         .withPrompts({
           configMode: 'Customize',
           enableHTTPS: true,
           httpsPortNumber: 'Random'
         })
-        .then(function () {
-          const data = fs.readFileSync('rooseveltConfig.json')
-          const jsonData = JSON.parse(data)
-          assert.strictEqual(typeof jsonData.https.port, 'number')
-        })
+        .run()
+
+      // this fun line ensures that the runner context is looking at the folder the app got generated in
+      runner.cwd += '/my-roosevelt-sample-app'
+
+      const data = fs.readFileSync(path.join(runner.cwd, 'rooseveltConfig.json'))
+      const jsonData = JSON.parse(data)
+      assert.strictEqual(typeof jsonData.https.port, 'number')
     })
   })
 
   describe('Statics', function () {
-    it('Should set the CSS preprocessor to LESS', function () {
-      return helpers.run(path.join(__dirname, '../../generators/app'))
+    it('Should set the CSS preprocessor to LESS', async function () {
+      const runner = await helpers
+        .create(path.join(__dirname, '../../generators/app'))
         .withPrompts({
           configMode: 'Customize',
           cssCompiler: 'Less'
         })
-        .then(function () {
-          assert.JSONFileContent('rooseveltConfig.json', {
-            css: {
-              compiler: {
-                module: 'less'
-              }
-            }
-          })
-          assert.file('statics/css/more.less')
-          assert.file('statics/css/styles.less')
-        })
+        .run()
+
+      // this fun line ensures that the runner context is looking at the folder the app got generated in
+      runner.cwd += '/my-roosevelt-sample-app'
+
+      runner.assertJsonFileContent('rooseveltConfig.json', {
+        css: {
+          compiler: {
+            module: 'less'
+          }
+        }
+      })
+
+      runner.assertFile('statics/css/more.less')
+      runner.assertFile('statics/css/styles.less')
     })
 
-    it('Should set the CSS preprocessor to SASS', function () {
-      return helpers.run(path.join(__dirname, '../../generators/app'))
+    it('Should set the CSS preprocessor to SASS', async function () {
+      const runner = await helpers
+        .create(path.join(__dirname, '../../generators/app'))
         .withPrompts({
           configMode: 'Customize',
           cssCompiler: 'Sass'
         })
-        .then(function () {
-          assert.JSONFileContent('rooseveltConfig.json', {
-            css: {
-              compiler: {
-                module: 'sass'
-              }
-            }
-          })
-          assert.file('statics/css/more.scss')
-          assert.file('statics/css/styles.scss')
-        })
+        .run()
+
+      // this fun line ensures that the runner context is looking at the folder the app got generated in
+      runner.cwd += '/my-roosevelt-sample-app'
+
+      runner.assertJsonFileContent('rooseveltConfig.json', {
+        css: {
+          compiler: {
+            module: 'sass'
+          }
+        }
+      })
+
+      runner.assertFile('statics/css/more.scss')
+      runner.assertFile('statics/css/styles.scss')
     })
 
-    it('Should set the CSS preprocessor to Stylus', function () {
-      return helpers.run(path.join(__dirname, '../../generators/app'))
-        .withPrompts({
-          configMode: 'Customize',
-          cssCompiler: 'Stylus'
-        })
-        .then(function () {
-          assert.JSONFileContent('rooseveltConfig.json', {
-            css: {
-              compiler: {
-                module: 'stylus'
-              }
-            }
-          })
-          assert.file('statics/css/more.styl')
-          assert.file('statics/css/styles.styl')
-        })
-    })
-
-    it('Should set the CSS preprocessor to none', function () {
-      return helpers.run(path.join(__dirname, '../../generators/app'))
+    it('Should set the CSS preprocessor to none', async function () {
+      const runner = await helpers
+        .create(path.join(__dirname, '../../generators/app'))
         .withPrompts({
           configMode: 'Customize',
           cssCompiler: 'none'
         })
-        .then(function () {
-          assert.JSONFileContent('rooseveltConfig.json', {
-            css: {
-              compiler: {
-                enable: false,
-                module: 'none'
-              }
-            }
-          })
-          assert.file('statics/css/styles.css')
-        })
+        .run()
+
+      // this fun line ensures that the runner context is looking at the folder the app got generated in
+      runner.cwd += '/my-roosevelt-sample-app'
+
+      runner.assertJsonFileContent('rooseveltConfig.json', {
+        css: {
+          compiler: {
+            enable: false,
+            module: 'none'
+          }
+        }
+      })
+
+      runner.assertFile('statics/css/styles.css')
     })
 
-    it('Should setup a default webpack config', function () {
-      return helpers.run(path.join(__dirname, '../../generators/app'))
+    it('Should setup a default webpack config', async function () {
+      const runner = await helpers
+        .create(path.join(__dirname, '../../generators/app'))
         .withPrompts({
           configMode: 'Customize',
           webpack: true
         })
-        .then(function () {
-          assert.JSONFileContent('rooseveltConfig.json', {
-            js: {
-              webpack: {
-                enable: true,
-                bundles: [
-                  {
-                    config: {
-                      entry: '${js.sourcePath}/main.js', // eslint-disable-line
-                      output: {
-                        path: '${publicFolder}/js' // eslint-disable-line
-                      },
-                      resolve: {
-                        modules: [
-                          '${js.sourcePath}', // eslint-disable-line
-                          '${publicFolder}/js', // eslint-disable-line
-                          '${appDir}', // eslint-disable-line
-                          'node_modules'
-                        ]
-                      }
-                    }
+        .run()
+
+      // this fun line ensures that the runner context is looking at the folder the app got generated in
+      runner.cwd += '/my-roosevelt-sample-app'
+
+      runner.assertJsonFileContent('rooseveltConfig.json', {
+        js: {
+          webpack: {
+            enable: true,
+            bundles: [
+              {
+                config: {
+                    entry: '${js.sourcePath}/main.js', // eslint-disable-line
+                  output: {
+                      path: '${publicFolder}/js' // eslint-disable-line
+                  },
+                  resolve: {
+                    modules: [
+                        '${js.sourcePath}', // eslint-disable-line
+                        '${publicFolder}/js', // eslint-disable-line
+                        '${appDir}', // eslint-disable-line
+                      'node_modules'
+                    ]
                   }
-                ]
+                }
               }
-            }
-          })
-        })
+            ]
+          }
+        }
+      })
     })
 
-    it('Should disable webpack when set to off', function () {
-      return helpers.run(path.join(__dirname, '../../generators/app'))
+    it('Should disable webpack when set to off', async function () {
+      const runner = await helpers
+        .create(path.join(__dirname, '../../generators/app'))
         .withPrompts({
           configMode: 'Customize',
           webpack: false
         })
-        .then(function () {
-          assert.JSONFileContent('rooseveltConfig.json', {
-            js: {
-              webpack: {
-                enable: false,
-                bundles: []
-              }
-            }
-          })
-        })
+        .run()
+
+      // this fun line ensures that the runner context is looking at the folder the app got generated in
+      runner.cwd += '/my-roosevelt-sample-app'
+
+      runner.assertJsonFileContent('rooseveltConfig.json', {
+        js: {
+          webpack: {
+            enable: false,
+            bundles: []
+          }
+        }
+      })
     })
   })
 })

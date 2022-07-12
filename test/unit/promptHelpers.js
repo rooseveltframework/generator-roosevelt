@@ -5,7 +5,7 @@
  * @module test/unit/promptsHelpers
  */
 
-const assert = require('yeoman-assert')
+const assert = require('assert')
 const helper = require('../../generators/app/promptingHelpers')
 
 describe('Prompt Helpers', function () {

@@ -171,3 +171,6 @@ temp/
 ### Roosevelt ###
 # Public directory
 public
+
+# cert directory
+certs

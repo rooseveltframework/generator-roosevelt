@@ -5,11 +5,11 @@
   For more information about what fancy new CSS syntax is introduced by SASS, have a look here: https://sass-lang.com/
 */
 
+@import 'more';
+
 $face: sans-serif;
 
 body {
   font-family: $face;
   color: #100;
 }
-
-@import 'more';
