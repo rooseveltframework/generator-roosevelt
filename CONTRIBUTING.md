@@ -2,7 +2,7 @@
 
 ## Before opening a pull request
 
-- Update dependencies in `package.json`, `generators/app/templates/defaults.json`, and `generators/app/templates/_package.json`.
+- Update dependencies in `package.json`, `generators/app/templates/defaults.json`, and `generators/app/templates/package.json.ejs`.
 - Be sure all tests pass: `npm t`.
 - Ensure 100% code coverage and write new tests if necessary: `npm run coverage`.
 - Add your changes to `CHANGELOG.md`.
