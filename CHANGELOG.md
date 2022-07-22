@@ -4,6 +4,10 @@
 
 - Put your changes here...
 
+## 0.20.0
+
+- Various dependencies bumped.
+
 ## 0.19.10
 
 - Various fixes related to CSS preprocessor linting scripts.
