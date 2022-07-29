@@ -24,7 +24,7 @@
     "gulp-filter": "~7.0.0",
     "selfsigned": "~2.0.1",
     "terminal-link": "~2.1.1",
-    "yeoman-generator": "~5.6.1"
+    "yeoman-generator": "~5.7.0"
   },
   "devDependencies": {
     "c8": "~7.12.0",
