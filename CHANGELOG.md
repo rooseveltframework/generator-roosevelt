@@ -4,6 +4,11 @@
 
 - Put your changes here...
 
+## 0.21.0
+
+- Fixed certs generator npm script.
+- Various dependencies bumped.
+
 ## 0.20.0
 
 - Various dependencies bumped.
