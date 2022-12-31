@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "roosevelt": "~0.20.0"
+    "roosevelt": "~0.21.0"
   },
   "appName": "My Roosevelt Sample App",
   "createDir": true,
@@ -20,7 +20,7 @@
     },
     "scripts": {
       "cssExt": "less",
-      "stylelintConfigModule": "\"stylelint-config-standard\": \"~26.0.0\"",
+      "stylelintConfigModule": "\"stylelint-config-standard\": \"~29.0.0\"",
       "stylelintConfigName": "stylelint-config-standard",
       "stylelintPostCssModule": "\"postcss-less\": \"~6.0.0\",",
       "stylelintSyntax": "\"customSyntax\": \"postcss-less\","

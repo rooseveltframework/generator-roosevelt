@@ -8,7 +8,7 @@
       "url": "https://github.com/rooseveltframework/generator-roosevelt/graphs/contributors"
     }
   ],
-  "version": "0.20.0",
+  "version": "0.21.0",
   "files": [
     "generators"
   ],
@@ -22,19 +22,19 @@
   "dependencies": {
     "gulp-beautify": "~3.0.0",
     "gulp-filter": "~7.0.0",
-    "selfsigned": "~2.1.0",
+    "selfsigned": "~2.1.1",
     "terminal-link": "~2.1.1",
     "yeoman-generator": "~5.7.0"
   },
   "devDependencies": {
     "c8": "~7.12.0",
     "codecov": "~3.8.2",
-    "eslint": "~8.23.0",
+    "eslint": "~8.30.0",
     "eslint-plugin-mocha": "~10.1.0",
-    "mocha": "~10.1.0",
-    "roosevelt": "~0.21.0",
+    "mocha": "~10.2.0",
+    "roosevelt": "~0.21.5",
     "standard": "~17.0.0",
-    "yeoman-environment": "~3.10.0",
+    "yeoman-environment": "~3.13.0",
     "yeoman-test": "~6.3.0"
   },
   "repository": {
