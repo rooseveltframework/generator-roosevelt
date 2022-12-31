@@ -23,7 +23,7 @@
     "gulp-beautify": "~3.0.0",
     "gulp-filter": "~7.0.0",
     "selfsigned": "~2.1.1",
-    "terminal-link": "~2.1.1",
+    "terminal-link": "~3.0.0",
     "yeoman-generator": "~5.7.0"
   },
   "devDependencies": {
