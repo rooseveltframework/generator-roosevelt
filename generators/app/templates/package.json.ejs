@@ -13,7 +13,7 @@
   "devDependencies": {
     "nodemon": "~2.0.0",
     "standard": "~17.0.0",
-    "stylelint": "~14.9.0",
+    "stylelint": "~14.16.0",
     <%- stylelintPostCssModule -%>
     <%- stylelintConfigModule %>
   },
@@ -31,7 +31,7 @@
   },
   "scripts": {
     "config-audit": "node ./node_modules/roosevelt/lib/scripts/configAuditor.js",
-    "certsGenerator": "node ./node_modules/roosevelt/lib/scripts/httpsSelfsigned.js",
+    "generate-certs": "node ./node_modules/roosevelt/lib/scripts/certsGenerator.js",
     "d": "nodemon app.js --development-mode",
     "dev": "nodemon app.js --development-mode",
     "development": "nodemon app.js --development-mode",
