@@ -519,6 +519,14 @@ module.exports = class extends Generator {
       this.destinationPath('.gitignore')
     )
 
+    this.fs.copyTpl(
+      this.templatePath('README.md.ejs'),
+      this.destinationPath('README.md'),
+      {
+        appName: this.appName
+      }
+    )
+
     // models
     if (this.usesTeddy) {
       this.fs.copyTpl(
@@ -791,10 +799,12 @@ module.exports = class extends Generator {
     if (!this.options['skip-closing-message']) {
       this.log(`\nYour app ${this.appName} has been generated.\n`)
       this.log('To run the app:')
-      this.log('- To run in dev mode:   npm run dev')
-      this.log('- To run in prod mode:  npm run prod')
+      this.log('- Change to your app directory:  cd ' + this.dirname)
+      this.log('- Install dependencies:          npm i')
+      this.log('- To run in development mode:    npm run d')
+      this.log('- To run in production mode:     npm run p')
       const url = 'https://localhost:' + this.httpsPort
-      this.log('Once running, visit ' + terminalLink(url, url) + '\n')
+      this.log('- Once running, visit:           ' + terminalLink(url, url) + '\n')
       this.log('To make further changes to the config, edit package.json. See https://github.com/rooseveltframework/roosevelt#configure-your-app-with-parameters for information on the configuration options.')
     }
   }

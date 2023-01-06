@@ -4,6 +4,13 @@
 
 - Put your changes here...
 
+## 0.21.1
+
+- Added a README.md to the list of files generated for sample apps.
+- Improved clarity of command line output.
+- Improved docs.
+- Various dependencies bumped.
+
 ## 0.21.0
 
 - Fixed certs generator npm script.
