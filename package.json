@@ -8,7 +8,7 @@
       "url": "https://github.com/rooseveltframework/generator-roosevelt/graphs/contributors"
     }
   ],
-  "version": "0.21.0",
+  "version": "0.21.1",
   "files": [
     "generators"
   ],
@@ -29,7 +29,7 @@
   "devDependencies": {
     "c8": "~7.12.0",
     "codecov": "~3.8.2",
-    "eslint": "~8.30.0",
+    "eslint": "~8.31.0",
     "eslint-plugin-mocha": "~10.1.0",
     "mocha": "~10.2.0",
     "roosevelt": "~0.21.5",
