@@ -7,6 +7,7 @@ const defaults = require('../../generators/app/templates/defaults.json')
 const defaultFiles = [
   '.gitignore',
   '.stylelintrc.json',
+  'README.md',
   'app.js',
   'package.json',
   'rooseveltConfig.json',
