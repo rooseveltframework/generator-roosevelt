@@ -4,6 +4,11 @@
 
 - Put your changes here...
 
+## 0.21.2
+
+- Improvements to the SPA variant of the generator.
+- Various dependencies bumped.
+
 ## 0.21.1
 
 - Added a README.md to the list of files generated for sample apps.
