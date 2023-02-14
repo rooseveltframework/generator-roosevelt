@@ -34,7 +34,7 @@
     "mocha": "~10.2.0",
     "roosevelt": "~0.21.5",
     "standard": "~17.0.0",
-    "yeoman-environment": "~3.13.0",
+    "yeoman-environment": "~3.15.0",
     "yeoman-test": "~6.3.0"
   },
   "repository": {
