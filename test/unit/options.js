@@ -2,7 +2,6 @@
 
 const path = require('path')
 const assert = require('assert')
-const helpers = require('yeoman-test')
 const defaults = require('../../generators/app/templates/defaults.json')
 const defaultFiles = [
   '.gitignore',
@@ -26,7 +25,10 @@ const defaultFiles = [
   'statics/js/main.js'
 ]
 
-describe('generator options', function () {
+describe('generator options', async function () {
+  const yeomanTest = await import('yeoman-test')
+  const helpers = new yeomanTest.YeomanTest()
+
   let runner
 
   describe('Should automatically do a standard install with -s', function () {

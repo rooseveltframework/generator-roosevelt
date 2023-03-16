@@ -4,6 +4,12 @@
 
 - Put your changes here...
 
+## 0.21.3
+
+- Enabled source-maps on webpack by default.
+- Pinned deps.
+- Various dependencies bumped.
+
 ## 0.21.2
 
 - Improvements to the SPA variant of the generator.

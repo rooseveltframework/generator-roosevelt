@@ -7,15 +7,17 @@
 
 const path = require('path')
 const assert = require('assert')
-const helpers = require('yeoman-test')
 const fs = require('fs')
 
-describe('Generator Prompts', function () {
+describe('Generator Prompts', async function () {
+  const yeomanTest = await import('yeoman-test')
+  const helpers = new yeomanTest.YeomanTest()
+
   describe('Templating Engine', function () {
     it('Should use multiple view engines and templating extensions', async function () {
       const runner = await helpers
         .create(path.join(__dirname, '../../generators/app'))
-        .withPrompts({
+        .withPrompts({ // TODO: fix withPrompts deprecation across this whole file
           configMode: 'Customize',
           templatingEngine: true,
           templatingEngineName1: 'test1',
