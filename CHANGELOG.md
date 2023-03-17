@@ -4,6 +4,10 @@
 
 - Put your changes here...
 
+## 0.21.4
+
+- Fixed bug resulting in a non-fatal error when generating apps.
+
 ## 0.21.3
 
 - Enabled source-maps on webpack by default.
