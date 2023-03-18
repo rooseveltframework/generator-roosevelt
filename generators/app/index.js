@@ -796,7 +796,8 @@ module.exports = class extends Generator {
 
   end () {
     ;(async () => {
-      const terminalLink = await import('terminal-link')
+      const terminalLinkPkg = await import('terminal-link')
+      const terminalLink = terminalLinkPkg.default
 
       if (!this.options['skip-closing-message']) {
         this.log(`\nYour app ${this.appName} has been generated.\n`)
@@ -806,8 +807,9 @@ module.exports = class extends Generator {
         this.log('- To run in development mode:    npm run d')
         this.log('- To run in production mode:     npm run p')
         const url = 'https://localhost:' + this.httpsPort
+        const help = 'https://github.com/rooseveltframework/roosevelt#configure-your-app-with-parameters'
         this.log('- Once running, visit:           ' + terminalLink(url, url) + '\n')
-        this.log('To make further changes to the config, edit package.json. See https://github.com/rooseveltframework/roosevelt#configure-your-app-with-parameters for information on the configuration options.')
+        this.log('To make further changes to the config, edit package.json. See ' + terminalLink(help, help) + ' for information on the configuration options.')
       }
     })()
   }
