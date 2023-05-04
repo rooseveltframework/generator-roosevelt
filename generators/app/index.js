@@ -691,10 +691,6 @@ module.exports = class extends Generator {
           this.templatePath('statics/css/less/styles.less'),
           this.destinationPath('statics/css/styles.less')
         )
-        this.fs.copy(
-          this.templatePath('statics/css/less/more.less'),
-          this.destinationPath('statics/css/more.less')
-        )
       }
     } else if (this.cssExt === 'scss') {
       if (this.spaMode) {
@@ -722,10 +718,6 @@ module.exports = class extends Generator {
         this.fs.copy(
           this.templatePath('statics/css/sass/styles.scss'),
           this.destinationPath('statics/css/styles.scss')
-        )
-        this.fs.copy(
-          this.templatePath('statics/css/sass/more.scss'),
-          this.destinationPath('statics/css/more.scss')
         )
       }
     } else if (this.cssExt === 'styl') {

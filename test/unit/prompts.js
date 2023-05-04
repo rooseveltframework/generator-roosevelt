@@ -103,7 +103,6 @@ describe('Generator Prompts', async function () {
         }
       })
 
-      runner.assertFile('statics/css/more.less')
       runner.assertFile('statics/css/styles.less')
     })
 
@@ -127,7 +126,6 @@ describe('Generator Prompts', async function () {
         }
       })
 
-      runner.assertFile('statics/css/more.scss')
       runner.assertFile('statics/css/styles.scss')
     })
 
