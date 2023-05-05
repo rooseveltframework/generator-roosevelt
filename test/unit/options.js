@@ -18,7 +18,6 @@ const defaultFiles = [
   'mvc/views/homepage.html',
   'mvc/views/robots.txt',
   'mvc/views/layouts/main.html',
-  'statics/css/more.less',
   'statics/css/styles.less',
   'statics/images/favicon.ico',
   'statics/images/teddy.jpg',

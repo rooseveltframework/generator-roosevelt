@@ -20,7 +20,7 @@
     },
     "scripts": {
       "cssExt": "less",
-      "stylelintConfigModule": "\"stylelint-config-standard\": \"~29.0.0\"",
+      "stylelintConfigModule": "\"stylelint-config-standard\": \"~33.0.0\"",
       "stylelintConfigName": "stylelint-config-standard",
       "stylelintPostCssModule": "\"postcss-less\": \"~6.0.0\",",
       "stylelintSyntax": "\"customSyntax\": \"postcss-less\","
@@ -38,7 +38,7 @@
     "scripts": {
       "cssExt": "scss",
       "stylelintPostCssModule": null,
-      "stylelintConfigModule": "\"stylelint-config-standard-scss\": \"~4.0.0\"",
+      "stylelintConfigModule": "\"stylelint-config-standard-scss\": \"~9.0.0\"",
       "stylelintConfigName": "stylelint-config-standard-scss"
     }
   },
@@ -73,7 +73,7 @@
   "templatingExtension": "html",
   "additionalTemplatingEngines": false,
   "teddy": {
-    "teddy": "~0.5.0"
+    "teddy": "~0.6.0"
   },
   "viewEngine": [
     "html:teddy"
