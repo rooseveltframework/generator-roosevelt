@@ -2,22 +2,16 @@
   <%- stylelintSyntax %>
   "extends": <%- JSON.stringify(stylelintConfigName) %>,
   "rules": {
-    "indentation": 2,
-    "number-no-trailing-zeros": null,
-    "property-no-vendor-prefix": null,
-    "selector-class-pattern": null,
     "selector-id-pattern": null,
-    "selector-list-comma-newline-after": "always-multi-line",
+    "selector-class-pattern": null,
+    "property-no-vendor-prefix": null,
     "shorthand-property-no-redundant-values": null,
-    "string-quotes": null,
-    "max-line-length": null,
-    "unit-allowed-list": [
-      "px",
-      "%",
-      "vh",
-      "s",
-      "em",
-      "deg"
+    "no-descending-specificity": null,
+    "value-keyword-case": [
+      "lower",
+      {
+        "camelCaseSvgKeywords": true
+      }
     ]
   }
 }
