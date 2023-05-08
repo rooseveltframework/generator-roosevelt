@@ -4,6 +4,11 @@
 
 - Put your changes here...
 
+## 0.21.6
+
+- Fixed bug with template rendering in generated apps.
+- Various dependencies updated.
+
 ## 0.21.5
 
 - Various refactoring.
