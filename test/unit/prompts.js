@@ -17,7 +17,7 @@ describe('Generator Prompts', async function () {
     it('Should use multiple view engines and templating extensions', async function () {
       const runner = await helpers
         .create(path.join(__dirname, '../../generators/app'))
-        .withAnswers({ 
+        .withAnswers({
           configMode: 'Customize',
           templatingEngine: true,
           templatingEngineName1: 'test1',
