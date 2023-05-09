@@ -17,7 +17,7 @@ describe('Generator Prompts', async function () {
     it('Should use multiple view engines and templating extensions', async function () {
       const runner = await helpers
         .create(path.join(__dirname, '../../generators/app'))
-        .withPrompts({ // TODO: fix withPrompts deprecation across this whole file
+        .withAnswers({ // TODO: fix withAnswers deprecation across this whole file
           configMode: 'Customize',
           templatingEngine: true,
           templatingEngineName1: 'test1',
@@ -45,7 +45,7 @@ describe('Generator Prompts', async function () {
     it('Should set the HTTPS Port to a custom port', async function () {
       const runner = await helpers
         .create(path.join(__dirname, '../../generators/app'))
-        .withPrompts({
+        .withAnswers({
           configMode: 'Customize',
           enableHTTPS: true,
           httpsPortNumber: 'Custom',
@@ -66,7 +66,7 @@ describe('Generator Prompts', async function () {
     it('Should set the HTTPS Port to a random port', async function () {
       const runner = await helpers
         .create(path.join(__dirname, '../../generators/app'))
-        .withPrompts({
+        .withAnswers({
           configMode: 'Customize',
           enableHTTPS: true,
           httpsPortNumber: 'Random'
@@ -86,7 +86,7 @@ describe('Generator Prompts', async function () {
     it('Should set the CSS preprocessor to LESS', async function () {
       const runner = await helpers
         .create(path.join(__dirname, '../../generators/app'))
-        .withPrompts({
+        .withAnswers({
           configMode: 'Customize',
           cssCompiler: 'Less'
         })
@@ -109,7 +109,7 @@ describe('Generator Prompts', async function () {
     it('Should set the CSS preprocessor to SASS', async function () {
       const runner = await helpers
         .create(path.join(__dirname, '../../generators/app'))
-        .withPrompts({
+        .withAnswers({
           configMode: 'Customize',
           cssCompiler: 'Sass'
         })
@@ -132,7 +132,7 @@ describe('Generator Prompts', async function () {
     it('Should set the CSS preprocessor to none', async function () {
       const runner = await helpers
         .create(path.join(__dirname, '../../generators/app'))
-        .withPrompts({
+        .withAnswers({
           configMode: 'Customize',
           cssCompiler: 'none'
         })
@@ -156,7 +156,7 @@ describe('Generator Prompts', async function () {
     it('Should setup a default webpack config', async function () {
       const runner = await helpers
         .create(path.join(__dirname, '../../generators/app'))
-        .withPrompts({
+        .withAnswers({
           configMode: 'Customize',
           webpack: true
         })
@@ -195,7 +195,7 @@ describe('Generator Prompts', async function () {
     it('Should disable webpack when set to off', async function () {
       const runner = await helpers
         .create(path.join(__dirname, '../../generators/app'))
-        .withPrompts({
+        .withAnswers({
           configMode: 'Customize',
           webpack: false
         })
