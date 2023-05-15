@@ -4,6 +4,12 @@
 
 - Put your changes here...
 
+## 0.21.7
+
+- Fixed issue that would cause `npx mkroosevelt` to return an undefined variable in its output.
+- Refactored deprecated APIs.
+- Various dependencies updated.
+
 ## 0.21.6
 
 - Fixed bug with template rendering in generated apps.
