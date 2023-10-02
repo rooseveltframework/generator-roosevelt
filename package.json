@@ -21,7 +21,7 @@
   "engineStrict": true,
   "dependencies": {
     "gulp-beautify": "3.0.0",
-    "gulp-filter": "7.0.0",
+    "gulp-filter": "8.0.0",
     "selfsigned": "2.1.1",
     "terminal-link": "3.0.0",
     "yeoman-generator": "5.9.0"
@@ -32,7 +32,7 @@
     "eslint": "8.50.0",
     "eslint-plugin-mocha": "10.2.0",
     "mocha": "10.2.0",
-    "roosevelt": "0.21.11",
+    "roosevelt": "0.21.12",
     "standard": "17.1.0",
     "yeoman-environment": "3.19.3",
     "yeoman-test": "7.4.0"
