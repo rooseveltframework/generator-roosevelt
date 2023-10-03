@@ -4,6 +4,10 @@
 
 - Put your changes here...
 
+## 0.21.8
+
+- Various dependencies updated.
+
 ## 0.21.7
 
 - Fixed issue that would cause `npx mkroosevelt` to return an undefined variable in its output.

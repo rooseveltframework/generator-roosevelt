@@ -2,7 +2,6 @@ const Generator = require('yeoman-generator')
 const helper = require('./promptingHelpers')
 const defaults = require('./templates/defaults.json')
 const beautify = require('gulp-beautify')
-const filter = require('gulp-filter')
 const selfsigned = require('selfsigned')
 
 const cache = {}
@@ -424,7 +423,8 @@ module.exports = class extends Generator {
     }
   }
 
-  writing () {
+  async writing () {
+    const filter = (await import('gulp-filter')).default
     const jsonFilter = filter(['**/*.json'], { restore: true, dot: true })
 
     this.log('Generating SSL certs...')
