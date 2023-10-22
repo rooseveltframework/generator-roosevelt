@@ -17,3 +17,5 @@ Disallow: /harm/to/self
 #         |___|   /|\   |___|         |  ° |  -  ||
 #         `---'  |___|  `---'         `    | □=□ ´´
 #                `---'                 `--_____--´
+#
+# See https://www.robotstxt.org/robotstxt.html for documentation on how to use the robots.txt file
