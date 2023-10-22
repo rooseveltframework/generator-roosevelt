@@ -4,6 +4,12 @@
 
 - Put your changes here...
 
+## 0.21.9
+
+- Added `eslint-plugin-html` to the default devDependency list.
+- Fixed typo in CLI output when app is generated.
+- Various dependencies updated.
+
 ## 0.21.8
 
 - Various dependencies updated.
