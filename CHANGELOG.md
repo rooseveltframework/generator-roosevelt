@@ -4,6 +4,11 @@
 
 - Put your changes here...
 
+## 0.21.10
+
+- Altered default global model to prevent a common race condition.
+- Various dependencies updated.
+
 ## 0.21.9
 
 - Added `eslint-plugin-html` to the default devDependency list.
