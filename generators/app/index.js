@@ -44,6 +44,8 @@ module.exports = class extends Generator {
       return true
     }
 
+    if (process.env.npm_command !== 'test') console.log(`  🧸 Roosevelt app generator (version ${require('../../package').version}${require('path').resolve(__dirname, '../../.gitignore') ? ' [development mode]' : ''})\n`)
+
     return this.prompt(
       [
         {
