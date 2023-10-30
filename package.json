@@ -16,13 +16,13 @@
   "license": "CC-BY-4.0",
   "main": "generators/app/index.js",
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=18.0.0"
   },
   "engineStrict": true,
   "dependencies": {
     "gulp-beautify": "3.0.0",
     "gulp-filter": "8.0.0",
-    "selfsigned": "2.1.1",
+    "selfsigned": "2.4.1",
     "terminal-link": "3.0.0",
     "yeoman-generator": "5.10.0"
   },
@@ -34,7 +34,7 @@
     "mocha": "10.2.0",
     "roosevelt": "0.21.13",
     "standard": "17.1.0",
-    "yeoman-environment": "3.19.3",
+    "yeoman-environment": "4.0.0",
     "yeoman-test": "8.2.0"
   },
   "repository": {
