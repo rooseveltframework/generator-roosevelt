@@ -339,8 +339,8 @@ module.exports = class extends Generator {
       force: true,
       authInfoPath: {
         authCertAndKey: {
-          cert: './certs/cert.pem',
-          key: './certs/key.pem'
+          cert: 'cert.pem',
+          key: 'key.pem'
         }
       }
     }
@@ -446,8 +446,8 @@ module.exports = class extends Generator {
     const cert = certs.cert
     const key = certs.private
 
-    this.fs.write(this.destinationPath('./certs/cert.pem'), cert)
-    this.fs.write(this.destinationPath('./certs/key.pem'), key)
+    this.fs.write(this.destinationPath('cert.pem'), cert)
+    this.fs.write(this.destinationPath('key.pem'), key)
 
     this.queueTransformStream([
       jsonFilter,

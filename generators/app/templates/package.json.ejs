@@ -32,7 +32,9 @@
   },
   "scripts": {
     "audit-config": "node ./node_modules/roosevelt/lib/scripts/configAuditor.js",
-    "generate-secrets": "node ./node_modules/roosevelt/lib/scripts/generateSecrets.js",
+    "generate-certs": "node ./node_modules/roosevelt/lib/scripts/certsGenerator.js",
+    "generate-secrets": "node ./node_modules/roosevelt/lib/scripts/sessionSecretGenerator.js",
+    "generate-certs-secrets": "npm run generate-certs && npm run generate-secrets",
     "d": "nodemon app.js --development-mode",
     "dev": "nodemon app.js --development-mode",
     "development": "nodemon app.js --development-mode",

@@ -2,6 +2,8 @@
   "port": <%= port %>,
   "makeBuildArtifacts": true,
   "https": <%- JSON.stringify(https) %>,
+  "expressSession": true,
+  "secretDir": "secrets",
   "modelsPath": <%- JSON.stringify(modelsPath) %>,
   "viewsPath": <%- JSON.stringify(viewsPath) %>,
   "viewEngine": <%- JSON.stringify(viewEngine) %>,<%- spaModeConfig ? spaModeConfig : '' %>

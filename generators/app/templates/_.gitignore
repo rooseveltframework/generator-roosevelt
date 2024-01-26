@@ -172,5 +172,5 @@ temp/
 # Public directory
 public
 
-# cert directory
-certs
+# secrets directory
+secrets
