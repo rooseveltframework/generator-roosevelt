@@ -6,6 +6,7 @@
   "createDir": true,
   "httpsPort": "Random",
   "https": true,
+  "secretsDir": "secrets",
   "altURI": "https://localhost/",
   "altIP": "127.0.0.1",
   "defaultCSSCompiler": "Less",

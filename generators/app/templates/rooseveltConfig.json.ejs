@@ -3,7 +3,7 @@
   "makeBuildArtifacts": true,
   "https": <%- JSON.stringify(https) %>,
   "expressSession": true,
-  "secretDir": "secrets",
+  "secretDir": "<%= secretsDir %>",
   "modelsPath": <%- JSON.stringify(modelsPath) %>,
   "viewsPath": <%- JSON.stringify(viewsPath) %>,
   "viewEngine": <%- JSON.stringify(viewEngine) %>,<%- spaModeConfig ? spaModeConfig : '' %>

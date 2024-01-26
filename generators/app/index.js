@@ -160,6 +160,12 @@ module.exports = class extends Generator {
           message: 'Custom HTTPS port your app will run on:',
           default: defaults.https.httpsPort,
           validate: helper.validatePortNumber
+        },
+        {
+          type: 'input',
+          name: 'secretsDir',
+          message: 'Name of the directory keys and secrets are stored:',
+          default: defaults.secretsDir
         }
       ]
     )
@@ -173,6 +179,7 @@ module.exports = class extends Generator {
         }
 
         this.rejectUnauthorized = response.rejectUnauthorized
+        this.secretsDir = response.secretsDir
       })
   }
 
@@ -354,6 +361,9 @@ module.exports = class extends Generator {
 
     this.dependencies = defaults.dependencies
 
+    // secrets directory
+    this.secretsDir = this.secretsDir || defaults.secretsDir
+
     // determine if teddy will be used
     if (this.viewEngine !== 'none') {
       this.viewEngine.forEach((engine) => {
@@ -446,8 +456,12 @@ module.exports = class extends Generator {
     const cert = certs.cert
     const key = certs.private
 
-    this.fs.write(this.destinationPath('cert.pem'), cert)
-    this.fs.write(this.destinationPath('key.pem'), key)
+    this.fs.write(this.destinationPath(this.secretsDir + '/cert.pem'), cert)
+    this.fs.write(this.destinationPath(this.secretsDir + '/key.pem'), key)
+
+    // create express-session key
+    const sessionSecret = JSON.stringify({ secret: crypto.randomUUID() })
+    this.fs.write(this.destinationPath(this.secretsDir + '/sessionSecret.json'), sessionSecret)
 
     this.queueTransformStream([
       jsonFilter,
@@ -489,6 +503,7 @@ module.exports = class extends Generator {
       {
         port: this.httpsPort,
         https: this.httpsParams,
+        secretsDir: this.secretsDir,
         modelsPath: this.modelsPath,
         viewsPath: this.viewsPath,
         viewEngine: this.viewEngine,
@@ -515,9 +530,12 @@ module.exports = class extends Generator {
       this.destinationPath('app.js')
     )
 
-    this.fs.copy(
-      this.templatePath('_.gitignore'),
-      this.destinationPath('.gitignore')
+    this.fs.copyTpl(
+      this.templatePath('_.gitignore.ejs'),
+      this.destinationPath('.gitignore'),
+      {
+        secretsDir: this.secretsDir
+      }
     )
 
     this.fs.copyTpl(
