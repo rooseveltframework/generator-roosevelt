@@ -3,6 +3,7 @@ const helper = require('./promptingHelpers')
 const defaults = require('./templates/defaults.json')
 const beautify = require('gulp-beautify')
 const selfsigned = require('selfsigned')
+const crypto = require('crypto')
 
 const cache = {}
 
@@ -814,7 +815,7 @@ module.exports = class extends Generator {
       if (!this.options['skip-closing-message']) {
         this.log(`\nYour app ${this.appName} has been generated.\n`)
         this.log('To run the app:')
-        this.log('- Change to your app directory:  cd ' + this.dirname)
+        this.log('- Change to your app directory:  cd ' + (this.dirname || this.appName))
         this.log('- Install dependencies:          npm i')
         this.log('- To run in development mode:    npm run d')
         this.log('- To run in production mode:     npm run p')

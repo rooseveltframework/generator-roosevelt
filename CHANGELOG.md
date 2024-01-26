@@ -3,6 +3,8 @@
 ## Next version
 
 - Included new parameters for `express-session` updates made to Roosevelt.
+- Added the ability to define the secrets directory name.
+- Fixed a bug that displayed `undefined` as the directory name on the app start instructions.
 
 ## 0.21.11
 
