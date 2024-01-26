@@ -2,7 +2,7 @@
 
 ## Next version
 
-- Put your changes here...
+- Included new parameters for `express-session` updates made to Roosevelt.
 
 ## 0.21.11
 
