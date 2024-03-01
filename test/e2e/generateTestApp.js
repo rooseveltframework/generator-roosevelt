@@ -64,24 +64,28 @@ function executeCommand (ptyProcess, command, successIndicator) {
   })
 }
 
-function runRooseveltApp (appDirectory) {
-  const shell = os.platform() === 'win32' ? 'powershell.exe' : 'bash'
+async function runRooseveltApp(appDirectory) {
+  const shell = os.platform() === 'win32' ? 'powershell.exe' : 'bash';
   const ptyProcess = pty.spawn(shell, [], {
     name: 'xterm-color',
     cols: 80,
     rows: 30,
     cwd: appDirectory,
     env: process.env
-  })
+  });
 
-  return executeCommand(ptyProcess, `cd ${appDirectory}`, 'bash')
-    .then(() => executeCommand(ptyProcess, 'npm install', 'added'))
-    .then(() => executeCommand(ptyProcess, 'npm run d', 'HTTPS server listening on port'))
-    .then(() => 'App is running in development mode.')
-    .catch(error => {
-      throw error
-    })
+  try {
+    await executeCommand(ptyProcess, `cd ${appDirectory}`, 'bash');
+    await executeCommand(ptyProcess, 'npm install', 'added');
+    await executeCommand(ptyProcess, 'npm run d', 'HTTPS server listening on port');
+    
+    return 'App is running in development mode.';
+  } catch (error) {
+    console.error('An error occurred during the setup process:', error);
+    throw error;
+  }
 }
+
 
 async function setupRooseveltApp (appName, destinationDir) {
   try {
