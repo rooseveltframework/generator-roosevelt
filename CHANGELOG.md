@@ -2,9 +2,13 @@
 
 ## Next version
 
-- Included new parameters for `express-session` and `csrf-csrf` updates made to Roosevelt.
-- Added the ability to define the secrets directory name.
+- Put your changes here...
+
+## 0.22.0
+
+- Updated generator to account for breaking changes in Roosevelt.
 - Fixed a bug that displayed `undefined` as the directory name on the app start instructions.
+- Updated various dependencies.
 
 ## 0.21.11
 
