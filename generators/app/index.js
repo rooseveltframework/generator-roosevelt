@@ -2,8 +2,6 @@ const Generator = require('yeoman-generator')
 const helper = require('./promptingHelpers')
 const defaults = require('./templates/defaults.json')
 const beautify = require('gulp-beautify')
-const selfsigned = require('selfsigned')
-const crypto = require('crypto')
 
 const cache = {}
 
@@ -439,30 +437,6 @@ module.exports = class extends Generator {
   async writing () {
     const filter = (await import('gulp-filter')).default
     const jsonFilter = filter(['**/*.json'], { restore: true, dot: true })
-
-    this.log('Generating SSL certs...')
-
-    // generate a self signed certificate with a far flung expiration date
-    const certs = selfsigned.generate(null, {
-      keySize: 2048, // the size for the private key in bits (default: 1024)
-      days: 3650, // how long till expiry of the signed certificate (default: 365) days:3650 = years: 10
-      algorithm: 'sha256', // sign the certificate with specified algorithm (default: 'sha1')
-      extensions: [{ name: 'basicConstraints', cA: true }], // certificate extensions array
-      pkcs7: true, // include PKCS#7 as part of the output (default: false)
-      clientCertificate: true, // generate client cert signed by the original key (default: false)
-      clientCertificateCN: 'unknown' // client certificate's common name (default: 'John Doe jdoe123')
-    })
-
-    // extract individual components of the cert and generate files
-    const cert = certs.cert
-    const key = certs.private
-
-    this.fs.write(this.destinationPath(this.secretsDir + '/cert.pem'), cert)
-    this.fs.write(this.destinationPath(this.secretsDir + '/key.pem'), key)
-
-    // create express-session key
-    const sessionSecret = JSON.stringify({ secret: crypto.randomUUID() })
-    this.fs.write(this.destinationPath(this.secretsDir + '/sessionSecret.json'), sessionSecret)
 
     this.queueTransformStream([
       jsonFilter,
