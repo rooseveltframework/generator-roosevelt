@@ -21,7 +21,7 @@
     },
     "scripts": {
       "cssExt": "less",
-      "stylelintConfigModule": "\"stylelint-config-standard\": \"~34.0.0\"",
+      "stylelintConfigModule": "\"stylelint-config-standard\": \"~36.0.0\"",
       "stylelintConfigName": "stylelint-config-standard",
       "stylelintPostCssModule": "\"postcss-less\": \"~6.0.0\",",
       "stylelintSyntax": "\"customSyntax\": \"postcss-less\","
@@ -29,7 +29,7 @@
   },
   "Sass": {
     "dependencies": {
-      "sass": "~1.69.0"
+      "sass": "~1.75.0"
     },
     "config": {
       "enable": true,
@@ -39,7 +39,7 @@
     "scripts": {
       "cssExt": "scss",
       "stylelintPostCssModule": null,
-      "stylelintConfigModule": "\"stylelint-config-standard-scss\": \"~11.0.0\"",
+      "stylelintConfigModule": "\"stylelint-config-standard-scss\": \"~13.1.0\"",
       "stylelintConfigName": "stylelint-config-standard-scss"
     }
   },
