@@ -11,17 +11,16 @@
   },
   "dependencies": <%- JSON.stringify(dependencies) %>,
   "devDependencies": {
-    "nodemon": "~3.0.0",
+    "nodemon": "~3.1.0",
     "standard": "~17.1.0",
-    "eslint-plugin-html": "~7.1.0",
-    "stylelint": "~15.11.0",
+    "eslint-plugin-html": "~8.1.0",
+    "stylelint": "~16.3.0",
     <%- stylelintPostCssModule -%>
     <%- stylelintConfigModule %>
   },
   "nodemonConfig": {
     "ignore": [
-      "public/",
-      "jsdoc/"
+      "public/"
     ],
     "ext": "<%= cssExt %> html js json"
   },

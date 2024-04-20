@@ -4,6 +4,11 @@
 
 - Put your changes here...
 
+## 0.22.1
+
+- Updated `.gitignore` to account for the latest changes in Roosevelt.
+- Updated various dependencies.
+
 ## 0.22.0
 
 - Updated generator to account for breaking changes in Roosevelt.
