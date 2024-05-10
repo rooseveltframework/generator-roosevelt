@@ -2,7 +2,6 @@ const Generator = require('yeoman-generator')
 const helper = require('./promptingHelpers')
 const defaults = require('./templates/defaults.json')
 const beautify = require('gulp-beautify')
-const selfsigned = require('selfsigned')
 
 const cache = {}
 
@@ -160,6 +159,12 @@ module.exports = class extends Generator {
           message: 'Custom HTTPS port your app will run on:',
           default: defaults.https.httpsPort,
           validate: helper.validatePortNumber
+        },
+        {
+          type: 'input',
+          name: 'secretsDir',
+          message: 'Name of the directory keys and secrets are stored:',
+          default: defaults.secretsDir
         }
       ]
     )
@@ -173,6 +178,7 @@ module.exports = class extends Generator {
         }
 
         this.rejectUnauthorized = response.rejectUnauthorized
+        this.secretsDir = response.secretsDir
       })
   }
 
@@ -339,8 +345,8 @@ module.exports = class extends Generator {
       force: true,
       authInfoPath: {
         authCertAndKey: {
-          cert: './certs/cert.pem',
-          key: './certs/key.pem'
+          cert: 'cert.pem',
+          key: 'key.pem'
         }
       }
     }
@@ -353,6 +359,9 @@ module.exports = class extends Generator {
     this.viewEngine = this.templatingEngine !== false ? this.viewEngineList || defaults.viewEngine : 'none'
 
     this.dependencies = defaults.dependencies
+
+    // secrets directory
+    this.secretsDir = this.secretsDir || defaults.secretsDir
 
     // determine if teddy will be used
     if (this.viewEngine !== 'none') {
@@ -429,26 +438,6 @@ module.exports = class extends Generator {
     const filter = (await import('gulp-filter')).default
     const jsonFilter = filter(['**/*.json'], { restore: true, dot: true })
 
-    this.log('Generating SSL certs...')
-
-    // generate a self signed certificate with a far flung expiration date
-    const certs = selfsigned.generate(null, {
-      keySize: 2048, // the size for the private key in bits (default: 1024)
-      days: 3650, // how long till expiry of the signed certificate (default: 365) days:3650 = years: 10
-      algorithm: 'sha256', // sign the certificate with specified algorithm (default: 'sha1')
-      extensions: [{ name: 'basicConstraints', cA: true }], // certificate extensions array
-      pkcs7: true, // include PKCS#7 as part of the output (default: false)
-      clientCertificate: true, // generate client cert signed by the original key (default: false)
-      clientCertificateCN: 'unknown' // client certificate's common name (default: 'John Doe jdoe123')
-    })
-
-    // extract individual components of the cert and generate files
-    const cert = certs.cert
-    const key = certs.private
-
-    this.fs.write(this.destinationPath('./certs/cert.pem'), cert)
-    this.fs.write(this.destinationPath('./certs/key.pem'), key)
-
     this.queueTransformStream([
       jsonFilter,
       beautify({ indent_size: 2, preserve_newlines: false, end_with_newline: true }),
@@ -489,6 +478,7 @@ module.exports = class extends Generator {
       {
         port: this.httpsPort,
         https: this.httpsParams,
+        secretsDir: this.secretsDir,
         modelsPath: this.modelsPath,
         viewsPath: this.viewsPath,
         viewEngine: this.viewEngine,
@@ -515,9 +505,12 @@ module.exports = class extends Generator {
       this.destinationPath('app.js')
     )
 
-    this.fs.copy(
-      this.templatePath('_.gitignore'),
-      this.destinationPath('.gitignore')
+    this.fs.copyTpl(
+      this.templatePath('_.gitignore.ejs'),
+      this.destinationPath('.gitignore'),
+      {
+        secretsDir: this.secretsDir
+      }
     )
 
     this.fs.copyTpl(
@@ -796,7 +789,7 @@ module.exports = class extends Generator {
       if (!this.options['skip-closing-message']) {
         this.log(`\nYour app ${this.appName} has been generated.\n`)
         this.log('To run the app:')
-        this.log('- Change to your app directory:  cd ' + this.dirname)
+        this.log('- Change to your app directory:  cd ' + (this.dirname || this.appName))
         this.log('- Install dependencies:          npm i')
         this.log('- To run in development mode:    npm run d')
         this.log('- To run in production mode:     npm run p')
