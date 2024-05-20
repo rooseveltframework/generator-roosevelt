@@ -34,7 +34,6 @@
     "eslint": "9.1.0",
     "eslint-plugin-mocha": "10.4.3",
     "mocha": "10.4.0",
-    "playwright": "1.39.0",
     "roosevelt": "0.22.4",
     "standard": "17.1.0",
     "yeoman-environment": "3.18.3",
@@ -75,7 +74,7 @@
     "coverage": "c8 --reporter=text --reporter=lcov mocha test/unit",
     "lint": "eslint ./test && standard",
     "test": "mocha test/unit && playwright test",
-    "test:e2e": "playwright test test/e2e/",
+    "test:e2e": "playwright test",
     "test-debug": "mocha --inspect-brk test/unit"
   },
   "funding": {

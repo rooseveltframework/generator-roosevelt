@@ -7,6 +7,7 @@ let page
 let browser
 let context
 const destinationDir = 'my-roosevelt-sample-app'
+const testType = 'isomorphic'
 
 test.describe('Isomorphic Tests', () => {
   test.beforeAll(async () => {
@@ -14,7 +15,7 @@ test.describe('Isomorphic Tests', () => {
     const appName = 'MyRooseveltSampleApp'
 
     try {
-      appUrl = await setupRooseveltApp(appName, destinationDir)
+      appUrl = await setupRooseveltApp(appName, destinationDir, testType)
     } catch (e) {
       console.error('error: ', e)
     }

@@ -1,17 +1,18 @@
 const { test, expect } = require('@playwright/test')
-const { setupRooseveltApp } = require('./testShellCommand.js')
+const { setupRooseveltApp } = require('./generateTestApp.js')
 const fs = require('fs/promises')
 
 let appUrl
 let page
 const destinationDir = 'my-roosevelt-sample-app'
+const testType = 'homepage'
 
 test.describe('Standard Tests', () => {
   test.beforeAll(async ({ browser }) => {
     test.setTimeout(120000)
     const appName = 'MyRooseveltSampleApp'
     try {
-      appUrl = await setupRooseveltApp(appName, destinationDir)
+      appUrl = await setupRooseveltApp(appName, destinationDir, testType)
     } catch (e) {
       console.error('error: ', e)
     }

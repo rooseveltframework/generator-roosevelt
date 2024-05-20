@@ -1,7 +1,7 @@
 const pty = require('node-pty')
 const os = require('os')
 
-function generateRooseveltApp (appName, destinationDir) {
+function generateRooseveltApp (appName, destinationDir, testType) {
   return new Promise((resolve, reject) => {
     const shell = os.platform() === 'win32' ? 'powershell.exe' : 'bash'
     const ptyProcess = pty.spawn(shell, [], {
@@ -15,21 +15,33 @@ function generateRooseveltApp (appName, destinationDir) {
     let isAppTypeQuestionAsked = false
     let url = ''
 
-    ptyProcess.onData(data => {
-      if (data.includes('Generate a standard app') && !isAppTypeQuestionAsked) {
-        ptyProcess.write('\x1B[B') // ANSI code for arrow down
-        ptyProcess.write('\r') // Enter
-        isAppTypeQuestionAsked = true
-      }
-
-      const urlMatch = data.match(/https:\/\/localhost:\d+/)
-      if (urlMatch) {
-        url = urlMatch[0]
-        clearInterval(interval)
-        ptyProcess.kill()
-        resolve(url)
-      }
-    })
+    if(testType.localeCompare('homepage') == 0){
+      ptyProcess.onData(data => {
+        const urlMatch = data.match(/https:\/\/localhost:\d+/)
+        if (urlMatch) {
+          url = urlMatch[0]
+          ptyProcess.kill()
+          resolve(url)
+        }
+      })
+    }else{
+      ptyProcess.onData(data => {
+        if (data.includes('Generate a standard app') && !isAppTypeQuestionAsked) {
+          ptyProcess.write('\x1B[B') // ANSI code for arrow down
+          ptyProcess.write('\r') // Enter
+          isAppTypeQuestionAsked = true
+        }
+  
+        const urlMatch = data.match(/https:\/\/localhost:\d+/)
+        if (urlMatch) {
+          url = urlMatch[0]
+          clearInterval(interval)
+          ptyProcess.kill()
+          resolve(url)
+        }
+      })
+    }
+    
 
     ptyProcess.write('yo roosevelt\r')
 
@@ -87,9 +99,9 @@ async function runRooseveltApp(appDirectory) {
 }
 
 
-async function setupRooseveltApp (appName, destinationDir) {
+async function setupRooseveltApp (appName, destinationDir, testType) {
   try {
-    const url = await generateRooseveltApp(appName, destinationDir)
+    const url = await generateRooseveltApp(appName, destinationDir, testType)
     await runRooseveltApp(destinationDir)
     return url
   } catch (error) {
