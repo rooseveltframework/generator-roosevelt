@@ -1,17 +1,15 @@
-const { test, expect, chromium } = require('@playwright/test')
+const { test, expect } = require('@playwright/test')
 const { setupRooseveltApp } = require('./generateTestApp.js')
 const fs = require('fs/promises')
 
 let appUrl
-let page
-let browser
-let context
 const destinationDir = 'my-roosevelt-sample-app'
 const testType = 'isomorphic'
 
+test.use({ ignoreHTTPSErrors: true })
 test.describe('Isomorphic Tests', () => {
   test.beforeAll(async () => {
-    test.setTimeout(240000)
+    // test.setTimeout(240000)
     const appName = 'MyRooseveltSampleApp'
 
     try {
@@ -19,19 +17,9 @@ test.describe('Isomorphic Tests', () => {
     } catch (e) {
       console.error('error: ', e)
     }
-
-    // Create a new browser instance
-    browser = await chromium.launch()
-    // Create a new context with ignoreHTTPSErrors set to true
-    context = await browser.newContext({ ignoreHTTPSErrors: true })
-    page = await context.newPage()
   })
 
   test.afterAll(async () => {
-    // Close the context and the browser
-    await context.close()
-    await browser.close()
-
     // Delete the created directory after tests are done
     try {
       await fs.rm(destinationDir, { recursive: true, force: true })
@@ -40,7 +28,7 @@ test.describe('Isomorphic Tests', () => {
     }
   })
 
-  test('should load the homepage', async () => {
+  test('should load the homepage', async ({ page }) => {
     await page.goto(appUrl)
     await expect(page.locator('header')).toBeVisible()
     await expect(page.locator('h1')).toHaveText('My Roosevelt Sample App')
@@ -51,7 +39,7 @@ test.describe('Isomorphic Tests', () => {
     await expect(page.locator('script[src="/reloadHttps/reload.js"]')).toBeHidden()
   })
 
-  test('should load "Some other page"', async () => {
+  test('should load "Some other page"', async ({ page }) => {
     await page.goto(`${appUrl}/otherPage`) // Navigate to "Some other page"
     await expect(page.locator('header h1')).toHaveText('My Roosevelt Sample App')
     await expect(page.locator('header h2')).toHaveText('Some other page')
@@ -59,7 +47,7 @@ test.describe('Isomorphic Tests', () => {
     await expect(page.locator('article#otherPage p').first()).toHaveText('Some other page.')
   })
 
-  test('should navigate to 404 page on invalid link', async () => {
+  test('should navigate to 404 page on invalid link', async ({ page }) => {
     await page.goto(`${appUrl}/otherPage`) // Navigate to "Some other page" first
     await page.click('a[href="/thisWill404"]') // Click the link that leads to 404
     await expect(page.locator('header h2')).toHaveText('Not Found')
@@ -67,7 +55,7 @@ test.describe('Isomorphic Tests', () => {
     await expect(page.locator('article#notFound p')).toHaveText('The requested URL /thisWill404 was not found on this server.')
   })
 
-  test('should load "Page with a form"', async () => {
+  test('should load "Page with a form"', async ({ page }) => {
     await page.goto(`${appUrl}/pageWithForm`) // Navigate to "Page with a form"
     await expect(page.locator('header h1')).toHaveText('My Roosevelt Sample App')
     await expect(page.locator('header h2')).toHaveText('Page with a form')
@@ -77,7 +65,7 @@ test.describe('Isomorphic Tests', () => {
     await expect(page.locator('input[type="radio"]')).toHaveCount(3)
   })
 
-  test('should interact with form elements', async () => {
+  test('should interact with form elements', async ({ page }) => {
     await page.goto(`${appUrl}/pageWithForm`)
     await page.fill('input#textbox', 'Sample Text')
     await page.check('input#checkbox')
@@ -88,7 +76,7 @@ test.describe('Isomorphic Tests', () => {
     await expect(page.locator('input#one')).toBeChecked()
   })
 
-  test('should submit the form and update the page', async () => {
+  test('should submit the form and update the page', async ({ page }) => {
     await page.goto(`${appUrl}/pageWithForm`)
     await page.fill('input#textbox', 'Test Submission')
     await page.check('input#checkbox')

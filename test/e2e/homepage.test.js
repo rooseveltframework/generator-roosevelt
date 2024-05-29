@@ -3,29 +3,22 @@ const { setupRooseveltApp } = require('./generateTestApp.js')
 const fs = require('fs/promises')
 
 let appUrl
-let page
 const destinationDir = 'my-roosevelt-sample-app'
 const testType = 'homepage'
 
+test.use({ ignoreHTTPSErrors: true })
 test.describe('Standard Tests', () => {
-  test.beforeAll(async ({ browser }) => {
-    test.setTimeout(120000)
+  test.beforeAll(async () => {
+    // test.setTimeout(120000)
     const appName = 'MyRooseveltSampleApp'
     try {
       appUrl = await setupRooseveltApp(appName, destinationDir, testType)
     } catch (e) {
       console.error('error: ', e)
     }
-
-    const context = await browser.newContext({
-      ignoreHTTPSErrors: true
-    })
-    page = await context.newPage()
   })
 
-  test.afterAll(async ({ browser }) => {
-    await browser.close()
-
+  test.afterAll(async () => {
     // Delete the created directory after tests are done
     try {
       await fs.rm(destinationDir, { recursive: true, force: true })
@@ -34,7 +27,7 @@ test.describe('Standard Tests', () => {
     }
   })
 
-  test('should load the homepage', async () => {
+  test('should load the homepage', async ({ page }) => {
     await page.goto(appUrl)
     await expect(page.locator('header')).toBeVisible()
     await expect(page.locator('h1')).toHaveText('My Roosevelt Sample App')

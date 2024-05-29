@@ -15,7 +15,7 @@ function generateRooseveltApp (appName, destinationDir, testType) {
     let isAppTypeQuestionAsked = false
     let url = ''
 
-    if(testType.localeCompare('homepage') == 0){
+    if (testType.localeCompare('homepage') === 0) {
       ptyProcess.onData(data => {
         const urlMatch = data.match(/https:\/\/localhost:\d+/)
         if (urlMatch) {
@@ -24,14 +24,14 @@ function generateRooseveltApp (appName, destinationDir, testType) {
           resolve(url)
         }
       })
-    }else{
+    } else {
       ptyProcess.onData(data => {
         if (data.includes('Generate a standard app') && !isAppTypeQuestionAsked) {
           ptyProcess.write('\x1B[B') // ANSI code for arrow down
           ptyProcess.write('\r') // Enter
           isAppTypeQuestionAsked = true
         }
-  
+
         const urlMatch = data.match(/https:\/\/localhost:\d+/)
         if (urlMatch) {
           url = urlMatch[0]
@@ -41,7 +41,6 @@ function generateRooseveltApp (appName, destinationDir, testType) {
         }
       })
     }
-    
 
     ptyProcess.write('yo roosevelt\r')
 
@@ -76,28 +75,27 @@ function executeCommand (ptyProcess, command, successIndicator) {
   })
 }
 
-async function runRooseveltApp(appDirectory) {
-  const shell = os.platform() === 'win32' ? 'powershell.exe' : 'bash';
+async function runRooseveltApp (appDirectory) {
+  const shell = os.platform() === 'win32' ? 'powershell.exe' : 'bash'
   const ptyProcess = pty.spawn(shell, [], {
     name: 'xterm-color',
     cols: 80,
     rows: 30,
     cwd: appDirectory,
     env: process.env
-  });
+  })
 
   try {
-    await executeCommand(ptyProcess, `cd ${appDirectory}`, 'bash');
-    await executeCommand(ptyProcess, 'npm install', 'added');
-    await executeCommand(ptyProcess, 'npm run d', 'HTTPS server listening on port');
-    
-    return 'App is running in development mode.';
+    await executeCommand(ptyProcess, `cd ${appDirectory}`, 'bash')
+    await executeCommand(ptyProcess, 'npm install', 'added')
+    await executeCommand(ptyProcess, 'npm run d', 'HTTPS server listening on port')
+
+    return 'App is running in development mode.'
   } catch (error) {
-    console.error('An error occurred during the setup process:', error);
-    throw error;
+    console.error('An error occurred during the setup process:', error)
+    throw error
   }
 }
-
 
 async function setupRooseveltApp (appName, destinationDir, testType) {
   try {
