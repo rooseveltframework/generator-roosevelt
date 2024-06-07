@@ -29,7 +29,7 @@
   },
   "Sass": {
     "dependencies": {
-      "sass": "~1.75.0"
+      "sass": "~1.77.0"
     },
     "config": {
       "enable": true,
