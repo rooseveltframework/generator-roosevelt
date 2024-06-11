@@ -47,7 +47,6 @@
     {
       "config": {
         "entry": "${js.sourcePath}/main.js",
-        "devtool": "source-map",
         "output": {
           "path": "${publicFolder}/js"
         },
