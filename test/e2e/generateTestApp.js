@@ -1,7 +1,7 @@
 const pty = require('node-pty')
 const os = require('os')
 
-function generateRooseveltApp (appName, destinationDir, testType) {
+function generateRooseveltApp (testType) {
   return new Promise((resolve, reject) => {
     const shell = os.platform() === 'win32' ? 'powershell.exe' : 'bash'
     const ptyProcess = pty.spawn(shell, [], {
@@ -43,6 +43,7 @@ function generateRooseveltApp (appName, destinationDir, testType) {
     }
 
     ptyProcess.write('yo roosevelt\r')
+    console.log('Building app...')
 
     const interval = setInterval(() => {
       ptyProcess.write('\r')
@@ -89,7 +90,7 @@ async function runRooseveltApp (appDirectory) {
     await executeCommand(ptyProcess, `cd ${appDirectory}`, 'bash')
     await executeCommand(ptyProcess, 'npm install', 'added')
     await executeCommand(ptyProcess, 'npm run d', 'HTTPS server listening on port')
-
+    console.log('Starting app...')
     return 'App is running in development mode.'
   } catch (error) {
     console.error('An error occurred during the setup process:', error)
@@ -97,9 +98,9 @@ async function runRooseveltApp (appDirectory) {
   }
 }
 
-async function setupRooseveltApp (appName, destinationDir, testType) {
+async function setupRooseveltApp (destinationDir, testType) {
   try {
-    const url = await generateRooseveltApp(appName, destinationDir, testType)
+    const url = await generateRooseveltApp(testType)
     await runRooseveltApp(destinationDir)
     return url
   } catch (error) {

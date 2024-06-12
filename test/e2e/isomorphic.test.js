@@ -10,10 +10,9 @@ test.use({ ignoreHTTPSErrors: true })
 test.describe('Isomorphic Tests', () => {
   test.beforeAll(async () => {
     // test.setTimeout(240000)
-    const appName = 'MyRooseveltSampleApp'
 
     try {
-      appUrl = await setupRooseveltApp(appName, destinationDir, testType)
+      appUrl = await setupRooseveltApp(destinationDir, testType)
     } catch (e) {
       console.error('error: ', e)
     }

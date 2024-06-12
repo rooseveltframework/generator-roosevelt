@@ -10,9 +10,8 @@ test.use({ ignoreHTTPSErrors: true })
 test.describe('Standard Tests', () => {
   test.beforeAll(async () => {
     // test.setTimeout(120000)
-    const appName = 'MyRooseveltSampleApp'
     try {
-      appUrl = await setupRooseveltApp(appName, destinationDir, testType)
+      appUrl = await setupRooseveltApp(destinationDir, testType)
     } catch (e) {
       console.error('error: ', e)
     }
