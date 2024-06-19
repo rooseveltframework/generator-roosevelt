@@ -1,95 +1,104 @@
-const pty = require('node-pty')
+const { spawn } = require('child_process')
 const os = require('os')
 
 function generateRooseveltApp (testType) {
   return new Promise((resolve, reject) => {
     const shell = os.platform() === 'win32' ? 'powershell.exe' : 'bash'
-    const ptyProcess = pty.spawn(shell, [], {
-      name: 'xterm-color',
-      cols: 80,
-      rows: 30,
+    const child = spawn(shell, [], {
       cwd: process.cwd(),
-      env: process.env
+      env: process.env,
+      stdio: ['pipe', 'pipe', 'pipe']
     })
 
     let isAppTypeQuestionAsked = false
     let url = ''
+    let dataBuffer = ''
 
-    if (testType.localeCompare('homepage') === 0) {
-      ptyProcess.onData(data => {
-        const urlMatch = data.match(/https:\/\/localhost:\d+/)
+    const handleOutput = (data) => {
+      const output = data.toString()
+      dataBuffer += output
+
+      if (testType.localeCompare('homepage') === 0) {
+        const urlMatch = output.match(/https:\/\/localhost:\d+/)
         if (urlMatch) {
           url = urlMatch[0]
-          ptyProcess.kill()
+          child.kill()
           resolve(url)
         }
-      })
-    } else {
-      ptyProcess.onData(data => {
-        if (data.includes('Generate a standard app') && !isAppTypeQuestionAsked) {
-          ptyProcess.write('\x1B[B') // ANSI code for arrow down
-          ptyProcess.write('\r') // Enter
+      } else {
+        if (output.includes('Generate a standard app') && !isAppTypeQuestionAsked) {
+          child.stdin.write('\x1B[B') // ANSI code for arrow down
+          child.stdin.write('\n') // Enter
           isAppTypeQuestionAsked = true
         }
 
-        const urlMatch = data.match(/https:\/\/localhost:\d+/)
+        const urlMatch = output.match(/https:\/\/localhost:\d+/)
         if (urlMatch) {
           url = urlMatch[0]
           clearInterval(interval)
-          ptyProcess.kill()
+          child.kill()
           resolve(url)
         }
-      })
+      }
+
+      if (dataBuffer.includes('Your app has been generated.')) {
+        clearInterval(interval)
+        child.kill()
+        resolve('App generated successfully.')
+      }
     }
 
-    ptyProcess.write('yo roosevelt\r')
+    child.stdout.on('data', handleOutput)
+    child.stderr.on('data', handleOutput) // Check stderr as well
+
+    child.stdin.write('yo roosevelt\n')
     console.log('Building app...')
 
     const interval = setInterval(() => {
-      ptyProcess.write('\r')
+      child.stdin.write('\n')
     }, 1000)
 
     setTimeout(() => {
       clearInterval(interval)
       if (!url) {
-        ptyProcess.kill()
+        child.kill()
         reject(new Error('App generation did not complete within the expected time.'))
       }
     }, 60000)
   })
 }
 
-function executeCommand (ptyProcess, command, successIndicator) {
+function executeCommand (child, command, successIndicator) {
   return new Promise((resolve, reject) => {
     let dataBuffer = ''
 
     const onDataHandler = data => {
-      dataBuffer += data
+      dataBuffer += data.toString()
       if (dataBuffer.includes(successIndicator)) {
-        ptyProcess.removeListener('data', onDataHandler)
+        child.stdout.removeListener('data', onDataHandler)
         resolve()
       }
     }
 
-    ptyProcess.on('data', onDataHandler)
-    ptyProcess.write(`${command}\r`)
+    child.stdout.on('data', onDataHandler)
+    child.stderr.on('data', onDataHandler) // Also check stderr
+
+    child.stdin.write(`${command}\n`)
   })
 }
 
 async function runRooseveltApp (appDirectory) {
   const shell = os.platform() === 'win32' ? 'powershell.exe' : 'bash'
-  const ptyProcess = pty.spawn(shell, [], {
-    name: 'xterm-color',
-    cols: 80,
-    rows: 30,
+  const child = spawn(shell, [], {
     cwd: appDirectory,
-    env: process.env
+    env: process.env,
+    stdio: ['pipe', 'pipe', 'pipe']
   })
 
   try {
-    await executeCommand(ptyProcess, `cd ${appDirectory}`, 'bash')
-    await executeCommand(ptyProcess, 'npm install', 'added')
-    await executeCommand(ptyProcess, 'npm run d', 'HTTPS server listening on port')
+    await executeCommand(child, `cd ${appDirectory}`, '')
+    await executeCommand(child, 'npm install', 'added')
+    await executeCommand(child, 'npm run d', 'HTTPS server listening on port')
     console.log('Starting app...')
     return 'App is running in development mode.'
   } catch (error) {
