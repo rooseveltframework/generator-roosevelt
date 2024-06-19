@@ -4,6 +4,16 @@
 
 - Put your changes here...
 
+## 0.22.3
+
+- Updated `rooseveltConfig.json` to account for the latest changes in Roosevelt.
+- Updated various dependencies.
+
+## 0.22.2
+
+- Updated `.gitignore` to account for the latest changes in Roosevelt.
+- Updated various dependencies.
+
 ## 0.22.1
 
 - Updated `.gitignore` to account for the latest changes in Roosevelt.
