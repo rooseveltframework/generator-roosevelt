@@ -18,7 +18,7 @@ function generateRooseveltApp (testType) {
       const output = data.toString()
       dataBuffer += output
 
-      if (testType.localeCompare('homepage') === 0) {
+      if (!testType.localeCompare('homepage')) {
         const urlMatch = output.match(/https:\/\/localhost:\d+/)
         if (urlMatch) {
           url = urlMatch[0]
@@ -52,7 +52,11 @@ function generateRooseveltApp (testType) {
     child.stderr.on('data', handleOutput) // Check stderr as well
 
     child.stdin.write('yo roosevelt\n')
-    console.log('Building app...')
+    if (!testType.localeCompare('homepage')) {
+      console.log("Building app in standard...")
+    }else{
+      console.log("Building app in isomorphic...")
+    }
 
     const interval = setInterval(() => {
       child.stdin.write('\n')

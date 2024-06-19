@@ -9,7 +9,6 @@ const testType = 'homepage'
 test.use({ ignoreHTTPSErrors: true })
 test.describe('Standard Tests', () => {
   test.beforeAll(async () => {
-    // test.setTimeout(120000)
     try {
       appUrl = await setupRooseveltApp(destinationDir, testType)
     } catch (e) {
@@ -21,6 +20,7 @@ test.describe('Standard Tests', () => {
     // Delete the created directory after tests are done
     try {
       await fs.rm(destinationDir, { recursive: true, force: true })
+      console.log("Removed app")
     } catch (error) {
       console.error(`Error deleting directory ${destinationDir}:`, error)
     }
