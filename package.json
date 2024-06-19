@@ -22,7 +22,6 @@
   "dependencies": {
     "gulp-beautify": "3.0.0",
     "gulp-filter": "9.0.1",
-    "node-pty": "1.0.0",
     "selfsigned": "2.4.1",
     "terminal-link": "3.0.0",
     "yeoman-generator": "5.9.0"
