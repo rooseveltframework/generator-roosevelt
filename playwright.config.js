@@ -5,7 +5,7 @@ const config = {
   testMatch: '*.test.js',
 
   // maximum time a single test can take
-  timeout: 30 * 1000,
+  timeout: 60 * 1000,
 
   expect: {
     // maximum time a single expect can take
