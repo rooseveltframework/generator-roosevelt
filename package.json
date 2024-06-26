@@ -31,7 +31,7 @@
     "codecov": "3.8.3",
     "eslint": "9.4.0",
     "eslint-plugin-mocha": "10.4.3",
-    "mocha": "10.4.0",
+    "mocha": "10.5.2",
     "roosevelt": "0.22.14",
     "standard": "17.1.0",
     "yeoman-environment": "3.19.3",
