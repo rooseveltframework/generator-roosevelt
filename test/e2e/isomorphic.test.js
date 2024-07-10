@@ -9,7 +9,6 @@ const testType = 'isomorphic'
 test.use({ ignoreHTTPSErrors: true })
 test.describe('Isomorphic Tests', () => {
   test.beforeAll(async () => {
-
     try {
       appUrl = await setupRooseveltApp(destinationDir, testType)
     } catch (e) {

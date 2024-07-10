@@ -20,7 +20,7 @@ test.describe('Standard Tests', () => {
     // Delete the created directory after tests are done
     try {
       await fs.rm(destinationDir, { recursive: true, force: true })
-      console.log("Removed app")
+      console.log('Removed app')
     } catch (error) {
       console.error(`Error deleting directory ${destinationDir}:`, error)
     }

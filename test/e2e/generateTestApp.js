@@ -53,9 +53,9 @@ function generateRooseveltApp (testType) {
 
     child.stdin.write('yo roosevelt\n')
     if (!testType.localeCompare('homepage')) {
-      console.log("Building app in standard...")
-    }else{
-      console.log("Building app in isomorphic...")
+      console.log('Building app in standard...')
+    } else {
+      console.log('Building app in isomorphic...')
     }
 
     const interval = setInterval(() => {
