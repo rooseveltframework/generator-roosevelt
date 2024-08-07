@@ -32,7 +32,7 @@
     "eslint": "9.8.0",
     "eslint-plugin-mocha": "10.5.0",
     "mocha": "10.7.0",
-    "roosevelt": "0.22.14",
+    "roosevelt": "0.22.16",
     "standard": "17.1.0",
     "yeoman-environment": "3.19.3",
     "yeoman-test": "8.3.0"
