@@ -74,8 +74,5 @@
     "test": "mocha test/unit",
     "test-debug": "mocha --inspect-brk test/unit"
   },
-  "funding": {
-    "type": "individual",
-    "url": "https://github.com/sponsors/kethinov"
-  }
+  "funding": "https://www.paypal.com/donate/?hosted_button_id=2L2X8GRXZCGJ6"
 }
