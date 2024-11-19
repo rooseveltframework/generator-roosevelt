@@ -19,6 +19,7 @@ Thumbs.db
 .DS_Store
 
 npm-debug.log
+.npm-cache
 node_modules
 coverage
 .nyc_output
