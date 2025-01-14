@@ -4,6 +4,12 @@
 
 - Put your changes here...
 
+## 0.23.0
+
+- Added preload markup and meta description to sample app.
+- Changed default CSS compiler to SASS.
+- Updated various dependencies.
+
 ## 0.22.3
 
 - Updated `rooseveltConfig.json` to account for the latest changes in Roosevelt.

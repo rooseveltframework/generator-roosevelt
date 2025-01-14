@@ -18,7 +18,7 @@ const defaultFiles = [
   'mvc/views/homepage.html',
   'mvc/views/robots.txt',
   'mvc/views/layouts/main.html',
-  'statics/css/styles.less',
+  'statics/css/styles.scss',
   'statics/images/favicon.ico',
   'statics/images/teddy.jpg',
   'statics/js/main.js'
@@ -62,7 +62,7 @@ describe('generator options', async function () {
         name: defaults.appName.toLowerCase().replace(/ /g, '-'),
         dependencies: {
           roosevelt: defaults.dependencies.roosevelt,
-          less: defaults.Less.dependencies.less,
+          sass: defaults.Sass.dependencies.sass,
           teddy: defaults.teddy.teddy
         }
       })
