@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "roosevelt": "~0.22.0"
+    "roosevelt": "~0.23.0"
   },
   "appName": "My Roosevelt Sample App",
   "createDir": true,
@@ -9,7 +9,23 @@
   "secretsDir": "secrets",
   "altURI": "https://localhost/",
   "altIP": "127.0.0.1",
-  "defaultCSSCompiler": "Less",
+  "defaultCSSCompiler": "Sass",
+  "Sass": {
+    "dependencies": {
+      "sass": "~1.83.0"
+    },
+    "config": {
+      "enable": true,
+      "module": "sass",
+      "options": {}
+    },
+    "scripts": {
+      "cssExt": "scss",
+      "stylelintPostCssModule": null,
+      "stylelintConfigModule": "\"stylelint-config-standard-scss\": \"~14.0.0\"",
+      "stylelintConfigName": "stylelint-config-standard-scss"
+    }
+  },
   "Less": {
     "dependencies": {
       "less": "~4.2.0"
@@ -21,26 +37,10 @@
     },
     "scripts": {
       "cssExt": "less",
-      "stylelintConfigModule": "\"stylelint-config-standard\": \"~36.0.0\"",
+      "stylelintConfigModule": "\"stylelint-config-standard\": \"~37.0.0\"",
       "stylelintConfigName": "stylelint-config-standard",
       "stylelintPostCssModule": "\"postcss-less\": \"~6.0.0\",",
       "stylelintSyntax": "\"customSyntax\": \"postcss-less\","
-    }
-  },
-  "Sass": {
-    "dependencies": {
-      "sass": "~1.77.0"
-    },
-    "config": {
-      "enable": true,
-      "module": "sass",
-      "options": {}
-    },
-    "scripts": {
-      "cssExt": "scss",
-      "stylelintPostCssModule": null,
-      "stylelintConfigModule": "\"stylelint-config-standard-scss\": \"~13.1.0\"",
-      "stylelintConfigName": "stylelint-config-standard-scss"
     }
   },
   "webpackBundle": [

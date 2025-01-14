@@ -8,7 +8,7 @@
       "url": "https://github.com/rooseveltframework/generator-roosevelt/graphs/contributors"
     }
   ],
-  "version": "0.22.3",
+  "version": "0.23.0",
   "files": [
     "generators"
   ],
@@ -26,11 +26,11 @@
     "yeoman-generator": "5.10.0"
   },
   "devDependencies": {
-    "c8": "10.1.2",
+    "c8": "10.1.3",
     "codecov": "3.8.3",
-    "eslint": "9.16.0",
+    "eslint": "9.18.0",
     "eslint-plugin-mocha": "10.5.0",
-    "mocha": "10.8.2",
+    "mocha": "11.0.1",
     "roosevelt": "0.23.2",
     "standard": "17.1.2",
     "yeoman-environment": "3.19.3",
