@@ -1,6 +1,6 @@
 {
   "name": "generator-roosevelt",
-  "description": "Yeoman generator for Roosevelt apps",
+  "description": "🏭🧸 Command line application for creating Roosevelt apps.",
   "author": "Roosevelt Framework Team <rooseveltframework@gmail.com>",
   "contributors": [
     {
@@ -27,9 +27,6 @@
   },
   "devDependencies": {
     "c8": "10.1.3",
-    "codecov": "3.8.3",
-    "eslint": "9.19.0",
-    "eslint-plugin-mocha": "10.5.0",
     "mocha": "11.1.0",
     "roosevelt": "0.23.2",
     "standard": "17.1.2",
@@ -52,24 +49,12 @@
   "preferGlobal": true,
   "_from": "generator-roosevelt@*",
   "gitHead": "",
-  "eslintConfig": {
-    "parserOptions": {
-      "ecmaVersion": "latest"
-    },
-    "plugins": [
-      "mocha"
-    ],
-    "rules": {
-      "mocha/no-exclusive-tests": "error"
-    }
-  },
   "mocha": {
     "timeout": "10s"
   },
   "scripts": {
-    "codecov": "codecov",
     "coverage": "c8 --reporter=text --reporter=lcov mocha test/unit",
-    "lint": "eslint ./test && standard",
+    "lint": "standard",
     "test": "mocha test/unit",
     "test-debug": "mocha --inspect-brk test/unit"
   },
