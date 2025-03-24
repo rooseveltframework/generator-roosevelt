@@ -1,11 +1,11 @@
 {
-  "port": <%= port %>,
   "makeBuildArtifacts": true,
+  "http": <%- JSON.stringify(http) %>,
   "https": <%- JSON.stringify(https) %>,
-  "secretsDir": "<%= secretsDir %>",
+  "secretsPath": "<%= secretsPath %>",
   "modelsPath": <%- JSON.stringify(modelsPath) %>,
   "viewsPath": <%- JSON.stringify(viewsPath) %>,
-  "viewEngine": <%- JSON.stringify(viewEngine) %>,<%- spaModeConfig ? spaModeConfig : '' %>
+  "viewEngine": <%- JSON.stringify(viewEngine) %>,
   "controllersPath": <%- JSON.stringify(controllersPath) %>,
   "css": {
     "sourcePath": "css",

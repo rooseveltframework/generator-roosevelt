@@ -6,9 +6,11 @@
     <meta name="format-detection" content="telephone=no">
     <title>{content.titleTag}</title>
     <meta name="description" content="Describe your website here">
+    <!--! this inline script makes it possible for check-if-CSS-is-disabled to listen for any CSS files that fail to load -->
+    <script>window.addEventListener('error', (event) => { if (event?.target?.tagName?.toLowerCase() === 'link') { window.linkTagError = true } }, true)</script>
     <link rel="preload" href="/css/styles.css" as="style">
     <link rel="preload" href="/js/main.js" as="script">
-    <link rel="stylesheet" href="/css/styles.css"><%- spaModeScript ? spaModeScript : '' %>
+    <link rel="stylesheet" href="/css/styles.css">
     <script src="/js/main.js" defer></script>
   </head>
   <body class="no-js">
@@ -16,7 +18,7 @@
       <header>
         <h1>{content.appTitle}</h1>
         <h2>{content.pageTitle}</h2>
-      </header><%- spaModeNav ? spaModeNav : '' %>
+      </header>
       {pageContent|s}
     </main>
   </body>

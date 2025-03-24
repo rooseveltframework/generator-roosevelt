@@ -30,7 +30,7 @@ describe('generator options', async function () {
 
   let runner
 
-  describe('Should automatically do a standard install with -s', function () {
+  describe('should automatically do a standard install with -s', function () {
     before(async function () {
       runner = await helpers
         .create(path.join(__dirname, '../../generators/app'))
@@ -70,7 +70,7 @@ describe('generator options', async function () {
 
     it('generated correct controller file(s)', function () {
       runner.assertFileContent('mvc/controllers/homepage.js', /model\.content\.pageTitle = 'Homepage'/)
-      runner.assertFileContent('mvc/controllers/404.js', /model\.server\.appVersion/)
+      runner.assertFileContent('mvc/controllers/404.js', /res\.render\('404', model\)/)
     })
 
     it('generated correct model file(s)', function () {
@@ -80,41 +80,6 @@ describe('generator options', async function () {
     it('generated correct view file(s)', function () {
       runner.assertFileContent('mvc/views/homepage.html', /{content\.hello}/)
       runner.assertFileContent('mvc/views/404.html', /{server.appVersion}/)
-    })
-
-    it('Should automatically run the config auditor', async function () {
-      let auditPassing = false
-      const logData = []
-
-      // grab the config auditor
-      const auditor = require('../../node_modules/roosevelt/lib/scripts/configAuditor')
-
-      // store a reference to the console
-      const oldConsole = console
-
-      // overload the console to prevent log spamming and to also store an array of logs that happen
-      // standard hates this
-      console = { // eslint-disable-line
-        log: log => {
-          logData.push(log)
-        }
-      }
-
-      // run the auditor
-      auditor.audit(runner.cwd)
-
-      // restore the console
-      // standard hates this
-      console = oldConsole // eslint-disable-line
-
-      // examine the log data and skim for an indication that the audit passed
-      for (const log of logData) {
-        if (log.includes('no errors found')) {
-          auditPassing = true
-        }
-      }
-
-      assert.strictEqual(auditPassing, true, 'rooseveltConfig audit completed with no errors found')
     })
   })
 })

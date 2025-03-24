@@ -1,3 +1,11 @@
+@use "helpers";
+
+/* global styles */
+
+@view-transition { /* enable multi-page view transitions */
+  navigation: auto;
+}
+
 body {
   font-family: sans-serif;
   color: #100;

@@ -39,7 +39,6 @@ module.exports = class extends Generator {
         this.appName = cache.standardInstall
       }
       this.packageName = helper.sanitizePackageName(this.appName)
-      this.spaMode = false
       return true
     }
 
@@ -85,30 +84,6 @@ module.exports = class extends Generator {
     )
       .then((response) => {
         this.dirname = response.dirname
-      })
-  }
-
-  spa () {
-    if (this.spaMode === false) {
-      return true
-    }
-
-    return this.prompt(
-      [
-        {
-          type: 'list',
-          name: 'spaMode',
-          choices: [
-            'Standard app',
-            'Isomorphic (single page app)'
-          ],
-          message: 'Generate a standard app (for just doing server-side renders) or an isomorphic app (comes with bootstrapping for Roosevelt\'s single page app support)?',
-          default: false
-        }
-      ]
-    )
-      .then((response) => {
-        this.spaMode = response.spaMode === 'Isomorphic (single page app)' || false
       })
   }
 
@@ -162,9 +137,9 @@ module.exports = class extends Generator {
         },
         {
           type: 'input',
-          name: 'secretsDir',
+          name: 'secretsPath',
           message: 'Name of the directory keys and secrets are stored:',
-          default: defaults.secretsDir
+          default: defaults.secretsPath
         }
       ]
     )
@@ -178,7 +153,7 @@ module.exports = class extends Generator {
         }
 
         this.rejectUnauthorized = response.rejectUnauthorized
-        this.secretsDir = response.secretsDir
+        this.secretsPath = response.secretsPath
       })
   }
 
@@ -193,12 +168,13 @@ module.exports = class extends Generator {
           type: 'list',
           name: 'cssCompiler',
           choices: [
-            'Less',
             'Sass',
+            'Less',
+            'Stylus',
             'none'
           ],
           message: 'Which CSS preprocessor would you like to use?',
-          default: 'Less'
+          default: 'Sass'
         },
         {
           type: 'confirm',
@@ -241,24 +217,21 @@ module.exports = class extends Generator {
       }
     ]
 
-    // this question will be skipped in SPA mode and the answer of teddy will be assumed yes
-    if (!this.spaMode) {
-      questions.push(
-        {
-          type: 'confirm',
-          name: 'templatingEngine',
-          message: 'Do you want to use a HTML templating engine?',
-          default: defaults.templatingEngine
-        }
-      )
-    }
+    questions.push(
+      {
+        type: 'confirm',
+        name: 'templatingEngine',
+        message: 'Do you want to use a HTML templating engine?',
+        default: defaults.templatingEngine
+      }
+    )
 
     return this.prompt(questions)
       .then((response) => {
         this.modelsPath = response.modelsPath
         this.viewsPath = response.viewsPath
         this.controllersPath = response.controllersPath
-        this.templatingEngine = this.spaMode ? 'teddy' : response.templatingEngine // assume teddy in SPA mode
+        this.templatingEngine = response.templatingEngine
       })
   }
 
@@ -272,12 +245,6 @@ module.exports = class extends Generator {
     }
 
     this.viewEngineList = this.viewEngineList || []
-
-    // skip this question in SPA mode, assume it's teddy
-    if (this.spaMode) {
-      this.viewEngineList.push(`${defaults.templatingExtension}: ${defaults.templatingEngineName}`)
-      return true
-    }
 
     return this.prompt(
       [
@@ -338,19 +305,20 @@ module.exports = class extends Generator {
       this.httpsPort = helper.randomPort()
     }
 
-    // HTTPS
+    const httpParams = {
+      enable: false
+    }
+
     const httpsParams = {
       enable: true,
       port: this.httpsPort,
-      force: true,
-      authInfoPath: {
-        authCertAndKey: {
-          cert: 'cert.pem',
-          key: 'key.pem'
-        }
+      options: {
+        cert: 'cert.pem',
+        key: 'key.pem'
       }
     }
 
+    this.httpParams = httpParams
     this.httpsParams = httpsParams
     this.cssCompiler = this.cssCompiler || 'default'
     this.modelsPath = this.modelsPath || defaults.modelsPath
@@ -361,7 +329,7 @@ module.exports = class extends Generator {
     this.dependencies = defaults.dependencies
 
     // secrets directory
-    this.secretsDir = this.secretsDir || defaults.secretsDir
+    this.secretsPath = this.secretsPath || defaults.secretsPath
 
     // determine if teddy will be used
     if (this.viewEngine !== 'none') {
@@ -385,6 +353,13 @@ module.exports = class extends Generator {
         this.stylelintConfigName = defaults[defaults.defaultCSSCompiler].scripts.stylelintConfigName
         this.stylelintPostCssModule = defaults[defaults.defaultCSSCompiler].scripts.stylelintPostCssModule
         this.stylelintSyntax = defaults[defaults.defaultCSSCompiler].scripts.stylelintSyntax
+      } else if (this.cssCompiler === 'Sass') {
+        this.dependencies = Object.assign(this.dependencies, defaults.Sass.dependencies)
+        this.cssCompilerOptions = defaults.Sass.config
+        this.cssExt = defaults.Sass.scripts.cssExt
+        this.stylelintConfigModule = defaults.Sass.scripts.stylelintConfigModule
+        this.stylelintConfigName = defaults.Sass.scripts.stylelintConfigName
+        this.stylelintPostCssModule = defaults.Sass.scripts.stylelintPostCssModule
       } else if (this.cssCompiler === 'Less') {
         this.dependencies = Object.assign(this.dependencies, defaults.Less.dependencies)
         this.cssCompilerOptions = defaults.Less.config
@@ -393,13 +368,13 @@ module.exports = class extends Generator {
         this.stylelintConfigName = defaults.Less.scripts.stylelintConfigName
         this.stylelintPostCssModule = defaults.Less.scripts.stylelintPostCssModule
         this.stylelintSyntax = defaults.Less.scripts.stylelintSyntax
-      } else if (this.cssCompiler === 'Sass') {
-        this.dependencies = Object.assign(this.dependencies, defaults.Sass.dependencies)
-        this.cssCompilerOptions = defaults.Sass.config
-        this.cssExt = defaults.Sass.scripts.cssExt
-        this.stylelintConfigModule = defaults.Sass.scripts.stylelintConfigModule
-        this.stylelintConfigName = defaults.Sass.scripts.stylelintConfigName
-        this.stylelintPostCssModule = defaults.Sass.scripts.stylelintPostCssModule
+      } else if (this.cssCompiler === 'Stylus') {
+        this.dependencies = Object.assign(this.dependencies, defaults.Stylus.dependencies)
+        this.cssCompilerOptions = defaults.Stylus.config
+        this.cssExt = defaults.Stylus.scripts.cssExt
+        this.stylelintConfigModule = defaults.Stylus.scripts.stylelintConfigModule
+        this.stylelintConfigName = defaults.Stylus.scripts.stylelintConfigName
+        this.stylelintPostCssModule = defaults.Stylus.scripts.stylelintPostCssModule
       }
     } else {
       this.symlinks.push(
@@ -456,29 +431,13 @@ module.exports = class extends Generator {
       }
     )
 
-    let spaModeConfig = ''
-    if (this.spaMode) {
-      spaModeConfig = `
-  "clientViews": {
-    "exposeAll": true,
-    "blocklist": [],
-    "allowlist": [],
-    "defaultBundle": "views.js",
-    "output": "js",
-    "minify": false
-  },
-  "isomorphicControllers": {
-    "output": "js",
-    "file": "controllers.js"
-  },`
-    }
     this.fs.copyTpl(
       this.templatePath('rooseveltConfig.json.ejs'),
       this.destinationPath('rooseveltConfig.json'),
       {
-        port: this.httpsPort,
+        http: this.httpParams,
         https: this.httpsParams,
-        secretsDir: this.secretsDir,
+        secretsPath: this.secretsPath,
         modelsPath: this.modelsPath,
         viewsPath: this.viewsPath,
         viewEngine: this.viewEngine,
@@ -486,8 +445,7 @@ module.exports = class extends Generator {
         cssCompilerOptions: this.cssCompilerOptions,
         webpackEnable: this.webpackEnable,
         webpackBundle: this.webpackBundle,
-        symlinks: this.symlinks,
-        spaModeConfig
+        symlinks: this.symlinks
       }
     )
 
@@ -509,7 +467,7 @@ module.exports = class extends Generator {
       this.templatePath('_.gitignore.ejs'),
       this.destinationPath('.gitignore'),
       {
-        secretsDir: this.secretsDir
+        secretsPath: this.secretsPath
       }
     )
 
@@ -547,31 +505,9 @@ module.exports = class extends Generator {
     )
 
     if (this.usesTeddy) {
-      let spaModeScript = ''
-      let spaModeNav = ''
-      if (this.spaMode) {
-        spaModeScript = `
-    <script>
-      <if frontendModel>
-        window.model = {frontendModel|s|p}
-      </if>
-    </script>`
-        spaModeNav = `
-      <nav>
-        <ul>
-          <li><a href='/'>Homepage</a></li>
-          <li><a href='/otherPage'>Some other page</a></li>
-          <li><a href='/pageWithForm'>Page with a form</a></li>
-        </ul>
-      </nav>`
-      }
       this.fs.copyTpl(
         this.templatePath('mvc/views/teddy/layouts/main.html'),
-        this.destinationPath(this.viewsPath + '/layouts/main.html'),
-        {
-          spaModeScript,
-          spaModeNav
-        }
+        this.destinationPath(this.viewsPath + '/layouts/main.html')
       )
 
       this.fs.copy(
@@ -583,25 +519,6 @@ module.exports = class extends Generator {
         this.templatePath('mvc/views/teddy/homepage.html'),
         this.destinationPath(this.viewsPath + '/homepage.html')
       )
-
-      if (this.spaMode) {
-        this.fs.copy(
-          this.templatePath('mvc/views/teddy/otherPage.html'),
-          this.destinationPath(this.viewsPath + '/otherPage.html')
-        )
-        this.fs.copy(
-          this.templatePath('mvc/views/teddy/pageWithForm.html'),
-          this.destinationPath(this.viewsPath + '/pageWithForm.html')
-        )
-        this.fs.copy(
-          this.templatePath('mvc/views/teddy/formResultsPage.html'),
-          this.destinationPath(this.viewsPath + '/formResultsPage.html')
-        )
-        this.fs.copy(
-          this.templatePath('mvc/views/teddy/loadingPage.html'),
-          this.destinationPath(this.viewsPath + '/loadingPage.html')
-        )
-      }
     } else {
       // assume vanilla for now
       this.fs.copyTpl(
@@ -620,37 +537,14 @@ module.exports = class extends Generator {
     )
 
     if (this.usesTeddy) {
-      let spaModeScript = ''
-      if (this.spaMode) {
-        spaModeScript = `
-    model.frontendModel = JSON.stringify(model)`
-      }
       this.fs.copyTpl(
         this.templatePath('mvc/controllers/teddy/404.js'),
-        this.destinationPath(this.controllersPath + '/404.js'),
-        {
-          spaModeScript
-        }
+        this.destinationPath(this.controllersPath + '/404.js')
       )
-      if (this.spaMode) {
-        this.fs.copy(
-          this.templatePath('mvc/controllers/teddy/spa/homepage.js'),
-          this.destinationPath(this.controllersPath + '/homepage.js')
-        )
-        this.fs.copy(
-          this.templatePath('mvc/controllers/teddy/spa/otherPage.js'),
-          this.destinationPath(this.controllersPath + '/otherPage.js')
-        )
-        this.fs.copy(
-          this.templatePath('mvc/controllers/teddy/spa/pageWithForm.js'),
-          this.destinationPath(this.controllersPath + '/pageWithForm.js')
-        )
-      } else {
-        this.fs.copy(
-          this.templatePath('mvc/controllers/teddy/homepage.js'),
-          this.destinationPath(this.controllersPath + '/homepage.js')
-        )
-      }
+      this.fs.copy(
+        this.templatePath('mvc/controllers/teddy/homepage.js'),
+        this.destinationPath(this.controllersPath + '/homepage.js')
+      )
     } else {
       // assume vanilla for now
       this.fs.copy(
@@ -659,103 +553,42 @@ module.exports = class extends Generator {
       )
     }
 
-    if (this.cssExt === 'less') {
-      if (this.spaMode) {
-        this.fs.copy(
-          this.templatePath('statics/css/less/spa/styles.less'),
-          this.destinationPath('statics/css/styles.less')
-        )
-        this.fs.copy(
-          this.templatePath('statics/css/less/spa/widgets.less'),
-          this.destinationPath('statics/css/widgets.less')
-        )
-        this.fs.copy(
-          this.templatePath('statics/css/less/spa/helpers.less'),
-          this.destinationPath('statics/css/helpers.less')
-        )
-        this.fs.copy(
-          this.templatePath('statics/css/less/spa/pages/homepage.less'),
-          this.destinationPath('statics/css/pages/homepage.less')
-        )
-        this.fs.copy(
-          this.templatePath('statics/css/less/spa/pages/formResultsPage.less'),
-          this.destinationPath('statics/css/pages/formResultsPage.less')
-        )
-      } else {
-        this.fs.copy(
-          this.templatePath('statics/css/less/styles.less'),
-          this.destinationPath('statics/css/styles.less')
-        )
-      }
-    } else if (this.cssExt === 'scss') {
-      if (this.spaMode) {
-        this.fs.copy(
-          this.templatePath('statics/css/sass/spa/styles.scss'),
-          this.destinationPath('statics/css/styles.scss')
-        )
-        this.fs.copy(
-          this.templatePath('statics/css/sass/spa/widgets.scss'),
-          this.destinationPath('statics/css/widgets.scss')
-        )
-        this.fs.copy(
-          this.templatePath('statics/css/sass/spa/helpers.scss'),
-          this.destinationPath('statics/css/helpers.scss')
-        )
-        this.fs.copy(
-          this.templatePath('statics/css/sass/spa/pages/homepage.scss'),
-          this.destinationPath('statics/css/pages/homepage.scss')
-        )
-        this.fs.copy(
-          this.templatePath('statics/css/sass/spa/pages/formResultsPage.scss'),
-          this.destinationPath('statics/css/pages/formResultsPage.scss')
-        )
-      } else {
-        this.fs.copy(
-          this.templatePath('statics/css/sass/styles.scss'),
-          this.destinationPath('statics/css/styles.scss')
-        )
-      }
+    if (this.cssExt === 'scss') {
+      this.fs.copy(
+        this.templatePath('statics/css/sass/styles.scss'),
+        this.destinationPath('statics/css/styles.scss')
+      )
+      this.fs.copy(
+        this.templatePath('statics/css/sass/helpers.scss'),
+        this.destinationPath('statics/css/helpers.scss')
+      )
+    } else if (this.cssExt === 'less') {
+      this.fs.copy(
+        this.templatePath('statics/css/less/styles.less'),
+        this.destinationPath('statics/css/styles.less')
+      )
+      this.fs.copy(
+        this.templatePath('statics/css/less/helpers.less'),
+        this.destinationPath('statics/css/helpers.less')
+      )
     } else if (this.cssExt === 'styl') {
-      if (this.spaMode) {
-        this.fs.copy(
-          this.templatePath('statics/css/stylus/spa/styles.styl'),
-          this.destinationPath('statics/css/styles.styl')
-        )
-        this.fs.copy(
-          this.templatePath('statics/css/stylus/spa/widgets.styl'),
-          this.destinationPath('statics/css/widgets.styl')
-        )
-        this.fs.copy(
-          this.templatePath('statics/css/stylus/spa/helpers.styl'),
-          this.destinationPath('statics/css/helpers.styl')
-        )
-        this.fs.copy(
-          this.templatePath('statics/css/stylus/spa/pages/homepage.styl'),
-          this.destinationPath('statics/css/pages/homepage.styl')
-        )
-        this.fs.copy(
-          this.templatePath('statics/css/stylus/spa/pages/formResultsPage.styl'),
-          this.destinationPath('statics/css/pages/formResultsPage.styl')
-        )
-      } else {
-        this.fs.copy(
-          this.templatePath('statics/css/stylus/styles.styl'),
-          this.destinationPath('statics/css/styles.styl')
-        )
-        this.fs.copy(
-          this.templatePath('statics/css/stylus/more.styl'),
-          this.destinationPath('statics/css/more.styl')
-        )
-      }
+      this.fs.copy(
+        this.templatePath('statics/css/stylus/styles.styl'),
+        this.destinationPath('statics/css/styles.styl')
+      )
+      this.fs.copy(
+        this.templatePath('statics/css/stylus/helpers.styl'),
+        this.destinationPath('statics/css/helpers.styl')
+      )
     } else if (this.cssExt === 'css') {
-      if (this.spaMode) {
-        // stuff
-      } else {
-        this.fs.copy(
-          this.templatePath('statics/css/vanilla/styles.css'),
-          this.destinationPath('statics/css/styles.css')
-        )
-      }
+      this.fs.copy(
+        this.templatePath('statics/css/vanilla/styles.css'),
+        this.destinationPath('statics/css/styles.css')
+      )
+      this.fs.copy(
+        this.templatePath('statics/css/vanilla/helpers.css'),
+        this.destinationPath('statics/css/helpers.css')
+      )
     }
 
     this.fs.copy(
@@ -768,17 +601,10 @@ module.exports = class extends Generator {
       this.destinationPath('statics/images/favicon.ico')
     )
 
-    if (this.spaMode) {
-      this.fs.copy(
-        this.templatePath('statics/js/spa/main.js'),
-        this.destinationPath('statics/js/main.js')
-      )
-    } else {
-      this.fs.copy(
-        this.templatePath('statics/js/main.js'),
-        this.destinationPath('statics/js/main.js')
-      )
-    }
+    this.fs.copy(
+      this.templatePath('statics/js/main.js'),
+      this.destinationPath('statics/js/main.js')
+    )
   }
 
   end () {
@@ -794,7 +620,7 @@ module.exports = class extends Generator {
         this.log('- To run in development mode:    npm run d')
         this.log('- To run in production mode:     npm run p')
         const url = 'https://localhost:' + this.httpsPort
-        const help = 'https://github.com/rooseveltframework/roosevelt#configure-your-app-with-parameters'
+        const help = 'https://github.com/rooseveltframework/roosevelt'
         this.log('- Once running, visit:           ' + terminalLink(url, url) + '\n')
         this.log('To make further changes to the config, edit package.json. See ' + terminalLink(help, help) + ' for information on the configuration options.')
       }
