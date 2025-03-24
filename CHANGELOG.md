@@ -1,8 +1,22 @@
 # generator-roosevelt Changelog
 
+This project's versioning tracks Roosevelt's versioning. When some version numbers are skipped, it's because the generator was not updated for that version of Roosevelt.
+
 ## Next version
 
 - Put your changes here...
+
+## 0.29.0
+
+- Refactored sample app to account for breaking changes in Roosevelt.
+- Enabled MPA view transitions in default CSS.
+- Added debug markup to the default 404 not found page in development mode.
+- Added `.visuallyHidden` CSS helper class to default CSS.
+- Fixed broken Stylus CSS option.
+- Added `check-if-CSS-is-disabled` module to the default JS.
+- Removed broken SPA option. Will return soon...
+- Refactored sample app controller code to better prepare it for the return of the SPA option.
+- Updated dependencies.
 
 ## 0.23.0
 

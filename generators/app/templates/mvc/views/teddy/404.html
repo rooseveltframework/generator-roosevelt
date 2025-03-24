@@ -4,6 +4,9 @@
       <p>The requested <abbr title="Uniform Resource Locator">URL</abbr> {server.url} was not found on this server.</p>
       <footer>
         <address>{server.mainDomain} {server.appVersion}</address>
+        <if server.NODE_ENV="development">
+          {server.debugMarkup|s}
+        </if>
       </footer>
     </article>
   </arg>

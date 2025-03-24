@@ -1,18 +1,20 @@
 {
   "dependencies": {
-    "roosevelt": "~0.23.0"
+    "check-if-css-is-disabled": "~2.0.0",
+    "roosevelt": "~0.29.0",
+    "webpack": "~5.98.0"
   },
   "appName": "My Roosevelt Sample App",
   "createDir": true,
   "httpsPort": "Random",
   "https": true,
-  "secretsDir": "secrets",
+  "secretsPath": "secrets",
   "altURI": "https://localhost/",
   "altIP": "127.0.0.1",
   "defaultCSSCompiler": "Sass",
   "Sass": {
     "dependencies": {
-      "sass": "~1.83.0"
+      "sass": "~1.86.0"
     },
     "config": {
       "enable": true,
@@ -43,6 +45,22 @@
       "stylelintSyntax": "\"customSyntax\": \"postcss-less\","
     }
   },
+  "Stylus": {
+    "dependencies": {
+      "stylus": "~0.64.0"
+    },
+    "config": {
+      "enable": true,
+      "module": "stylus",
+      "options": {}
+    },
+    "scripts": {
+      "cssExt": "styl",
+      "stylelintPostCssModule": null,
+      "stylelintConfigModule": "\"stylelint-stylus\": \"~1.0.0\"",
+      "stylelintConfigName": "stylelint-stylus"
+    }
+  },
   "webpackBundle": [
     {
       "config": {
@@ -57,7 +75,7 @@
           },
           "modules": [
             "${js.sourcePath}",
-            "${publicFolder}/js",
+            "${buildFolder}/js",
             "${appDir}",
             "node_modules"
           ]
