@@ -1,5 +1,6 @@
 /* eslint-env mocha */
-
+const yeomanTest = require('yeoman-test')
+const helpers = new yeomanTest.YeomanTest()
 const path = require('path')
 const assert = require('assert')
 const defaults = require('../../generators/app/templates/defaults.json')
@@ -25,9 +26,6 @@ const defaultFiles = [
 ]
 
 describe('generator options', async function () {
-  const yeomanTest = await import('yeoman-test')
-  const helpers = new yeomanTest.YeomanTest()
-
   let runner
 
   describe('should automatically do a standard install with -s', function () {

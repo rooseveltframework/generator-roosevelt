@@ -1,12 +1,17 @@
 {
-  "makeBuildArtifacts": true,
-  "http": <%- JSON.stringify(http) %>,
-  "https": <%- JSON.stringify(https) %>,
-  "secretsPath": "<%= secretsPath %>",
-  "modelsPath": <%- JSON.stringify(modelsPath) %>,
-  "viewsPath": <%- JSON.stringify(viewsPath) %>,
+  "makeBuildArtifacts": <%- makeBuildArtifacts %>,
+  <% if (!staticSiteMode) { %>
+    "http": <%- JSON.stringify(http) %>,
+    "https": <%- JSON.stringify(https) %>,
+    "secretsPath": "<%= secretsPath %>",
+    "favicon": "images/favicon.ico",
+  <% } %>
+  <% if (staticSiteMode) { %>
+    "modelsPath": <%- JSON.stringify(modelsPath) %>,
+    "viewsPath": <%- JSON.stringify(viewsPath) %>,
+    "controllersPath": <%- JSON.stringify(controllersPath) %>,
+  <% } %>
   "viewEngine": <%- JSON.stringify(viewEngine) %>,
-  "controllersPath": <%- JSON.stringify(controllersPath) %>,
   "css": {
     "sourcePath": "css",
     "compiler": <%- JSON.stringify(cssCompilerOptions) %>,
@@ -20,6 +25,9 @@
       "bundles": <%- JSON.stringify(webpackBundle) %>
     }
   },
-  "favicon": "images/favicon.ico",
+  <% if (spaMode) { %>
+    "clientControllers": <%- JSON.stringify(clientControllers) %>,
+    "clientViews": <%- JSON.stringify(clientViews) %>,
+  <% } %>
   "symlinks": <%- JSON.stringify(symlinks) %>
 }

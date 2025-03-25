@@ -83,6 +83,7 @@
       }
     }
   ],
+  "webpackSpaVariantResolveModules": ["${js.sourcePath}", "${buildFolder}/js", "${appDir}", "node_modules", "mvc/controllers"],
   "modelsPath": "mvc/models",
   "viewsPath": "mvc/views",
   "controllersPath": "mvc/controllers",
@@ -91,9 +92,41 @@
   "templatingExtension": "html",
   "additionalTemplatingEngines": false,
   "teddy": {
-    "teddy": "~0.6.0"
+    "teddy": "~1.0.0"
   },
   "viewEngine": [
     "html:teddy"
-  ]
+  ],
+  "semantic-forms": {
+    "semantic-forms": "~5.0.0"
+  },
+  "single-page-express": {
+    "single-page-express": "~1.2.0"
+  },
+  "clientControllers": {
+    "enable": true,
+    "exposeAll": true,
+    "blocklist": [
+      "server/*"
+    ],
+    "allowlist": [],
+    "defaultBundle": "controllers.js",
+    "output": "js"
+  },
+  "clientViews": {
+    "enable": true,
+    "exposeAll": true,
+    "blocklist": [
+      "robots.txt"
+    ],
+    "allowlist": [],
+    "defaultBundle": "views.js",
+    "output": "js",
+    "minify": true,
+    "minifyOptions": {
+      "caseSensitive": true,
+      "collapseWhitespace": true,
+      "removeAttributeQuotes": false
+    }
+  }
 }
