@@ -54,6 +54,7 @@
     "d": "node run-generator.js",
     "dev": "node run-generator.js",
     "development": "node run-generator.js",
+    "lint": "standard",
     "coverage": "cross-env SILENT_MODE=true c8 --reporter=text --reporter=lcov mocha test/unit",
     "test-unit": "cross-env SILENT_MODE=true mocha test/unit",
     "test-e2e": "playwright test",
