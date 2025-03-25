@@ -15,10 +15,19 @@
   </head>
   <body class="no-js">
     <main>
-      <header>
+      <header data-page-title> <!--! the data-page-title attribute makes sure the textContent of this element is read to screen readers -->
         <h1>{content.appTitle}</h1>
+        <p hidden>—</p> <!--! this puts a dash between the textContent of the <h1> and the <h2> for screen readers -->
         <h2>{content.pageTitle}</h2>
       </header>
+      <nav>
+        <ul>
+          <li><a href="/">Homepage</a></li>
+          <li><a href="/secondPage">Second page</a></li>
+          <li><a href="/pageWithForm">Page with form</a></li>
+          <li><a href="/pageWithDataRetrieval">Page with data retrieval from the server</a></li>
+        </ul>
+      </nav>
       {pageContent|s}
     </main>
   </body>

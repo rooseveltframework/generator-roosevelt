@@ -6,6 +6,19 @@ This project's versioning tracks Roosevelt's versioning. When some version numbe
 
 - Put your changes here...
 
+## 0.29.1
+
+- Added new static site generator app option.
+- Added new single page app option.
+- Added some sugar for developers hacking on this module:
+  - Added a script that lets developers run the generator from within the clone: `node run-generator.js`
+  - Added an end-to-end test suite.
+- Altered default output to `await` the startServer call.
+- Fixed a bug causing chaotic formatting of JSON files.
+- Fixed a bug if you generate a sample app with no tempalting system. Also made the sample plain HTML template consistent with the Teddy variant as well.
+- Refactored lots of stuff to improve maintainability.
+- Updated dependencies.
+
 ## 0.29.0
 
 - Refactored sample app to account for breaking changes in Roosevelt.

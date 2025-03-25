@@ -1,1 +1,3 @@
-require('roosevelt')().startServer()
+(async () => {
+  await require('roosevelt')().startServer()
+})()

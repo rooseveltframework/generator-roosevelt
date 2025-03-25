@@ -1,0 +1,33 @@
+<include src="layouts/main">
+  <arg pageContent>
+    <article id="pageWithForm">
+      <p>page with a form</p>
+      <form action="/pageWithForm" method="post" class="semanticForms">
+        <if button1 or button2>
+          <p>Data submitted!</p>
+          <p if-some_textbox false="hidden">Textbox: {some_textbox}</p>
+          <p if-some_radios false="hidden">Radios: {some_radios}</p>
+          <p if-some_checkbox false="hidden">Checkbox: {some_checkbox}</p>
+        </if>
+        <dl class="colspan-3">
+          <dt><label for="some_textbox">Text box</label></dt>
+          <dd><input type="text" name="some_textbox" id="some_textbox" if-some_textbox true='value="{some_textbox}"' false='value=""'></dd>
+          <dt><label data-for="some_radios">Radios</label></dt>
+          <dd class="radios">
+            <ul id="some_radios" checked-value="{some_radios}">
+              <li><input type="radio" name="some_radios" id="r_one" value="One"> <label for="r_one">One</label></li>
+              <li><input type="radio" name="some_radios" id="r_two" value="Two"> <label for="r_two">Two</label></li>
+              <li><input type="radio" name="some_radios" id="r_three" value="Three"> <label for="r_three">Three</label></li>
+            </ul>
+          </dd>
+          <dt><label for="some_checkbox">Checkbox</label></dt>
+          <dd><input type="checkbox" name="some_checkbox" id="some_checkbox" if-some_checkbox true='checked'></dd>
+        </dl>
+        <menu>
+          <li><button type="submit" name="button1" value="clicked">Button 1</button></li>
+          <li><button type="submit" name="button2" value="clicked">Button 2</button></li>
+        </menu>
+      </form>
+    </article>
+  </arg>
+</include>

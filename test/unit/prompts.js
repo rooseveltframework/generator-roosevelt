@@ -1,24 +1,18 @@
 /* eslint-env mocha */
-
-/**
- * Unit tests for prompts
- * @module test/unit/prompts
- */
-
+const yeomanTest = require('yeoman-test')
+const helpers = new yeomanTest.YeomanTest()
 const path = require('path')
 const assert = require('assert')
 const fs = require('fs')
 
 describe('Generator Prompts', async function () {
-  const yeomanTest = await import('yeoman-test')
-  const helpers = new yeomanTest.YeomanTest()
-
   describe('Templating Engine', function () {
     it('should use multiple view engines and templating extensions', async function () {
       const runner = await helpers
         .create(path.join(__dirname, '../../generators/app'))
         .withAnswers({
-          configMode: 'Customize',
+          configMode: 'Custom app',
+          customAppVariant: 'MPA — multi-page app (recommended for most apps)',
           templatingEngine: true,
           templatingEngineName1: 'test1',
           templatingExtension1: 'html1',
@@ -46,7 +40,8 @@ describe('Generator Prompts', async function () {
       const runner = await helpers
         .create(path.join(__dirname, '../../generators/app'))
         .withAnswers({
-          configMode: 'Customize',
+          configMode: 'Custom app',
+          customAppVariant: 'MPA — multi-page app (recommended for most apps)',
           enableHTTPS: true,
           httpsPortNumber: 'Custom',
           customHttpsPort: 1234
@@ -67,7 +62,8 @@ describe('Generator Prompts', async function () {
       const runner = await helpers
         .create(path.join(__dirname, '../../generators/app'))
         .withAnswers({
-          configMode: 'Customize',
+          configMode: 'Custom app',
+          customAppVariant: 'MPA — multi-page app (recommended for most apps)',
           enableHTTPS: true,
           httpsPortNumber: 'Random'
         })
@@ -86,7 +82,8 @@ describe('Generator Prompts', async function () {
     const runner = await helpers
       .create(path.join(__dirname, '../../generators/app'))
       .withAnswers({
-        configMode: 'Customize',
+        configMode: 'Custom app',
+        customAppVariant: 'MPA — multi-page app (recommended for most apps)',
         cssCompiler: 'Sass'
       })
       .run()
@@ -110,7 +107,8 @@ describe('Generator Prompts', async function () {
       const runner = await helpers
         .create(path.join(__dirname, '../../generators/app'))
         .withAnswers({
-          configMode: 'Customize',
+          configMode: 'Custom app',
+          customAppVariant: 'MPA — multi-page app (recommended for most apps)',
           cssCompiler: 'Sass'
         })
         .run()
@@ -133,7 +131,8 @@ describe('Generator Prompts', async function () {
       const runner = await helpers
         .create(path.join(__dirname, '../../generators/app'))
         .withAnswers({
-          configMode: 'Customize',
+          configMode: 'Custom app',
+          customAppVariant: 'MPA — multi-page app (recommended for most apps)',
           cssCompiler: 'Less'
         })
         .run()
@@ -156,7 +155,8 @@ describe('Generator Prompts', async function () {
       const runner = await helpers
         .create(path.join(__dirname, '../../generators/app'))
         .withAnswers({
-          configMode: 'Customize',
+          configMode: 'Custom app',
+          customAppVariant: 'MPA — multi-page app (recommended for most apps)',
           cssCompiler: 'Stylus'
         })
         .run()
@@ -179,7 +179,8 @@ describe('Generator Prompts', async function () {
       const runner = await helpers
         .create(path.join(__dirname, '../../generators/app'))
         .withAnswers({
-          configMode: 'Customize',
+          configMode: 'Custom app',
+          customAppVariant: 'MPA — multi-page app (recommended for most apps)',
           cssCompiler: 'none'
         })
         .run()
@@ -203,7 +204,8 @@ describe('Generator Prompts', async function () {
       const runner = await helpers
         .create(path.join(__dirname, '../../generators/app'))
         .withAnswers({
-          configMode: 'Customize',
+          configMode: 'Custom app',
+          customAppVariant: 'MPA — multi-page app (recommended for most apps)',
           webpack: true
         })
         .run()
@@ -242,7 +244,8 @@ describe('Generator Prompts', async function () {
       const runner = await helpers
         .create(path.join(__dirname, '../../generators/app'))
         .withAnswers({
-          configMode: 'Customize',
+          configMode: 'Custom app',
+          customAppVariant: 'MPA — multi-page app (recommended for most apps)',
           webpack: false
         })
         .run()
