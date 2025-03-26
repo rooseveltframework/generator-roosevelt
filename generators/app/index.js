@@ -36,7 +36,7 @@ module.exports = class extends Generator {
       return true
     }
 
-    if (!process.env.SILENT_MODE) console.log(`  🧸 Roosevelt app generator (version ${require('../../package').version}${require('path').resolve(__dirname, '../../.gitignore') ? ' [development mode]' : ''})\n`)
+    if (!process.env.SILENT_MODE) console.log(`  🧸 Roosevelt app generator (version ${require('../../package').version}${fs.existsSync(require('path').resolve(__dirname, '../../.gitignore')) ? ' [development mode]' : ''})\n`)
 
     return this.prompt(
       [
