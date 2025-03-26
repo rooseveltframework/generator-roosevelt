@@ -6,6 +6,11 @@ This project's versioning tracks Roosevelt's versioning. When some version numbe
 
 - Put your changes here...
 
+## 0.29.3
+
+- Fixed a bug that could cause customizing an app to skip some user selections.
+- Added tilda `~` to http-server dependency.
+
 ## 0.29.2
 
 - Fixed a bug that caused the "development mode" label to show up inappropriately when the generator is not in development mode.
