@@ -6,6 +6,11 @@ This project's versioning tracks Roosevelt's versioning. When some version numbe
 
 - Put your changes here...
 
+## 0.29.4
+
+- Fixed a bug with the default helpers CSS file.
+- Updated dependencies.
+
 ## 0.29.3
 
 - Fixed a bug that could cause customizing an app to skip some user selections.

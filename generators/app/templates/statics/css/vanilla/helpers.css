@@ -1,14 +1,14 @@
 /* css class for hiding elements with text in them but keeping the text visible for screen readers */
 .visuallyHidden {
-  position: 'absolute';
-  top: '-9999px';
-  left: '-9999px';
-  width: '1px';
-  height: '1px';
-  overflow: 'hidden';
-  border: '0';
-  margin: '-1px';
-  padding: '0';
-  clipPath: 'inset(50%)';
-  whiteSpace: 'nowrap';
+  position: absolute;
+  top: -9999px;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  border: 0;
+  margin: -1px;
+  padding: 0;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
