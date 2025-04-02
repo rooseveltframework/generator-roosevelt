@@ -10,14 +10,47 @@ module.exports = class extends Generator {
     super(args, opts)
 
     // if this is executed like `yo roosevelt --standard-install custom-app-name`, cache that name so it can override appName later
-    if (opts.standardInstall && typeof opts.standardInstall === 'string') cache.standardInstall = opts.standardInstall
-    else if (args[0] === '--standard-install') cache.standardInstall = args[1] // if mkroosevelt is being used, type of installation in args[0] and the project name will be in args[1]
+    if (opts.standardInstall && typeof opts.standardInstall === 'string') {
+      cache.standardInstall = opts.standardInstall
+      cache.standardMpaInstall = opts.standardInstall
+    }
+    if (opts.standardMpaInstall && typeof opts.standardMpaInstall === 'string') {
+      cache.standardInstall = opts.standardMpaInstall
+      cache.standardMpaInstall = opts.standardMpaInstall
+    }
+    if (opts.standardStaticInstall && typeof opts.standardStaticInstall === 'string') cache.standardStaticInstall = opts.standardStaticInstall
+    if (opts.standardSpaInstall && typeof opts.standardSpaInstall === 'string') cache.standardSpaInstall = opts.standardSpaInstall
+
+    if (args[0] === '--standard-install' || args[0] === '--standard-mpa-install') {
+      cache.standardInstall = args[1] // if mkroosevelt is being used, type of installation in args[0] and the project name will be in args[1]
+      cache.standardMpaInstall = args[1] // if mkroosevelt is being used, type of installation in args[0] and the project name will be in args[1]
+    }
+    if (args[0] === '--standard-static-install') cache.standardStaticInstall = args[1] // if mkroosevelt is being used, type of installation in args[0] and the project name will be in args[1]
+    if (args[0] === '--standard-spa-install') cache.standardSpaInstall = args[1] // if mkroosevelt is being used, type of installation in args[0] and the project name will be in args[1]
 
     this.option('standard-install', {
       alias: 's',
       type: String,
       required: false,
       desc: 'Skips all prompts and creates a Roosevelt app with all defaults.'
+    })
+
+    this.option('standard-mpa-install', {
+      type: String,
+      required: false,
+      desc: 'Skips all prompts and creates a Roosevelt multi-page app with all defaults.'
+    })
+
+    this.option('standard-static-install', {
+      type: String,
+      required: false,
+      desc: 'Skips all prompts and creates a Roosevelt static site generator with all defaults.'
+    })
+
+    this.option('standard-spa-install', {
+      type: String,
+      required: false,
+      desc: 'Skips all prompts and creates a Roosevelt single page app with all defaults.'
     })
 
     this.option('skip-closing-message', {
@@ -29,9 +62,11 @@ module.exports = class extends Generator {
   }
 
   start () {
-    if (this.options['standard-install']) {
+    if (this.options['standard-install'] || this.options['standard-mpa-install'] || this.options['standard-static-install'] || this.options['standard-spa-install']) {
       this.appName = defaults.appName
-      if (cache.standardInstall) this.appName = cache.standardInstall
+      if (cache.standardMpaInstall) this.appName = cache.standardMpaInstall
+      else if (cache.standardStaticInstall) this.appName = cache.standardStaticInstall
+      else if (cache.standardSpaInstall) this.appName = cache.standardSpaInstall
       this.packageName = helper.sanitizePackageName(this.appName)
       return true
     }
@@ -80,7 +115,7 @@ module.exports = class extends Generator {
   }
 
   chooseAppVariant () {
-    if (this.options['standard-install']) return true
+    if (this.options['standard-install'] || this.options['standard-mpa-install'] || this.options['standard-static-install'] || this.options['standard-spa-install']) return true
 
     return this.prompt(
       [
@@ -102,14 +137,22 @@ module.exports = class extends Generator {
       })
   }
 
-  setSpaModeIfSelected () {
-    if (this.configMode !== 'SPA — single page app (advanced users only)') return true
-    this.spaMode = true
-  }
-
   setStaticSiteModeIfSelected () {
+    if (this.options['standard-static-install']) {
+      this.staticSiteMode = true
+      return true
+    }
     if (this.configMode !== 'Static site generator (easiest to use, but fewer features available)') return true
     this.staticSiteMode = true
+  }
+
+  setSpaModeIfSelected () {
+    if (this.options['standard-spa-install']) {
+      this.spaMode = true
+      return true
+    }
+    if (this.configMode !== 'SPA — single page app (advanced users only)') return true
+    this.spaMode = true
   }
 
   chooseAppVariantToCustomize () {
@@ -291,7 +334,7 @@ module.exports = class extends Generator {
   }
 
   async makeApp () {
-    const standardInstall = this.options['standard-install']
+    const standardInstall = this.options['standard-install'] || this.options['standard-mpa-install'] || this.options['standard-static-install'] || this.options['standard-spa-install']
     let destination
     if (standardInstall === 'true') destination = this.packageName
     else if (standardInstall || this.createDir) destination = standardInstall || this.dirname
@@ -325,6 +368,15 @@ module.exports = class extends Generator {
         dest: '${publicFolder}/images' // eslint-disable-line
       }
     ]
+
+    if (this.staticSiteMode) {
+      this.symlinks.push(
+        {
+          source: '${staticsRoot}/images/favicon.ico', // eslint-disable-line
+          dest: '${publicFolder}/favicon.ico' // eslint-disable-line
+        }
+      )
+    }
 
     this.cssCompiler = this.cssCompiler || 'default'
     if (this.cssCompiler !== 'none') {
@@ -640,6 +692,26 @@ module.exports = class extends Generator {
     this.fs.copy(
       this.templatePath('statics/images/favicon.ico'),
       this.destinationPath('statics/images/favicon.ico')
+    )
+    this.fs.copy(
+      this.templatePath('statics/images/favicon-16x16.png'),
+      this.destinationPath('statics/images/favicon-16x16.png')
+    )
+    this.fs.copy(
+      this.templatePath('statics/images/favicon-32x32.png'),
+      this.destinationPath('statics/images/favicon-32x32.png')
+    )
+    this.fs.copy(
+      this.templatePath('statics/images/favicon-48x48.png'),
+      this.destinationPath('statics/images/favicon-48x48.png')
+    )
+    this.fs.copy(
+      this.templatePath('statics/images/favicon-64x64.png'),
+      this.destinationPath('statics/images/favicon-64x64.png')
+    )
+    this.fs.copy(
+      this.templatePath('statics/images/favicon-128x128.png'),
+      this.destinationPath('statics/images/favicon-128x128.png')
     )
 
     this.fs.copy(
