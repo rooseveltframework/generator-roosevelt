@@ -6,6 +6,14 @@ This project's versioning tracks Roosevelt's versioning. When some version numbe
 
 - Put your changes here...
 
+## 0.30.0
+
+- Added `standard-mpa-install`, `standard-static-install`, and `standard-spa-install` CLI flags.
+- Added a demonstration of a global model for static sites.
+- Added more favicon PNG files.
+- Fixed a bug that caused favicon.ico to be placed in the wrong folder in static site generator mode.
+- Updated dependencies.
+
 ## 0.29.4
 
 - Fixed a bug with the default helpers CSS file.

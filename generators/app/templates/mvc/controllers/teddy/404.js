@@ -1,5 +1,5 @@
 module.exports = (router, app) => {
-  router.route('*').all(async (req, res) => {
+  router.route('*all').all(async (req, res) => {
     const model = await require('models/server')(req, res)
     model.content.pageTitle = 'Not Found'
     res.status(404)

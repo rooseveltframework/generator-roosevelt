@@ -1,7 +1,7 @@
 {
   "dependencies": {
     "check-if-css-is-disabled": "~2.0.0",
-    "roosevelt": "~0.29.0",
+    "roosevelt": "~0.30.0",
     "webpack": "~5.98.0"
   },
   "appName": "My Roosevelt Sample App",
@@ -101,7 +101,7 @@
     "semantic-forms": "~5.0.0"
   },
   "single-page-express": {
-    "single-page-express": "~1.2.0"
+    "single-page-express": "~2.0.0"
   },
   "clientControllers": {
     "enable": true,
