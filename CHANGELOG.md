@@ -6,6 +6,11 @@ This project's versioning tracks Roosevelt's versioning. When some version numbe
 
 - Put your changes here...
 
+## 0.30.1
+
+- Fixed a bug when generating static sites.
+- Updated dependencies.
+
 ## 0.30.0
 
 - Added `standard-mpa-install`, `standard-static-install`, and `standard-spa-install` CLI flags.

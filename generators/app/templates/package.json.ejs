@@ -5,7 +5,11 @@
   "author": "",
   "license": "",
   "homepage": "",
-  "main": "app.js",
+  <% if (staticSiteMode) { %>
+    "main": "build.js",
+  <% } else { %>
+    "main": "app.js",
+  <% } %>
   "engines": {
     "node": ">=20.0.0"
   },
