@@ -6,6 +6,11 @@ This project's versioning tracks Roosevelt's versioning. When some version numbe
 
 - Put your changes here...
 
+## 0.30.2
+
+- Added the public folder to `standard`'s ignore list.
+- Updated dependencies.
+
 ## 0.30.1
 
 - Fixed a bug when generating static sites.
