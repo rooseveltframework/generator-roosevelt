@@ -2,9 +2,10 @@
 
 This project's versioning tracks Roosevelt's versioning. When some version numbers are skipped, it's because the generator was not updated for that version of Roosevelt.
 
-## Next version
+## 0.30.3
 
-- Put your changes here...
+- Improved default webpack bundle boilerplate.
+- Updated dependencies.
 
 ## 0.30.2
 
