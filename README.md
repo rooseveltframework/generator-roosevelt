@@ -1,8 +1,7 @@
 Roosevelt Yeoman generator
 ===
 
-[![Build Status](https://github.com/rooseveltframework/generator-roosevelt/workflows/CI/badge.svg
-)](https://github.com/rooseveltframework/generator-roosevelt/actions?query=workflow%3ACI) [![npm](https://img.shields.io/npm/v/generator-roosevelt.svg)](https://www.npmjs.com/package/generator-roosevelt)
+[![npm](https://img.shields.io/npm/v/generator-roosevelt.svg)](https://www.npmjs.com/package/generator-roosevelt)
 
 Command line application for creating [Roosevelt](https://github.com/rooseveltframework/roosevelt) apps.
 
