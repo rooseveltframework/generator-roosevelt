@@ -1,5 +1,3 @@
-# generator-roosevelt Changelog
-
 This project's versioning tracks Roosevelt's versioning. When some version numbers are skipped, it's because the generator was not updated for that version of Roosevelt.
 
 ## 0.30.3
@@ -48,7 +46,7 @@ This project's versioning tracks Roosevelt's versioning. When some version numbe
   - Added an end-to-end test suite.
 - Altered default output to `await` the startServer call.
 - Fixed a bug causing chaotic formatting of JSON files.
-- Fixed a bug if you generate a sample app with no tempalting system. Also made the sample plain HTML template consistent with the Teddy variant as well.
+- Fixed a bug if you generate a sample app with no templating system. Also made the sample plain HTML template consistent with the Teddy variant as well.
 - Refactored lots of stuff to improve maintainability.
 - Updated dependencies.
 
