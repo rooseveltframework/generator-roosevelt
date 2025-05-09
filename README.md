@@ -1,7 +1,4 @@
-Roosevelt Yeoman generator
-===
-
-[![npm](https://img.shields.io/npm/v/generator-roosevelt.svg)](https://www.npmjs.com/package/generator-roosevelt)
+🏭🧸 **generator-roosevelt** [![npm](https://img.shields.io/npm/v/generator-roosevelt.svg)](https://www.npmjs.com/package/generator-roosevelt)
 
 Command line application for creating [Roosevelt](https://github.com/rooseveltframework/roosevelt) apps.
 
