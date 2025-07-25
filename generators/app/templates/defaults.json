@@ -1,8 +1,8 @@
 {
   "dependencies": {
     "check-if-css-is-disabled": "~2.0.0",
-    "roosevelt": "~0.30.0",
-    "webpack": "~5.98.0"
+    "roosevelt": "~0.31.0",
+    "webpack": "~5.100.0"
   },
   "appName": "My Roosevelt Sample App",
   "createDir": true,
@@ -14,7 +14,7 @@
   "defaultCSSCompiler": "Sass",
   "Sass": {
     "dependencies": {
-      "sass": "~1.86.0"
+      "sass": "~1.89.0"
     },
     "config": {
       "enable": true,
@@ -24,13 +24,13 @@
     "scripts": {
       "cssExt": "scss",
       "stylelintPostCssModule": null,
-      "stylelintConfigModule": "\"stylelint-config-standard-scss\": \"~14.0.0\"",
+      "stylelintConfigModule": "\"stylelint-config-standard-scss\": \"~15.0.0\"",
       "stylelintConfigName": "stylelint-config-standard-scss"
     }
   },
   "Less": {
     "dependencies": {
-      "less": "~4.2.0"
+      "less": "~4.4.0"
     },
     "config": {
       "enable": true,
@@ -39,7 +39,7 @@
     },
     "scripts": {
       "cssExt": "less",
-      "stylelintConfigModule": "\"stylelint-config-standard\": \"~37.0.0\"",
+      "stylelintConfigModule": "\"stylelint-config-standard\": \"~38.0.0\"",
       "stylelintConfigName": "stylelint-config-standard",
       "stylelintPostCssModule": "\"postcss-less\": \"~6.0.0\",",
       "stylelintSyntax": "\"customSyntax\": \"postcss-less\","
@@ -93,13 +93,13 @@
   "templatingExtension": "html",
   "additionalTemplatingEngines": false,
   "teddy": {
-    "teddy": "~1.0.0"
+    "teddy": "~1.1.0"
   },
   "viewEngine": [
     "html:teddy"
   ],
   "semantic-forms": {
-    "semantic-forms": "~5.0.0"
+    "semantic-forms": "~5.1.0"
   },
   "single-page-express": {
     "single-page-express": "~2.0.0"

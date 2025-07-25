@@ -1,4 +1,4 @@
 module.exports = async () => {
-  const response = await fetch('/api/getRandomNumber', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({}) })
+  const response = await fetch('/api/getRandomNumber', { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': document.getElementById('csrfToken').content }, body: JSON.stringify({}) })
   return await response.json()
 }
