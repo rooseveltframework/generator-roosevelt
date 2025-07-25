@@ -1,5 +1,11 @@
 This project's versioning tracks Roosevelt's versioning. When some version numbers are skipped, it's because the generator was not updated for that version of Roosevelt.
 
+## 0.31.1
+
+- Improved default static site generator boilerplate.
+- Added CSRF token example to SPA version of the sample app.
+- Updated dependencies.
+
 ## 0.30.3
 
 - Improved default webpack bundle boilerplate.
