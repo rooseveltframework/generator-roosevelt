@@ -1,4 +1,4 @@
-# How to contribute to generator-roosevelt
+# How to contribute
 
 ## Before opening a pull request
 
@@ -9,11 +9,11 @@
 
 ## Release process
 
-If you are a maintainer of generator-roosevelt, please follow the following release procedure:
+If you are a maintainer, please follow the following release procedure:
 
-- Merge all desired pull requests into master.
+- Merge all desired pull requests into main.
 - Bump `package.json` to a new version and run `npm i` to generate a new `package-lock.json`.
-- Alter CHANGELOG "Next version" section and stamp it with the new version.
+- Add new version to CHANGELOG.
 - Paste contents of CHANGELOG into new version commit.
 - Open and merge a pull request with those changes.
 - Tag the merge commit as the a new release version number.

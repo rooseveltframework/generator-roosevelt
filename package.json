@@ -22,14 +22,14 @@
     "yeoman-generator": "7.5.1"
   },
   "devDependencies": {
-    "@playwright/test": "1.54.1",
+    "@playwright/test": "1.58.2",
     "c8": "10.1.3",
-    "cross-env": "7.0.3",
-    "mocha": "11.7.1",
-    "roosevelt": "0.31.4",
+    "cross-env": "10.1.0",
+    "mocha": "11.7.5",
+    "roosevelt": "0.31.7",
     "standard": "17.1.2",
-    "yeoman-environment": "4.4.3",
-    "yeoman-test": "10.1.1"
+    "yeoman-environment": "5.1.3",
+    "yeoman-test": "11.2.0"
   },
   "repository": {
     "type": "git",
