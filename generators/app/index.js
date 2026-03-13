@@ -120,7 +120,7 @@ module.exports = class extends Generator {
     return this.prompt(
       [
         {
-          type: 'list',
+          type: 'select',
           name: 'configMode',
           choices: [
             'MPA — multi-page app (recommended for most apps)',
@@ -161,7 +161,7 @@ module.exports = class extends Generator {
     return this.prompt(
       [
         {
-          type: 'list',
+          type: 'select',
           name: 'customAppVariant',
           choices: [
             'MPA — multi-page app (recommended for most apps)',
@@ -185,7 +185,7 @@ module.exports = class extends Generator {
     return this.prompt(
       [
         {
-          type: 'list',
+          type: 'select',
           name: 'httpsPortNumber',
           choices: [
             'Random',
@@ -225,7 +225,7 @@ module.exports = class extends Generator {
     return this.prompt(
       [
         {
-          type: 'list',
+          type: 'select',
           name: 'cssCompiler',
           choices: [
             'Sass',
