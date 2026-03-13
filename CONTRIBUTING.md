@@ -27,6 +27,8 @@ Not only do the dependencies of this generator need to be maintained, but also t
 - Update dependencies in generators/app/templates/defaults.json.
 - An easy way to tell which dependencies need to be updated is to:
   - Run `npm link` on your generator-roosevelt clone.
-  - Run `yo roosevelt` to generate a Roosevelt app from it.
-  - Then run `ncu -u` on the generated app to see which dependencies need to be updated. You may need to globally install [npm-check-updates](https://www.npmjs.com/package/npm-check-updates) first.
+  - Clone https://github.com/rooseveltframework/roosevelt-sample-app
+  - Delete the sample apps
+  - Run `yo roosevelt` to regenerate each of the sample apps from from your generator-roosevelt clone. You may need to globally install [yo](https://www.npmjs.com/package/yo) first.
+  - Then run `ncu` on the generated apps to see which dependencies need to be updated. You may need to globally install [npm-check-updates](https://www.npmjs.com/package/npm-check-updates) first.
   - Note: by convention, generator-roosevelt's app template only needs a dependency update when a major (1.x.x) or minor (1.2.x) release of that dependency is made. The generator sets app dependencies to `~` so patch releases (1.2.3) will automatically update and do not need manual updating in this repo.
