@@ -8,7 +8,7 @@
       "url": "https://github.com/rooseveltframework/generator-roosevelt/graphs/contributors"
     }
   ],
-  "version": "0.31.2",
+  "version": "0.31.3",
   "files": [
     "generators"
   ],
@@ -19,14 +19,14 @@
     "node": ">=20.0.0"
   },
   "dependencies": {
-    "yeoman-generator": "8.1.1"
+    "yeoman-generator": "8.1.2"
   },
   "devDependencies": {
     "@playwright/test": "1.58.2",
     "c8": "11.0.0",
     "cross-env": "10.1.0",
     "mocha": "11.7.5",
-    "roosevelt": "0.31.7",
+    "roosevelt": "0.31.8",
     "standard": "17.1.2",
     "yeoman-environment": "6.0.0",
     "yeoman-test": "11.3.1"

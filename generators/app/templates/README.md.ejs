@@ -22,4 +22,4 @@
     - Available shorthands:
       - `npm run prodproxy`
       - `npm run x`
-  - See [docs](https://rooseveltframework.org) for more information about configuring and running the app.
+  - See [docs](https://rooseveltframework.org/docs/latest/configuration/#commandlineusage) for more information about configuring and running the app.
