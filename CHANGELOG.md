@@ -1,5 +1,10 @@
 This project's versioning tracks Roosevelt's versioning. When some version numbers are skipped, it's because the generator was not updated for that version of Roosevelt.
 
+## 0.31.3
+
+- Added better docs link in default README.
+- Updated dependencies.
+
 ## 0.31.2
 
 - Improved default nodemon config.
