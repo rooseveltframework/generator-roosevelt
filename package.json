@@ -25,7 +25,7 @@
     "@playwright/test": "1.60.0",
     "c8": "11.0.0",
     "cross-env": "10.1.0",
-    "mocha": "11.7.5",
+    "mocha": "11.7.6",
     "roosevelt": "0.31.8",
     "standard": "17.1.2",
     "yeoman-environment": "6.0.0",
