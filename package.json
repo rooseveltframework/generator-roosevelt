@@ -8,7 +8,7 @@
       "url": "https://github.com/rooseveltframework/generator-roosevelt/graphs/contributors"
     }
   ],
-  "version": "0.31.3",
+  "version": "0.33.2",
   "files": [
     "generators"
   ],
@@ -16,19 +16,18 @@
   "license": "CC-BY-4.0",
   "main": "generators/app/index.js",
   "engines": {
-    "node": ">=20.0.0"
+    "node": ">=22.20.0"
   },
   "dependencies": {
-    "yeoman-generator": "8.2.2"
+    "yeoman-generator": "8.3.0"
   },
   "devDependencies": {
-    "@playwright/test": "1.60.0",
-    "c8": "11.0.0",
-    "cross-env": "10.1.0",
-    "mocha": "11.7.6",
-    "roosevelt": "0.31.8",
+    "@playwright/test": "1.62.1",
+    "c8": "12.0.0",
+    "express": "5.2.1",
+    "roosevelt": "0.33.2",
     "standard": "17.1.2",
-    "yeoman-environment": "6.0.0",
+    "yeoman-environment": "6.2.0",
     "yeoman-test": "11.6.0"
   },
   "repository": {
@@ -47,16 +46,13 @@
   "preferGlobal": true,
   "_from": "generator-roosevelt@*",
   "gitHead": "",
-  "mocha": {
-    "timeout": "10s"
-  },
   "scripts": {
     "d": "node run-generator.js",
     "dev": "node run-generator.js",
     "development": "node run-generator.js",
     "lint": "standard",
-    "coverage": "cross-env SILENT_MODE=true c8 --reporter=text --reporter=lcov mocha test/unit",
-    "test-unit": "cross-env SILENT_MODE=true mocha test/unit",
+    "coverage": "c8 --reporter=text --reporter=lcov node --test \"test/unit/*.js\"",
+    "test-unit": "node --test \"test/unit/*.js\"",
     "test-e2e": "playwright test",
     "test": "npm run test-unit && npm run test-e2e"
   },

@@ -1,4 +1,6 @@
-/* eslint-env mocha */
+const { describe, it } = require('node:test')
+
+process.env.SILENT_MODE = 'true'
 const assert = require('assert')
 const helper = require('../../generators/app/promptingHelpers')
 

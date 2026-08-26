@@ -1,5 +1,16 @@
 This project's versioning tracks Roosevelt's versioning. When some version numbers are skipped, it's because the generator was not updated for that version of Roosevelt.
 
+## 0.33.2
+
+- Made esbuild the default JS bundler and added a prompt for which JS bundler to use, the way there has long been one for which CSS preprocessor to use. The choices are the four Roosevelt drives: esbuild, webpack, rspack, and rollup. A single page app is not offered `none`, since its templates and controllers are only reachable through the bundle.
+- Removed nodemon from generated apps in favor of Node.js's own `--watch` flag. Nodemon watched whole directories by extension, which meant every static file edit restarted the whole app; `--watch` only watches the files the app actually loads, so editing a template or a stylesheet now leaves the process alone and lets Roosevelt's `watchStatics` rebuild just what changed.
+- Removed http-server from generated static sites. Roosevelt serves the site it builds as of 0.33.0, so a static site is now started the same way as any other app.
+- Altered generated static sites to be started from `test-server.js`, which builds the site, serves it, and rebuilds the pages you edit as you edit them, rather than from a `build.js` paired with nodemon and http-server. Pass Roosevelt's `--build` flag to write the site out without serving it, which is what `npm run build` and `npm run build-dev` do.
+- Altered the generated config file's name to `roosevelt.config.js`, which is the name Roosevelt now prefers.
+- Altered the production scripts in generated apps to stop running under a file watcher, which is what nodemon was doing.
+- Improved generator's automated test suite.
+- Updated dependencies.
+
 ## 0.31.3
 
 - Added better docs link in default README.
