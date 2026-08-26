@@ -1,8 +1,8 @@
 {
   "dependencies": {
     "check-if-css-is-disabled": "~2.0.0",
-    "roosevelt": "~0.31.0",
-    "webpack": "~5.105.0"
+    "express": "~5.2.0",
+    "roosevelt": "~0.33.1"
   },
   "appName": "My Roosevelt Sample App",
   "createDir": true,
@@ -61,30 +61,31 @@
       "stylelintConfigName": "stylelint-stylus"
     }
   },
-  "webpackBundle": [
-    {
-      "config": {
-        "entry": "${js.sourcePath}/main.js",
-        "output": {
-          "path": "${publicFolder}/js",
-          "filename": "main.js"
-        },
-        "resolve": {
-          "alias": {
-            "fs": false,
-            "path": false
-          },
-          "modules": [
-            "${js.sourcePath}",
-            "${buildFolder}/js",
-            "${appDir}",
-            "node_modules"
-          ]
-        }
+  "defaultJSBundler": "esbuild",
+  "jsBundlers": {
+    "esbuild": {
+      "dependencies": {
+        "esbuild": "~0.28.0"
+      }
+    },
+    "webpack": {
+      "dependencies": {
+        "webpack": "~5.105.0"
+      }
+    },
+    "rspack": {
+      "dependencies": {
+        "@rspack/core": "~2.1.0"
+      }
+    },
+    "rollup": {
+      "dependencies": {
+        "rollup": "~4.62.0",
+        "@rollup/plugin-commonjs": "~29.0.0",
+        "@rollup/plugin-node-resolve": "~16.0.0"
       }
     }
-  ],
-  "webpackSpaVariantResolveModules": ["${js.sourcePath}", "${buildFolder}/js", "${appDir}", "node_modules", "mvc/controllers"],
+  },
   "modelsPath": "mvc/models",
   "viewsPath": "mvc/views",
   "controllersPath": "mvc/controllers",
@@ -93,7 +94,7 @@
   "templatingExtension": "html",
   "additionalTemplatingEngines": false,
   "teddy": {
-    "teddy": "~1.1.0"
+    "teddy": "~1.2.0"
   },
   "viewEngine": [
     "html:teddy"

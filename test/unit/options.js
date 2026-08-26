@@ -1,4 +1,6 @@
-/* eslint-env mocha */
+const { describe, it, before, after } = require('node:test')
+
+process.env.SILENT_MODE = 'true'
 const yeomanTest = require('yeoman-test')
 const helpers = new yeomanTest.YeomanTest()
 const path = require('path')
@@ -10,7 +12,7 @@ const defaultFiles = [
   'README.md',
   'app.js',
   'package.json',
-  'rooseveltConfig.json',
+  'roosevelt.config.js',
   'mvc/controllers/404.js',
   'mvc/controllers/homepage.js',
   'mvc/controllers/robots.txt.js',

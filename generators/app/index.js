@@ -237,17 +237,18 @@ module.exports = class extends Generator {
           default: 'Sass'
         },
         {
-          when: () => !this.spaMode,
-          type: 'confirm',
-          name: 'webpack',
-          message: 'Would you like to generate a default webpack config?',
-          default: true
+          type: 'select',
+          name: 'jsBundler',
+          // a single page app has to bundle, since its templates and controllers are only reachable through the bundle
+          choices: () => this.spaMode ? Object.keys(defaults.jsBundlers) : [...Object.keys(defaults.jsBundlers), 'none'],
+          message: 'Which JS bundler would you like to use?',
+          default: defaults.defaultJSBundler
         }
       ]
     )
       .then((response) => {
         this.cssCompiler = response.cssCompiler
-        this.webpack = response.webpack
+        this.jsBundler = response.jsBundler
       })
   }
 
@@ -428,17 +429,19 @@ module.exports = class extends Generator {
       this.stylelintConfigName = defaults.Less.scripts.stylelintConfigName
     }
 
-    if (this.webpack || this.webpack === undefined) {
-      this.webpackEnable = true
-      this.webpackBundle = defaults.webpackBundle
+    this.jsBundler = this.jsBundler || defaults.defaultJSBundler
+    this.bundlerRequires = []
+    if (this.jsBundler !== 'none') {
+      this.jsBundlerEnable = true
+      this.dependencies = Object.assign(this.dependencies, defaults.jsBundlers[this.jsBundler].dependencies)
+      this.jsBundles = [{ config: bundleConfigFor(this.jsBundler, !!this.spaMode, this.bundlerRequires) }]
       if (this.spaMode) {
-        this.webpackBundle[0].config.resolve.modules = defaults.webpackSpaVariantResolveModules
         this.clientControllers = defaults.clientControllers
         this.clientViews = defaults.clientViews
       }
     } else {
-      this.webpackEnable = false
-      this.webpackBundle = []
+      this.jsBundlerEnable = false
+      this.jsBundles = []
       this.symlinks.push(
         {
           source: '${staticsRoot}/js', // eslint-disable-line
@@ -475,26 +478,67 @@ module.exports = class extends Generator {
       }
     )
 
+    const refs = []
+    const toPlaceholder = code => {
+      refs.push(code)
+      return `@@rooseveltConfigRef${refs.length - 1}@@`
+    }
+    const convertRefs = node => {
+      if (typeof node === 'string') return node.includes('${') ? toPlaceholder(refExpression(node)) : node
+      if (Array.isArray(node)) return node.map(convertRefs)
+      if (node !== null && typeof node === 'object') {
+        // a bundler plugin is a call rather than a value, so it arrives already written out as code
+        if (typeof node.emitAsCode === 'string') return toPlaceholder(node.emitAsCode)
+        const converted = {}
+        for (const key of Object.keys(node)) converted[key] = convertRefs(node[key])
+        return converted
+      }
+      return node
+    }
+
+    const rooseveltConfig = {
+      makeBuildArtifacts: this.staticSiteMode ? 'staticsOnly' : true
+    }
+    if (!this.staticSiteMode) {
+      rooseveltConfig.http = this.httpParams
+      rooseveltConfig.https = this.httpsParams
+      rooseveltConfig.secretsPath = this.secretsPath
+      rooseveltConfig.favicon = 'images/favicon.ico'
+      rooseveltConfig.modelsPath = this.modelsPath
+      rooseveltConfig.viewsPath = this.viewsPath
+      rooseveltConfig.controllersPath = this.controllersPath
+    }
+    rooseveltConfig.viewEngine = this.viewEngine
+    rooseveltConfig.css = {
+      sourcePath: 'css',
+      compiler: this.cssCompilerOptions,
+      output: 'css',
+      versionFile: null
+    }
+    rooseveltConfig.js = {
+      sourcePath: 'js',
+      bundler: {
+        enable: this.jsBundlerEnable,
+        module: this.jsBundler === 'none' ? defaults.defaultJSBundler : this.jsBundler
+      },
+      bundles: this.jsBundles
+    }
+    if (this.spaMode) {
+      rooseveltConfig.clientControllers = this.clientControllers
+      rooseveltConfig.clientViews = this.clientViews
+    }
+    rooseveltConfig.symlinks = this.symlinks
+
+    const serializedConfig = JSON.stringify(convertRefs(rooseveltConfig), null, 2)
+      .replace(/"@@rooseveltConfigRef(\d+)@@"/g, (match, index) => refs[index])
+
     this.fs.copyTpl(
-      this.templatePath('rooseveltConfig.json.ejs'),
-      this.destinationPath('rooseveltConfig.json'),
+      this.templatePath('roosevelt.config.js.ejs'),
+      this.destinationPath('roosevelt.config.js'),
       {
-        spaMode: !!this.spaMode,
-        staticSiteMode: !!this.staticSiteMode,
-        makeBuildArtifacts: this.staticSiteMode ? '"staticsOnly"' : true,
-        http: this.httpParams,
-        https: this.httpsParams,
-        secretsPath: this.secretsPath,
-        modelsPath: this.modelsPath,
-        viewsPath: this.viewsPath,
-        controllersPath: this.controllersPath,
-        viewEngine: this.viewEngine,
-        cssCompilerOptions: this.cssCompilerOptions,
-        webpackEnable: this.webpackEnable,
-        webpackBundle: this.webpackBundle,
-        clientControllers: this.clientControllers,
-        clientViews: this.clientViews,
-        symlinks: this.symlinks
+        usesRefs: refs.length > 0,
+        bundlerRequires: this.bundlerRequires,
+        rooseveltConfig: serializedConfig
       }
     )
 
@@ -507,17 +551,12 @@ module.exports = class extends Generator {
       }
     )
 
-    if (this.staticSiteMode) {
-      this.fs.copyTpl(
-        this.templatePath('build.js'),
-        this.destinationPath('build.js')
-      )
-    } else {
-      this.fs.copyTpl(
-        this.templatePath('app.js'),
-        this.destinationPath('app.js')
-      )
-    }
+    // both kinds of app are started the same way, by running one file with node
+    // a static site's copy also builds the site, since roosevelt serves what it builds, and is named for the development server it runs
+    this.fs.copyTpl(
+      this.templatePath(this.staticSiteMode ? 'test-server.js' : 'app.js'),
+      this.destinationPath(this.staticSiteMode ? 'test-server.js' : 'app.js')
+    )
 
     this.fs.copyTpl(
       this.templatePath('_.gitignore.ejs'),
@@ -770,7 +809,6 @@ module.exports = class extends Generator {
     pkg.dependencies = sortObjectKeys(pkg.dependencies)
     pkg.devDependencies = sortObjectKeys(pkg.devDependencies)
     fs.writeFileSync(this.destinationPath('package.json'), JSON.stringify(pkg, {}, 2))
-    fs.writeFileSync(this.destinationPath('rooseveltConfig.json'), JSON.stringify(JSON.parse(fs.readFileSync(this.destinationPath('rooseveltConfig.json'), 'utf8')), {}, 2))
     fs.writeFileSync(this.destinationPath('.stylelintrc.json'), JSON.stringify(JSON.parse(fs.readFileSync(this.destinationPath('.stylelintrc.json'), 'utf8')), {}, 2))
 
     // print closing message
@@ -788,5 +826,80 @@ module.exports = class extends Generator {
         }
       }
     })()
+  }
+}
+
+function refExpression (value) {
+  return 'rooseveltConfig.ref(params => `' + value.replace(/\$\{/g, '${params.') + '`)'
+}
+
+// the same placeholder written as a plain expression, for use inside a ref that has already been handed the params
+function paramExpression (value) {
+  if (!value.includes('${')) return JSON.stringify(value)
+  const withParams = value.replace(/\$\{/g, '${params.')
+  const whole = withParams.match(/^\$\{([^}]+)\}$/)
+  return whole ? whole[1] : '`' + withParams + '`' // a placeholder on its own is just the param, with no string to build around it
+}
+
+// the directories a bare require in the app's own front end code should be searched for
+// the built templates and controllers land in the build folder, which is why it is on the list at all
+function moduleSearchPaths (spaMode) {
+  const paths = [
+    '${js.sourcePath}', // eslint-disable-line
+    '${buildFolder}/js', // eslint-disable-line
+    '${appDir}' // eslint-disable-line
+  ]
+  if (spaMode) paths.push('mvc/controllers')
+  return paths
+}
+
+// each bundler roosevelt supports takes its own shape of config, so the default bundle is written per bundler
+// anything the bundler needs required at the top of the config file is pushed onto requires
+function bundleConfigFor (bundler, spaMode, requires) {
+  const searchPaths = moduleSearchPaths(spaMode)
+
+  // webpack and rspack take the same config as each other
+  if (bundler === 'webpack' || bundler === 'rspack') {
+    return {
+      entry: '${js.sourcePath}/main.js', // eslint-disable-line
+      output: {
+        path: '${publicFolder}/js', // eslint-disable-line
+        filename: 'main.js'
+      },
+      resolve: {
+        alias: {
+          fs: false,
+          path: false
+        },
+        // these two resolve node_modules themselves, but it has to be named explicitly once anything else is on the list
+        modules: [...searchPaths.slice(0, 3), 'node_modules', ...searchPaths.slice(3)]
+      }
+    }
+  }
+
+  if (bundler === 'esbuild') {
+    return {
+      entryPoints: ['${js.sourcePath}/main.js'], // eslint-disable-line
+      bundle: true,
+      outfile: '${publicFolder}/js/main.js', // eslint-disable-line
+      nodePaths: searchPaths // esbuild's equivalent of NODE_PATH; it finds node_modules on its own
+    }
+  }
+
+  if (bundler === 'rollup') {
+    // rollup reads es modules only and resolves nothing but relative paths on its own, so the app's front end code needs these two plugins to be bundled at all; they are calls rather than values, which is why they are written as code
+    requires.push("const commonjs = require('@rollup/plugin-commonjs')")
+    requires.push("const { nodeResolve } = require('@rollup/plugin-node-resolve')")
+    // the whole array is one ref rather than a ref per path, because a plugin is built the moment it is called and a ref handed to it would still be a ref when it read its options, having been sealed inside the plugin where roosevelt cannot reach it
+    const modulePaths = searchPaths.map(paramExpression).join(', ')
+    return {
+      input: '${js.sourcePath}/main.js', // eslint-disable-line
+      plugins: { emitAsCode: `rooseveltConfig.ref(params => [nodeResolve({ browser: true, modulePaths: [${modulePaths}] }), commonjs()])` },
+      output: {
+        file: '${publicFolder}/js/main.js', // eslint-disable-line
+        format: 'iife',
+        name: 'app' // rollup warns about an iife bundle with no name, and the app does not export anything anyway
+      }
+    }
   }
 }

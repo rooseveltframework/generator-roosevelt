@@ -5,31 +5,16 @@
   "author": "",
   "license": "",
   "homepage": "",
-  <% if (staticSiteMode) { %>
-    "main": "build.js",
-  <% } else { %>
-    "main": "app.js",
-  <% } %>
+  "main": "<% if (staticSiteMode) { %>test-server.js<% } else { %>app.js<% } %>",
   "engines": {
-    "node": ">=20.0.0"
+    "node": ">=22.20.0"
   },
   "dependencies": <%- JSON.stringify(dependencies) %>,
   "devDependencies": {
-    <% if (staticSiteMode) { %>
-      "http-server": "~14.1.0",
-    <% } %>
-    "nodemon": "~3.1.0",
     "standard": "~17.1.0",
     "stylelint": "~17.4.0",
     <%- stylelintPostCssModule -%>
     <%- stylelintConfigModule %>
-  },
-  "nodemonConfig": {
-    "ignore": [
-      ".build/",
-      "public/"
-    ],
-    "ext": "<%= cssExt %> html js json"
   },
   "standard": {
     "ignore": [
@@ -43,37 +28,29 @@
   },
   "scripts": {
     <% if (staticSiteMode) { %>
-      "d": "nodemon --exec \"node build.js --development-mode && http-server public/\"",
-      "dev": "nodemon --exec \"node build.js --development-mode && http-server public/\"",
-      "development": "nodemon --exec \"node build.js --development-mode && http-server public/\"",
-      "p": "nodemon --exec \"node build.js --production-mode && http-server public/\"",
-      "prod": "nodemon --exec \"node build.js --production-mode && http-server public/\"",
-      "production": "nodemon --exec \"node build.js --production-mode && http-server public/\"",
-      "build": "node build.js --production-mode",
-      "build-dev": "node build.js --development-mode",
+      "d": "node --watch test-server.js --development-mode",
+      "dev": "node --watch test-server.js --development-mode",
+      "development": "node --watch test-server.js --development-mode",
+      "p": "node test-server.js --production-mode",
+      "prod": "node test-server.js --production-mode",
+      "production": "node test-server.js --production-mode",
+      "build": "node test-server.js --build --production-mode",
+      "build-dev": "node test-server.js --build --development-mode",
     <% } else { %>
-      "generate-secrets": "node ./node_modules/roosevelt/lib/scripts/secretsGenerator.js",
-      "generate-certs": "node ./node_modules/roosevelt/lib/scripts/certsGenerator.js",
-      "generate-session-secret": "node ./node_modules/roosevelt/lib/scripts/sessionSecretGenerator.js",
-      "generate-csrf-secret": "node ./node_modules/roosevelt/lib/scripts/csrfSecretGenerator.js",
-      "d": "nodemon app.js --development-mode",
-      "dev": "nodemon app.js --development-mode",
-      "development": "nodemon app.js --development-mode",
-      "p": "nodemon app.js --production-mode",
-      "prod": "nodemon app.js --production-mode",
-      "production": "nodemon app.js --production-mode",
-      "x": "nodemon app.js --production-proxy-mode",
-      "prodproxy": "nodemon app.js --production-proxy-mode",
-      "production-proxy": "nodemon app.js --production-proxy-mode",
+      "d": "node --watch app.js --development-mode",
+      "dev": "node --watch app.js --development-mode",
+      "development": "node --watch app.js --development-mode",
+      "p": "node app.js --production-mode",
+      "prod": "node app.js --production-mode",
+      "production": "node app.js --production-mode",
+      "x": "node app.js --production-proxy-mode",
+      "prodproxy": "node app.js --production-proxy-mode",
+      "production-proxy": "node app.js --production-proxy-mode",
     <% } %>
     "lint": "npm run standard && npm run stylelint",
     "standard": "./node_modules/.bin/standard",
     "stylelint": "./node_modules/.bin/stylelint \"statics/css/**/*.<%= cssExt %>\"",
-    <% if (staticSiteMode) { %>
-      "start": "nodemon --exec \"node build.js --production-mode && http-server public/\"",
-    <% } else { %>
-      "start": "nodemon app.js --production-mode",
-    <% } %>
+    "start": "<% if (staticSiteMode) { %>node test-server.js --production-mode<% } else { %>node app.js --production-mode<% } %>",
     "test": "npm run lint"
   }
 }

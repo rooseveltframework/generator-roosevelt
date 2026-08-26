@@ -1,0 +1,13 @@
+// roosevelt reads this file for its configuration
+// it is javascript rather than json so that it can hold comments, real numbers and booleans, and code
+// see https://rooseveltframework.org/docs/latest/configuration for what can go in here
+<% if (usesRefs) { -%>
+
+// a ref is for a value that depends on a param roosevelt works out for itself, such as where the public folder ends up
+const rooseveltConfig = require('roosevelt/config')
+<% } -%>
+<% bundlerRequires.forEach(function (line) { -%>
+<%- line %>
+<% }) -%>
+
+module.exports = <%- rooseveltConfig %>
