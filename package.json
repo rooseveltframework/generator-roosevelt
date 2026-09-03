@@ -27,7 +27,7 @@
     "express": "5.2.1",
     "roosevelt": "0.33.2",
     "standard": "17.1.2",
-    "yeoman-environment": "6.2.0",
+    "yeoman-environment": "6.3.0",
     "yeoman-test": "11.6.0"
   },
   "repository": {
