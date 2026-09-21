@@ -25,7 +25,7 @@
     "@playwright/test": "1.62.1",
     "c8": "12.0.0",
     "express": "5.2.1",
-    "roosevelt": "0.33.2",
+    "roosevelt": "0.34.0",
     "standard": "17.1.2",
     "yeoman-environment": "6.2.0",
     "yeoman-test": "11.6.0"
