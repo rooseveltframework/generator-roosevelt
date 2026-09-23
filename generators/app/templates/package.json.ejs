@@ -11,8 +11,9 @@
   },
   "dependencies": <%- JSON.stringify(dependencies) %>,
   "devDependencies": {
+    <%- spaDevDependencies %>
     "standard": "~17.1.0",
-    "stylelint": "~17.4.0",
+    "stylelint": "~17.15.0",
     <%- stylelintPostCssModule -%>
     <%- stylelintConfigModule %>
   },

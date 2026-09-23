@@ -2,9 +2,10 @@
 
 ## Before opening a pull request
 
-- Update dependencies in `package.json`, `generators/app/templates/defaults.json`, and `generators/app/templates/package.json.ejs`.
-- Be sure all tests pass: `npm t`.
-- Ensure 100% code coverage and write new tests if necessary: `npm run coverage`.
+- Update dependencies in `package.json`
+- Update dependencies in `generators/app/templates/defaults.json` and `generators/app/templates/package.json.ejs` either manually or via `npm run update-generated-deps`.
+- Be sure all tests pass: `npm t` and `npm run test-e2e`.
+- Ensure good code coverage and write new tests if necessary: `npm run coverage`.
 - Add your changes to `CHANGELOG.md`.
 
 ## Release process
@@ -18,17 +19,3 @@ If you are a maintainer, please follow the following release procedure:
 - Open and merge a pull request with those changes.
 - Tag the merge commit as the a new release version number.
 - Publish commit to npm.
-
-### Updating dependencies
-
-Not only do the dependencies of this generator need to be maintained, but also the dependencies of the app template need to be maintained. Here is the current procedure to maintain the app template's dependencies:
-
-- Update dependencies in generators/app/templates/package.json.ejs.
-- Update dependencies in generators/app/templates/defaults.json.
-- An easy way to tell which dependencies need to be updated is to:
-  - Run `npm link` on your generator-roosevelt clone.
-  - Clone https://github.com/rooseveltframework/roosevelt-sample-app
-  - Delete the sample apps
-  - Run `yo roosevelt` to regenerate each of the sample apps from from your generator-roosevelt clone. You may need to globally install [yo](https://www.npmjs.com/package/yo) first.
-  - Then run `ncu` on the generated apps to see which dependencies need to be updated. You may need to globally install [npm-check-updates](https://www.npmjs.com/package/npm-check-updates) first.
-  - Note: by convention, generator-roosevelt's app template only needs a dependency update when a major (1.x.x) or minor (1.2.x) release of that dependency is made. The generator sets app dependencies to `~` so patch releases (1.2.3) will automatically update and do not need manual updating in this repo.

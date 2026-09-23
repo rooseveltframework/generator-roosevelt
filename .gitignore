@@ -1,30 +1,17 @@
-.grunt
-build/Release
-coverage
-lib-cov
-*.seed
-*.log
-*.csv
-*.dat
-*.out
-*.pid
-*.gz
-
-pids
-logs
-*.log
-results
-
-Thumbs.db
-.DS_Store
-
-npm-debug.log
-.npm-cache
+# dependencies
 node_modules
-coverage
-.nyc_output
 
-.jscodehints
+# coverage and test output
+coverage
 test-results
+
+# the apps the test suite and `npm run dev` generate
 test/sample-app
 my-roosevelt-sample-app
+
+# logs, including the ones npm writes when an install fails
+*.log
+
+# operating system junk
+.DS_Store
+Thumbs.db

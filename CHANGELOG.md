@@ -1,5 +1,14 @@
 This project's versioning tracks Roosevelt's versioning. When some version numbers are skipped, it's because the generator was not updated for that version of Roosevelt.
 
+## 0.34.0
+
+- Removed the hand written frontend models from generated single page apps. Roosevelt writes one per model as of 0.34.0, so a generated app now ships a single `statics/js/models/_defaultModel.js` saying what reaching its API means, rather than one near-identical fetch per model.
+- Altered the default SPA app to use `single-page-express` HTML validation by default.
+- Fixed the random port offered for HTTPS being drawn from a range operating systems hand out for outbound connections, so a generated app could be given a port that something else on the machine borrows first. Ports are now drawn from 2000-32767, which is below every such range.
+- Fixed default Roosevelt config having formatting that would not pass the default linter.
+- Fixed issues with creating a Roosevelt app without a JS bundler.
+- Updated dependencies.
+
 ## 0.33.2
 
 - Made esbuild the default JS bundler and added a prompt for which JS bundler to use, the way there has long been one for which CSS preprocessor to use. The choices are the four Roosevelt drives: esbuild, webpack, rspack, and rollup. A single page app is not offered `none`, since its templates and controllers are only reachable through the bundle.

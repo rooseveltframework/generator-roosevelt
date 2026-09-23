@@ -8,7 +8,7 @@
       "url": "https://github.com/rooseveltframework/generator-roosevelt/graphs/contributors"
     }
   ],
-  "version": "0.33.2",
+  "version": "0.34.0",
   "files": [
     "generators"
   ],
@@ -19,16 +19,16 @@
     "node": ">=22.20.0"
   },
   "dependencies": {
-    "yeoman-generator": "8.3.0"
+    "yeoman-generator": "9.2.0"
   },
   "devDependencies": {
-    "@playwright/test": "1.62.1",
+    "@playwright/test": "1.63.0",
     "c8": "12.0.0",
     "express": "5.2.1",
-    "roosevelt": "0.33.2",
+    "roosevelt": "0.34.0",
     "standard": "17.1.2",
-    "yeoman-environment": "6.2.0",
-    "yeoman-test": "11.6.0"
+    "yeoman-environment": "7.2.0",
+    "yeoman-test": "11.8.2"
   },
   "repository": {
     "type": "git",
@@ -51,6 +51,7 @@
     "dev": "node run-generator.js",
     "development": "node run-generator.js",
     "lint": "standard",
+    "update-generated-deps": "node update-generated-deps.js",
     "coverage": "c8 --reporter=text --reporter=lcov node --test \"test/unit/*.js\"",
     "test-unit": "node --test \"test/unit/*.js\"",
     "test-e2e": "playwright test",

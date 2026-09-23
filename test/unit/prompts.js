@@ -6,9 +6,11 @@ const helpers = new yeomanTest.YeomanTest()
 const path = require('path')
 const assert = require('assert')
 const fs = require('fs')
+const standard = require('standard').default
 const { ref } = require('roosevelt/config')
 
 // the roosevelt config is a javascript module as of roosevelt 0.32.0, so it is evaluated rather than read as json
+//
 // it is run here rather than required, because it asks for roosevelt itself and nothing is installed in the throwaway directory the generator wrote it to, so the copy this repo has is handed to it instead
 function readRooseveltConfig (runner) {
   const source = fs.readFileSync(path.join(runner.cwd, 'roosevelt.config.js'), 'utf8')
@@ -19,6 +21,7 @@ function readRooseveltConfig (runner) {
 }
 
 // asserts the generated config contains at least the given values, the way assertJsonFileContent did
+//
 // objects and arrays alike are compared key by key, so a test can name only the settings it cares about
 function assertRooseveltConfig (runner, expected) {
   const walk = (expectedNode, actualNode, at) => {
@@ -315,7 +318,7 @@ describe('Generator Prompts', async function () {
       assert.ok(source.includes("require('@rollup/plugin-commonjs')"), 'expected the commonjs plugin to be required')
 
       // a plugin reads its options the moment it is called, so a ref handed to one would still be a ref by then the whole array has to be inside the ref instead, which is what this guards
-      assert.match(source, /"plugins": rooseveltConfig\.ref\(params => \[nodeResolve\(/)
+      assert.match(source, /plugins: rooseveltConfig\.ref\(params => \[nodeResolve\(/)
       assert.ok(!/modulePaths: \[rooseveltConfig\.ref/.test(source), 'the module paths must be plain params inside the ref, not refs of their own')
     })
 
@@ -344,8 +347,69 @@ describe('Generator Prompts', async function () {
       // with nothing bundling, the js folder is served straight from statics instead
       const symlinks = readRooseveltConfig(runner).symlinks
       const params = { staticsRoot: '/app/statics', publicFolder: '/app/public' }
-      const resolved = symlinks.map(link => ({ source: ref.resolve(link.source, params), dest: ref.resolve(link.dest, params) }))
+      const resolve = value => ref.isRef(value) ? ref.resolve(value, params) : value // the module a no bundler app vendors lives at a fixed path, so that symlink is a plain string rather than a ref
+      const resolved = symlinks.map(link => ({ source: resolve(link.source), dest: resolve(link.dest) }))
       assert.ok(resolved.some(link => link.source === '/app/statics/js' && link.dest === '/app/public/js'), `expected a js symlink, got ${JSON.stringify(resolved)}`)
+
+      // nothing can pull check-if-CSS-is-disabled out of node_modules and into main.js without a bundler, so its standalone build is served as a script of its own
+      assert.ok(resolved.some(link => link.source === 'node_modules/check-if-css-is-disabled/dist/check-if-css-is-disabled.js' && link.dest === '/app/public/js/lib/check-if-css-is-disabled.js'), `expected a symlink to the standalone build, got ${JSON.stringify(resolved)}`)
+
+      // the whole point of the symlink above: a require in a file the browser reads directly would only throw
+      const mainJs = fs.readFileSync(path.join(runner.cwd, 'statics/js/main.js'), 'utf8')
+      assert.ok(!mainJs.includes('require('), 'a no bundler app serves main.js to the browser as it is, so it cannot require anything')
+      assert.ok(mainJs.includes('checkIfCssIsDisabled()'), 'expected main.js to call the global the standalone build leaves behind')
+
+      // and the script tag that leaves that global behind has to be on the page, ahead of main.js
+      const layout = fs.readFileSync(path.join(runner.cwd, 'mvc/views/layouts/main.html'), 'utf8')
+      assert.ok(layout.indexOf('<script src="/js/lib/check-if-css-is-disabled.js" defer></script>') < layout.indexOf('<script src="/js/main.js" defer></script>'), 'expected the vendored script to be loaded before main.js')
+    })
+
+    it('should let the bundler pull check-if-CSS-is-disabled into main.js when there is one', async function () {
+      const runner = await helpers
+        .create(path.join(__dirname, '../../generators/app'))
+        .withAnswers({
+          configMode: 'Custom app',
+          customAppVariant: 'MPA — multi-page app (recommended for most apps)',
+          jsBundler: 'esbuild'
+        })
+        .run()
+
+      // this fun line ensures that the runner context is looking at the folder the app got generated in
+      runner.cwd += '/my-roosevelt-sample-app'
+
+      assert.ok(fs.readFileSync(path.join(runner.cwd, 'statics/js/main.js'), 'utf8').includes("require('check-if-css-is-disabled')()"), 'expected main.js to require the module, since the bundler will resolve it')
+      assert.ok(!fs.readFileSync(path.join(runner.cwd, 'mvc/views/layouts/main.html'), 'utf8').includes('/js/lib/'), 'a bundled app has no need of a vendored script tag')
+    })
+  })
+
+  describe('Isomorphic models', function () {
+    it('should give a single page app one _defaultModel rather than one model file per model', async function () {
+      // roosevelt generates the rote per model files; this is the one the developer is meant to read and edit
+      const runner = await helpers
+        .create(path.join(__dirname, '../../generators/app'))
+        .withAnswers({ configMode: 'Custom app', customAppVariant: 'SPA — single page app (advanced users only)' })
+        .run()
+
+      runner.cwd += '/my-roosevelt-sample-app'
+
+      runner.assertFile('statics/js/models/_defaultModel.js')
+      runner.assertNoFile('statics/js/models/homepage.js')
+      runner.assertNoFile('statics/js/models/global.js')
+      runner.assertNoFile('statics/js/models/getRandomNumber.js')
+
+      const contents = fs.readFileSync(path.join(runner.cwd, 'statics/js/models/_defaultModel.js'), 'utf8')
+      assert.ok(contents.includes('async ({ model, route })'), 'it should take the descriptor roosevelt hands it')
+    })
+
+    it('should not give a multi page app one, since nothing generates models for it', async function () {
+      const runner = await helpers
+        .create(path.join(__dirname, '../../generators/app'))
+        .withAnswers({ configMode: 'Custom app', customAppVariant: 'MPA — multi-page app (recommended for most apps)' })
+        .run()
+
+      runner.cwd += '/my-roosevelt-sample-app'
+
+      runner.assertNoFile('statics/js/models/_defaultModel.js')
     })
   })
 
@@ -409,5 +473,46 @@ describe('Generator Prompts', async function () {
       runner.assertFile('roosevelt.config.js')
       runner.assertNoFile('rooseveltConfig.js')
     })
+  })
+
+  // the config is javascript now, and a generated app lints itself with standard, so a config written in json's dialect of javascript would fail the app's own `npm test` the moment it was generated
+  describe('The generated config as javascript', function () {
+    it('should quote a key only where javascript requires it', async function () {
+      const runner = await helpers
+        .create(path.join(__dirname, '../../generators/app'))
+        .withAnswers({
+          configMode: 'Custom app',
+          customAppVariant: 'MPA — multi-page app (recommended for most apps)'
+        })
+        .run()
+
+      // this fun line ensures that the runner context is looking at the folder the app got generated in
+      runner.cwd += '/my-roosevelt-sample-app'
+
+      const source = fs.readFileSync(path.join(runner.cwd, 'roosevelt.config.js'), 'utf8')
+      assert.ok(source.includes('makeBuildArtifacts:'), 'expected an unquoted key')
+      assert.ok(!/^\s*"[^"]+":/m.test(source), `no key should be quoted in the way json quotes them:\n${source}`)
+      assert.ok(!source.includes('"'), `strings should be single quoted the way standard wants them:\n${source}`)
+    })
+
+    for (const bundler of ['esbuild', 'webpack', 'rspack', 'rollup', 'none']) {
+      it(`should pass standard with the ${bundler} bundler`, async function () {
+        const runner = await helpers
+          .create(path.join(__dirname, '../../generators/app'))
+          .withAnswers({
+            configMode: 'Custom app',
+            customAppVariant: 'MPA — multi-page app (recommended for most apps)',
+            jsBundler: bundler
+          })
+          .run()
+
+        // this fun line ensures that the runner context is looking at the folder the app got generated in
+        runner.cwd += '/my-roosevelt-sample-app'
+
+        const source = fs.readFileSync(path.join(runner.cwd, 'roosevelt.config.js'), 'utf8')
+        const [result] = await standard.lintText(source, { filename: 'roosevelt.config.js' })
+        assert.deepStrictEqual(result.messages.map(message => `${message.line}:${message.column} ${message.message} (${message.ruleId})`), [])
+      })
+    }
   })
 })

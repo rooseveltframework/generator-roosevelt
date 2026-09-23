@@ -430,29 +430,50 @@ module.exports = class extends Generator {
     }
 
     this.jsBundler = this.jsBundler || defaults.defaultJSBundler
+
+    // a single page app is its frontend bundle: its templates, controllers and models are compiled into it, and its entry point is written against single-page-express
+    //
+    // the bundler prompt does not offer "none" to one, so this only catches a single page app configured some other way; without it the app would be handed the plain no-bundler entry point instead and come out with no single page frontend at all, which looks like a generator that quietly ignored half of what it was asked for
+    if (this.spaMode && this.jsBundler === 'none') this.jsBundler = defaults.defaultJSBundler
+
     this.bundlerRequires = []
     if (this.jsBundler !== 'none') {
-      this.jsBundlerEnable = true
+      this.jsBundlerEnabled = true
       this.dependencies = Object.assign(this.dependencies, defaults.jsBundlers[this.jsBundler].dependencies)
       this.jsBundles = [{ config: bundleConfigFor(this.jsBundler, !!this.spaMode, this.bundlerRequires) }]
       if (this.spaMode) {
         this.clientControllers = defaults.clientControllers
         this.clientViews = defaults.clientViews
+        this.clientModels = defaults.clientModels
       }
     } else {
-      this.jsBundlerEnable = false
+      this.jsBundlerEnabled = false
       this.jsBundles = []
       this.symlinks.push(
         {
           source: '${staticsRoot}/js', // eslint-disable-line
           dest: '${publicFolder}/js' // eslint-disable-line
+        },
+        // with no bundler there is nothing to pull a module out of node_modules and into the app's front end code, so the standalone build of this one is served as a script tag of its own
+        //
+        // it cannot be served from /js, because that is the statics folder itself and a build artifact does not belong in there
+        {
+          source: 'node_modules/check-if-css-is-disabled/dist/check-if-css-is-disabled.js',
+          dest: '${publicFolder}/js/lib/check-if-css-is-disabled.js' // eslint-disable-line
         }
       )
     }
 
+    // html-validate is only reached by a development build: the production branch that would load it is eliminated before the bundler resolves it, so a production install does not need it present
+    this.spaDevDependencies = ''
+
     if (this.spaMode) {
       this.dependencies = Object.assign(this.dependencies, defaults['semantic-forms'])
       this.dependencies = Object.assign(this.dependencies, defaults['single-page-express'])
+      this.spaDevDependencies = Object.entries(defaults.spaDevDependencies).map(([name, version]) => `"${name}": "${version}",`).join('\n    ')
+
+      // webpack, rspack and esbuild all resolve process.env.NODE_ENV on their own, which is what keeps the html validator out of a production bundle; rollup does neither that nor the json imports the validator's own dependencies use, so it needs a plugin for each
+      if (this.jsBundler === 'rollup') this.dependencies = Object.assign(this.dependencies, defaults.spaRollupPlugins)
     }
     this.viewEngine = this.templatingEngine !== false ? this.viewEngineList || defaults.viewEngine : 'none'
     if (this.viewEngine !== 'none') {
@@ -472,6 +493,7 @@ module.exports = class extends Generator {
         staticSiteMode: !!this.staticSiteMode,
         appName: this.packageName,
         dependencies: this.dependencies,
+        spaDevDependencies: this.spaDevDependencies,
         stylelintPostCssModule: this.stylelintPostCssModule,
         stylelintConfigModule: this.stylelintConfigModule,
         cssExt: this.cssExt
@@ -518,7 +540,7 @@ module.exports = class extends Generator {
     rooseveltConfig.js = {
       sourcePath: 'js',
       bundler: {
-        enable: this.jsBundlerEnable,
+        enable: this.jsBundlerEnabled,
         module: this.jsBundler === 'none' ? defaults.defaultJSBundler : this.jsBundler
       },
       bundles: this.jsBundles
@@ -526,11 +548,12 @@ module.exports = class extends Generator {
     if (this.spaMode) {
       rooseveltConfig.clientControllers = this.clientControllers
       rooseveltConfig.clientViews = this.clientViews
+      rooseveltConfig.clientModels = this.clientModels
     }
     rooseveltConfig.symlinks = this.symlinks
 
-    const serializedConfig = JSON.stringify(convertRefs(rooseveltConfig), null, 2)
-      .replace(/"@@rooseveltConfigRef(\d+)@@"/g, (match, index) => refs[index])
+    const serializedConfig = jsLiteral(convertRefs(rooseveltConfig))
+      .replace(/'@@rooseveltConfigRef(\d+)@@'/g, (match, index) => refs[index])
 
     this.fs.copyTpl(
       this.templatePath('roosevelt.config.js.ejs'),
@@ -552,6 +575,7 @@ module.exports = class extends Generator {
     )
 
     // both kinds of app are started the same way, by running one file with node
+    //
     // a static site's copy also builds the site, since roosevelt serves what it builds, and is named for the development server it runs
     this.fs.copyTpl(
       this.templatePath(this.staticSiteMode ? 'test-server.js' : 'app.js'),
@@ -585,8 +609,12 @@ module.exports = class extends Generator {
           }
         )
         this.fs.copyTpl(
-          this.templatePath('mvc/models/teddy/server.js'),
-          this.destinationPath(this.modelsPath + '/server.js')
+          this.templatePath('mvc/models/teddy/server.js.ejs'),
+          this.destinationPath(this.modelsPath + '/server.js'),
+          {
+            // only a single page app generates frontend models, so only there is there anything for a blocklist comment to keep one away from
+            spaMode: !!this.spaMode
+          }
         )
         this.fs.copyTpl(
           this.templatePath('mvc/models/teddy/homepage.js'),
@@ -608,7 +636,10 @@ module.exports = class extends Generator {
       if (this.usesTeddy) {
         this.fs.copyTpl(
           this.templatePath(`mvc/views/teddy/layouts/main${appVariant}.html`),
-          this.destinationPath(this.viewsPath + '/layouts/main.html')
+          this.destinationPath(this.viewsPath + '/layouts/main.html'),
+          {
+            jsBundlerEnabled: this.jsBundlerEnabled
+          }
         )
         this.fs.copy(
           this.templatePath(`mvc/views/teddy/404${appVariant}.html`),
@@ -638,7 +669,8 @@ module.exports = class extends Generator {
           this.templatePath('mvc/views/vanilla/homepage.html'),
           this.destinationPath(this.viewsPath + '/homepage.html'),
           {
-            appName: this.appName
+            appName: this.appName,
+            jsBundlerEnabled: this.jsBundlerEnabled
           }
         )
       }
@@ -754,24 +786,16 @@ module.exports = class extends Generator {
     )
 
     this.fs.copy(
-      this.templatePath(`statics/js/main${appVariant}.js`),
+      this.templatePath(`statics/js/main${this.jsBundlerEnabled ? appVariant : '.nobundler'}.js`),
       this.destinationPath('statics/js/main.js')
     )
     if (this.spaMode) {
+      // roosevelt generates a front end model per model, and each hands off to this one file, which is the app's to edit
       this.fs.copy(
-        this.templatePath('statics/js/models/getRandomNumber.js'),
-        this.destinationPath('statics/js/models/getRandomNumber.js')
-      )
-      this.fs.copy(
-        this.templatePath('statics/js/models/global.js'),
-        this.destinationPath('statics/js/models/global.js')
-      )
-      this.fs.copy(
-        this.templatePath('statics/js/models/homepage.js'),
-        this.destinationPath('statics/js/models/homepage.js')
+        this.templatePath('statics/js/models/_defaultModel.js'),
+        this.destinationPath('statics/js/models/_defaultModel.js')
       )
     }
-
     if (this.staticSiteMode) {
       this.fs.copyTpl(
         this.templatePath('statics/pages/models/global.js'),
@@ -782,7 +806,10 @@ module.exports = class extends Generator {
       )
       this.fs.copyTpl(
         this.templatePath('statics/pages/layouts/main.html'),
-        this.destinationPath('statics/pages/layouts/main.html')
+        this.destinationPath('statics/pages/layouts/main.html'),
+        {
+          jsBundlerEnabled: this.jsBundlerEnabled
+        }
       )
       this.fs.copyTpl(
         this.templatePath('statics/pages/index.html'),
@@ -829,19 +856,50 @@ module.exports = class extends Generator {
   }
 }
 
+// the config is written as javascript rather than json so that it reads like the rest of the app's code and passes standard, the linter the generated app is scaffolded with
+function jsLiteral (node, indent = '') {
+  if (node === null) return 'null'
+  if (Array.isArray(node)) {
+    if (!node.length) return '[]'
+    const inner = indent + '  '
+    return '[\n' + node.map(item => inner + jsLiteral(item, inner)).join(',\n') + '\n' + indent + ']'
+  }
+  if (typeof node === 'object') {
+    const keys = Object.keys(node)
+    if (!keys.length) return '{}'
+    const inner = indent + '  '
+    return '{\n' + keys.map(key => inner + objectKey(key) + ': ' + jsLiteral(node[key], inner)).join(',\n') + '\n' + indent + '}'
+  }
+  if (typeof node === 'string') return quote(node)
+  return String(node)
+}
+
+// standard quotes a key only when it has to, which is when the key would not be a valid identifier on its own
+function objectKey (key) {
+  return /^[A-Za-z_$][A-Za-z0-9_$]*$/.test(key) ? key : quote(key)
+}
+
+// standard wants single quotes, except around a string holding an apostrophe, which it would rather not see escaped
+function quote (value) {
+  const escaped = JSON.stringify(value).slice(1, -1) // json escaping covers backslashes, newlines, and control characters alike
+  if (value.includes("'") && !value.includes('"')) return '"' + escaped + '"'
+  return "'" + escaped.replace(/\\"/g, '"').replace(/'/g, "\\'") + "'"
+}
+
 function refExpression (value) {
   return 'rooseveltConfig.ref(params => `' + value.replace(/\$\{/g, '${params.') + '`)'
 }
 
 // the same placeholder written as a plain expression, for use inside a ref that has already been handed the params
 function paramExpression (value) {
-  if (!value.includes('${')) return JSON.stringify(value)
+  if (!value.includes('${')) return quote(value)
   const withParams = value.replace(/\$\{/g, '${params.')
   const whole = withParams.match(/^\$\{([^}]+)\}$/)
   return whole ? whole[1] : '`' + withParams + '`' // a placeholder on its own is just the param, with no string to build around it
 }
 
 // the directories a bare require in the app's own front end code should be searched for
+//
 // the built templates and controllers land in the build folder, which is why it is on the list at all
 function moduleSearchPaths (spaMode) {
   const paths = [
@@ -854,6 +912,7 @@ function moduleSearchPaths (spaMode) {
 }
 
 // each bundler roosevelt supports takes its own shape of config, so the default bundle is written per bundler
+//
 // anything the bundler needs required at the top of the config file is pushed onto requires
 function bundleConfigFor (bundler, spaMode, requires) {
   const searchPaths = moduleSearchPaths(spaMode)
@@ -878,12 +937,19 @@ function bundleConfigFor (bundler, spaMode, requires) {
   }
 
   if (bundler === 'esbuild') {
-    return {
+    const config = {
       entryPoints: ['${js.sourcePath}/main.js'], // eslint-disable-line
       bundle: true,
       outfile: '${publicFolder}/js/main.js', // eslint-disable-line
       nodePaths: searchPaths // esbuild's equivalent of NODE_PATH; it finds node_modules on its own
     }
+
+    // a single page app hands single-page-express an html validator outside of production, and this is what decides which of those two a build is
+    //
+    // esbuild does work this out on its own, but from whether the build is minified rather than from the mode, so a production build with minifying turned off would quietly bundle a megabyte of validator; saying it outright ties it to the mode instead
+    if (spaMode) config.define = { emitAsCode: "rooseveltConfig.ref(params => ({ 'process.env.NODE_ENV': JSON.stringify(params.mode === 'development' ? 'development' : 'production') }))" }
+
+    return config
   }
 
   if (bundler === 'rollup') {
@@ -892,9 +958,22 @@ function bundleConfigFor (bundler, spaMode, requires) {
     requires.push("const { nodeResolve } = require('@rollup/plugin-node-resolve')")
     // the whole array is one ref rather than a ref per path, because a plugin is built the moment it is called and a ref handed to it would still be a ref when it read its options, having been sealed inside the plugin where roosevelt cannot reach it
     const modulePaths = searchPaths.map(paramExpression).join(', ')
+
+    // a single page app hands single-page-express an html validator outside of production, and the other bundlers work out which of those two a build is on their own
+    //
+    // rollup does not, so `replace` tells it, which is what lets it drop the validator from a production bundle rather than shipping a megabyte of it; `json` is there because the validator's own dependencies import json files, which rollup cannot read without it
+    //
+    // replace runs first, since the branch it resolves is what the rest of the pipeline then never has to follow
+    let spaPlugins = ''
+    if (spaMode) {
+      requires.push("const replace = require('@rollup/plugin-replace')")
+      requires.push("const json = require('@rollup/plugin-json')")
+      spaPlugins = "replace({ preventAssignment: true, values: { 'process.env.NODE_ENV': JSON.stringify(params.mode === 'development' ? 'development' : 'production') } }), "
+    }
+
     return {
       input: '${js.sourcePath}/main.js', // eslint-disable-line
-      plugins: { emitAsCode: `rooseveltConfig.ref(params => [nodeResolve({ browser: true, modulePaths: [${modulePaths}] }), commonjs()])` },
+      plugins: { emitAsCode: `rooseveltConfig.ref(params => [${spaPlugins}nodeResolve({ browser: true, modulePaths: [${modulePaths}] }), commonjs()${spaMode ? ', json()' : ''}])` },
       output: {
         file: '${publicFolder}/js/main.js', // eslint-disable-line
         format: 'iife',
