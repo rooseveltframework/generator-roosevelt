@@ -25,6 +25,9 @@ const app = singlePageExpress({
   templatingEngine: teddy,
   templates,
 
+  // enable the HTML validator in dev mode
+  htmlValidator: process.env.NODE_ENV === 'production' ? undefined : new (require('html-validate/browser').HtmlValidate)(singlePageExpress.htmlValidateConfig),
+
   // which DOM elements will be updated by default when routes are triggered
   defaultTargets: [
     'body > main > article',

@@ -1,8 +1,8 @@
 {
   "dependencies": {
-    "check-if-css-is-disabled": "~2.0.0",
+    "check-if-css-is-disabled": "~2.1.0",
     "express": "~5.2.0",
-    "roosevelt": "~0.33.1"
+    "roosevelt": "~0.34.0"
   },
   "appName": "My Roosevelt Sample App",
   "createDir": true,
@@ -14,7 +14,7 @@
   "defaultCSSCompiler": "Sass",
   "Sass": {
     "dependencies": {
-      "sass": "~1.98.0"
+      "sass": "~1.104.0"
     },
     "config": {
       "enable": true,
@@ -30,7 +30,7 @@
   },
   "Less": {
     "dependencies": {
-      "less": "~4.6.0"
+      "less": "~4.9.0"
     },
     "config": {
       "enable": true,
@@ -70,17 +70,17 @@
     },
     "webpack": {
       "dependencies": {
-        "webpack": "~5.105.0"
+        "webpack": "~5.111.0"
       }
     },
     "rspack": {
       "dependencies": {
-        "@rspack/core": "~2.1.0"
+        "@rspack/core": "~2.2.0"
       }
     },
     "rollup": {
       "dependencies": {
-        "rollup": "~4.62.0",
+        "rollup": "~4.63.0",
         "@rollup/plugin-commonjs": "~29.0.0",
         "@rollup/plugin-node-resolve": "~16.0.0"
       }
@@ -94,7 +94,7 @@
   "templatingExtension": "html",
   "additionalTemplatingEngines": false,
   "teddy": {
-    "teddy": "~1.2.0"
+    "teddy": "~2.0.0"
   },
   "viewEngine": [
     "html:teddy"
@@ -103,7 +103,14 @@
     "semantic-forms": "~5.3.0"
   },
   "single-page-express": {
-    "single-page-express": "~2.0.0"
+    "single-page-express": "~2.2.0"
+  },
+  "spaDevDependencies": {
+    "html-validate": "~11.16.0"
+  },
+  "spaRollupPlugins": {
+    "@rollup/plugin-replace": "~6.0.0",
+    "@rollup/plugin-json": "~6.1.0"
   },
   "clientControllers": {
     "enable": true,
@@ -114,6 +121,16 @@
     "allowlist": [],
     "defaultBundle": "controllers.js",
     "output": "js"
+  },
+  "clientModels": {
+    "enable": true,
+    "exposeAll": true,
+    "blocklist": [
+      "server/*"
+    ],
+    "allowlist": [],
+    "apiRoute": "/api",
+    "output": "js/models"
   },
   "clientViews": {
     "enable": true,
