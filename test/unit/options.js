@@ -80,6 +80,7 @@ describe('generator options', async function () {
     it('generated correct view file(s)', function () {
       runner.assertFileContent('mvc/views/homepage.html', /{content\.hello}/)
       runner.assertFileContent('mvc/views/404.html', /{server.appVersion}/)
+      runner.assertFileContent('mvc/views/robots.txt', /^User-agent: \*\r?\n/) // crawlers ignore disallow rules that are not under one
     })
   })
 })

@@ -1,5 +1,10 @@
 This project's versioning tracks Roosevelt's versioning. When some version numbers are skipped, it's because the generator was not updated for that version of Roosevelt.
 
+## 0.34.1
+
+- Fixed the generated `robots.txt` having no `User-agent` line, without which crawlers ignore the `Disallow` rules under it.
+- Updated dependencies.
+
 ## 0.34.0
 
 - Removed the hand written frontend models from generated single page apps. Roosevelt writes one per model as of 0.34.0, so a generated app now ships a single `statics/js/models/_defaultModel.js` saying what reaching its API means, rather than one near-identical fetch per model.
