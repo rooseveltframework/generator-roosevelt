@@ -19,7 +19,7 @@
     "node": ">=22.20.0"
   },
   "dependencies": {
-    "yeoman-generator": "10.0.1"
+    "yeoman-generator": "10.3.0"
   },
   "devDependencies": {
     "@playwright/test": "1.64.0",
