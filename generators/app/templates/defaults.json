@@ -14,7 +14,7 @@
   "defaultCSSCompiler": "Sass",
   "Sass": {
     "dependencies": {
-      "sass": "~1.105.0"
+      "sass": "~1.108.0"
     },
     "config": {
       "enable": true,
@@ -24,7 +24,7 @@
     "scripts": {
       "cssExt": "scss",
       "stylelintPostCssModule": null,
-      "stylelintConfigModule": "\"stylelint-config-standard-scss\": \"~17.0.0\"",
+      "stylelintConfigModule": "\"stylelint-config-standard-scss\": \"~18.0.0\"",
       "stylelintConfigName": "stylelint-config-standard-scss"
     }
   },
@@ -39,9 +39,9 @@
     },
     "scripts": {
       "cssExt": "less",
-      "stylelintConfigModule": "\"stylelint-config-standard\": \"~40.0.0\"",
+      "stylelintConfigModule": "\"stylelint-config-standard\": \"~41.1.0\"",
       "stylelintConfigName": "stylelint-config-standard",
-      "stylelintPostCssModule": "\"postcss-less\": \"~6.0.0\",",
+      "stylelintPostCssModule": "\"postcss-less\": \"~7.1.0\",",
       "stylelintSyntax": "\"customSyntax\": \"postcss-less\","
     }
   },
@@ -70,17 +70,17 @@
     },
     "webpack": {
       "dependencies": {
-        "webpack": "~5.111.0"
+        "webpack": "~5.113.0"
       }
     },
     "rspack": {
       "dependencies": {
-        "@rspack/core": "~2.2.0"
+        "@rspack/core": "~2.3.0"
       }
     },
     "rollup": {
       "dependencies": {
-        "rollup": "~4.64.0",
+        "rollup": "~4.68.0",
         "@rollup/plugin-commonjs": "~29.0.0",
         "@rollup/plugin-node-resolve": "~16.0.0"
       }
@@ -94,7 +94,7 @@
   "templatingExtension": "html",
   "additionalTemplatingEngines": false,
   "teddy": {
-    "teddy": "~2.1.0"
+    "teddy": "~2.3.0"
   },
   "viewEngine": [
     "html:teddy"
@@ -103,10 +103,10 @@
     "semantic-forms": "~5.3.0"
   },
   "single-page-express": {
-    "single-page-express": "~2.2.0"
+    "single-page-express": "~2.3.0"
   },
   "spaDevDependencies": {
-    "html-validate": "~11.16.0"
+    "html-validate": "~11.21.0"
   },
   "spaRollupPlugins": {
     "@rollup/plugin-replace": "~6.0.0",

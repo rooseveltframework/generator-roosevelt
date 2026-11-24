@@ -65,6 +65,10 @@ describe('Generator Prompts', async function () {
       assertRooseveltConfig(runner, {
         viewEngine: ['html1: test1', 'html2: test2', 'html3: test3']
       })
+
+      // the teddy extension would be no use to an app that does not use teddy
+      runner.assertNoFile('.vscode/extensions.json')
+      runner.assertNoFileContent('README.md', /vscode-teddy/)
     })
   })
 
