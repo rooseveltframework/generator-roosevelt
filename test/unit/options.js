@@ -9,6 +9,7 @@ const defaults = require('../../generators/app/templates/defaults.json')
 const defaultFiles = [
   '.gitignore',
   '.stylelintrc.json',
+  '.vscode/extensions.json',
   'README.md',
   'app.js',
   'package.json',
@@ -81,6 +82,11 @@ describe('generator options', async function () {
       runner.assertFileContent('mvc/views/homepage.html', /{content\.hello}/)
       runner.assertFileContent('mvc/views/404.html', /{server.appVersion}/)
       runner.assertFileContent('mvc/views/robots.txt', /^User-agent: \*\r?\n/) // crawlers ignore disallow rules that are not under one
+    })
+
+    it('recommended the teddy extension to vs code users', function () {
+      runner.assertJsonFileContent('.vscode/extensions.json', { recommendations: ['RooseveltFrameworkTeam.vscode-teddy'] })
+      runner.assertFileContent('README.md', /RooseveltFrameworkTeam\.vscode-teddy/)
     })
   })
 })

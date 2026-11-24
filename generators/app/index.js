@@ -594,9 +594,21 @@ module.exports = class extends Generator {
       this.templatePath('README.md.ejs'),
       this.destinationPath('README.md'),
       {
-        appName: this.appName
+        appName: this.appName,
+        usesTeddy: !!this.usesTeddy
       }
     )
+
+    // teddy templates are .html files, so without the teddy extension vs code highlights them as plain html and gets teddy's tags and {variables} wrong
+    //
+    // this only makes vs code suggest the extension to whoever opens the app, and every other editor ignores it. it is a recommendation rather than settings, so it never overrides anyone's own editor preferences
+    //
+    // written directly rather than from a template file, because npm is unreliable about publishing dot-paths, which is also why .gitignore ships as _.gitignore.ejs
+    if (this.usesTeddy) {
+      this.fs.writeJSON(this.destinationPath('.vscode/extensions.json'), {
+        recommendations: ['RooseveltFrameworkTeam.vscode-teddy']
+      })
+    }
 
     if (!this.staticSiteMode) {
       // models
